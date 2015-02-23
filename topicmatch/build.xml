@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+
+<project name="mypro1"  basedir="." default="start_tomcat">
+	<description>
+		mypro1
+    </description>
+	
+	<!--定义变量-->
+	<property name="encode" value="utf-8" /> 
+    <property name="webRoot.dir" value="${basedir}/WebContent" />  
+    <property name="dist.dir" value="${basedir}/dist" /> 
+    <property name="ant.dir" value="D:/Program Files/apache-ant-1.9.4" />  
+	<property name="catalina.home" value="D:/Program Files/apache-tomcat-7.0.59"/>
+    <property name="webapp.name" value="mypro1" />  
+    <property name="src.dir" value="${basedir}/src" />  
+	<property name="lib.dir" value="${webRoot.dir}/WEB-INF/lib" /> 
+    <property name="build.dir" value="${basedir}/build" />  
+	
+	<!--清理-->
+	<target name="clear" depends="stop_tomcat" description="清理旧文件">
+		<echo message="清理"></echo>
+		<!-- 删除之前的目录结构 -->  
+        <delete dir="${build.dir}" />  
+        <delete dir="${dist.dir}" />  
+        <delete file="${catalina.home}/webapps/${webapp.name}.war" />  
+        <delete dir="${catalina.home}/webapps/${webapp.name}" />  
+	</target>
+	
+	 <!-- 创建目录结构 -->  
+    <target name="init" depends="clear" description="创建初始化目录结构">  
+        <mkdir dir="${build.dir}/classes" />  
+        <mkdir dir="${dist.dir}" />  
+    </target>  
+	
+	<!-- 初始化classpath -->  
+    <path id="project.classpath">  
+        <fileset dir="${lib.dir}">  
+            <include name="**/*.jar" />  
+        </fileset>  
+        <!-- 添加tomcat类路径 -->  
+        <fileset dir="${catalina.home}/lib">  
+            <include name="*.jar" />  
+        </fileset>  
+        <!-- ant lib包  -->  
+        <fileset dir="${ant.dir}">  
+            <include name="**/*.jar" />  
+        </fileset>  
+    </path>  
+	
+    <!-- get the source compile classpath in a printable form -->  
+    <pathconvert pathsep="${line.separator}|   |-- "  
+             property="echo.path.compile"  
+             refid="project.classpath">  
+    </pathconvert>  
+      
+    <!-- show classpath jars -->  
+    <target name="print_classpath">  
+        <echo message="|-- compile classpath"/>  
+        <echo message="|   |"/>  
+        <echo message="|   |-- ${echo.path.compile}"/>  
+    </target> 
+	
+	<!--编译-->
+	<target name="compile"  depends ="init" description="编译java文件">
+		<echo message="编译"></echo>
+		<javac srcdir="${src.dir}" destdir="${build.dir}/classes" includeantruntime="false"
+			source="1.8" target="1.8" deprecation="true" debug="true" encoding="${encode}" >  
+           <classpath refid="project.classpath" /> 
+        </javac>
+		<echo message="将src目录下的资源文件"></echo>
+		<copy todir="${build.dir}">  
+			<fileset dir="${src.dir}">  
+				<include name="**/*.xml" />  
+				<include name="**/*.properties" />  
+				<include name="**/*.sql" />  
+			</fileset>   
+		</copy>  
+		<echo message="编译完成"></echo>
+	</target>
+	
+	<!-- 打成war包, 名称默认为 项目名 -->  
+    <target name="war" depends="compile" description="将工程打成war包">  
+        <echo message="begin war..." />  
+        <war destfile="${dist.dir}/${webapp.name}.war" basedir="${webRoot.dir}"   
+            webxml="${webRoot.dir}/WEB-INF/web.xml">  
+            <lib dir="${lib.dir}" />  
+            <classes dir="${build.dir}/classes" />  
+            <fileset dir="${webRoot.dir}">  
+                <include name="***.*" />  
+            </fileset>  
+        </war>  
+        <echo message="end war..." />  
+    </target>  
+	
+	<!-- copy war包 tomcat的deploy目录 -->  
+    <target name="deploy" depends="war" description="部署项目">  
+        <echo message="begin deploy..." />  
+        <copy file="${dist.dir}/${webapp.name}.war" todir="${catalina.home}/webapps" />  
+        <echo message="end deploy..." />  
+    </target> 
+	
+	<target name="stop_tomcat">  
+       <echo>停止tomcat</echo>  
+       <exec executable="cmd" dir="${catalina.home}/bin" failonerror="false"  append="true" >    
+           <env key="CATALINA_HOME" path="${catalina.home}"/>  
+           <arg value="/c shutdown.bat" />     
+       </exec>  
+    </target>  
+  
+    <target name="start_tomcat" depends="deploy">  
+       <echo>启动tomcat</echo>  
+    	 <exec executable="cmd" dir="${catalina.home}/bin" failonerror="false"  append="true" >    
+    	    <env key="CATALINA_HOME" path="${catalina.home}"/>   
+			<arg value="/c startup.bat" />     
+       </exec>  
+    </target>  
+	
+</project>
