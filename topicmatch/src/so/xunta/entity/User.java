@@ -74,5 +74,23 @@ public class User {
 	public void setLatestLoginTime(String latestLoginTime) {
 		this.latestLoginTime = latestLoginTime;
 	}
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public User(String xunta_username, String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
+			String latestLoginTime) {
+		super();
+		this.xunta_username = xunta_username;
+		this.password = password;
+		this.email = email;
+		this.qq_openId = qq_openId;
+		this.qq_accessToken = qq_accessToken;
+		this.weibo_uid = weibo_uid;
+		this.weibo_accessToken = weibo_accessToken;
+		this.createTime = createTime;
+		this.latestLoginTime = latestLoginTime;
+	}
+	
 	
 }

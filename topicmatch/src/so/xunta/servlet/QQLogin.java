@@ -8,17 +8,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import so.xunta.entity.QQDynamicInfoContent;
+import so.xunta.entity.QQUserInfo;
 import so.xunta.entity.User;
+import so.xunta.manager.QQUserInfoManager;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.user.info.tencentUserInfo;
+import so.xunta.utils.DateTimeUtils;
 
 import com.qq.connect.QQConnectException;
 import com.qq.connect.api.OpenID;
-import com.qq.connect.api.qzone.UserInfo;
 import com.qq.connect.javabeans.qzone.UserInfoBean;
+import com.qq.connect.utils.json.JSONException;
+import com.qq.connect.utils.json.JSONObject;
 
 public class QQLogin extends HttpServlet {
 	UserManager userManager=new UserManagerImpl();
+	QQUserInfoManager qquerinfomanager = new QQUserInfoManagerImpl();
+	
 	/**
 	 * Constructor of the object.
 	 */
@@ -38,49 +47,79 @@ public class QQLogin extends HttpServlet {
 
 		response.setContentType("text/html");
 		String accessToken=request.getParameter("access_token");//获取参数accessToken
+		//非空判断
+		if(accessToken==null&&"".equals(accessToken)){
+			System.out.println("获取参数accessToken为空:"+accessToken);
+			return;
+		}
+		
+		//获取用户的openId
+		OpenID o = new OpenID(accessToken);
+		String openId="";
+		UserInfoBean userInfo=null;
 
+		try {
+			openId = o.getUserOpenID();
+		} catch (QQConnectException e1) {
+			e1.printStackTrace();
+		}
+		
+		if(openId==null){
+			System.out.println("获取openId为空:"+openId);
+			return;
+		}
+		
+		//获取用户的基本信息　
+		QQUserInfo qquserInfo = null;//用户的基本信息 昵称,性别,所在地,描述,认证原因,标签
+		QQDynamicInfoContent qqdynamicContent = null;//动态内容,就是用户的微博　
+		
+		JSONObject json = tencentUserInfo.get(accessToken);
+		try {
+			String nickname = (String) json.get("nickname");
+			String gender = (String) json.get("gender");
+			String location = (String) json.get("location");
+			String description = (String) json.get("description");
+			String verified_reason = (String) json.get("verified_reason");
+			String tags = (String) json.get("tags");
+			qquserInfo=new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);
+			
+			String content = (String) json.get("content");
+			qqdynamicContent=new QQDynamicInfoContent(openId, content);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//1.获取token
 		//2.调用接口，获取基本信息
 		//3.查询基本信息是否存在，不存在就添加基本信息，添加动态内容;  存在 就查询动态内容跟前一次的动态内容是否相同，不同则添加动态内容
 		//4.将用户保存在session范围
 		//5.跳转到首页
-		OpenID o = new OpenID(accessToken);
-		String openId="";
-		UserInfoBean userInfo=null;
-		try {
-			openId = o.getUserOpenID();
 		
-			userInfo = new UserInfo(accessToken, openId).getUserInfo();
-		
-		} catch (QQConnectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(openId==null){
-			return;
-		}
 		//查询数据库中是否存在openid
 		User user=userManager.findUserbyQQOpenId(openId);
-		System.out.println(userInfo.getNickname()+"登录");
-		System.out.println("user:"+user);
+		System.out.println(qquserInfo.getNickname()+"登录");
 	
-		if(user==null)
+		if(user==null)//基本信息不存在
 		{
 			//用户没有绑定账号
-			user=new User();
-			user.setQq_openId(openId);
-			user.setQq_accessToken(accessToken);
-			user.setCreateTime(new Date());
-			userManager.addUser(user);
-		
-			//System.out.println(userInfo.getNickname()+"登录");
-			user.setXunta_username(userInfo.getNickname());
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			user = new User(qquserInfo.getNickname(),"", "", openId, accessToken,"","",new Date(),DateTimeUtils.getCurrentTimeStr());
 			
+			//添加用户表
+			userManager.addUser(user);
+
+			//添加qq用户的基本信息
+			qquerinfomanager.addStaticQQUserInfo(qquserInfo);
+			//添加qq用户动态内容信息　
+			qquerinfomanager.addDynamicQQInfoContent(qqdynamicContent);
+			
+			//将服户保存到sessoin范围
+			request.getSession().setAttribute("user", user);
+			//跳转到首页
+			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
-		else
+		else//用户基本信息存在
 		{
+			//查询最近一次的用户发的动态内容 
 			if(user.getXunta_username()==null||"".equals(user.getXunta_username()))
 			{
 				user.setXunta_username("QQ_"+userInfo.getNickname());

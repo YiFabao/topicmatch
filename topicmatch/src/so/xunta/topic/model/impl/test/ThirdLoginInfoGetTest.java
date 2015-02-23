@@ -5,12 +5,17 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import so.xunta.entity.QQDynamicInfoContent;
+import so.xunta.entity.QQUserInfo;
+import so.xunta.manager.QQUserInfoManager;
+import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.user.info.tencentUserInfo;
 
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
 
 public class ThirdLoginInfoGetTest {
+	
 	@Test
 	public void testQQthirdLoginInfoGet(){
 		JSONObject json = tencentUserInfo.get("72EBF9A675C1ABAA6D9BE2EEF09500D3");
@@ -33,4 +38,7 @@ public class ThirdLoginInfoGetTest {
 		}
 		//JSONObject json1 = sinaUserInfo.get(String token, String userId);
 	}
+	
+	@Test
+	public void testCCC(){}
 }

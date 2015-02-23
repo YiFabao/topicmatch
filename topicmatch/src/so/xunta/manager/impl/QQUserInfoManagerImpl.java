@@ -1,5 +1,6 @@
 package so.xunta.manager.impl;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import so.xunta.entity.QQDynamicInfoContent;
@@ -39,6 +40,16 @@ public class QQUserInfoManagerImpl implements QQUserInfoManager{
 		} finally {
 			session.close();
 		}
+	}
+
+	@Override
+	public String findLatestQQContentByOpenId(String openId) {
+		Session session = HibernateUtils.openSession();
+		String hql = "select q.content from QQDynamicInfoContent as q where q.qq_openId=? order by q.id DESC";
+		Query query = session.createQuery(hql).setFirstResult(0).setMaxResults(1);
+		String content = (String) query.uniqueResult();
+		session.close();
+		return content;
 	}
 
 }

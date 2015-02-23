@@ -58,5 +58,20 @@ public class QQUserInfo {
 	public void setTags(String tags) {
 		this.tags = tags;
 	}
+	public QQUserInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public QQUserInfo(String qq_openId, String nickname, String gender, String location, String description, String verified_reason, String tags) {
+		super();
+		this.qq_openId = qq_openId;
+		this.nickname = nickname;
+		this.gender = gender;
+		this.location = location;
+		this.description = description;
+		this.verified_reason = verified_reason;
+		this.tags = tags;
+	}
+	
 	
 }

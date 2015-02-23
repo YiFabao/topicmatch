@@ -98,7 +98,7 @@
 		</c:if>
 		</c:forEach>
 	</c:if>
-<script src="${pageContext.request.contextPath }/assets/javascripts/jquery-1.10.2.js"></script>
+<%-- <script src="${pageContext.request.contextPath }/assets/javascripts/jquery-1.10.2.js"></script> --%>
 <script>
 	var topic_items = document.getElementsByClassName("topic_item");
 	for(var i=0;i<topic_items.length;i++)

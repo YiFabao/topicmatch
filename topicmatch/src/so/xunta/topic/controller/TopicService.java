@@ -389,13 +389,20 @@ public class TopicService extends HttpServlet {
 	//退出登录
 	private void exit(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().removeAttribute("user");
-		try {
-			request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		request.getSession().invalidate();
+		 response.setHeader("Pragma","No-cache");
+		 response.setHeader("Cache-Control","no-cache"); //强制缓存从服务器上获取新的页面
+		 response.setHeader("Cache-Control","no-store"); //在任何环境下缓存不保存任何页面
+		 response.setDateHeader("Expires", 0);
+			System.out.println("跳转");
+			try {
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
 	}
 
 	private void joinTopic(HttpServletRequest request, HttpServletResponse response) {
