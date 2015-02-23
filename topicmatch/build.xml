@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
-<project name="mypro1"  basedir="." default="start_tomcat">
+<project name="topicmatch"  basedir="." default="start_tomcat">
 	<description>
-		mypro1
+		topicmatch
     </description>
 	
 	<!--定义变量-->
@@ -14,6 +14,7 @@
     <property name="webapp.name" value="mypro1" />  
     <property name="src.dir" value="${basedir}/src" />  
 	<property name="lib.dir" value="${webRoot.dir}/WEB-INF/lib" /> 
+	<property name="lib_binbin.dir" value="${webRoot.dir}/WEB-INF/lib_binbin" /> 
     <property name="build.dir" value="${basedir}/build" />  
 	
 	<!--清理-->
@@ -35,6 +36,9 @@
 	<!-- 初始化classpath -->  
     <path id="project.classpath">  
         <fileset dir="${lib.dir}">  
+            <include name="**/*.jar" />  
+        </fileset>  
+        <fileset dir="${lib_binbin.dir}">  
             <include name="**/*.jar" />  
         </fileset>  
         <!-- 添加tomcat类路径 -->  
@@ -73,6 +77,8 @@
 				<include name="**/*.xml" />  
 				<include name="**/*.properties" />  
 				<include name="**/*.sql" />  
+				<include name="**/*.dic" />  
+				<include name="**/*.txt" />  
 			</fileset>   
 		</copy>  
 		<echo message="编译完成"></echo>
