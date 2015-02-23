@@ -6,9 +6,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -38,9 +35,6 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
-
-import so.xunta.entity.User;
 import so.xunta.localcontext.LocalContext;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.Topic;
