@@ -401,8 +401,6 @@ public class TopicService extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-
 	}
 
 	private void joinTopic(HttpServletRequest request, HttpServletResponse response) {
