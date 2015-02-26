@@ -115,7 +115,7 @@
    	<target name="linux.start.tomcat" description="start tomcat...">
 		<echo message="starting the tomcat ...."></echo>   	    
 		<exec dir="${catalina.home}/bin" executable="bash">
-		    <evn key="CATALINA_HOME" value="${catalina.home}"/>
+		    <env key="CATALINA_HOME" value="${catalina.home}"/>
 		    <arg value="startup.sh"/>
 		</exec>
 		<echo message="start tomcat complemete!"></echo>
@@ -123,7 +123,7 @@
    	<target name="linux.stop.tomcat" description="start tomcat...">
 		<echo message="stopping the tomcat ...."></echo>   	    
 		<exec dir="${catalina.home}/bin" executable="bash">
-		    <evn key="CATALINA_HOME" value="${catalina.home}"/>
+		    <env key="CATALINA_HOME" value="${catalina.home}"/>
 		    <arg value="shutdown.sh"/>
 		</exec>
 		<echo message="stop tomcat complemete!"></echo>
