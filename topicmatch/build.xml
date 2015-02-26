@@ -106,39 +106,9 @@
     </target> 
 	
 	<target name="linux.start.tomcat" depends="deploy" description="starts tomcat in the current console window">
-		<if>
-			<not>
-				<socket server="localhost" port="8080" />
-			</not>
-			<then>
-			<echo message="start tomcat..." />
-			<exec executable="${catalina.home}/bin/startup.sh">
-			    <env key="CATALINA_HOME" value="${catalina.home}" />
-			</exec>
-			<waitfor maxwait="5" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
-			    <and>
-			        <socket server="localhost" port="23080" />
-			    </and>
-			</waitfor>
-			</then>
-		</if>
 	</target>
 	
 	<target name="linux.stop.tomcat" description="starts tomcat in the current console window">
-		<if>
-			<socket server="localhost" port="8080" />
-			<then>
-				<echo message="stop tomcat..." />
-				<exec executable="${catalina.home}/bin/shutdown.sh" failonerror="false">
-					<env key="CATALINA_HOME" value="${catalina.home}" />
-				</exec>
-				<echo message="${catalina.home}/bin/shutdown.sh" />
-				<waitfor maxwait="5" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
-					<not>
-						<socket server="localhost" port="8080" />
-					</not>
-				</waitfor>
-			</then>
-		</if>
+		
 	</target>
 </project>
