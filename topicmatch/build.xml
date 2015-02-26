@@ -9,8 +9,8 @@
 	<property name="encode" value="utf-8" /> 
     <property name="webRoot.dir" value="${basedir}/WebContent" />  
     <property name="dist.dir" value="${basedir}/dist" /> 
-    <property name="ant.dir" value="E:/Program Files/apache-ant-1.9.4" />  
-	<property name="catalina.home" value="E:/Program Files/Tomcat"/>
+    <property name="ant.dir" value="/opt/apache-ant-1.9.4" />  
+	<property name="catalina.home" value="/opt/apache-tomcat-7.0.57"/>
     <property name="webapp.name" value="topicmatch" />  
     <property name="src.dir" value="${basedir}/src" />  
 	<property name="lib.dir" value="${webRoot.dir}/WEB-INF/lib" /> 
