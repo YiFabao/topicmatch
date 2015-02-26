@@ -18,7 +18,7 @@
     <property name="build.dir" value="${basedir}/build" />  
 	
 	<!--清理-->
-	<target name="clear" depends="stop_tomcat" description="清理旧文件">
+	<target name="clear" depends="linux.stop.tomcat" description="清理旧文件">
 		<echo message="清理"></echo>
 		<!-- 删除之前的目录结构 -->  
         <delete dir="${build.dir}" />  
@@ -126,7 +126,7 @@
 	
 	<target name="linux.stop.tomcat" description="starts tomcat in the current console window">
 		<if>
-			<socket server="localhost" port="23080" />
+			<socket server="localhost" port="8080" />
 			<then>
 				<echo message="stop tomcat..." />
 				<exec executable="${catalina.home}/bin/shutdown.sh" failonerror="false">
