@@ -111,6 +111,7 @@
         <echo message="end deploy..." />  
     </target> 
 	
+
    	<target name="linux.start.tomcat" description="start tomcat...">
 		<echo message="starting the tomcat ...."></echo>   	    
 		<exec dir="${catalina.home}/bin" executable="bash">
@@ -127,5 +128,5 @@
 		</exec>
 		<echo message="stop tomcat complemete!"></echo>
    	</target>
-		
+
 </project>

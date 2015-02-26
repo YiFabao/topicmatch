@@ -1,0 +1,8 @@
+clear
+compile
+deploy
+init
+linux.start.tomcat
+linux.stop.tomcat
+topicmatch
+war
