@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="topicmatch"  basedir="." default="start_tomcat">
+<project name="topicmatch"  basedir="." default="linux.start.tomcat">
 	<description>
 		topicmatch
     </description>
@@ -9,9 +9,9 @@
 	<property name="encode" value="utf-8" /> 
     <property name="webRoot.dir" value="${basedir}/WebContent" />  
     <property name="dist.dir" value="${basedir}/dist" /> 
-    <property name="ant.dir" value="D:/Program Files/apache-ant-1.9.4" />  
-	<property name="catalina.home" value="D:/Program Files/apache-tomcat-7.0.59"/>
-    <property name="webapp.name" value="mypro1" />  
+    <property name="ant.dir" value="/opt/apache-ant-1.9.4" />  
+	<property name="catalina.home" value="/opt/apache-tomcat-7.0.57"/>
+    <property name="webapp.name" value="topicmatch" />  
     <property name="src.dir" value="${basedir}/src" />  
 	<property name="lib.dir" value="${webRoot.dir}/WEB-INF/lib" /> 
 	<property name="lib_binbin.dir" value="${webRoot.dir}/WEB-INF/lib_binbin" /> 
@@ -105,20 +105,40 @@
         <echo message="end deploy..." />  
     </target> 
 	
-	<target name="stop_tomcat">  
-       <echo>停止tomcat</echo>  
-       <exec executable="cmd" dir="${catalina.home}/bin" failonerror="false"  append="true" >    
-           <env key="CATALINA_HOME" path="${catalina.home}"/>  
-           <arg value="/c shutdown.bat" />     
-       </exec>  
-    </target>  
-  
-    <target name="start_tomcat" depends="deploy">  
-       <echo>启动tomcat</echo>  
-    	 <exec executable="cmd" dir="${catalina.home}/bin" failonerror="false"  append="true" >    
-    	    <env key="CATALINA_HOME" path="${catalina.home}"/>   
-			<arg value="/c startup.bat" />     
-       </exec>  
-    </target>  
+	<target name="linux.start.tomcat" depends="deploy" description="starts tomcat in the current console window">
+		<if>
+			<not>
+				<socket server="localhost" port="8080" />
+			</not>
+			<then>
+			<echo message="start tomcat..." />
+			<exec executable="${catalina.home}/bin/startup.sh">
+			    <env key="CATALINA_HOME" value="${catalina.home}" />
+			</exec>
+			<waitfor maxwait="5" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
+			    <and>
+			        <socket server="localhost" port="23080" />
+			    </and>
+			</waitfor>
+			</then>
+		</if>
+	</target>
 	
+	<target name="linux.stop.tomcat" description="starts tomcat in the current console window">
+		<if>
+			<socket server="localhost" port="23080" />
+			<then>
+				<echo message="stop tomcat..." />
+				<exec executable="${catalina.home}/bin/shutdown.sh" failonerror="false">
+					<env key="CATALINA_HOME" value="${catalina.home}" />
+				</exec>
+				<echo message="${catalina.home}/bin/shutdown.sh" />
+				<waitfor maxwait="5" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
+					<not>
+						<socket server="localhost" port="8080" />
+					</not>
+				</waitfor>
+			</then>
+		</if>
+	</target>
 </project>
