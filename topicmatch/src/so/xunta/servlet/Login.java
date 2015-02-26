@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.utils.DateTimeUtils;
 
 public class Login extends HttpServlet {
 
@@ -40,29 +41,41 @@ public class Login extends HttpServlet {
 		String username=request.getParameter("xunta_username");
 		String password=request.getParameter("password");
 		String checkbox=request.getParameter("checkbox");
-		System.out.println(checkbox);
-		User user=userManager.checkRegisterUserExist(username, password);
-		if(user==null)
-		{
-			System.out.println("用户名或密码错误");
-			request.setAttribute("xunta_username",username);
-			request.setAttribute("errorMsg","用户名或密码错误");
-			request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
-		}
-		else
-		{
-			System.out.println(user.getXunta_username()+"登录成功");
-			//将user保存到session中
-			request.getSession().setAttribute("user",user);
-			if("on".equals(checkbox))
-			{
-				Cookie cookie=new Cookie("user",user.getXunta_username());
-				cookie.setSecure(true);
-				response.addCookie(cookie);
-				System.out.println("添加cookie成功");
-	
-			}
+		
+		//检查用户是否已经登录，避免重复登录
+		User user_to_check=(User) request.getSession().getAttribute("user");
+		if(user_to_check!=null&&user_to_check.xunta_username.equals(username)){
+			System.out.println("已经登录过，不必重复验证登录");
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+		}
+		else{
+			User user=userManager.checkRegisterUserExist(username, password);
+			if(user==null)
+			{
+				System.out.println("用户名或密码错误");
+				request.setAttribute("xunta_username",username);
+				request.setAttribute("errorMsg","用户名或密码错误");
+				request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
+			}
+			else
+			{
+				System.out.println(user.getXunta_username()+"登录成功");
+				//将user保存到session中
+				request.getSession().setAttribute("user",user);
+	
+				//添加记录登录状态的　cookie
+				Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
+				cookie.setMaxAge(30*24*3600);
+				cookie.setPath("/");
+				
+				Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
+				date_cookie.setMaxAge(30*24*3600);
+				date_cookie.setPath("/");
+				
+				response.addCookie(cookie);
+				response.addCookie(date_cookie);
+				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			}
 		}
 		
 	}

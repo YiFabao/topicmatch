@@ -35,15 +35,14 @@ public class RequestFilter implements Filter {
 			
 			String code=request.getParameter("code");
 			String accessToken = request.getParameter("access_token");
-			
-			System.out.println("code:"+code+"====>accessToken"+accessToken);
+
 			boolean islegal=false;
-			if(code!=null||accessToken!=null)
+			if(code!=null||accessToken!=null)//第三方登录，允许
 			{
 				islegal=true;
 			}
 			
-			Enumeration<String> strs=config.getInitParameterNames();
+			Enumeration<String> strs=config.getInitParameterNames();//在配置文件中允许通过的文件
 	
 			while(strs.hasMoreElements()){
 				String paramName=strs.nextElement();
@@ -58,13 +57,12 @@ public class RequestFilter implements Filter {
 				}
 				
 			}
+			
 			if(islegal)
 			{
 				chain.doFilter(request, response);
 			}
 			else{//如果不是排除的目录，就要验证登录名
-			
-				System.out.println("需要验证用户名");
 				User user=(User) session.getAttribute("user");
 				//System.out.println("是否存在用户："+user);
 				if(user!=null)
@@ -72,6 +70,7 @@ public class RequestFilter implements Filter {
 					chain.doFilter(request, response);
 				}
 				else{
+					System.out.println("session中不存在当前用户，调转到登录页面");
 					httpResponse.sendRedirect(httpRequest.getContextPath()+"/jsp/xunta_user/login.jsp");//跳转到登录页面
 				}
 			}

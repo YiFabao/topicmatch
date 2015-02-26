@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -393,7 +394,18 @@ public class TopicService extends HttpServlet {
 		 response.setHeader("Pragma","No-cache");
 		 response.setHeader("Cache-Control","no-cache"); //强制缓存从服务器上获取新的页面
 		 response.setHeader("Cache-Control","no-store"); //在任何环境下缓存不保存任何页面
-		 response.setDateHeader("Expires", 0);
+		 response.setDateHeader("Expires", -1);
+		 	System.out.println("获取cookie");
+		 	Cookie[] cookies=request.getCookies();
+		 	for(Cookie cookie:cookies)
+		 	{
+		 		System.out.println(cookie.getName()+"  "+cookie.getValue());
+		 		cookie.setMaxAge(0);
+		 		cookie.setPath("/");
+		 		cookie.setValue("");
+		 		response.addCookie(cookie);
+		 	}
+
 			System.out.println("跳转");
 			try {
 				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login.jsp");

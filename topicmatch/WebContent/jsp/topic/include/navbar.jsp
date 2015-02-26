@@ -34,7 +34,7 @@
                         <li><a href="javascript:void(0)" class="message">消息</a></li>
 <%--                         <li><a href="${pageContext.request.contextPath}/servlet/topic_service?cmd=msgalert" class="message">消息</a></li> --%>
                         <li><a href="javascript:void(0)" class="configure">设置</a></li>
-                        <li><a href="${pageContext.request.contextPath}/servlet/topic_service?cmd=exit" class="signOut">更换账号</a></li>
+                        <li><a href="javascript:void(0)" class="signOut">更换账号</a></li>
                     </ul>
                 </li>
             </ul>
@@ -85,5 +85,10 @@
 	var contextPath ="${pageContext.request.contextPath}";
 	var currentUserId ="${sessionScope.user.id}";
 	var currentUserName="${sessionScope.user.xunta_username}";
+	var signout=document.getElementsByClassName("signOut")[0];
+	signout.addEventListener("click",function(){
+		console.log("退出登录,删除记录登录状态的　cookie");
+		window.location.href="${pageContext.request.contextPath}/servlet/topic_service?cmd=exit";
+	});
 	
 </script>
