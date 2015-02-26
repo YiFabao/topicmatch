@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="topicmatch"  basedir="." default="linux.start.tomcat">
+<project name="topicmatch"  basedir="." default="deploy">
 	<description>
 		topicmatch
     </description>
@@ -9,8 +9,8 @@
 	<property name="encode" value="utf-8" /> 
     <property name="webRoot.dir" value="${basedir}/WebContent" />  
     <property name="dist.dir" value="${basedir}/dist" /> 
-    <property name="ant.dir" value="/opt/apache-ant-1.9.4" />  
-	<property name="catalina.home" value="/opt/apache-tomcat-7.0.57"/>
+    <property name="ant.dir" value="E:/Program Files/apache-ant-1.9.4" />  
+	<property name="catalina.home" value="E:/Program Files/Tomcat"/>
     <property name="webapp.name" value="topicmatch" />  
     <property name="src.dir" value="${basedir}/src" />  
 	<property name="lib.dir" value="${webRoot.dir}/WEB-INF/lib" /> 
@@ -18,13 +18,19 @@
     <property name="build.dir" value="${basedir}/build" />  
 	
 	<!--清理-->
-	<target name="clear" depends="stop_tomcat" description="清理旧文件">
+	<target name="clear" description="清理旧文件">
 		<echo message="清理"></echo>
 		<!-- 删除之前的目录结构 -->  
         <delete dir="${build.dir}" />  
         <delete dir="${dist.dir}" />  
         <delete file="${catalina.home}/webapps/${webapp.name}.war" />  
         <delete dir="${catalina.home}/webapps/${webapp.name}" />  
+	</target>
+	
+	<target name="clear.dist" description="clear dist">
+		<echo message="clear dist..."></echo>	    
+		<delete dir="${dist.dir}"/>
+		<echo message="clear dist ok!"></echo>
 	</target>
 	
 	 <!-- 创建目录结构 -->  
@@ -72,7 +78,7 @@
            <classpath refid="project.classpath" /> 
         </javac>
 		<echo message="将src目录下的资源文件"></echo>
-		<copy todir="${build.dir}">  
+		<copy todir="${build.dir}/classes">  
 			<fileset dir="${src.dir}">  
 				<include name="**/*.xml" />  
 				<include name="**/*.properties" />  
@@ -105,40 +111,21 @@
         <echo message="end deploy..." />  
     </target> 
 	
-	<target name="linux.start.tomcat" depends="deploy" description="starts tomcat in the current console window">
-		<if>
-			<not>
-				<socket server="localhost" port="8080" />
-			</not>
-			<then>
-			<echo message="start tomcat..." />
-			<exec executable="${catalina.home}/bin/startup.sh">
-			    <env key="CATALINA_HOME" value="${catalina.home}" />
-			</exec>
-			<waitfor maxwait="5" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
-			    <and>
-			        <socket server="localhost" port="23080" />
-			    </and>
-			</waitfor>
-			</then>
-		</if>
-	</target>
-	
-	<target name="linux.stop.tomcat" description="starts tomcat in the current console window">
-		<if>
-			<socket server="localhost" port="23080" />
-			<then>
-				<echo message="stop tomcat..." />
-				<exec executable="${catalina.home}/bin/shutdown.sh" failonerror="false">
-					<env key="CATALINA_HOME" value="${catalina.home}" />
-				</exec>
-				<echo message="${catalina.home}/bin/shutdown.sh" />
-				<waitfor maxwait="5" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
-					<not>
-						<socket server="localhost" port="8080" />
-					</not>
-				</waitfor>
-			</then>
-		</if>
-	</target>
+   	<target name="linux.start.tomcat" description="start tomcat...">
+		<echo message="starting the tomcat ...."></echo>   	    
+		<exec dir="${catalina.home}/bin" executable="bash">
+		    <evn key="CATALINA_HOME" value="${catalina.home}"/>
+		    <arg value="startup.sh"/>
+		</exec>
+		<echo message="start tomcat complemete!"></echo>
+   	</target>
+   	<target name="linux.stop.tomcat" description="start tomcat...">
+		<echo message="stopping the tomcat ...."></echo>   	    
+		<exec dir="${catalina.home}/bin" executable="bash">
+		    <evn key="CATALINA_HOME" value="${catalina.home}"/>
+		    <arg value="shutdown.sh"/>
+		</exec>
+		<echo message="stop tomcat complemete!"></echo>
+   	</target>
+		
 </project>
