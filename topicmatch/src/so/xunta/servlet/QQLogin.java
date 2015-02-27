@@ -21,6 +21,7 @@ import so.xunta.utils.DateTimeUtils;
 import com.qq.connect.QQConnectException;
 import com.qq.connect.api.OpenID;
 import com.qq.connect.javabeans.qzone.UserInfoBean;
+import com.qq.connect.javabeans.weibo.WeiboBean;
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
 
@@ -47,6 +48,7 @@ public class QQLogin extends HttpServlet {
 
 		response.setContentType("text/html");
 		String accessToken=request.getParameter("access_token");//获取参数accessToken
+		System.out.println("获取参数accessToken:"+accessToken);
 		//非空判断
 		if(accessToken==null&&"".equals(accessToken)){
 			System.out.println("获取参数accessToken为空:"+accessToken);
@@ -60,6 +62,7 @@ public class QQLogin extends HttpServlet {
 
 		try {
 			openId = o.getUserOpenID();
+			System.out.println("openID:"+openId);
 		} catch (QQConnectException e1) {
 			e1.printStackTrace();
 		}
@@ -69,10 +72,11 @@ public class QQLogin extends HttpServlet {
 			return;
 		}
 		
+	
 		//获取用户的基本信息　
 		QQUserInfo qquserInfo = null;//用户的基本信息 昵称,性别,所在地,描述,认证原因,标签
 		QQDynamicInfoContent qqdynamicContent = null;//动态内容,就是用户的微博　
-		
+		System.out.println("开始调用彬彬的获取qq用户的信息..");//此处出了问题
 		JSONObject json = tencentUserInfo.get(accessToken);
 		try {
 			String nickname = (String) json.get("nickname");

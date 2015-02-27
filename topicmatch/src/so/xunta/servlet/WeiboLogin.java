@@ -56,6 +56,7 @@ public class WeiboLogin extends HttpServlet {
 		String weibo_acceesToken="";
 		String weibo_uid="";
 		User user=null;
+		System.out.println("获取code:"+code);
 		try {
 			accessToken =oauth.getAccessTokenByCode(code);
 			//通过accessToken获取用户信息
