@@ -47,8 +47,8 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-log4j12-1.7.2.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tools_xu.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xinlangBlog_sdk.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib_binbin/sina.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib_binbin/tencent.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sina.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tencent.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
