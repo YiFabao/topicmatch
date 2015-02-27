@@ -62,6 +62,7 @@ function websocketEvent(userId) {
 				var hours = date.getHours();
 				var minutes = date.getMinutes();
 				var seconds = date.getSeconds();
+
 				var time = hours + ':' + minutes + ':' + seconds;
 				console.log('测试  -----    客户端中断了ws连接 时间 ： ' + time);
 				var closeEvent = event;
