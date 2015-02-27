@@ -39,7 +39,7 @@ function websocketEvent(userId) {
 				var minutes = date.getMinutes();
 				var seconds = date.getSeconds();
 				var time = hours + ':' + minutes + ':' + seconds;
-				console.log('测试  -----    客户端请求ws连接成功的时间 ： ' + time);
+				console.log('测试  =====    客户端请求ws连接成功的时间 ：  ' + time);
 				console.log('测试  -----    ws当前状态 ' + ws.readyState);
 				var openEvent = event;
 				console.log(openEvent);
