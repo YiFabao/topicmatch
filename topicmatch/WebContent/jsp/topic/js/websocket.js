@@ -153,7 +153,7 @@ function sendMsg(topic_id, message_id, sender_id, nickname, message, accepter_id
 		for (var i = 0; i < msgArray.length; i++) {
 			if (msgArray[i] == msg) {
 				//如果条件成立,则说明在7秒后未收到服务器的消息确认反馈,提示用户消息发送失败
-				console.log("测试  -----    发送聊天消息失败")；
+				console.log("测试  -----    发送聊天消息失败");
 			}
 		}
 	}, 5000);
@@ -165,14 +165,14 @@ function heartbeat(userId) {
 	var minutes = date.getMinutes();
 	var seconds = date.getSeconds();
 	var time = hours + ':' + minutes + ':' + seconds;
-	console.log("测试  -----    发送心跳消息时 ws的状态如下")；
+	console.log("测试  -----    发送心跳消息时 ws的状态如下");
 	console.log(ws.readyState);
 	ws.send('{"status" : "-1","userId" : "' + userId + '","msg" : "ping","time" : "' + time + '"}');
 }
 
 //广播该用户进入聊天窗口
 function broadcast(user_id, topic_id) {
-	console.log("测试  -----    发送广播消息时 ws的状态如下")；
+	console.log("测试  -----    发送广播消息时 ws的状态如下");
 	console.log(ws.readyState);
 	ws.send('{"status" : "3","userId" : "' + user_id + '","topicId":"' + topic_id + '"}'); //用户打开聊天框"",""
 }
@@ -180,14 +180,14 @@ function broadcast(user_id, topic_id) {
 //邀请好友
 function inviteFriend(inviteIds, inviteMsg) {
 	//inviteIds is jsonArray
-	console.log("测试  -----    发送邀请好友消息时 ws的状态如下")；
+	console.log("测试  -----    发送邀请好友消息时 ws的状态如下");
 	console.log(ws.readyState);
 	ws.send('{"status" : "4","inviteIds" : "' + inviteIds + '","inviteMsg" : "' + inviteMsg + '"}');
 }
 
 //未读消息
 function getUnreadMessageNum(accepter_id) {
-	console.log("测试  -----    获取未读消息时 ws的状态如下")；
+	console.log("测试  -----    获取未读消息时 ws的状态如下");
 	console.log(ws.readyState);
 	ws.send('{"status" : "5","accepterId" : "' + accepter_id + '"}');
 }
