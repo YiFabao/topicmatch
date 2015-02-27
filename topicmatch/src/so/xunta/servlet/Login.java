@@ -1,9 +1,6 @@
 package so.xunta.servlet;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -68,6 +65,7 @@ public class Login extends HttpServlet {
 				cookie.setMaxAge(30*24*3600);
 				cookie.setPath("/");
 				
+				//记录该次的登录时间
 				Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
 				date_cookie.setMaxAge(30*24*3600);
 				date_cookie.setPath("/");
