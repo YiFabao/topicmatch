@@ -47,7 +47,7 @@ public class WeiboLogin extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		response.setContentType("text/html");
+		/*response.setContentType("text/html");
 		Oauth oauth = new Oauth();
 		AccessToken accessToken=null;
 		String code=request.getParameter("code");
@@ -57,7 +57,7 @@ public class WeiboLogin extends HttpServlet {
 		String weibo_uid="";
 		User user=null;
 		System.out.println("获取code:"+code);
-		/*try {
+		try {
 			accessToken =oauth.getAccessTokenByCode(code);
 			//通过accessToken获取用户信息
 			um.client.setToken(accessToken.getAccessToken());
