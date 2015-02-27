@@ -928,7 +928,6 @@
 		  console.log("1.接收到一条邀请的推送消息:"+msg);
 		  //console.log(msg);
 		  //将导航栏的未读消息数增加1
-		  msg=par
 		  addNavBarMsgAlertNumByOne();
 		  console.log("msg.cmd:"+msg.cmd);
  		  if(msg.cmd =="invite")
