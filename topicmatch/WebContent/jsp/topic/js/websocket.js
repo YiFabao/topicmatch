@@ -29,123 +29,169 @@ function onAppPause() { //运行环境从前台切换到后台事件
 }
 
 function websocketEvent(userId) {
-	//可以做一个连接中的效果,如果连接成功,触发onpen方法在取消连接中效果,如果10秒中没连接上会触发checkWebSocketState方法的状态,显示当前网络状态
-	ws = new WebSocket('ws://121.40.61.219:8080/im_websocket/WebSocketServlet?userId='+userId);
-	checkWebSocketState();
-	//连接服务器成功触发该事件
-	ws.onopen = function(event) {
-			if(window.webimStateChange)
-			{
-				webimStateChange("ok");//readyState
+		//可以做一个连接中的效果,如果连接成功,触发onpen方法在取消连接中效果,如果10秒中没连接上会触发checkWebSocketState方法的状态,显示当前网络状态
+		ws = new WebSocket('ws://121.40.61.219:8080/im_websocket/WebSocketServlet?userId=' + userId);
+		checkWebSocketState();
+		//连接服务器成功触发该事件
+		ws.onopen = function(event) {
+				var date = new Date();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
+				var seconds = date.getSeconds();
+				var time = hours + ':' + minutes + ':' + seconds;
+				console.log('测试  -----    客户端请求ws连接成功的时间 ： ' + time);
+				console.log('测试  -----    ws当前状态 ' + ws.readyState);
+				var openEvent = event;
+				console.log(openEvent);
+				if (window.webimStateChange) {
+					webimStateChange("ok"); //readyState
+				}
+				wssae = 'yes';
+				setInterval(function() {
+					if (wssae == 'yes') {
+						heartbeat(userId); //发送心跳包
+					} else {
+						return;
+					}
+				}, 60000);
 			}
-			wssae = 'yes';
-			setInterval(function() {
-				heartbeat(); //发送心跳包
-			}, 60000);
-		}
-		//连接关闭触发该事件
-	ws.onclose = function(event) {
-			//将服务器中的用户管理器里删除用户
-			ws.close();
-			wssae = 'no';
-			//fabao.yi
-			if(window.webimStateChange)
-			{
-				webimStateChange("no");//readyState
-			}
-		}
-		//客户端发生错误触发该事件
-	ws.onerror = function(event) {}
-		//客户端接受到消息触发该事件
-	ws.onmessage = function(event) {
-		console.log("消息："+event.data);
-		var json = JSON.parse(event.data);
-		var status = json.status;
-		console.log('status  :   '+status);
-		if (status == '2') {
-			var topic_id = json.topicId;
-			var msg_id = json.messageId;
-			for (var s = 0; s < msgArray.length; s++) {
-				if (msgArray[s].indexOf(topic_id) != -1 && msgArray[s].indexOf(msg_id) != -1) {
-					msgArray.splice(s,1);//移除该条消息
+			//连接关闭触发该事件
+		ws.onclose = function(event) {
+				//将服务器中的用户管理器里删除用户
+				var date = new Date();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
+				var seconds = date.getSeconds();
+				var time = hours + ':' + minutes + ':' + seconds;
+				console.log('测试  -----    客户端中断了ws连接 时间 ： ' + time);
+				var closeEvent = event;
+				console.log(closeEvent);
+				if (window.navigator.onLine == true) {
+					console.log('测试  -----    客户端中断了ws连接 ，网络正常');
+				} else {
+					console.log('测试  -----    客户端中断了ws连接 ，网络不正常');
+				}
+				ws.close();
+				wssae = 'no';
+				//fabao.yi
+				if (window.webimStateChange) {
+					webimStateChange("no"); //readyState
 				}
 			}
-		}else if(status == "1"){
-			ws.send(event.data.replace("\"status\":\"1\"","\"status\":\"2\""));
-			//聊天信息
-	/*		var msg = json.msg;
-			alert("收到服务器发来的消息 : "+msg);*/
-			if(window.webimHandle){
-				webimHandle(json);//消息处理 fabao.yi
+			//客户端发生错误触发该事件
+		ws.onerror = function(event) {
+				var date = new Date();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
+				var seconds = date.getSeconds();
+				var time = hours + ':' + minutes + ':' + seconds;
+				console.log('测试  -----    客户端出现了错误，执行onerror事件 此时客户端是否中断了连接？？ 查看心跳及close打印信息 发生时间 ： ' + time);
+				var closeEvent = event;
+				console.log(closeEvent);
 			}
-			//广播消息在此接收
-		}else if(status == "3"){
-			console.log("33333333333333333333333");
-			if(window.receiveBroadcast){
-				receiveBroadcast(json);//接收广播消息  fabao.yi
+			//客户端接受到消息触发该事件
+		ws.onmessage = function(event) {
+			console.log("消息：" + event.data);
+			var json = JSON.parse(event.data);
+			var status = json.status;
+			if (status == '2') {
+				var topic_id = json.topicId;
+				var msg_id = json.messageId;
+				for (var s = 0; s < msgArray.length; s++) {
+					if (msgArray[s].indexOf(topic_id) != -1 && msgArray[s].indexOf(msg_id) != -1) {
+						msgArray.splice(s, 1); //移除该条消息
+					}
+				}
+			} else if (status == "1") {
+				ws.send(event.data.replace("\"status\":\"1\"", "\"status\":\"2\""));
+				//聊天信息
+				/*		var msg = json.msg;
+						alert("收到服务器发来的消息 : "+msg);*/
+				if (window.webimHandle) {
+					webimHandle(json); //消息处理 fabao.yi
+				}
+				//广播消息在此接收
+			} else if (status == "3") {
+				if (window.receiveBroadcast) {
+					receiveBroadcast(json); //接收广播消息  fabao.yi
+				}
+			} else if (status == "4") {
+				//好友邀请
+				if (window.receiveTopicInviteRequestMsg) {
+					receiveTopicInviteRequestMsg(json.inviteMsg); //接收话题邀请消息提示
+				}
+				//alert(json.inviteMsg);
+			} else if (status == "5") {
+				//消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
+				if (window.unreadMessagesNum) {
+					unreadMessagesNum(json);
+				}
+				//alert(json.unreadNum);
 			}
-		}else if(status == "4"){
-			//好友邀请
-			if(window.receiveTopicInviteRequestMsg)
-			{
-				receiveTopicInviteRequestMsg(json.inviteMsg);//接收话题邀请消息提示
-			}
-			//alert(json.inviteMsg);
-		}else if(status == "5"){
-			//消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
-			if(window.unreadMessagesNum)
-			{
-				unreadMessagesNum(json);
-			}
-			//alert(json.unreadNum);
 		}
 	}
-}
-/**
- *sendMsg('topicId','msgId','user1',['user1'],'测试消息','time')
- *sendMsg('topicId','msgId','user1',['user1','2343'],'测试消息','time')
- * @param topicId 话题id
- * @param msgId 消息id
- * @param sender 发消息者　id
- * @param accepter 字符串数组,接收者id
- * @param msg 消息内容
- * @param time 2014-12-1 12:00:01
- */
-function sendMsg(topic_id,message_id,sender_id,nickname,message,accepter_id){
+	/**
+	 *sendMsg('topicId','msgId','user1',['user1'],'测试消息','time')
+	 *sendMsg('topicId','msgId','user1',['user1','2343'],'测试消息','time')
+	 * @param topicId 话题id
+	 * @param msgId 消息id
+	 * @param sender 发消息者　id
+	 * @param accepter 字符串数组,接收者id
+	 * @param msg 消息内容
+	 * @param time 2014-12-1 12:00:01
+	 */
+
+function sendMsg(topic_id, message_id, sender_id, nickname, message, accepter_id) {
 	//发送消息后可以做一个发送中的动画效果,发送成功后,会触发 onmessage中的status==2,表明发送消息成功,取消动画效果,如果在10秒钟还没有发送成功,会触发 if条件表达式,显示消息发送失败
-	var msg = jsonStr(1,topic_id,message_id,sender_id,nickname,encodeURIComponent(message),accepter_id);
+	var msg = jsonStr(1, topic_id, message_id, sender_id, nickname, encodeURIComponent(message), accepter_id);
 	msgArray.unshift(msg); //将消息添加到数组,监听状态
+	console.log("测试  -----    发送聊天消息时 ws的状态如下")
+	console.log(ws.readyState);
 	ws.send(msg);
 	setTimeout(function() {
 		for (var i = 0; i < msgArray.length; i++) {
 			if (msgArray[i] == msg) {
 				//如果条件成立,则说明在7秒后未收到服务器的消息确认反馈,提示用户消息发送失败
-				alert("消息发送失败");
+				console.log("测试  -----    发送聊天消息失败")；
 			}
 		}
 	}, 5000);
 }
 
-function heartbeat() {
-	ws.send('{"status" : "-1","msg" : "ping"}');
+function heartbeat(userId) {
+	var date = new Date();
+	var hours = date.getHours();
+	var minutes = date.getMinutes();
+	var seconds = date.getSeconds();
+	var time = hours + ':' + minutes + ':' + seconds;
+	console.log("测试  -----    发送心跳消息时 ws的状态如下")；
+	console.log(ws.readyState);
+	ws.send('{"status" : "-1","userId" : "' + userId + '","msg" : "ping","time" : "' + time + '"}');
 }
 
 //广播该用户进入聊天窗口
-function broadcast(user_id,topic_id) {
-	ws.send('{"status" : "3","userId" : "'+user_id+'","topicId":"'+topic_id+'"}');//用户打开聊天框"",""
+function broadcast(user_id, topic_id) {
+	console.log("测试  -----    发送广播消息时 ws的状态如下")；
+	console.log(ws.readyState);
+	ws.send('{"status" : "3","userId" : "' + user_id + '","topicId":"' + topic_id + '"}'); //用户打开聊天框"",""
 }
 
 //邀请好友
-function inviteFriend(inviteIds, inviteMsg){
+function inviteFriend(inviteIds, inviteMsg) {
 	//inviteIds is jsonArray
-	ws.send('{"status" : "4","inviteIds" : "'+inviteIds+'","inviteMsg" : "'+inviteMsg+'"}');
+	console.log("测试  -----    发送邀请好友消息时 ws的状态如下")；
+	console.log(ws.readyState);
+	ws.send('{"status" : "4","inviteIds" : "' + inviteIds + '","inviteMsg" : "' + inviteMsg + '"}');
 }
 
 //未读消息
-function getUnreadMessageNum(accepter_id){
-	ws.send('{"status" : "5","accepterId" : "'+accepter_id+'"}');
+function getUnreadMessageNum(accepter_id) {
+	console.log("测试  -----    获取未读消息时 ws的状态如下")；
+	console.log(ws.readyState);
+	ws.send('{"status" : "5","accepterId" : "' + accepter_id + '"}');
 }
-function jsonStr(status, topic_id, message_id, sender_id, nickname, message,accepter_id) {
+
+function jsonStr(status, topic_id, message_id, sender_id, nickname, message, accepter_id) {
 	var jsonString = '{"status":"' + status + '","topicId":"' + topic_id + '","messageId":"' + message_id + '","senderId":"' + sender_id + '","nickname":" ' + nickname + '","message":"' + message + '","accepterIds": [';
 	for (var a = 0; a < accepter_id.length; a++) {
 		if (a == accepter_id.length - 1) {
@@ -183,20 +229,19 @@ function checkWebSocketState() {
 	}, 10000);*/
 }
 
-function getHistoryMessage(topicId,count){
+function getHistoryMessage(topicId, count) {
 	var ret_msgs = null;
-	 var parameters={
-       topicId:topicId,
-       biginIndex:count,
-       endIndex:parseInt(count)+20
-	 };
-	 $.post("http://121.40.61.219:8080/im_websocket/TopicHistoryMessage/test",parameters,function(res,status){
-		 console.log("status:"+status);
-		 if(window.historyMessageHandle)
-		 {
-			 historyMessageHandle(res);
-		 }
-	 });
+	var parameters = {
+		topicId: topicId,
+		biginIndex: count,
+		endIndex: parseInt(count) + 20
+	};
+	$.post("http://121.40.61.219:8080/im_websocket/TopicHistoryMessage/test", parameters, function(res, status) {
+		console.log("status:" + status);
+		if (window.historyMessageHandle) {
+			historyMessageHandle(res);
+		}
+	});
 };
 
 
@@ -216,75 +261,69 @@ function getHistoryMessage(topicId,count){
 
 
 
+// xml异步请求数据，目前已不在使用，改用上面jQuery POST 请求
 
-
-function getHistoryMessage2(topicId,count){
+function getHistoryMessage2(topicId, count) {
 	var ret_msgs = null;
-	 var parameters={
-       topicId:topicId,
-       biginIndex:count,
-       endIndex:parseInt(count)+20
-   };
-   doRequestUsingPOST_fang("http://aigine.eicp.net:21280/WebSocket/TopicHistoryMessage?"+toDomString_fang(parameters),function(){
+	var parameters = {
+		topicId: topicId,
+		biginIndex: count,
+		endIndex: parseInt(count) + 20
+	};
+	doRequestUsingPOST_fang("http://121.40.61.219:8080/im_wensocket/TopicHistoryMessage?" + toDomString_fang(parameters), function() {
 
-       if(xmlHttp.readyState==4)
-       {
-           console.log("请求完成");
-           if(xmlHttp.status==200)
-           {
-               console.log("请求成功响应");
-               var historyMessage = xmlHttp.responseText;
-               alert(historyMessage);
-               ret_msgs = JSON.parse(historyMessage);
-               console.log("赋值在前:"+ret_msgs);
-           }
-           else{
-               console.log("请求没有成功响应:"+xmlHttp.status);
-           }
-       }
-   });
-   //console.log("返回在后");
-   return ret_msgs;
+		if (xmlHttp.readyState == 4) {
+			console.log("请求完成");
+			if (xmlHttp.status == 200) {
+				console.log("请求成功响应");
+				var historyMessage = xmlHttp.responseText;
+				alert(historyMessage);
+				ret_msgs = JSON.parse(historyMessage);
+				console.log("赋值在前:" + ret_msgs);
+			} else {
+				console.log("请求没有成功响应:" + xmlHttp.status);
+			}
+		}
+	});
+	//console.log("返回在后");
+	return ret_msgs;
 }
 
-function toDomString_fang(json){
-   var domString="";
-   for(var p in json)//p为json对象里的属性名
-   {
-       if(domString=="")
-       {
-           domString+=(p+"="+json[p]);
-       }
-       else{
-           domString+="&"+p+"="+json[p];
-       }
-   }
-   return encodeURI(domString);
+function toDomString_fang(json) {
+	var domString = "";
+	for (var p in json) //p为json对象里的属性名
+	{
+		if (domString == "") {
+			domString += (p + "=" + json[p]);
+		} else {
+			domString += "&" + p + "=" + json[p];
+		}
+	}
+	return encodeURI(domString);
 }
 
 
-var xmlHttp=null;//声明一个XHR对象
+var xmlHttp = null; //声明一个XHR对象
 //创建一个XHR对象
 function createXMLHttpRequest_fang() {
- if (window.ActiveXObject) {
-     xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
- } else {
-     if (window.XMLHttpRequest) {
-         xmlHttp = new XMLHttpRequest();
-     }
- }
+	if (window.ActiveXObject) {
+		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+	} else {
+		if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		}
+	}
 }
- 
+
 //向服务端发起异步请求:GET（入口函数）,callback为回调函数名称
 function doRequestUsingPOST_fang(url, callback) {
-if(xmlHttp==null)
- {
-     createXMLHttpRequest_fang();//创建xhr
- }
- if(xmlHttp.readyState!=0) {
-     xmlHttp.abort();//初始化
- }
- xmlHttp.onreadystatechange = callback;
- xmlHttp.open("POST",url + "&timeStamp=" + new Date().getTime(),false);//true表示异步,false表示同步
- xmlHttp.send(null);
+	if (xmlHttp == null) {
+		createXMLHttpRequest_fang(); //创建xhr
+	}
+	if (xmlHttp.readyState != 0) {
+		xmlHttp.abort(); //初始化
+	}
+	xmlHttp.onreadystatechange = callback;
+	xmlHttp.open("POST", url + "&timeStamp=" + new Date().getTime(), false); //true表示异步,false表示同步
+	xmlHttp.send(null);
 }
