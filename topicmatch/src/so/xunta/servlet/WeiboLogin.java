@@ -57,7 +57,7 @@ public class WeiboLogin extends HttpServlet {
 		String weibo_uid="";
 		User user=null;
 		System.out.println("获取code:"+code);
-		try {
+		/*try {
 			accessToken =oauth.getAccessTokenByCode(code);
 			//通过accessToken获取用户信息
 			um.client.setToken(accessToken.getAccessToken());
@@ -100,7 +100,7 @@ public class WeiboLogin extends HttpServlet {
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-		}
+		}*/
 	}
 
 	/**
