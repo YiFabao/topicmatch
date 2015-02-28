@@ -106,7 +106,7 @@ public class QQLogin extends HttpServlet {
 			request.getSession().setAttribute("user", user);
 			
 			//添加记录登录状态的　cookie
-			Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
+			Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
 			cookie.setMaxAge(30*24*3600);
 			cookie.setPath("/");
 			
