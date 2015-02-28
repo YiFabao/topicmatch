@@ -60,7 +60,7 @@ public class Login extends HttpServlet {
 				//将user保存到session中
 				request.getSession().setAttribute("user",user);
 	
-				//添加记录登录状态的　cookie
+/*				//添加记录登录状态的　cookie
 				Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
 				cookie.setMaxAge(30*24*3600);
 				cookie.setPath("/");
@@ -71,7 +71,7 @@ public class Login extends HttpServlet {
 				date_cookie.setPath("/");
 				
 				response.addCookie(cookie);
-				response.addCookie(date_cookie);
+				response.addCookie(date_cookie);*/
 				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			}
 		}
