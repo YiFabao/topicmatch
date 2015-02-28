@@ -926,13 +926,10 @@
 		  //这里处理关于邀请话题的请求
 		  //msg == "TOPIC_INVITE"==>邀请,做一系列的事
 		  console.log("1.接收到一条邀请的推送消息:"+msg);
-		  console.log(msg);
+		  //console.log(msg);
 		  //将导航栏的未读消息数增加1
 		  addNavBarMsgAlertNumByOne();
-	 	  for(var key in msg)
-		  {
-			  console.log(key+"==>"+msg[key]);
-		  } 
+		  console.log("msg.cmd:"+msg.cmd);
  		  if(msg.cmd =="invite")
 		  {
  			  //cmd==>invite
@@ -975,7 +972,6 @@
 			  console.log(sysmsg);
 			 //将系统消息添加到消息框里
 			  addOneSystemMsg(sysmsg);
-			 //将系统消息添加到服务器
 			 //将系统消息添加到服务器
 			 $.post("${pageContext.request.contextPath}/servlet/topic_service",{
 				cmd:"addSysMsg",

@@ -21,6 +21,7 @@ import so.xunta.utils.DateTimeUtils;
 import com.qq.connect.QQConnectException;
 import com.qq.connect.api.OpenID;
 import com.qq.connect.javabeans.qzone.UserInfoBean;
+import com.qq.connect.javabeans.weibo.WeiboBean;
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
 
@@ -47,33 +48,18 @@ public class QQLogin extends HttpServlet {
 
 		response.setContentType("text/html");
 		String accessToken=request.getParameter("access_token");//获取参数accessToken
+		System.out.println("获取参数accessToken:"+accessToken);
 		//非空判断
 		if(accessToken==null&&"".equals(accessToken)){
 			System.out.println("获取参数accessToken为空:"+accessToken);
 			return;
 		}
-		
-		//获取用户的openId
-		OpenID o = new OpenID(accessToken);
-		String openId="";
-		UserInfoBean userInfo=null;
-
-		try {
-			openId = o.getUserOpenID();
-		} catch (QQConnectException e1) {
-			e1.printStackTrace();
-		}
-		
-		if(openId==null){
-			System.out.println("获取openId为空:"+openId);
-			return;
-		}
-		
 		//获取用户的基本信息　
 		QQUserInfo qquserInfo = null;//用户的基本信息 昵称,性别,所在地,描述,认证原因,标签
 		QQDynamicInfoContent qqdynamicContent = null;//动态内容,就是用户的微博　
-		
+		System.out.println("开始调用彬彬的获取qq用户的信息..");
 		JSONObject json = tencentUserInfo.get(accessToken);
+		String openId="";
 		try {
 			String nickname = (String) json.get("nickname");
 			String gender = (String) json.get("gender");
@@ -81,6 +67,8 @@ public class QQLogin extends HttpServlet {
 			String description = (String) json.get("description");
 			String verified_reason = (String) json.get("verified_reason");
 			String tags = (String) json.get("tags");
+			openId=(String)json.get("openId");
+			System.out.println("openId:"+openId);
 			qquserInfo=new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);
 			
 			String content = (String) json.get("content");
@@ -99,6 +87,7 @@ public class QQLogin extends HttpServlet {
 		User user=userManager.findUserbyQQOpenId(openId);
 		System.out.println(qquserInfo.getNickname()+"登录");
 	
+		System.out.println("查询用户是否为空:"+user);
 		if(user==null)//基本信息不存在
 		{
 			//用户没有绑定账号
@@ -119,10 +108,10 @@ public class QQLogin extends HttpServlet {
 		}
 		else//用户基本信息存在
 		{
-			//查询最近一次的用户发的动态内容 
+			//查询最近一次的用户发的动态内容 ,更新最近的动态信息＝＝＝TODO
 			if(user.getXunta_username()==null||"".equals(user.getXunta_username()))
 			{
-				user.setXunta_username("QQ_"+userInfo.getNickname());
+				user.setXunta_username("QQ_"+qquserInfo.getNickname());
 			}
 			//登录成功
 			System.out.println("登录成功");

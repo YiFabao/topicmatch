@@ -6,7 +6,11 @@
   <welcome-file-list>
     <welcome-file>/jsp/topic/index.jsp</welcome-file>
   </welcome-file-list>
-
+  
+  <listener>
+	<listener-class>so.xunta.user.listener.MyUserloginStateListener</listener-class>      
+  </listener>
+  
   <servlet>
     <servlet-name>weiboLogin</servlet-name>
     <servlet-class>so.xunta.servlet.WeiboLogin</servlet-class>
@@ -122,6 +126,8 @@
       <filter-name>RequestFilter</filter-name>
       <url-pattern>/servlet/*</url-pattern>
   </filter-mapping>
-
+	<session-config>
+	    <session-timeout>43200</session-timeout>
+	</session-config>
 
 </web-app>

@@ -1,8 +1,7 @@
 /build/
-.class
-/dist
 /build/*
-.settings
-topicmatch/dist
-topicmatch/*.xml
-
+*.class
+.settings/
+#.apk
+bin/
+topicmatch/dist/*
