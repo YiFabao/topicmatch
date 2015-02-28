@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,7 +68,7 @@ public class QQLogin extends HttpServlet {
 			String description = (String) json.get("description");
 			String verified_reason = (String) json.get("verified_reason");
 			String tags = (String) json.get("tags");
-			openId=(String)json.get("openId");
+			openId=(String)json.get("userId");
 			System.out.println("openId:"+openId);
 			qquserInfo=new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);
 			
@@ -103,6 +104,20 @@ public class QQLogin extends HttpServlet {
 			
 			//将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
+			
+			//添加记录登录状态的　cookie
+			Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
+			cookie.setMaxAge(30*24*3600);
+			cookie.setPath("/");
+			
+			//记录该次的登录时间
+			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
+			date_cookie.setMaxAge(30*24*3600);
+			date_cookie.setPath("/");
+			
+			response.addCookie(cookie);
+			response.addCookie(date_cookie);
+			
 			//跳转到首页
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
@@ -116,6 +131,20 @@ public class QQLogin extends HttpServlet {
 			//登录成功
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
+			
+			//添加记录登录状态的　cookie
+			Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
+			cookie.setMaxAge(30*24*3600);
+			cookie.setPath("/");
+			
+			//记录该次的登录时间
+			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
+			date_cookie.setMaxAge(30*24*3600);
+			date_cookie.setPath("/");
+			
+			response.addCookie(cookie);
+			response.addCookie(date_cookie);
+			
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 	}
