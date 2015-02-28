@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import so.xunta.entity.User;
 import so.xunta.entity.WeiboDynamicInfoContent;
 import so.xunta.entity.WeiboUserInfo;
@@ -83,7 +84,14 @@ public class WeiboLogin extends HttpServlet {
 			description=(String)json.get("description");
 			verified_reason=(String)json.get("verified_reason");
 			tags=(String)json.get("tags");
-			content=(String)json.get("content");
+		
+			Object object_content = json.get("content");
+			/*String[] ss=(String[])object_content.toString();
+			for(String s:ss)
+			{
+				System.out.println(s);
+			}*/
+			
 			uid=(String) json.get("userId");
 			System.out.println("nickname:"+nickname);
 			System.out.println("uid:"+uid);
@@ -113,7 +121,8 @@ public class WeiboLogin extends HttpServlet {
 			weibouserManager.addStaticWeiBoUserInfo(weiboUserInfo);
 			//保存微博的动态信息
 			WeiboDynamicInfoContent weiboDynamicInfoContent = new WeiboDynamicInfoContent(uid, content);
-			weibouserManager.addDynamicWeiboInfoContent(weiboDynamicInfoContent);
+			System.out.println("微博内容："+content);
+			//weibouserManager.addDynamicWeiboInfoContent(weiboDynamicInfoContent);
 			
 			//将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
@@ -210,7 +219,7 @@ public class WeiboLogin extends HttpServlet {
 		// Put your code here
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String code="b832d17325388648ec23dd05096724e5";
 		weibo4j.model.User u=null;
 		Oauth oauth = new Oauth();
@@ -232,6 +241,6 @@ public class WeiboLogin extends HttpServlet {
 		} catch (WeiboException e) {
 			System.out.println("获取accessToken对象失败："+e.getMessage());
 		}
-	}
+	}*/
 
 }

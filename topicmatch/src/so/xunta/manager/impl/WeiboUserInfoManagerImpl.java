@@ -55,11 +55,12 @@ public class WeiboUserInfoManagerImpl implements WeiboUserInfoManager {
 		WeiboUserInfoManagerImpl wm=new WeiboUserInfoManagerImpl();
 /*		WeiboUserInfo webo=new WeiboUserInfo("bb", "男", "湖北", "最最近一条　", "", "", "dd");
 		wm.addStaticWeiBoUserInfo(webo);*/
-		String aa = wm.findLatestWeiContentByOpenId("sdsdf");
-		System.out.println(aa);
+	/*	String aa = wm.findLatestWeiContentByOpenId("sdsdf");
+		System.out.println(aa);*/
 /*
 		WeiboDynamicInfoContent wd=new WeiboDynamicInfoContent("sdsdf","最近一条　动态内容");
 		wm.addDynamicWeiboInfoContent(wd);*/
+		
 	}
 	
 	
