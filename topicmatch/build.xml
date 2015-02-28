@@ -17,6 +17,8 @@
 	<property name="lib_binbin.dir" value="${webRoot.dir}/WEB-INF/lib_binbin" /> 
     <property name="build.dir" value="${basedir}/build" />  
 	
+	
+	
 	<!--清理-->
 	<target name="clear" description="清理旧文件">
 		<echo message="清理"></echo>

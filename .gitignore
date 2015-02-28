@@ -1,1 +1,8 @@
 /build/
+.class
+/dist
+/build/*
+.settings
+topicmatch/dist
+topicmatch/*.xml
+
