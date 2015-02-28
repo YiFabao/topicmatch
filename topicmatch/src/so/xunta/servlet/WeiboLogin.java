@@ -1,8 +1,6 @@
 package so.xunta.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
-
 import weibo4j.Oauth;
 import weibo4j.Users;
 import weibo4j.http.AccessToken;
@@ -129,7 +126,7 @@ public class WeiboLogin extends HttpServlet {
 	}
 	
 	public static void main(String[] args) {
-		String code="065712738c6b1c995b9591986c321769";
+		String code="b832d17325388648ec23dd05096724e5";
 		weibo4j.model.User u=null;
 		Oauth oauth = new Oauth();
 		AccessToken accessToken=null;
@@ -140,6 +137,11 @@ public class WeiboLogin extends HttpServlet {
 			accessToken =oauth.getAccessTokenByCode(code);
 			//通过accessToken获取用户信息
 			String aa=weibo_acceesToken=accessToken.getAccessToken();
+			Users um = new Users();
+			um.client.setToken(accessToken.getAccessToken());
+			 weibo_acceesToken=accessToken.getAccessToken();
+			 weibo_uid=accessToken.getUid();
+			 System.out.println("weibo_uid:"+weibo_uid);
 			System.out.println(aa);
 
 		} catch (WeiboException e) {
