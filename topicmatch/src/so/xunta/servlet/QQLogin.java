@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import so.xunta.entity.QQDynamicInfoContent;
 import so.xunta.entity.QQUserInfo;
 import so.xunta.entity.User;
@@ -18,7 +16,11 @@ import so.xunta.manager.QQUserInfoManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.user.info.tencentUserInfo;
 import so.xunta.utils.DateTimeUtils;
+
+import com.qq.connect.utils.json.JSONException;
+import com.qq.connect.utils.json.JSONObject;
 
 public class QQLogin extends HttpServlet {
 	UserManager userManager=new UserManagerImpl();
@@ -116,16 +118,11 @@ public class QQLogin extends HttpServlet {
 		}
 		else//用户基本信息存在
 		{
-			//查询最近一次的用户发的动态内容 ,更新最近的动态信息＝＝＝TODO
-			if(user.getXunta_username()==null||"".equals(user.getXunta_username()))
-			{
-				user.setXunta_username("QQ_"+qquserInfo.getNickname());
-			}
 			//登录成功
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
 			
-			//添加记录登录状态的　cookie
+			/*//添加记录登录状态的　cookie
 			Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
 			cookie.setMaxAge(30*24*3600);
 			cookie.setPath("/");
@@ -136,7 +133,7 @@ public class QQLogin extends HttpServlet {
 			date_cookie.setPath("/");
 			
 			response.addCookie(cookie);
-			response.addCookie(date_cookie);
+			response.addCookie(date_cookie);*/
 			
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}

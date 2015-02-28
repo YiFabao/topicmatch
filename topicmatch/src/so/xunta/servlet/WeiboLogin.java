@@ -1,6 +1,7 @@
 package so.xunta.servlet;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -8,12 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import so.xunta.entity.User;
+import so.xunta.entity.WeiboDynamicInfoContent;
+import so.xunta.entity.WeiboUserInfo;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.WeiboUserInfoManager;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
+import so.xunta.utils.DateTimeUtils;
 import weibo4j.Oauth;
 import weibo4j.Users;
+import weibo4j.aaron.sinaUserInfo;
 import weibo4j.http.AccessToken;
 import weibo4j.model.WeiboException;
+import weibo4j.org.json.JSONException;
+import weibo4j.org.json.JSONObject;
 
 public class WeiboLogin extends HttpServlet {
 	UserManager userManager=new UserManagerImpl();
@@ -43,6 +52,82 @@ public class WeiboLogin extends HttpServlet {
 	 * @throws IOException if an error occurred
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		WeiboUserInfoManager weibouserManager = new WeiboUserInfoManagerImpl();
+		//1.获取code
+		//2.调用彬彬的获取用户微博信数据
+		//3.查询wei_uid是否存在
+		//4.如果存在，则保存到session,跳转到首页
+		//5.如果不存在,保存用户基本信息,跳转到首页
+		String code=request.getParameter("code");
+		System.out.println("code:"+code);
+		if(code==null)
+		{
+			response.getWriter().write("code为空");
+			return;
+		}
+		
+		//调用彬彬的接口获取用户微博的基本信息
+		String nickname="";
+		String gender="";
+		String location="";
+		String description="";
+		String verified_reason="";
+		String tags="";
+		String content="";
+		String uid="";
+		try {
+			JSONObject json = sinaUserInfo.get(code);
+			nickname =(String) json.get("nickname");
+			gender=(String)json.get("gender");
+			location=(String)json.get("location");
+			description=(String)json.get("description");
+			verified_reason=(String)json.get("verified_reason");
+			tags=(String)json.get("tags");
+			content=(String)json.get("content");
+			uid=(String) json.get("userId");
+			System.out.println("nickname:"+nickname);
+			System.out.println("uid:"+uid);
+			System.out.println();
+		} catch (WeiboException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//判断uid是否为空
+		if(uid.equals(""))
+		{
+			response.getWriter().write("uid为空");
+			return;
+		}
+		//查询数据库中是否存在uid
+		User user = userManager.findUserByWeiboUid(uid);
+		if(user==null){
+			System.out.println("数据库中不存在该微博uid");
+			//用户没有绑定账号
+			user = new User(nickname,"", "","","",uid,"",new Date(),DateTimeUtils.getCurrentTimeStr());
+			//添加用户表
+			userManager.addUser(user);
+			
+			//保存微博用户的基本信息
+			WeiboUserInfo weiboUserInfo =new WeiboUserInfo(nickname, gender, location, description, verified_reason, tags, uid);
+			weibouserManager.addStaticWeiBoUserInfo(weiboUserInfo);
+			//保存微博的动态信息
+			WeiboDynamicInfoContent weiboDynamicInfoContent = new WeiboDynamicInfoContent(uid, content);
+			weibouserManager.addDynamicWeiboInfoContent(weiboDynamicInfoContent);
+			
+			//将用户保存到sessoin范围
+			request.getSession().setAttribute("user", user);
+			
+			//跳转到首页
+			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			
+		}else{
+			System.out.println("数据库中存在该微博uid");
+			System.out.println("登录成功");
+			request.getSession().setAttribute("user", user);
+			//跳转到首页
+			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+		}
 
 		/*response.setContentType("text/html");
 		Oauth oauth = new Oauth();
