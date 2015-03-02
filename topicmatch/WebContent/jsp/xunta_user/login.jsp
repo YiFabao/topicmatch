@@ -52,6 +52,7 @@
 		
 	<script type="text/javascript">
 
+
 		$("#qq_login").click(function(){
 			window.location="<%=basePath %>servlet/authorization";
 		});
