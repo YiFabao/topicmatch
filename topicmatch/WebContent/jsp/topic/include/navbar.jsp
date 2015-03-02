@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jsp/topic/css/navbar.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/jsp/topic/css/navbar_msg_tab.css"> --%>
-<div class="top">
+ <div class="top">
     <div class="top_content">
         <!--logo-->
         <div class="top_logo">
@@ -21,9 +21,9 @@
                 <li ><a href="javascript:void(0)" class="recommendTopic" style="border-left:none">话题推荐</a></li>
                 <li><a href="javascript:void(0)" class="writeTopic">发起话题</a></li>
                 <li><a href="javascript:void(0)" class="historicalTopic">话题记忆</a></li>
-<%--                 <li><a href="${pageContext.request.contextPath}/jsp/topic/httj.jsp" class="recommendTopic">话题推荐</a></li>
+                <li><a href="${pageContext.request.contextPath}/jsp/topic/httj.jsp" class="recommendTopic">话题推荐</a></li>
                 <li><a href="${pageContext.request.contextPath}/jsp/topic/fqht.jsp" class="writeTopic">发起话题</a></li>
-                <li><a href="${pageContext.request.contextPath}/jsp/topic/htjy.jsp" class="historicalTopic">话题记忆</a></li> --%>
+                <li><a href="${pageContext.request.contextPath}/jsp/topic/htjy.jsp" class="historicalTopic">话题记忆</a></li>
                 <li class="top_profile">
                     <a href="#" class="userInfo">
                         <img src="${pageContext.request.contextPath}/jsp/topic/images/avatar.jpg">
@@ -32,7 +32,7 @@
                     <ul>
                         <li><a href="${pageContext.request.contextPath}/jsp/topic/myknowledge.jsp">我的知识</a></li>
                         <li><a href="javascript:void(0)" class="message">消息</a></li>
-<%--                         <li><a href="${pageContext.request.contextPath}/servlet/topic_service?cmd=msgalert" class="message">消息</a></li> --%>
+                        <li><a href="${pageContext.request.contextPath}/servlet/topic_service?cmd=msgalert" class="message">消息</a></li>
                         <li><a href="javascript:void(0)" class="configure">设置</a></li>
                         <li><a href="javascript:void(0)" class="signOut">更换账号</a></li>
                     </ul>

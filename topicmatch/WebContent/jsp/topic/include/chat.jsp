@@ -834,7 +834,7 @@
 	   		}
 	   	}
 	   	
-	   	
+	   	var websocket_reconnect_num=0;
 	    //websocket状态发生变化时触发
 	   	window.webimStateChange=function(state){
 	   	    if(state=="ok")
@@ -848,8 +848,14 @@
 	   	    else if(state="no"){
 	   	        msgManagerReady=false;
 	   	        console.log("websocket异常");
-	   	       console.log("3秒后重新创建websocket");
-	   	       setTimeout(createWebsocketConnect("${sessionScope.user.id}"),3000);
+	   	        if(websocket_reconnect_num<3){
+		   	       	console.log("3秒后重新创建websocket");
+		   	   		 websocket_reconnect_num++;
+		   	       setTimeout(createWebsocketConnect("${sessionScope.user.id}"),10000);
+	   	        }else{
+	   	        	console.log("重连3次后，停止websocket重建");
+	   	        }
+
 	   	    }
 	   	};  
 	   	
