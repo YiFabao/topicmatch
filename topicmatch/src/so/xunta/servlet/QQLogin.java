@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +19,6 @@ import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.user.info.tencentUserInfo;
 import so.xunta.utils.DateTimeUtils;
 
-import com.qq.connect.QQConnectException;
-import com.qq.connect.api.OpenID;
-import com.qq.connect.javabeans.qzone.UserInfoBean;
-import com.qq.connect.javabeans.weibo.WeiboBean;
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
 
@@ -67,7 +64,7 @@ public class QQLogin extends HttpServlet {
 			String description = (String) json.get("description");
 			String verified_reason = (String) json.get("verified_reason");
 			String tags = (String) json.get("tags");
-			openId=(String)json.get("openId");
+			openId=(String)json.get("userId");
 			System.out.println("openId:"+openId);
 			qquserInfo=new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);
 			
@@ -103,19 +100,41 @@ public class QQLogin extends HttpServlet {
 			
 			//将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
+
+			
+/*			//添加记录登录状态的　cookie
+			Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
+			cookie.setPath("/");
+			
+			//记录该次的登录时间
+			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
+			date_cookie.setPath("/");
+			
+			response.addCookie(cookie);
+			response.addCookie(date_cookie);*/
+			
 			//跳转到首页
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 		else//用户基本信息存在
 		{
-			//查询最近一次的用户发的动态内容 ,更新最近的动态信息＝＝＝TODO
-			if(user.getXunta_username()==null||"".equals(user.getXunta_username()))
-			{
-				user.setXunta_username("QQ_"+qquserInfo.getNickname());
-			}
 			//登录成功
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
+			
+			/*//添加记录登录状态的　cookie
+			Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
+			cookie.setMaxAge(30*24*3600);
+			cookie.setPath("/");
+			
+			//记录该次的登录时间
+			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
+			date_cookie.setMaxAge(30*24*3600);
+			date_cookie.setPath("/");
+			
+			response.addCookie(cookie);
+			response.addCookie(date_cookie);*/
+			
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 	}

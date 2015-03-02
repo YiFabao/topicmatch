@@ -4,3 +4,4 @@
 .settings/
 *.apk
 bin/
+topicmatch/dist/*
