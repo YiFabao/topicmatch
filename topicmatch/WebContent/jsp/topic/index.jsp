@@ -30,7 +30,7 @@
 		$("#container_all").empty();
 		$("#container_all").append(res);
 	});
-	
 </script>
+
 </body>
 </html>
