@@ -242,5 +242,7 @@ public class WeiboLogin extends HttpServlet {
 			System.out.println("获取accessToken对象失败："+e.getMessage());
 		}
 	}*/
+	
+	
 
 }

@@ -1,0 +1,132 @@
+/*rest*/
+body{line-height:1.4;color:#38383c;font-family:'Microsoft YaHei','SimSun',arial;font-size:12px;background:white}
+input,textarea,select,button{font-size:100%;font-family:inherit;color:inherit;}
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,form,dd,dl{margin:0}
+h4,h5,h6{font-size:1em}
+ul,ol{padding-left:0;list-style-type:none}
+a img{border:0}
+img{border:0}
+a{color:#38383c;text-decoration:none}
+a:hover{color:#05376c;text-decoration:none}
+table{border-collapse:collapse;border-spacing:0}
+@font-face {font-family: 'iconfont';
+    src: url('iconfont.eot'); /* IE9*/
+    src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+/*public*/
+.tri{height:0;width:0;display:inline-block;cursor:pointer;overflow:hidden;font-size:0;margin-left:1px;-webkit-transition:-webkit-transform .2s ease-in;-webkit-backface-visibility:hidden;border-style:solid;border-color:transparent;border-width:5px}
+.trib{border-top-color:#a0a0a0}/*下三角(body)*/
+/*icon script*/
+.header .logo a{background-image:url(../images/icon.png);background-repeat:no-repeat;display:inline-block}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
+.header .logo a{letter-spacing:-1em;overflow:hidden}
+.header .logo a:first-letter{margin-left:-20em}/*隐藏文本*/
+.talk-list .name{white-space:nowrap;text-overflow:ellipsis;overflow:hidden}/*超出显点*/
+.form .load,.form .enter,.nav a,.nav li.back{-webkit-transition:all .3s;transition:all .3s}
+/*lib*/
+.dn{display:none;}.mr5{margin-right: 5px;}.tr{text-align: right;}.mt3{margin-top: 3px;}.mb40{margin-bottom: 40px;}.tc{text-align: center;}.g6{color: #666;}.g9{color:#999}.mt20{margin-top:20px; }.fa{font-family: Arial;}.mb20{margin-bottom: 20px;}.mb10{margin-bottom: 10px;}.w280{width: 280px;}.auto{margin-left:auto;margin-right: auto;}.orenge{color: #fe713f}.l{float: left;}.r{float: right;}
+.fix:after {display:table;content:'';clear:both}/*清除浮动*/
+
+/*通顶*/
+.header{height:120px;background-color: #37383d;color:#eaeaea}
+.header a{color:#eaeaea}
+.header .logo{float: left;margin: 40px 54px 0 54px}
+.header .logo a{width: 120px;height: 44px;background-position: -170px -13px}
+.header .search{width: 286px;height: 40px;border-radius: 40px;background-color: #fff;position: relative;box-shadow:0 0 3px #37383d inset ;float: left;margin-top: 43px;margin-right: 104px;}
+.header .search .text{height: 40px;background: transparent;border:none;padding-top: 0;padding-bottom: 0;text-indent:20px;width: 242px;color:#38383c;font-size: 14px}
+.header .search:after{content: "";height: 22px;position: absolute;border-left:1px solid #9f9fa1;top:10px;left:242px;}
+.header .search .submit{background:none;border:none;color: #616161;font-size: 28px;
+position: absolute;padding: 0;height: 40px;width: 44px;letter-spacing: 7px;line-height: 46px;cursor: pointer;}
+.nav{float: left;margin-top: 44px;margin-right: 60px;}
+.nav ul{position:relative;}
+.nav ul:hover li.back{display: block;}
+.nav li{float: left;width: 120px;height: 73px;}
+.nav li:hover a,.nav .current a{color: #ff9600}
+.nav a{font-size:20px;width: 120px;text-shadow: 0 0;display: inline-block;height: inherit;position:relative; z-index:3;text-indent: 25px;}
+.nav li.back{border-bottom:3px solid #ff9600; position:absolute; z-index:2;display: none;}
+.header .user{font-size: 20px;float: left;margin-top:45px;width: 216px;}
+.header .user .admin:after{content: "";height:18px;border-left:1px solid #8f8f8f;display: inline-block;
+margin: 0 3px 0 6px;
+vertical-align: -2px}
+.header .news{
+margin-left: 8px;position: absolute;margin-top: -21px;}
+.header .news i{font-size:50px;}
+.header .news .dunk{height: 22px;position: absolute;border-radius: 22px;min-width: 16px;background-color: #e31e48;font-size: 14px;line-height: 22px;padding-left: 3px;
+padding-right: 3px;
+text-align: center;top: 10px;
+left: 36px;}
+.content{background:url(../images/page_bg.png) #ecebe7 no-repeat top center;}
+.main,.header .head{width: 1254px;margin-left: auto;margin-right: auto;}
+.main{background-color:rgba(237, 236, 232, 0.82);}
+/*我发起的话题*/
+.tab-menu{line-height: 50px;background-color:#f5f5f5;width: 250px;font-size: 20px;border-radius:10px;}
+.tab-menu{width:500px;margin-left: auto;margin-right:auto;overflow: hidden;margin-bottom: 60px;}
+.tab-menu li{float:left;width: 50%;text-align: center;}
+.tab-menu a{display: block;text-shadow: 0px 0px;}
+.tab-menu .selected{background-color: #f9b943}
+.top-memory{padding-top:50px;}
+.talk-list{padding: 0 116px 100px;}
+.talk-list .column{width: 494px;}
+.talk-list .tp{border-radius: 10px;background-color: #f3f3f3;font-size: 14px;margin-bottom: 30px;}
+.talk-list .hd{padding-left:20px;padding-right:20px;}
+.talk-list .launch .hd{line-height: 46px;height:52px;}
+.talk-list .pate .hd{height:64px;position: relative;}
+.talk-list .name{font-size: 18px;text-shadow: 0px 0px;}
+.talk-list .pate .name{line-height: 66px;}
+.talk-list .bd{border:1px dashed #b6b6b6;border-radius:10px;padding: 10px 16px 10px 8px;margin-left:10px;margin-right: 10px;}
+.talk-list .user-pic{width:41px;height: 41px;display: inline-block;border-radius: 42px;overflow: hidden;border:1px solid #d2d2d4;position: absolute;}
+.talk-list .pate .user-pic{top:10px;}
+.talk-list .user-pic img{width: 100%;height: 100%}
+.talk-list .txt{color:#59595a;line-height: 1.7em;}
+.talk-list .launch .txt{margin-left:55px;margin-bottom: 15px;}
+.talk-list .pate .txt{margin-left:5px;}
+.talk-list .last-time{text-align: right;}
+.talk-list .last-time time,.talk-list .bd .area,.talk-list .bd .hour{color: #df1d47}
+.talk-list .bd .area{display: inline-block;width: 90px;margin-bottom: 5px;}
+.talk-list .bd .hour{font-weight: normal;}
+.talk-list .operating{padding:15px 20px;position: relative;}
+.form .enter{width: 96px;background-color: #f9b13e;border-radius: 10px;text-align: center;line-height: 32px;font-size: 16px;}
+.form .enter:hover{background-color: #EAA73B;}
+.form .disabled{color:#acacac!important; border-color:#acacac!important; text-shadow:1px 1px #fff!important; outline:0!important; cursor:default!important; pointer-events:none;}
+.form .disabled:hover{text-decoration:none!important;}
+.talk-list .enter{position: absolute;right:20px;}
+.talk-list .launch .enter{top:8px;}
+.talk-list .pate .enter{bottom:10px;}
+.form .load{font-size: 18px;height: 48px;text-align: center;border-radius: 10px;width: 494px;border:none;cursor: pointer;clear: both;background-color: #f3f3f3}
+.form .load img{width: 22px;vertical-align: -3px;margin-right: 10px;}
+.form .loading{background-image:url(../images/loading.gif);background-repeat:no-repeat;background-position:163px center }
+.form .load:hover{background-color: #fff}
+.talk-list .launch .load{display: block;margin-left: auto;margin-right: auto;}
+.talk-list .odd{float: left;margin-right: 100px;}
+.talk-list .even{float:right;margin-left: 100px;}
+.talk-list .pate .name{margin-left: 45px;margin-right: 104px;}
+.talk-list .pate .date{position: absolute;top:-3px;z-index: 1;white-space: nowrap;background: url(../images/dot.png) no-repeat}
+.talk-list .pate .odd .date{left: 505px;padding-left: 20px;background-position: 0 3px}
+.talk-list .pate .even .date{right: 505px;text-align: right;padding-right: 20px;background-position:right 3px;}
+.talk-list .pate .date time{font-size: 18px}
+.talk-list .pate .tp{padding-bottom: 10px;position: relative;}
+.talk-list .pate .date .man{font-size: 16px;}
+.talk-list .pate{position: relative;padding-bottom: 105px;}
+.talk-list .pate:after{content:"";width:2px;position: absolute;top:0;height: 100%;left:510px;background: #777777;
+background: -moz-linear-gradient(top,  #777777 0%, #e4e4e4 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#777777), color-stop(100%,#e4e4e4));
+background: -webkit-linear-gradient(top,  #777777 0%,#e4e4e4 100%);
+background: -o-linear-gradient(top,  #777777 0%,#e4e4e4 100%);
+background: -ms-linear-gradient(top,  #777777 0%,#e4e4e4 100%);
+background: linear-gradient(to bottom,  #777777 0%,#e4e4e4 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777777', endColorstr='#e4e4e4',GradientType=0 );
+}
+.talk-list .pate .bt{background: url(../images/dot_last.png) no-repeat right 0;width: 517px;z-index: 1;position: relative}
+.talk-list .pate .last-1 .date{background-image: url(../images/dot_last_1.png)}
+.talk-list .pate .last-2 .date{background-image: url(../images/dot_last_2.png)}
+.talk-list .pate .last-3 .date{background-image: url(../images/dot_last_3.png)}
+.talk-list .pate .last-4 .date{background-image: url(../images/dot_last_4.png)}
+.talk-list .pate .last-5 .date{background-image: url(../images/dot_last_5.png)}
