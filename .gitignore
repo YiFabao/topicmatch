@@ -2,5 +2,5 @@
 /build/*
 *.class
 .settings/
-#.apk
+*.apk
 bin/
