@@ -70,7 +70,7 @@ public class RequestFilter implements Filter {
 					chain.doFilter(request, response);
 				}
 				else{
-					System.out.println("session中不存在当前用户，调转到登录页面");
+					//System.out.println("session中不存在当前用户，调转到登录页面");
 					httpResponse.sendRedirect(httpRequest.getContextPath()+"/jsp/xunta_user/login.jsp");//跳转到登录页面
 				}
 			}
