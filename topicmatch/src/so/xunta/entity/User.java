@@ -13,11 +13,19 @@ public class User {
 	public String weibo_accessToken;
 	public Date createTime; //寻他账号创建时间
 	public String latestLoginTime;//最后一次登录时间
+	public String imageUrl;
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	public String getXunta_username() {
 		return xunta_username;
@@ -79,7 +87,7 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 	public User(String xunta_username, String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
-			String latestLoginTime) {
+			String latestLoginTime,String imageUrl) {
 		super();
 		this.xunta_username = xunta_username;
 		this.password = password;
@@ -90,6 +98,7 @@ public class User {
 		this.weibo_accessToken = weibo_accessToken;
 		this.createTime = createTime;
 		this.latestLoginTime = latestLoginTime;
+		this.imageUrl = imageUrl;
 	}
 	
 	

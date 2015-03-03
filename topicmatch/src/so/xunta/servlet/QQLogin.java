@@ -57,6 +57,7 @@ public class QQLogin extends HttpServlet {
 		System.out.println("开始调用彬彬的获取qq用户的信息..");
 		JSONObject json = tencentUserInfo.get(accessToken);
 		String openId="";
+		String imageUrl = "" ;
 		try {
 			String nickname = (String) json.get("nickname");
 			String gender = (String) json.get("gender");
@@ -64,6 +65,7 @@ public class QQLogin extends HttpServlet {
 			String description = (String) json.get("description");
 			String verified_reason = (String) json.get("verified_reason");
 			String tags = (String) json.get("tags");
+			imageUrl = (String) json.get("image");
 			openId=(String)json.get("userId");
 			System.out.println("openId:"+openId);
 			qquserInfo=new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);
@@ -88,7 +90,7 @@ public class QQLogin extends HttpServlet {
 		if(user==null)//基本信息不存在
 		{
 			//用户没有绑定账号
-			user = new User(qquserInfo.getNickname(),"", "", openId, accessToken,"","",new Date(),DateTimeUtils.getCurrentTimeStr());
+			user = new User(qquserInfo.getNickname(),"", "", openId, accessToken,"","",new Date(),DateTimeUtils.getCurrentTimeStr(),imageUrl);
 			
 			//添加用户表
 			userManager.addUser(user);
