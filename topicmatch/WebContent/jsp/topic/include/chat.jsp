@@ -1108,6 +1108,21 @@
 			 $("#topic_invite_msg_num").append(num);
 	  };
 	  
+	  function getHistoryMessage(topicId, count) {
+			var ret_msgs = null;
+			var parameters = {
+				topicId: topicId,
+				biginIndex: count,
+				endIndex: parseInt(count) + 20
+			};
+			$.post("http://121.40.61.219:8080/im_websocket/TopicHistoryMessage/test", parameters, function(res, status) {
+				console.log("status:" + status);
+				if (window.historyMessageHandle) {
+					historyMessageHandle(res);
+				}
+			});
+		};
+	  
 	  /**
 	   * 时间格式化函数
 	   * var current_datetime=new Date().format("yyyy-MM-dd hh:mm:ss");
