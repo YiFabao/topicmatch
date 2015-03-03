@@ -29,6 +29,7 @@
 		<mapping resource="so/xunta/entity/QQDynamicInfoContent.hbm.xml" />
 		<mapping resource="so/xunta/entity/WeiboUserInfo.hbm.xml" />
 		<mapping resource="so/xunta/entity/WeiboDynamicInfoContent.hbm.xml" />
+		<mapping resource="so/xunta/entity/Tag.hbm.xml" />
 		
 	</session-factory>
 </hibernate-configuration>
