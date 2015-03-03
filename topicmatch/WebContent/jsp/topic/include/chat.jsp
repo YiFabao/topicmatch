@@ -1109,7 +1109,8 @@
 	  };
 	  
 	  function getHistoryMessage(topicId, count) {
-			var ret_msgs = null;
+			console.log("执行获取历史消息方法");
+		  	var ret_msgs = null;
 			var parameters = {
 				topicId: topicId,
 				biginIndex: count,
@@ -1117,8 +1118,10 @@
 			};
 			$.post("http://121.40.61.219:8080/im_websocket/TopicHistoryMessage/test", parameters, function(res, status) {
 				console.log("status:" + status);
+				console.log("执行获取历史消息post请求");
 				if (window.historyMessageHandle) {
 					historyMessageHandle(res);
+					console.log("请求成功    historyMessageHandle");
 				}
 			});
 		};
