@@ -7,3 +7,6 @@
 *.prefs
 bin/
 LocalContext.java
+*.apk
+bin/
+topicmatch/dist/*

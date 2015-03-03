@@ -87,8 +87,15 @@
 	var currentUserName="${sessionScope.user.xunta_username}";
 	var signout=document.getElementsByClassName("signOut")[0];
 	signout.addEventListener("click",function(){
-		console.log("退出登录,删除记录登录状态的　cookie");
-		window.location.href="${pageContext.request.contextPath}/servlet/topic_service?cmd=exit";
+		console.log("点击退出登录按钮……");
+		//window.location.href="${pageContext.request.contextPath}/servlet/topic_service?cmd=exit";
+		$.post("${pageContext.request.contextPath}/servlet/topic_service",{cmd:"exit"},function(res,status){
+			if(res=="ok"){
+				console.log("完成退出");
+			
+				window.location.replace("${pageContext.request.contextPath}/jsp/xunta_user/login.jsp");
+			}
+		});
 	});
 	
 </script>

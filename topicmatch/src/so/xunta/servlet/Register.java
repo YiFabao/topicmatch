@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.utils.DateTimeUtils;
 
 
 
@@ -53,6 +55,19 @@ public class Register extends HttpServlet {
 			System.out.println("添加用户成功");
 			//将用户保存到session中
 			request.getSession().setAttribute("user",user);
+			//添加记录登录状态的　cookie
+			Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
+			cookie.setMaxAge(30*24*3600);
+			cookie.setPath("/");
+			
+			//记录该次的登录时间
+			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
+			date_cookie.setMaxAge(30*24*3600);
+			date_cookie.setPath("/");
+			
+			response.addCookie(cookie);
+			response.addCookie(date_cookie);
+			
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 		else
@@ -124,8 +139,6 @@ public class Register extends HttpServlet {
 			request.getSession().removeAttribute("code");
 			request.removeAttribute("errorMsg");
 			return true;
-			
-			
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

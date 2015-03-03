@@ -14,7 +14,7 @@
 </style>
 
 </head>
-<body onLoad="checkCookie()">
+<body>
 <!-- 导航栏 -->
 <jsp:include page="include/navbar.jsp"></jsp:include>
 <div id="container_all">
@@ -81,7 +81,7 @@
 		date.setTime(date.getTime()-10000); //过去的一个时间
         document.cookie = "aigine_login_state=; expires="+date.toGMTString();
     } */
-	setInterval(checkCookie(),1000);
+	//ssetInterval(checkCookie(),1000);
 </script>
 </body>
 </html>

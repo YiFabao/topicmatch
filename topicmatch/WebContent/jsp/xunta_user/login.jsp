@@ -9,10 +9,10 @@
 	String qq_accesstoken=request.getParameter("access_token");
 	String code = request.getParameter("code");
 	if(qq_accesstoken!=null&&!"".equals(qq_accesstoken)){
-		request.getRequestDispatcher("/servlet/qq_login?accesstoken="+qq_accesstoken).forward(request,response);
+		request.getRequestDispatcher("/servlet/qq_login").forward(request,response);
 	}
 	if(code!=null&&!"".equals(code)){
-		request.getRequestDispatcher("/servlet/weiboLogin?cmd="+code).forward(request,response);
+		request.getRequestDispatcher("/servlet/weiboLogin").forward(request,response);
 	}
 %>
 	<head>
@@ -51,6 +51,7 @@
 		</div>
 		
 	<script type="text/javascript">
+
 
 		$("#qq_login").click(function(){
 			window.location="<%=basePath %>servlet/authorization";
