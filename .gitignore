@@ -4,5 +4,6 @@
 .settings/
 .settings/*
 #.apk
+*.prefs
 bin/
 LocalContext.java
