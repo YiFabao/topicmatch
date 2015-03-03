@@ -76,6 +76,7 @@ public class WeiboLogin extends HttpServlet {
 		String tags="";
 		String content="";
 		String uid="";
+		String token="";
 		try {
 			JSONObject json = sinaUserInfo.get(code);
 			nickname =(String) json.get("nickname");
@@ -84,6 +85,7 @@ public class WeiboLogin extends HttpServlet {
 			description=(String)json.get("description");
 			verified_reason=(String)json.get("verified_reason");
 			tags=(String)json.get("tags");
+			token=(String)json.get("token");
 		
 			Object object_content = json.get("content");
 			/*String[] ss=(String[])object_content.toString();
@@ -95,6 +97,7 @@ public class WeiboLogin extends HttpServlet {
 			uid=(String) json.get("userId");
 			System.out.println("nickname:"+nickname);
 			System.out.println("uid:"+uid);
+			System.out.println("token:"+token);
 			System.out.println();
 		} catch (WeiboException | JSONException e) {
 			// TODO Auto-generated catch block
