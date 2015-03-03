@@ -834,7 +834,7 @@
 	   		}
 	   	}
 	   	
-	   	
+	   	var state_fang = "0";
 	    //websocket状态发生变化时触发
 	   	window.webimStateChange=function(state){
 	   	    if(state=="ok")
@@ -846,10 +846,25 @@
 	   	        getUnreadMessageNum("${sessionScope.user.id}");//调用方法后，需要在回调函数中接收数据
 	   	    }
 	   	    else if(state="no"){
-	   	        msgManagerReady=false;
-	   	        console.log("websocket异常");
-	   	       console.log("3秒后重新创建websocket");
-	   	       setTimeout(createWebsocketConnect("${sessionScope.user.id}"),3000);
+	   	    	if(state_fang == "0"){
+	   	    		msgManagerReady=false;
+		   	        console.log("websocket异常,尝试从新连接websocket");
+		   	        setTimeout(createWebsocketConnect("${sessionScope.user.id}"),3000);
+		   	     	state_fang = "1";
+	   	    	}else if(state_fang == "1"){
+	   	    		msgManagerReady=false;
+		   	        console.log("websocket异常,尝试从新连接websocket");
+		   	        setTimeout(createWebsocketConnect("${sessionScope.user.id}"),8000);
+		   	     	state_fang = "2";
+	   	    	}else if(state_fang == "2"){
+	   	    		msgManagerReady=false;
+		   	        console.log("websocket异常,尝试从新连接websocket");
+		   	        setTimeout(createWebsocketConnect("${sessionScope.user.id}"),10000);
+		   	     	state_fang = "3";
+	   	    	}else if(state_fang = "3"){
+	   	    		//告知用户让其 手动 选择 连接 
+	   	    		console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
+	   	    	}
 	   	    }
 	   	};  
 	   	
