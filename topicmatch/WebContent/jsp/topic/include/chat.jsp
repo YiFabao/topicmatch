@@ -1116,7 +1116,7 @@
 				biginIndex: count,
 				endIndex: parseInt(count) + 20
 			};
-			$.post("http://121.40.61.219:8080/im_websocket/TopicHistoryMessage/test", parameters, function(res, status) {
+			$.post("http://localhost:8080/topicmatch/TopicHistoryMessage/test", parameters, function(res, status) {
 				console.log("status:" + status);
 				console.log("执行获取历史消息post请求");
 				if (window.historyMessageHandle) {
