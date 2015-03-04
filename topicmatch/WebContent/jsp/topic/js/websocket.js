@@ -44,8 +44,8 @@ function websocketEvent(userId) {
 				var openEvent = event;
 				console.log(openEvent);
 				if (window.webimStateChange) {
-					console.log("1");
-					webimStateChange("ok"); //readyState
+					console.log("console    1");
+//					webimStateChange("ok"); //readyState
 				}
 				wssae = 'yes';
 				setInterval(function() {
@@ -77,8 +77,8 @@ function websocketEvent(userId) {
 				wssae = 'no';
 				//fabao.yi
 				if (window.webimStateChange) {
-					console.log("2");
-//					webimStateChange("no"); //readyState
+					console.log("console    2");
+					webimStateChange("no"); //readyState
 				}
 			}
 			//客户端发生错误触发该事件
@@ -111,26 +111,26 @@ function websocketEvent(userId) {
 				/*		var msg = json.msg;
 						alert("收到服务器发来的消息 : "+msg);*/
 				if (window.webimHandle) {
-					console.log("3");
+					console.log("console    3");
 //					webimHandle(json); //消息处理 fabao.yi
 				}
 				//广播消息在此接收
 			} else if (status == "3") {
 				if (window.receiveBroadcast) {
-					console.log("4");
+					console.log("console     4");
 //					receiveBroadcast(json); //接收广播消息  fabao.yi
 				}
 			} else if (status == "4") {
 				//好友邀请
 				if (window.receiveTopicInviteRequestMsg) {
-					console.log("5");
+					console.log("console       5");
 //					receiveTopicInviteRequestMsg(json.inviteMsg); //接收话题邀请消息提示
 				}
 				//alert(json.inviteMsg);
 			} else if (status == "5") {
 				//消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
 				if (window.unreadMessagesNum) {
-					console.log("6");
+					console.log("console       6");
 //					unreadMessagesNum(json);
 				}
 				//alert(json.unreadNum);
