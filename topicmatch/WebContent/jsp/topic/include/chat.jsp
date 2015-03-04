@@ -849,7 +849,7 @@
 	   	    	if(state_fang == "0"){
 	   	    		msgManagerReady=false;
 		   	        console.log("websocket异常,尝试从新连接websocket");
-		   	        setTimeout(createWS,3000);
+		   	        setTimeout(createWS,6000);
 		   	     	state_fang = "1";
 	   	    	}else if(state_fang == "1"){
 	   	    		msgManagerReady=false;
