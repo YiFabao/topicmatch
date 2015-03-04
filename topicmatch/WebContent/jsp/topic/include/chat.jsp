@@ -849,24 +849,28 @@
 	   	    	if(state_fang == "0"){
 	   	    		msgManagerReady=false;
 		   	        console.log("websocket异常,尝试从新连接websocket");
-		   	        setTimeout(createWebsocketConnect("${sessionScope.user.id}"),3000);
+		   	        setTimeout(createWS,3000);
 		   	     	state_fang = "1";
 	   	    	}else if(state_fang == "1"){
 	   	    		msgManagerReady=false;
 		   	        console.log("websocket异常,尝试从新连接websocket");
-		   	        setTimeout(createWebsocketConnect("${sessionScope.user.id}"),8000);
+		   	        setTimeout(createWS,8000);
 		   	     	state_fang = "2";
 	   	    	}else if(state_fang == "2"){
 	   	    		msgManagerReady=false;
 		   	        console.log("websocket异常,尝试从新连接websocket");
-		   	        setTimeout(createWebsocketConnect("${sessionScope.user.id}"),10000);
+		   	        setTimeout(createWS,10000);
 		   	     	state_fang = "3";
 	   	    	}else if(state_fang = "3"){
 	   	    		//告知用户让其 手动 选择 连接 
 	   	    		console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
 	   	    	}
 	   	    }
-	   	};  
+	   	}; 
+	   	
+	   	function createWS(){
+	   		createWebsocketConnect("${sessionScope.user.id}");
+	   	}
 	   	
 	  //显示历史消息的回调函数
 	  window.historyMessageHandle = function(res){
