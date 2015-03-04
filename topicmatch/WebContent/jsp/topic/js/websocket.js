@@ -45,7 +45,7 @@ function websocketEvent(userId) {
 				console.log(openEvent);
 				if (window.webimStateChange) {
 					console.log("console    1");
-//					webimStateChange("ok"); //readyState
+					webimStateChange("ok"); //readyState
 				}
 				wssae = 'yes';
 				setInterval(function() {
