@@ -869,7 +869,8 @@
 	   	}; 
 	   	
 	   	function createWS(){
-	   		createWebsocketConnect("${sessionScope.user.id}");
+	   		//createWebsocketConnect("${sessionScope.user.id}");
+	   		window.location.reload();
 	   	}
 	   	
 	  //显示历史消息的回调函数
