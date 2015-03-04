@@ -14,11 +14,11 @@
 		<listener-class>so.xunta.user.listener.MyUserloginStateListener</listener-class>
 	</listener>
 		<servlet>
-			<servlet-name>TopicHistoryMessage</servlet-name>
-			<servlet-class>so.xunta.servlet.TopicHistoryMessage</servlet-class>
+			<servlet-name>TopicHistory</servlet-name>
+			<servlet-class>so.xunta.servlet.TopicHistory</servlet-class>
 		</servlet>
 		<servlet-mapping>
-			<servlet-name>TopicHistoryMessage</servlet-name>
+			<servlet-name>TopicHistory</servlet-name>
 			<url-pattern>/TopicHistoryMessage/test</url-pattern>
 		</servlet-mapping>
 
