@@ -112,7 +112,7 @@ function websocketEvent(userId) {
 						alert("收到服务器发来的消息 : "+msg);*/
 				if (window.webimHandle) {
 					console.log("console    3");
-//					webimHandle(json); //消息处理 fabao.yi
+					webimHandle(json); //消息处理 fabao.yi
 				}
 				//广播消息在此接收
 			} else if (status == "3") {
