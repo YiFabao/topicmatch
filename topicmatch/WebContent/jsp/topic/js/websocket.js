@@ -118,7 +118,7 @@ function websocketEvent(userId) {
 			} else if (status == "3") {
 				if (window.receiveBroadcast) {
 					console.log("console     4");
-//					receiveBroadcast(json); //接收广播消息  fabao.yi
+					receiveBroadcast(json); //接收广播消息  fabao.yi
 				}
 			} else if (status == "4") {
 				//好友邀请
