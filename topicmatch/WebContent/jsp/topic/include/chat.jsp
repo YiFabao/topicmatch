@@ -68,10 +68,10 @@
 <div class="msgAlert" id="bar_message" style="display:none">
 	未读消息数:<span id="number" totalNum="0">0</span>
 </div>
-<%-- <script src="${pageContext.request.contextPath }/jsp/topic/js/websocket.js"></script> --%>
+<script src="${pageContext.request.contextPath }/jsp/topic/js/websocket.js"></script>
 <script>
 	//创建websocket
-	//createWebsocketConnect("${sessionScope.user.id}");
+	createWebsocketConnect("${sessionScope.user.id}");
 	//看一下聊天框切换的效果
 	var topicIdArray = new Array();//话题列表的话题容器
 	//定义查询topicIdArray是否存在某个话题Id的方法
@@ -162,7 +162,7 @@
 			function(result,state){
 				$("#webim_page").append(result);
 				console.log("broadcast:"+userId+"===>"+topicId);
-				//broadcast("${sessionScope.user.id}", topicId);//用户参与聊天，发送广播
+				broadcast("${sessionScope.user.id}", topicId);//用户参与聊天，发送广播
 				//切换显示
 				changeShowState(topicId);
 				//添加退出按钮点击事件
@@ -331,7 +331,7 @@
 	        	console.log("消息:"+msg);
 	        	console.log("消息id:"+msgId);
 	        	console.log("联系人:"+contactsIdArray);
-	        	//sendMsg(topicId,msgId,fromUserId,fromUserName,msg.toString().trim(),contactsIdArray); 
+	        	sendMsg(topicId,msgId,fromUserId,fromUserName,msg.toString().trim(),contactsIdArray); 
 	        	//清空聊天框 
 	        	this.value ="";
 	        }
@@ -843,7 +843,7 @@
 	   	        console.log("websocket创建成功");
 	   	        //获取未读消息数======================================>未读消息数
 	   	        console.log("开始获取未读消息");
-	   	        //getUnreadMessageNum("${sessionScope.user.id}");//调用方法后，需要在回调函数中接收数据
+	   	        getUnreadMessageNum("${sessionScope.user.id}");//调用方法后，需要在回调函数中接收数据
 	   	    }
 	   	    else if(state="no"){
 	   	    	if(state_fang == "0"){
