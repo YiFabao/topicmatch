@@ -32,7 +32,7 @@ table{border-collapse:collapse;border-spacing:0}
 .talk-list .name{white-space:nowrap;text-overflow:ellipsis;overflow:hidden}/*超出显点*/
 .form .load,.form .enter,.nav a,.nav li.back{-webkit-transition:all .3s;transition:all .3s}
 /*lib*/
-.dn{display:none;}.mr5{margin-right: 5px;}.tr{text-align: right;}.mt3{margin-top: 3px;}.mb40{margin-bottom: 40px;}.tc{text-align: center;}.g6{color: #666;}.g9{color:#999}.mt20{margin-top:20px; }.fa{font-family: Arial;}.mb20{margin-bottom: 20px;}.mb10{margin-bottom: 10px;}.w280{width: 280px;}.auto{margin-left:auto;margin-right: auto;}.orenge{color: #fe713f}.l{float: left;}.r{float: right;}
+.dn{display:none;}.mr5{margin-right: 5px;}.tr{text-align: right;}.mt3{margin-top: 3px;}.mb40{margin-bottom: 40px;}.tc{text-align: center;}.g6{color: #666;}.g9{color:#999}.mt20{margin-top:20px; }.fa{font-family: Arial;}.mb20{margin-bottom: 20px;}.mb10{margin-bottom: 10px;}.w280{width: 280px;}.auto{margin-left:auto;margin-right: auto;}.orenge{color: #fe713f}.l{float: left;}.r{float: right;}.f16{font-size: 16px}
 .fix:after {display:table;content:'';clear:both}/*清除浮动*/
 
 /*通顶*/
@@ -41,7 +41,7 @@ table{border-collapse:collapse;border-spacing:0}
 .header .logo{float: left;margin: 40px 54px 0 54px}
 .header .logo a{width: 120px;height: 44px;background-position: -170px -13px}
 .header .search{width: 286px;height: 40px;border-radius: 40px;background-color: #fff;position: relative;box-shadow:0 0 3px #37383d inset ;float: left;margin-top: 43px;margin-right: 104px;}
-.header .search .text{height: 40px;background: transparent;border:none;padding-top: 0;padding-bottom: 0;text-indent:20px;width: 242px;color:#38383c;font-size: 14px}
+.header .search .text{height: 40px;background: transparent;border:none;padding-top: 0;padding-bottom: 0;text-indent:20px;width: 242px;color:#38383c;font-size: 14px;line-height: 40px \9;}
 .header .search:after{content: "";height: 22px;position: absolute;border-left:1px solid #9f9fa1;top:10px;left:242px;}
 .header .search .submit{background:none;border:none;color: #616161;font-size: 28px;
 position: absolute;padding: 0;height: 40px;width: 44px;letter-spacing: 7px;line-height: 46px;cursor: pointer;}
@@ -65,13 +65,12 @@ text-align: center;top: 10px;
 left: 36px;}
 .content{background:url(../images/page_bg.png) #ecebe7 no-repeat top center;}
 .main,.header .head{width: 1254px;margin-left: auto;margin-right: auto;}
-.main{background-color:rgba(237, 236, 232, 0.82);}
+.main{background-color:rgba(237, 236, 232, 0.82);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1edece8', endColorstr='#d1edece8',GradientType=0 );}
 /*我发起的话题*/
-.tab-menu{line-height: 50px;background-color:#f5f5f5;width: 250px;font-size: 20px;border-radius:10px;}
-.tab-menu{width:500px;margin-left: auto;margin-right:auto;overflow: hidden;margin-bottom: 60px;}
-.tab-menu li{float:left;width: 50%;text-align: center;}
-.tab-menu a{display: block;text-shadow: 0px 0px;}
-.tab-menu .selected{background-color: #f9b943}
+.top-memory .tab-menu{line-height: 50px;background-color:#f5f5f5;font-size: 20px;border-radius:10px;width:500px;margin-left: auto;margin-right:auto;overflow: hidden;margin-bottom: 60px;}
+.top-memory .tab-menu li{float:left;width: 50%;text-align: center;}
+.top-memory .tab-menu a{display: block;text-shadow: 0px 0px;}
+.top-memory .tab-menu .selected{background-color: #f9b943}
 .top-memory{padding-top:50px;}
 .talk-list{padding: 0 116px 100px;}
 .talk-list .column{width: 494px;}
@@ -130,3 +129,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777777', end
 .talk-list .pate .last-3 .date{background-image: url(../images/dot_last_3.png)}
 .talk-list .pate .last-4 .date{background-image: url(../images/dot_last_4.png)}
 .talk-list .pate .last-5 .date{background-image: url(../images/dot_last_5.png)}
+/*登录*/
+.login{background: url(../images/login_bg.jpg) no-repeat center;height: 613px;margin-top: 65px;box-shadow: 0 0 65px rgba(0, 0, 0, 0.36);margin-bottom: 65px;position: relative;}
+.dialog-box{background-color: rgba(250, 250, 250, 0.94);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0fafafa', endColorstr='#f0fafafa',GradientType=0 );position: absolute;left:0;right: 0;margin: auto;top:112px;border-radius: 10px;padding: 30px 0 37px}
+.dialog-box .close{background-color:rgba(60, 60, 60, 0.5);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#803c3c3c', endColorstr='#803c3c3c',GradientType=0 );color: #fdfdfd;font-size:40px;position: absolute;top:0;right:0;width: 64px;height: 50px;border-bottom-left-radius:10px;text-align: center;line-height: 50px}
+.dialog-box h3{font-size: 18px;font-weight: normal;text-shadow: 0 0;}
+.login-1{width: 420px;}
+.login-1 h3{margin-left: 44px;}
+.quick-login{font-size: 18px;text-align: justify;width: 310px;margin: 45px auto 47px}
+.quick-login li{display: inline-block;text-align: center;width: 82px;}
+.quick-login  a img{width: 82px;height: 82px;margin-bottom: 8px;}
+.quick-login .justify-fix{height:0; padding:0; overflow:hidden}
+.login-2{padding-left: 70px;width:350px;float:left}
+.login-2 .item{position: relative;font-size: 16px;}
+.login-2 .first{margin-bottom: 18px;}
+.login-2 h3{margin-bottom:25px;margin-left:10px;}
+.form .text-b{height: 46px;*line-height: 46px;padding: 0;border-radius: 46px;border:none;text-indent: 5.6em;}
+.form .wta{width: 300px;}
+.form .label-a{position: absolute;height: 30px;padding-right: 10px;border-right: 1px solid #f3ecec;top:12px;left:20px;}
+.d2{width: 840px;}

@@ -117,10 +117,14 @@
           <param-name>exclude11</param-name>
           <param-value>/servlet/weiboLogin</param-value>
       </init-param>
+      <init-param>
+          <param-name>exclude12</param-name>
+          <param-value>/jsp/topic_ta_pc/login.jsp</param-value>
+      </init-param>
   </filter>
   <filter-mapping>
       <filter-name>RequestFilter</filter-name>
-      <url-pattern>*.jsp_</url-pattern>
+      <url-pattern>*.jsp</url-pattern>
   </filter-mapping>
   <filter-mapping>
       <filter-name>RequestFilter</filter-name>

@@ -1,7 +1,8 @@
 //导航效果
 $(function(){
-	var var_a
-	if($('.nav li').find(".current").length<0) var_a = true
+	var var_a;
+	if($('.nav li').find(".current").length<0) var_a = false
+		else var_a = true
 	$(".nav ul").lavaLamp({
 		fx: "backout",
 		speed:300,
@@ -11,9 +12,8 @@ $(function(){
 			return false;
 		}
 	});
-	if(var_a == true)
-		$(".nav li").removeClass("current")
-	else $('.nav li.back').show()
+	if(var_a) $(".nav li").removeClass("current") 
+		else $('.nav li.back').show()
 	current = $(".nav").find(".current");
 	$(".nav li").hover(function(){
 		current.removeClass("current");

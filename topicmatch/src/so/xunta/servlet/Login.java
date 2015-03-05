@@ -52,7 +52,11 @@ public class Login extends HttpServlet {
 				System.out.println("用户名或密码错误");
 				request.setAttribute("xunta_username",username);
 				request.setAttribute("errorMsg","用户名或密码错误");
-				request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
+				//request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
+				//request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
+				//response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp#&Login");
+				//request.getRequestDispatcher("/jsp/topic_ta_pc/login.jsp#&Login").forward(request, response);
+				response.getWriter().write("failure");
 			}
 			else
 			{
@@ -60,6 +64,23 @@ public class Login extends HttpServlet {
 				//将user保存到session中
 				request.getSession().setAttribute("user",user);
 	
+				Cookie[] xunta_cookies=request.getCookies();
+				boolean hasAigine_login_state=true;
+				for(Cookie cookie:xunta_cookies)
+				{
+					System.out.println(cookie.getName()+":"+cookie.getValue());
+					if(cookie.getName().equals("aigine_login_state")){
+						hasAigine_login_state=false;
+					}
+				}
+				System.out.println("cookie长度:"+xunta_cookies.length);
+				if(hasAigine_login_state){
+					System.out.println("添加cookie");
+					Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode("hasLogged","utf-8"));
+					cookie.setMaxAge(3600*24*300);
+					cookie.setPath("/");
+					response.addCookie(cookie);
+				}
 /*				//添加记录登录状态的　cookie
 				Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
 				cookie.setMaxAge(30*24*3600);
@@ -72,7 +93,8 @@ public class Login extends HttpServlet {
 				
 				response.addCookie(cookie);
 				response.addCookie(date_cookie);*/
-				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+				//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+				response.getWriter().write("success");
 			}
 		}
 		
