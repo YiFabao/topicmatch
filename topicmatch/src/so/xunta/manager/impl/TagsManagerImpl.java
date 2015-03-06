@@ -2,11 +2,9 @@ package so.xunta.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jdt.internal.compiler.flow.FinallyFlowContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import so.xunta.entity.Tag;
 import so.xunta.manager.TagsManager;
 import so.xunta.utils.HibernateUtils;
