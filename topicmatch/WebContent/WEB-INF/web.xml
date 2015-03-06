@@ -15,15 +15,6 @@
 	</listener>
 	
 	<servlet>
-		<servlet-name>test1</servlet-name>
-		<servlet-class>so.xunta.servlet.test1</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>test1</servlet-name>
-		<url-pattern>/test1</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
 		<servlet-name>TopicHistory</servlet-name>
 		<servlet-class>so.xunta.servlet.TopicHistory</servlet-class>
 	</servlet>
