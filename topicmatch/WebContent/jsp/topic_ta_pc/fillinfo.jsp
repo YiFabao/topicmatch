@@ -109,7 +109,7 @@
 						<span class="dt">个人兴趣</span>
 						<div class="dd">
 							<div class="interests">
-								<div class="cont mb10">
+								<div class="cont mb10" id="user_input_tags">
 									<a href="#" class="tag">文学<i class="iconfont del">&#xe601;</i></a>
 									<a href="#" class="tag">地理<i class="iconfont del">&#xe601;</i></a>
 									<a href="#" class="tag">整治<i class="iconfont del">&#xe601;</i></a>
@@ -140,7 +140,8 @@
 							</div>
 							<div class="fix">
 								<a href="#Login" class="l f16 lh34">已有账号，直接登录</a>
-								<button class="btn-b r wtb" data-url="#Reg">下一步</button>
+							<!-- 	<button class="btn-b r wtb" data-url="#Reg" id="reg_tag">下一步</button> -->
+								<button class="btn-b r wtb"  id="reg_tag">下一步</button>
 							</div>
 						</div>
 					</div>
@@ -179,7 +180,7 @@
 							</div>
 						</div>
 						<div class="opear">
-							<button class="btn-d wtb">上一步</button>
+							<button class="btn-d wtb">下一步</button>
 						</div>
 					</form>
 					<div class="r">
@@ -373,9 +374,38 @@ $.extend({
 	},
 	comregOut:function(){
 		$("#validateRemind").remove();
-
 	}
 })
+
+//用户填写完标签后，下一步
+$("#reg_tag").click(function(){
+	console.log("点击下一步提交表单……");
+	var tags_array=new Array();
+ 	var atags=$("#user_input_tags").children("a");
+ 	atags.each(function(index,element){
+ 		var childs=element.childNodes;
+ 		var tag=childs[0];
+ 		if(tag){
+ 			tags_array.push(tag);
+ 		}
+ 		
+ 	});
+ 	console.log(tags_array);
+ 	var tags_str;
+ 	for(var i=0;i<tags_array.length;i++)
+ 	{
+ 		tags_str+=(tags_array[i]+"")+",";
+ 		console.log(tags_array[i]);
+ 	}
+ 
+ 	console.log(tags_str);
+	//window.location.href="#Reg";
+});
+/** 
+ *js数组转json 
+ * 
+ */  
+
 </script>
 </body>
 </html>
