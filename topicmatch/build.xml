@@ -10,11 +10,10 @@
     <property name="webRoot.dir" value="${basedir}/WebContent" />  
     <property name="dist.dir" value="${basedir}/dist" /> 
     <property name="ant.dir" value="/opt/apache-ant-1.9.4" />  
-	<property name="catalina.home" value="/opt/apache-tomcat-7.0.57"/>
+	<property name="catalina.home" value="/opt/apache-tomcat-8.0.18"/>
     <property name="webapp.name" value="topicmatch" />  
     <property name="src.dir" value="${basedir}/src" />  
 	<property name="lib.dir" value="${webRoot.dir}/WEB-INF/lib" /> 
-	<property name="lib_binbin.dir" value="${webRoot.dir}/WEB-INF/lib_binbin" /> 
     <property name="build.dir" value="${basedir}/build" />  
 	
 	
@@ -44,9 +43,6 @@
 	<!-- 初始化classpath -->  
     <path id="project.classpath">  
         <fileset dir="${lib.dir}">  
-            <include name="**/*.jar" />  
-        </fileset>  
-        <fileset dir="${lib_binbin.dir}">  
             <include name="**/*.jar" />  
         </fileset>  
         <!-- 添加tomcat类路径 -->  

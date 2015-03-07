@@ -5,14 +5,6 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
-	String qq_accesstoken=request.getParameter("access_token");
-	String code = request.getParameter("code");
-	if(qq_accesstoken!=null&&!"".equals(qq_accesstoken)){
-		request.getRequestDispatcher("/servlet/qq_login").forward(request,response);
-	}
-	if(code!=null&&!"".equals(code)){
-		request.getRequestDispatcher("/servlet/weiboLogin").forward(request,response);
-	}
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -61,8 +53,8 @@
 				<h3>第三方登录</h3>
 				<ul class="quick-login">
 					<li><a href="#" title="微信"><img src="images/wx.png">微信</a></li>
-					<li><a href="#" title="腾讯QQ"><img src="images/qq.png">QQ</a></li>
-					<li><a href="#" title="新浪微博"><img src="images/sina.png">新浪</a></li>
+					<li><a href="#" title="腾讯QQ" class="qq_login"><img src="images/qq.png">QQ</a></li>
+					<li><a href="#" title="新浪微博" class="weibo_login"><img src="images/sina.png">新浪</a></li>
 					<li class="justify-fix">&nbsp;</li>
 				</ul>
 				<div class="tc f16">
@@ -103,8 +95,8 @@
 					<h3>第三方登录</h3>
 					<ul class="quick-login">
 						<li><a href="#" title="微信"><img src="images/wx.png">微信</a></li>
-						<li><a href="#" title="腾讯QQ" id="qq_login"><img src="images/qq.png">QQ</a></li>
-						<li><a href="#" title="新浪微博" id="weibo_login"><img src="images/sina.png">新浪</a></li>
+						<li><a href="#" title="腾讯QQ" class="qq_login"><img src="images/qq.png">QQ</a></li>
+						<li><a href="#" title="新浪微博" class="weibo_login"><img src="images/sina.png">新浪</a></li>
 						<li class="justify-fix">&nbsp;</li>
 					</ul>
 				</div>
@@ -321,11 +313,11 @@ var validate_false = function(form) {
     return false;    
 };
 //qq登录
-$("#qq_login").click(function(){
+$(".qq_login").click(function(){
 	window.location="<%=basePath %>servlet/authorization";
 });
 //微博登录
-$("#weibo_login").click(function(){
+$(".weibo_login").click(function(){
 	var redirect_uri = "http://xunta.so/jsp/xunta_user/jsp_token.jsp";
 	var  url = "https://api.weibo.com/oauth2/authorize?client_id=3793162942&response_type=code&redirect_uri="+redirect_uri;
 	window.location=url;
