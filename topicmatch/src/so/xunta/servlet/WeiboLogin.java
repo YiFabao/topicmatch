@@ -133,14 +133,18 @@ public class WeiboLogin extends HttpServlet {
 			request.getSession().setAttribute("user", user);
 			
 			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
 			
 		}else{
 			System.out.println("数据库中存在该微博uid");
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
+			//TODO判断是否填写有标签
+			
+			//TODO判断是否绑定账号
+			
 			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
 		}
 
 		/*response.setContentType("text/html");

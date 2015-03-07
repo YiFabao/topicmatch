@@ -137,7 +137,12 @@ public class QQLogin extends HttpServlet {
 			response.addCookie(cookie);
 			response.addCookie(date_cookie);*/
 			
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			//TODO 判断是否有标签
+			
+			//TODO 判断是否绑定账号
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
+			//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			
 		}
 	}
 
