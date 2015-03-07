@@ -18,7 +18,7 @@ public interface TagsManager {
 	//向数据库插入多个标签
 	public void addTags(List<Tag> tagList);
 	
-	//根据标签Id删除一个标签
+	//根据Id删除该条记录
 	public void deleteOneTagByTagId(long tagId);
 	
 	//根据tagId_list删除多个标签
