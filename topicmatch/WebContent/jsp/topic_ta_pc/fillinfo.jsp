@@ -46,6 +46,60 @@
 			</div>
 		</div>
 	</header>
+	<div class="login">
+		<!-- 第三方登录 -->
+		<div class="page dn" id="SignInWith">
+			<div class="dialog-box login-1">
+				<h3>第三方登录</h3>
+				<ul class="quick-login">
+					<li><a href="#" title="微信"><img src="images/wx.png">微信</a></li>
+					<li><a href="#" title="腾讯QQ"><img src="images/qq.png">QQ</a></li>
+					<li><a href="#" title="新浪微博"><img src="images/sina.png">新浪</a></li>
+					<li class="justify-fix">&nbsp;</li>
+				</ul>
+				<div class="tc f16">
+					<a href="#Login">已有账号，直接登录</a>
+				</div>
+			</div>
+		</div>
+		<!-- 直接登录 -->
+		<div class="page out" id="Login" data-params="root=$&amp;callback=login&amp;fallback=loginOut">
+			<div class="dialog-box d2">
+				<div class="login-2 l form">
+					<h3>登录</h3>
+					<form action="#FillInfo" data-preventDefault="validate_false">
+						<ul>
+							<li class="item first">
+								<label for="UserName" class="label-a">用户名</label>
+								<input type="text" id="UserName" class="text-b wta" placeholder="邮箱/用户名" data-min="1" required>
+							</li>
+							<li class="item mb10">
+								<label for="PassWord" class="label-a">密&emsp;码</label>
+								<input type="password" id="PassWord" class="text-b wta" data-min="1" required>
+							</li>
+							<li class="item-b">
+								<label class="cbox" for="RememberPw">
+									<i class="check"></i>
+									<i class="iconfont checked">&#xe600;</i>
+									<input type="checkbox" id="RememberPw" class="dn">记住密码
+								</label> 
+								<a href="#" class="a1">忘记密码？</a>
+							</li>
+							<li><input type="submit" class="btn-a wta" value="登&emsp;录"></li>
+						</ul>
+					</form>
+				</div>
+				<div class="login-1 l">
+					<h3>第三方登录</h3>
+					<ul class="quick-login">
+						<li><a href="#" title="微信"><img src="images/wx.png">微信</a></li>
+						<li><a href="#" title="腾讯QQ"><img src="images/qq.png">QQ</a></li>
+						<li><a href="#" title="新浪微博"><img src="images/sina.png">新浪</a></li>
+						<li class="justify-fix">&nbsp;</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<!-- 基本资料填写 -->
 		<div class="page out" id="FillInfo" data-params="root=$&amp;callback=fillinfo&amp;fallback=fillinOut">
 			<div class="dialog-box d2">
