@@ -15,6 +15,7 @@
     <property name="weibo_accessToken" not-null="false"/>
     <property name="createTime" not-null="false" length="20"/>
     <property name="latestLoginTime" not-null="false" length="20"/>
+    <property name="imageUrl" not-null="false"/>
   
   </class>
 </hibernate-mapping>

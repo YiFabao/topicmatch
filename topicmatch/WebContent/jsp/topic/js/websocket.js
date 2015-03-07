@@ -44,6 +44,7 @@ function websocketEvent(userId) {
 				var openEvent = event;
 				console.log(openEvent);
 				if (window.webimStateChange) {
+					console.log("console    1");
 					webimStateChange("ok"); //readyState
 				}
 				wssae = 'yes';
@@ -76,6 +77,7 @@ function websocketEvent(userId) {
 				wssae = 'no';
 				//fabao.yi
 				if (window.webimStateChange) {
+					console.log("console    2");
 					webimStateChange("no"); //readyState
 				}
 			}
@@ -109,22 +111,26 @@ function websocketEvent(userId) {
 				/*		var msg = json.msg;
 						alert("收到服务器发来的消息 : "+msg);*/
 				if (window.webimHandle) {
+					console.log("console    3");
 					webimHandle(json); //消息处理 fabao.yi
 				}
 				//广播消息在此接收
 			} else if (status == "3") {
 				if (window.receiveBroadcast) {
+					console.log("console     4");
 					receiveBroadcast(json); //接收广播消息  fabao.yi
 				}
 			} else if (status == "4") {
 				//好友邀请
 				if (window.receiveTopicInviteRequestMsg) {
+					console.log("console       5");
 					receiveTopicInviteRequestMsg(json.inviteMsg); //接收话题邀请消息提示
 				}
 				//alert(json.inviteMsg);
 			} else if (status == "5") {
 				//消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
 				if (window.unreadMessagesNum) {
+					console.log("console       6");
 					unreadMessagesNum(json);
 				}
 				//alert(json.unreadNum);
@@ -228,103 +234,4 @@ function checkWebSocketState() {
 			}
 		}
 	}, 10000);*/
-}
-
-function getHistoryMessage(topicId, count) {
-	var ret_msgs = null;
-	var parameters = {
-		topicId: topicId,
-		biginIndex: count,
-		endIndex: parseInt(count) + 20
-	};
-	$.post("http://121.40.61.219:8080/im_websocket/TopicHistoryMessage/test", parameters, function(res, status) {
-		console.log("status:" + status);
-		if (window.historyMessageHandle) {
-			historyMessageHandle(res);
-		}
-	});
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// xml异步请求数据，目前已不在使用，改用上面jQuery POST 请求
-
-function getHistoryMessage2(topicId, count) {
-	var ret_msgs = null;
-	var parameters = {
-		topicId: topicId,
-		biginIndex: count,
-		endIndex: parseInt(count) + 20
-	};
-	doRequestUsingPOST_fang("http://121.40.61.219:8080/im_wensocket/TopicHistoryMessage?" + toDomString_fang(parameters), function() {
-
-		if (xmlHttp.readyState == 4) {
-			console.log("请求完成");
-			if (xmlHttp.status == 200) {
-				console.log("请求成功响应");
-				var historyMessage = xmlHttp.responseText;
-				alert(historyMessage);
-				ret_msgs = JSON.parse(historyMessage);
-				console.log("赋值在前:" + ret_msgs);
-			} else {
-				console.log("请求没有成功响应:" + xmlHttp.status);
-			}
-		}
-	});
-	//console.log("返回在后");
-	return ret_msgs;
-}
-
-function toDomString_fang(json) {
-	var domString = "";
-	for (var p in json) //p为json对象里的属性名
-	{
-		if (domString == "") {
-			domString += (p + "=" + json[p]);
-		} else {
-			domString += "&" + p + "=" + json[p];
-		}
-	}
-	return encodeURI(domString);
-}
-
-
-var xmlHttp = null; //声明一个XHR对象
-//创建一个XHR对象
-function createXMLHttpRequest_fang() {
-	if (window.ActiveXObject) {
-		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-	} else {
-		if (window.XMLHttpRequest) {
-			xmlHttp = new XMLHttpRequest();
-		}
-	}
-}
-
-//向服务端发起异步请求:GET（入口函数）,callback为回调函数名称
-function doRequestUsingPOST_fang(url, callback) {
-	if (xmlHttp == null) {
-		createXMLHttpRequest_fang(); //创建xhr
-	}
-	if (xmlHttp.readyState != 0) {
-		xmlHttp.abort(); //初始化
-	}
-	xmlHttp.onreadystatechange = callback;
-	xmlHttp.open("POST", url + "&timeStamp=" + new Date().getTime(), false); //true表示异步,false表示同步
-	xmlHttp.send(null);
 }

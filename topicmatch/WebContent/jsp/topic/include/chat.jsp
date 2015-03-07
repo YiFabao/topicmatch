@@ -834,7 +834,9 @@
 	   		}
 	   	}
 	   	
-	   	var websocket_reconnect_num=0;
+
+	   	var state_fang = "0";
+
 	    //websocket状态发生变化时触发
 	   	window.webimStateChange=function(state){
 	   	    if(state=="ok")
@@ -846,18 +848,32 @@
 	   	        getUnreadMessageNum("${sessionScope.user.id}");//调用方法后，需要在回调函数中接收数据
 	   	    }
 	   	    else if(state="no"){
-	   	        msgManagerReady=false;
-	   	        console.log("websocket异常");
-	   	        if(websocket_reconnect_num<3){
-		   	       	console.log("3秒后重新创建websocket");
-		   	   		 websocket_reconnect_num++;
-		   	       setTimeout(createWebsocketConnect("${sessionScope.user.id}"),10000);
-	   	        }else{
-	   	        	console.log("重连3次后，停止websocket重建");
-	   	        }
-
+	   	    	if(state_fang == "0"){
+	   	    		msgManagerReady=false;
+		   	        console.log("websocket异常,尝试从新连接websocket");
+		   	        setTimeout(createWS,6000);
+		   	     	state_fang = "1";
+	   	    	}else if(state_fang == "1"){
+	   	    		msgManagerReady=false;
+		   	        console.log("websocket异常,尝试从新连接websocket");
+		   	        setTimeout(createWS,8000);
+		   	     	state_fang = "2";
+	   	    	}else if(state_fang == "2"){
+	   	    		msgManagerReady=false;
+		   	        console.log("websocket异常,尝试从新连接websocket");
+		   	        setTimeout(createWS,10000);
+		   	     	state_fang = "3";
+	   	    	}else if(state_fang = "3"){
+	   	    		//告知用户让其 手动 选择 连接 
+	   	    		console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
+	   	    	}
 	   	    }
-	   	};  
+	   	}; 
+	   	
+	   	function createWS(){
+	   		//createWebsocketConnect("${sessionScope.user.id}");
+	   		window.location.reload();
+	   	}
 	   	
 	  //显示历史消息的回调函数
 	  window.historyMessageHandle = function(res){
@@ -1098,6 +1114,24 @@
 			 $("#topic_invite_msg_num").empty();
 			 $("#topic_invite_msg_num").append(num);
 	  };
+	  
+	  function getHistoryMessage(topicId, count) {
+			console.log("执行获取历史消息方法");
+		  	var ret_msgs = null;
+			var parameters = {
+				topicId: topicId,
+				biginIndex: count,
+				endIndex: parseInt(count) + 20
+			};
+			$.post("http://"+document.domain+":8080/topicmatch/TopicHistoryMessage/test", parameters, function(res, status) {
+				console.log("status:" + status);
+				console.log("执行获取历史消息post请求");
+				if (window.historyMessageHandle) {
+					historyMessageHandle(res);
+					console.log("请求成功    historyMessageHandle");
+				}
+			});
+		};
 	  
 	  /**
 	   * 时间格式化函数

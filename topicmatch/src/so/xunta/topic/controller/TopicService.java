@@ -57,6 +57,7 @@ public class TopicService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String cmd = request.getParameter("cmd");
+		//System.out.println("cmd====================================================>:"+cmd);
 		if(cmd==null)return;
 		switch(cmd){
 		case "fqht":
@@ -391,11 +392,15 @@ public class TopicService extends HttpServlet {
 	private void exit(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().removeAttribute("user");
 		request.getSession().invalidate();
-		 response.setHeader("Pragma","No-cache");
-		 response.setHeader("Cache-Control","no-cache"); //强制缓存从服务器上获取新的页面
-		 response.setHeader("Cache-Control","no-store"); //在任何环境下缓存不保存任何页面
-		 response.setDateHeader("Expires", -1);
-		 	System.out.println("获取cookie");
+		System.out.println("退出登录");
+		
+		try {
+			response.getWriter().write("ok");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 	/*System.out.println("获取cookie");
 		 	Cookie[] cookies=request.getCookies();
 		 	for(Cookie cookie:cookies)
 		 	{
@@ -412,7 +417,8 @@ public class TopicService extends HttpServlet {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
+		
 	}
 
 	private void joinTopic(HttpServletRequest request, HttpServletResponse response) {
