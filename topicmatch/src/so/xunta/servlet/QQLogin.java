@@ -140,7 +140,7 @@ public class QQLogin extends HttpServlet {
 			//TODO 判断是否有标签
 			
 			//TODO 判断是否绑定账号
-			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/fillinfo.jsp?#&FillInfo");
 			//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			
 		}

@@ -133,7 +133,7 @@ public class WeiboLogin extends HttpServlet {
 			request.getSession().setAttribute("user", user);
 			
 			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/fillinfo.jsp?#&FillInfo");
 			
 		}else{
 			System.out.println("数据库中存在该微博uid");
