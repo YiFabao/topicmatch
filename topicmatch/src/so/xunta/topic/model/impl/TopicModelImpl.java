@@ -39,6 +39,7 @@ public class TopicModelImpl implements TopicModel{
 		{
 			TopicHistory topicHistory = new TopicHistory(userId, topicId,currentTime ,'j');
 			topicManager.addTopicHistory(topicHistory);
+			topicManager.addTopicJoinNumByOne(topicId);
 		}
 		//保存话题组,检查是否已经存在到话题组
 		if(!topicManager.checkIsTopicMember(userId, topicId))

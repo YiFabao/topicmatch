@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -366,6 +367,7 @@ public class TopicManagerImpl implements TopicManager {
 			System.out.println("话题作者id:"+t.authorId);
 			System.out.println("===========================");
 		}*/
+		topicmanager.addTopicJoinNumByOne("69078E1A128D0E3A9327037A3DB4BD9E");
 
 	}
 
@@ -805,5 +807,25 @@ public class TopicManagerImpl implements TopicManager {
 		return TopicHistoryList;
 	}
 
+	@Override
+	public void addTopicJoinNumByOne(String topicId) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql="from Topic where topicId=?";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, topicId);
+			Topic topic = (Topic) query.uniqueResult();
+			topic.setJoin_people_num(topic.getJoin_people_num()+1);
+			session.update(topic);
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
 
 }
