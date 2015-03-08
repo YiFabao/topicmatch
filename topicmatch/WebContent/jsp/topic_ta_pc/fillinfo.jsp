@@ -389,9 +389,10 @@ $("#reg_tag").click(function(){
  	
  	var parameters = {
  		tags : tags_array.toString(),
- 		userId : '9999'
+ 		userId : '9999',
+ 		cmd : 'tag'
  	};
- 	$.post("http://localhost:8080/topicmatch/TagsManagerServlet",parameters,function(res,status){
+ 	$.post("<%=basePath%>servlet/userLoginService",parameters,function(res,status){
  		//......
  		if(res=="ok")
  		{

@@ -1,11 +1,18 @@
 package so.xunta.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import so.xunta.entity.Tag;
+import so.xunta.manager.impl.TagsManagerImpl;
+import so.xunta.utils.HtmlRegexpUtil;
 
 /**
  * @author fabao.yi
@@ -30,11 +37,9 @@ public class UserLoginService extends HttpServlet {
 			return;
 		}
 		switch(cmd){
-		case "tags":
+		case "tag":
 			System.out.println("获取tag标签,保存到数据库");
-			//如果成功 response.getWriter().write("ok");
-			//如果保存失败response.getWriter().write("failed");
-			response.getWriter().write("收到请求");
+			metchod_tags(request,response);
 			break;
 		case "bindlocalaccount":
 			System.out.println("绑定用户账号操作");
@@ -51,8 +56,28 @@ public class UserLoginService extends HttpServlet {
 		}
 	}
 
+	private void metchod_tags(HttpServletRequest request, HttpServletResponse response) {
+		try{
+			Long userId = Long.parseLong(new String(request.getParameter("userId").getBytes("ISO8859-1"),"UTF-8")); 
+			String tagArray[] = HtmlRegexpUtil.filterHtml(request.getParameter("tags")).replaceAll("", "").split(",");
+			List<Tag> list = new ArrayList<Tag>();
+			for (int i = 0; i < tagArray.length; i++) {
+				String tag = tagArray[i];
+				System.out.println("将标签存入数据库  ==>   userId : "+userId+"  --   tag : "+tag);
+				list.add(new Tag(userId, tag));
+			}
+			new TagsManagerImpl().addTags(list);
+			response.getWriter().write("ok");
+		}catch (Exception e){
+			try {
+				response.getWriter().write(e.getMessage());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
