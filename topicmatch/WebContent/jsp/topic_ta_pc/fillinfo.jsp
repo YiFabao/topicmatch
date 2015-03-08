@@ -176,11 +176,11 @@
 							<label for="Code" class="dt">验&ensp;证&ensp;码</label>
 							<div class="dd">
 								<input type="text" id="Code" class="text-c wtb" required>
-								<a href="#" class="hove-code">获取验证码</a>
+								<a href="#" class="hove-code" id="getValidateCode">获取验证码</a>
 							</div>
 						</div>
 						<div class="opear">
-							<button class="btn-d wtb">下一步</button>
+							<button class="btn-d wtb" id="bind_local_account">下一步</button>
 						</div>
 					</form>
 					<div class="r">
@@ -296,7 +296,7 @@ var validate_false = function(form) {
 	    			window.location.href=url
 	    		})
 	    	}
-	    })
+	    });
 	};
 }
 //二次密码验证
@@ -399,12 +399,91 @@ $("#reg_tag").click(function(){
  	}
  
  	console.log(tags_str);
-	//window.location.href="#Reg";
+	window.location.href="#Reg";
 });
-/** 
- *js数组转json 
- * 
- */  
+
+//点击获取验证码
+$("#getValidateCode").click(function(){
+	console.log("点击获取验证码...");
+	var parent = $(this).parent();
+	$(this).remove();
+	parent.append("<br/><img src=\"<%=basePath%>servlet/validateCodeServlet\" width=80 height=30 style=\"margin-top:10px;\"class=\"validateImage\"/><small><i>点击图片换验证码</i></small><br />");
+	//点击验证码切换
+	$(".validateImage").click(function(){
+		console.log("点击验证码");
+		$(this).attr("src","<%=basePath%>servlet/validateCodeServlet?"+Math.random());
+	});
+});
+
+//绑定本地账户，表单提交
+$("#bind_local_account").click(function(){
+	console.log("绑定账号后用户提交...");
+	//获取填写的用户名
+	var userNameR=$("#UserNameR").val();
+	//获取填写的密码 
+	var passWordR=$("#PassWordR").val();
+	var passWordRC=$("#PassWordRC").val();
+	//获取填写的验证码
+	var validateCodeR=$("#Code").val();
+	
+	console.log("用户输入====>用户名："+userNameR);
+	console.log("用户输入====>密码 ："+userNameR);
+	console.log("用户输入====>验证码 ： ："+validateCodeR);
+	
+	var flag = checkForm(userNameR,passWordR,passWordRC,validateCodeR);
+	if(flag)
+	{
+		console.log("验证通过...");
+		$.post("<%=basePath%>servlet/userLoginService",{
+			cmd:"bindlocalaccount",
+  			userNameR:userNameR,
+  			passwordR:passWordR,
+  			validateCodeR:validateCodeR
+		},function(res,state){
+			console.log(res);
+		});
+	}else{
+		console.log("验证不通过...");
+	}
+	  
+});
+//验证基本资料填写之绑定本地账户密码的表单
+function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
+	var flag=true;
+	//用户名是否为空
+	if(isNull(userNameR)||userNameR=="手机号/邮箱/用户名")
+	{
+		console.log("用户名为空");
+		flag = false;
+	}
+	if(!isEqual(passwordR,passWordRC))
+	{
+		console.log("两次密码输入不相同");
+		flag = false;
+	}
+	if(passwordR.length<6){
+		console.log("密码长度小于6位");
+		flag=false;
+	}
+	if(isNull(validateCodeR))
+	{
+		console.log("验证码为空");
+		flag=false;
+	}
+	return flag;
+	function isNull( str ){ 
+		if ( str == "" ) return true; 
+		var regu = "^[ ]+$"; 
+		var re = new RegExp(regu); 
+		return re.test(str); 
+	};
+	
+	function isEqual(str1,str2){
+		return str1==str2;
+	};
+	
+};
+
 
 </script>
 </body>
