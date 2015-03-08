@@ -381,25 +381,23 @@ $.extend({
 $("#reg_tag").click(function(){
 	console.log("点击下一步提交表单……");
 	var tags_array=new Array();
- 	var atags=$("#user_input_tags").children("a");
+ 	var atags=$("#user_input_tags a");
  	atags.each(function(index,element){
- 		var childs=element.childNodes;
- 		var tag=childs[0];
- 		if(tag){
- 			tags_array.push(tag);
- 		}
- 		
+ 		//console.log("element   :  " + element.innerHTML.toString());
+ 		tags_array.push(element.innerHTML.toString());
  	});
- 	console.log(tags_array);
- 	var tags_str;
- 	for(var i=0;i<tags_array.length;i++)
- 	{
- 		tags_str+=(tags_array[i]+"")+",";
- 		console.log(tags_array[i]);
- 	}
- 
- 	console.log(tags_str);
-	window.location.href="#Reg";
+ 	
+ 	var parameters = {
+ 		tags : tags_array.toString(),
+ 		userId : '9999'
+ 	};
+ 	$.post("http://localhost:8080/topicmatch/TagsManagerServlet",parameters,function(res,status){
+ 		//......
+ 		if(res=="ok")
+ 		{
+ 			window.location.href="#Reg";
+ 		}
+ 	});
 });
 
 //点击获取验证码

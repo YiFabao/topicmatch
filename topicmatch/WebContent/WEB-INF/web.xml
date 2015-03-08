@@ -16,6 +16,16 @@
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>TagsManager</servlet-name>
+    <servlet-class>so.xunta.servlet.TagsManagerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TagsManager</servlet-name>
+    <url-pattern>/TagsManagerServlet</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
     <servlet-name>TopicHistory</servlet-name>
     <servlet-class>so.xunta.servlet.TopicHistory</servlet-class>
   </servlet>
@@ -23,6 +33,7 @@
     <servlet-name>TopicHistory</servlet-name>
     <url-pattern>/TopicHistoryMessage/test</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>weiboLogin</servlet-name>
     <servlet-class>so.xunta.servlet.WeiboLogin</servlet-class>
@@ -138,6 +149,7 @@
   <filter-mapping>
     <filter-name>RequestFilter</filter-name>
     <url-pattern>/servlet4/*</url-pattern>
+
   </filter-mapping>
   <session-config>
     <session-timeout>43200</session-timeout>
