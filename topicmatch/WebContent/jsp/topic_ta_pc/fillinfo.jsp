@@ -441,8 +441,13 @@ $("#bind_local_account").click(function(){
   			passwordR:passWordR,
   			validateCodeR:validateCodeR
 		},function(res,state){
-			console.log(res);
-			window.location.href="#ComReg";
+			if(res=="ok")
+			{
+				window.location.href="#ComReg";
+			}else{
+				console.log(res);
+				alert(res);
+			}
 		});
 	}else{
 		console.log("验证不通过...");

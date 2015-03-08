@@ -77,7 +77,16 @@ public class UserLoginService extends HttpServlet {
 				System.out.println("用户验证码输入正确");
 				//获取userId
 				User user = (User) request.getSession().getAttribute("user");
+				if(user==null){
+					System.out.println("user in session is null");
+					response.getWriter().write("illegal login");
+					return ;
+				}
 				System.out.println("获取第三方用户id:"+user.getId());
+				user.setXunta_username(userNameR);
+				user.setPassword(password);
+				userManager.updateUser(user);
+				System.out.println("绑定用户数据成功");
 			}
 			else{
 				System.out.println("用户验证码输入不正确");
