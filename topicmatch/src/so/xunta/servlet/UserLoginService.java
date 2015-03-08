@@ -58,7 +58,12 @@ public class UserLoginService extends HttpServlet {
 			String userNameR = request.getParameter("userNameR");
 			String password = request.getParameter("passwordR");
 			String validateCodeR = request.getParameter("validateCodeR");
-			if(validateCodeR!=null)
+			String _code=(String) request.getSession().getAttribute("code");
+			System.out.println("_code:"+_code);
+			//获取userId
+			User user = (User) request.getSession().getAttribute("user");
+			System.out.println("获取第三方用户id:"+user.getId());
+/*			if(validateCodeR!=null)
 			{
 				validateCodeR = validateCodeR.toUpperCase();
 			}
@@ -74,7 +79,7 @@ public class UserLoginService extends HttpServlet {
 				//获取userId
 				User user = (User) request.getSession().getAttribute("user");
 				System.out.println("获取第三方用户id:"+user.getId());
-			}
+			}*/
 			response.getWriter().write("ok");
 			
 		}catch(Exception e){
