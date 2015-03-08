@@ -58,11 +58,9 @@ public class UserLoginService extends HttpServlet {
 			String userNameR = request.getParameter("userNameR");
 			String password = request.getParameter("passwordR");
 			String validateCodeR = request.getParameter("validateCodeR");
-			String _code=(String) request.getSession().getAttribute("code");
-			System.out.println("_code:"+_code);
-			//获取userId
-			User user = (User) request.getSession().getAttribute("user");
-			System.out.println("获取第三方用户id:"+user.getId());
+			System.out.println("用户填写的用户名====>userNameR:"+userNameR);
+			System.out.println("用户填写的密码:====>password:"+password);
+			System.out.println("用户填写验证码:====>validateCodeR:"+validateCodeR);
 			if(validateCodeR!=null)
 			{
 				validateCodeR = validateCodeR.toUpperCase();
@@ -76,9 +74,14 @@ public class UserLoginService extends HttpServlet {
 			}
 			if(_code!=null&&validateCodeR!=null&&_code.equals(validateCodeR))
 			{
+				System.out.println("用户验证码输入正确");
 				//获取userId
 				User user = (User) request.getSession().getAttribute("user");
 				System.out.println("获取第三方用户id:"+user.getId());
+			}
+			else{
+				System.out.println("用户验证码输入不正确");
+				response.getWriter().write("code input error");
 			}
 			response.getWriter().write("ok");
 			
