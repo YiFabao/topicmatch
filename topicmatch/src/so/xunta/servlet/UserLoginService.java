@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import so.xunta.entity.Tag;
+import so.xunta.entity.User;
+import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
+import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.utils.HtmlRegexpUtil;
 
 /**
@@ -23,7 +26,7 @@ import so.xunta.utils.HtmlRegexpUtil;
 @WebServlet(description = "用户登录请求入口的小控制器", urlPatterns = { "/UserLoginService" })
 public class UserLoginService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	UserManager userManager=new UserManagerImpl();
     public UserLoginService() {
         super();
     }
@@ -42,18 +45,49 @@ public class UserLoginService extends HttpServlet {
 			metchod_tags(request,response);
 			break;
 		case "bindlocalaccount":
-			System.out.println("绑定用户账号操作");
-/*  			userNameR:userNameR,
-  			passwordR:passWordR,
-  			validateCodeR:validateCodeR*/
-			System.out.println(request.getParameter("userNameR"));
-			System.out.println(request.getParameter("passwordR"));
-			System.out.println(request.getParameter("validateCodeR"));
-			response.getWriter().write("收到请求");
+			methoc_bindlocalaccount(request,response);
 			break;
 		default:
 			break;
 		}
+	}
+
+	private void methoc_bindlocalaccount(HttpServletRequest request, HttpServletResponse response) {
+		try{
+			System.out.println("绑定用户账号操作");
+			String userNameR = request.getParameter("userNameR");
+			String password = request.getParameter("passwordR");
+			String validateCodeR = request.getParameter("validateCodeR");
+			if(validateCodeR!=null)
+			{
+				validateCodeR = validateCodeR.toUpperCase();
+			}
+			
+			//验证用户输入的验证码是否正确
+			String _code=(String) request.getSession().getAttribute("code");
+			if(_code!=null)
+			{
+				_code = _code.toUpperCase();
+			}
+			if(_code!=null&&validateCodeR!=null&&_code.equals(validateCodeR))
+			{
+				//获取userId
+				User user = (User) request.getSession().getAttribute("user");
+				System.out.println("获取第三方用户id:"+user.getId());
+			}
+			response.getWriter().write("ok");
+			
+		}catch(Exception e){
+			try {
+				response.getWriter().write(e.getMessage());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+
+		
 	}
 
 	private void metchod_tags(HttpServletRequest request, HttpServletResponse response) {

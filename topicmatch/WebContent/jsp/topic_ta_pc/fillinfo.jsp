@@ -153,7 +153,7 @@
 			<div class="dialog-box d2">
 				<div class="login-4 form">
 					<h3>基本资料填写是否需要创建一个本地账户？</h3>
-					<form action="#ComReg" class="l" data-preventDefault="validate_false" >
+					<form  class="l" data-preventDefault="validate_false" >
 						<div class="item">
 							<label class="dt" for="UserNameR">用&ensp;户&ensp;名</label>
 							<div class="dd">
@@ -393,10 +393,12 @@ $("#reg_tag").click(function(){
  		cmd : 'tag'
  	};
  	$.post("<%=basePath%>servlet/userLoginService",parameters,function(res,status){
- 		//......
  		if(res=="ok")
  		{
  			window.location.href="#Reg";
+ 		}
+ 		else{
+ 			console.log(res);
  		}
  	});
 });
@@ -440,6 +442,7 @@ $("#bind_local_account").click(function(){
   			validateCodeR:validateCodeR
 		},function(res,state){
 			console.log(res);
+			window.location.href="#ComReg";
 		});
 	}else{
 		console.log("验证不通过...");
@@ -480,8 +483,10 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 	function isEqual(str1,str2){
 		return str1==str2;
 	};
-	
 };
+
+
+//继续完善
 
 
 </script>
