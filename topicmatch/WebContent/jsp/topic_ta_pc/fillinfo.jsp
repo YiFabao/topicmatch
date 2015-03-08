@@ -389,7 +389,7 @@ $("#reg_tag").click(function(){
  	
  	var parameters = {
  		tags : tags_array.toString(),
- 		userId : '9999',
+ 		userId : "${sessionScope.user.id}"==""?'9999':"${sessionScope.user.id}",
  		cmd : 'tag'
  	};
  	$.post("<%=basePath%>servlet/userLoginService",parameters,function(res,status){

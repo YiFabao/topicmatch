@@ -63,7 +63,7 @@ public class UserLoginService extends HttpServlet {
 			//获取userId
 			User user = (User) request.getSession().getAttribute("user");
 			System.out.println("获取第三方用户id:"+user.getId());
-/*			if(validateCodeR!=null)
+			if(validateCodeR!=null)
 			{
 				validateCodeR = validateCodeR.toUpperCase();
 			}
@@ -79,7 +79,7 @@ public class UserLoginService extends HttpServlet {
 				//获取userId
 				User user = (User) request.getSession().getAttribute("user");
 				System.out.println("获取第三方用户id:"+user.getId());
-			}*/
+			}
 			response.getWriter().write("ok");
 			
 		}catch(Exception e){
