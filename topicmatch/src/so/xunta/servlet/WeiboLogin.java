@@ -144,7 +144,8 @@ public class WeiboLogin extends HttpServlet {
 			//TODO判断是否绑定账号
 			
 			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/fillinfo.jsp?#&FillInfo");
+			//response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
 		}
 
 		/*response.setContentType("text/html");

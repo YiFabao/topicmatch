@@ -195,19 +195,24 @@
 			<div class="dialog-box d2">
 				<div class="login-4 form">
 					<h3>继续完善 or 完成注册？</h3>
-					<form action="#" id="ComRegForm" data-preventDefault="validate_false" >
+					<form  id="ComRegForm" data-preventDefault="validate_false" >
 						<div class="l">
 							<div class="item">
 								<label class="dt dtt">头&emsp;&emsp;像</label>
 								<div class="dd">
-									<span class="pic-area"></span>
-									<a href="#" class="f14 a1">本地上传</a>
+									<span class="pic-area">
+										<div id="imgdiv"><img id="imgShow" width="120" height="120" style="margin-top:-1px;margin-left:-1px"/></div>
+									</span>
+									
+									<a href="javascript:up_img.click();"  class="f14 a1">
+										本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
+									</a>
 								</div>
 							</div>
 							<div class="item">
 								<label for="NC" class="dt">昵&emsp;&emsp;称</label>
 								<div class="dd">
-									<input type="text" id="NC" class="text-c wtb" data-min="1">
+									<input type="text" id="NC" class="text-c wtb" data-min="1" name="nickname">
 								</div>
 							</div>
 							<div class="item">
@@ -254,18 +259,18 @@
 							<div class="item">
 								<label for="NC" class="dt">常&ensp;住&ensp;地</label>
 								<div class="dd">
-									<input type="text" id="NC" class="text-c wtb" data-min="1">
+									<input type="text" id="NC" class="text-c wtb" data-min="1" name="address">
 								</div>
 							</div>
 							<div class="item">
 								<label for="NC" class="dt">邮&emsp;&emsp;箱</label>
 								<div class="dd">
-									<input type="text" id="NC" class="text-c wtb" data-min="1">
+									<input type="text" id="NC" class="text-c wtb" data-min="1" name="email">
 								</div>
 							</div>
 							<div class="carry-out">
 								<p class="red f18">以后仍可在个人中心进行修改。</p>
-								<button class="btn-b wtb" data-url="#">完成注册</button>
+								<button class="btn-b wtb" id="completeReg">完成注册</button>
 							</div>
 						</div>
 					</form>
@@ -281,6 +286,8 @@
 <script src="js/mobilebone-min.js"></script>
 <script src="js/jquery-html5Validate-min.js"></script>
 <script src="js/common.js"></script>
+<script src="<%=basePath %>jsp/static/js/uploadPreview.js"></script>
+
 <script>
 //阻止表单提交	
 var validate_false = function(form) {
@@ -369,7 +376,13 @@ $.extend({
 	comreg:function(){
 		$("#ComReg form").html5Validate(function() {
 			var self = this;
-				self.submit(); 
+		
+			$(this).attr("method","post");
+			$(this).attr("enctype","multipart/form-data");
+			$(this).attr("action","<%=basePath %>servlet/userLoginService?cmd=complete_reg");
+			console.log("完成注册");
+		
+			self.submit(); 
 		});
 	},
 	comregOut:function(){
@@ -490,8 +503,8 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 	};
 };
 
-
-//继续完善
+//上传图片预览
+ new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
 
 
 </script>

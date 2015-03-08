@@ -95,6 +95,7 @@ public class Login extends HttpServlet {
 				response.addCookie(date_cookie);*/
 				//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 				response.getWriter().write("success");
+				response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/topics_memory.jsp");
 			}
 		}
 		
