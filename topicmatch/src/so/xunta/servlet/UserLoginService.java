@@ -155,11 +155,13 @@ public class UserLoginService extends HttpServlet {
 							birthday.setDate(Integer.parseInt(day));
 							user.setBirthday(birthday);
 						}
+						
 						userManager.updateUser(user);
+						user.setImageUrl(new File(path + "/" + newImageName).getAbsolutePath());
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					
-						response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/topics_memory.jsp");
+						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 					}
 				}
 			} catch (Exception e) {

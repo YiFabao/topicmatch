@@ -420,7 +420,7 @@ $("#btn_login").click(function(){
 	console.log(userName+"|"+password);
 	$(this).attr("disabled",false);
 	$.post("<%=basePath %>servlet/login",{xunta_username:userName,password:password},function(res,state){
-		console.log(res);
+		//console.log(res);
 		if(res=="failure"){
 			console.log("用户名或密码错误");
 			$("#errorMsg").css("display","block");
