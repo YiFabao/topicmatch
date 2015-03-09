@@ -39,7 +39,7 @@ public class UserLoginService extends HttpServlet {
 		switch(cmd){
 		case "tag":
 			System.out.println("获取tag标签,保存到数据库");
-			metchod_tags(request,response);
+			method_tags(request,response);
 			break;
 		case "bindlocalaccount":
 			System.out.println("绑定用户账号操作");
@@ -56,9 +56,9 @@ public class UserLoginService extends HttpServlet {
 		}
 	}
 
-	private void metchod_tags(HttpServletRequest request, HttpServletResponse response) {
+	private void method_tags(HttpServletRequest request, HttpServletResponse response) {
 		try{
-			Long userId = Long.parseLong(new String(request.getParameter("userId").getBytes("ISO8859-1"),"UTF-8")); 
+			Long userId = Long.parseLong(request.getParameter("userId")); 
 			String tagArray[] = HtmlRegexpUtil.filterHtml(request.getParameter("tags")).replaceAll("", "").split(",");
 			List<Tag> list = new ArrayList<Tag>();
 			for (int i = 0; i < tagArray.length; i++) {

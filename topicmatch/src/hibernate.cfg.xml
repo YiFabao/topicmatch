@@ -31,6 +31,8 @@
 		<mapping resource="so/xunta/entity/WeiboUserInfo.hbm.xml" />
 		<mapping resource="so/xunta/entity/WeiboDynamicInfoContent.hbm.xml" />
 		<mapping resource="so/xunta/entity/Tag.hbm.xml" />
+		<mapping resource="so/xunta/websocket/entity/HistoryMessage.hbm.xml" />
+		<mapping resource="so/xunta/websocket/entity/OfflineMessage.hbm.xml" />
 		
 	</session-factory>
 </hibernate-configuration>

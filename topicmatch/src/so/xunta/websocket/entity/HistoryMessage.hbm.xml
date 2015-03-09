@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class table="historyMessage" name="so.xunta.websocket.entity.HistoryMessage">
+    <id name="id">
+      <generator class="native"/>
+    </id>
+    <property name="status" not-null="false"/>
+    <property name="topicId" not-null="false" />
+    <property name="messageId" not-null="false"/>
+    <property name="senderId" not-null="false" />
+    <property name="accepterId" not-null="false" />
+    <property name="content" not-null="false" />
+    <property name="dateAndTime" not-null="false" />
+    <property name="nickname" not-null="false" />
+    <property name="date" not-null="false" />
+    <property name="time" not-null="false" />
+  </class>
+</hibernate-mapping>
+

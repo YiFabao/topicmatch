@@ -1,0 +1,168 @@
+package so.xunta.websocket.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import so.xunta.utils.HibernateUtils;
+import so.xunta.websocket.entity.HistoryMessage;
+import so.xunta.websocket.entity.OfflineMessage;
+
+public class WebSocketUtils {
+	
+	/*
+	 * 添加历史消息
+	 * */
+	public static void addHistoryMessage(HistoryMessage historyMessage) {
+		System.out.println("服务器LOG ：  准备添加历史消息");
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			session.save(historyMessage);
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		System.out.println("服务器LOG ：  添加历史消息成功");
+	}
+	
+	/*
+	 * 设置未读消息数
+	 * */
+	public static void setUnreadMessageNum(long accepterId , String topicId){
+		System.out.println("服务器LOG ：  准备设置未读消息数");
+		Session session = HibernateUtils.openSession();
+		Query query;
+		try {
+			session.beginTransaction();
+			query = session.createQuery("from OfflineMessage where topicId=? and accepterId=?").setString(0, topicId).setLong(1, accepterId);
+			int count = query.list().size();
+			if(count == 0){
+				System.out.println("1");
+				session.save(new OfflineMessage("200", (long) 100, (long) 1));
+				session.getTransaction().commit();
+			}else{
+				System.out.println("2");
+				OfflineMessage om = (OfflineMessage) query.uniqueResult();
+				Long num = om.getCount();
+				om.setCount(++num);
+				session.update(om);
+				session.getTransaction().commit();
+			}
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		System.out.println("服务器LOG ：  设置未读消息数成功");
+	}
+	/*
+	 * 获取话题下的成员列表
+	 * */
+	public static List<String> getTopicUserIdList(String topicId) {
+		System.out.println("服务器LOG ：  准备获取话题下的成员列表");
+		List<String> arrayList = new ArrayList<String>();
+		Session session = HibernateUtils.openSession();
+		Query query;
+		try {
+			session.beginTransaction();
+			query = session.createQuery("select topicMemberId from TopicGroup where topicId=?").setString(0, topicId);
+			session.getTransaction().commit();
+			arrayList = query.list();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		System.out.println("服务器LOG ：  获取话题下的成员列表成功");
+		return arrayList;
+	}
+	/*
+	 * 通过某用户的ID获取话题Id列表
+	 * */
+	public static List<String> getTopicId(int accepterId) {
+		System.out.println("服务器LOG ：  准备通过某用户的ID获取话题Id列表");
+		List<String> arrayList = new ArrayList<String>();
+		Session session = HibernateUtils.openSession();
+		Query query;
+		try {
+			session.beginTransaction();
+			query = session.createQuery("select topicId from TopicHistory where authorId=?").setString(0, accepterId+"");
+			session.getTransaction().commit();
+			arrayList = query.list();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		System.out.println("服务器LOG ： 通过某用户的ID获取话题Id列表成功");
+		return arrayList;
+	}
+	/*
+	 * 获取未读消息数
+	 * */
+	public static String getUnreadMessageNum(String topic_id,int accepter_id) {
+		System.out.println("服务器LOG ：  准备获取未读消息数");
+		Session session = HibernateUtils.openSession();
+		Query query;
+		String string;
+		try {
+			session.beginTransaction();
+			query = session.createQuery("from OfflineMessage as o where o.topicId=? and o.accepterId=?").setString(0,topic_id).setLong(1, accepter_id);
+			session.getTransaction().commit();
+			OfflineMessage offlineMessage = (OfflineMessage) query.uniqueResult();
+			string = offlineMessage.getCount()+"";
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		System.out.println("服务器LOG ：  获取未读消息数成功");
+		return string;
+	}
+	
+	/*
+	 * 删除未读消息
+	 * */
+	public static void deleteUnreadMessage(String topic_id, int accepter_id) {
+		System.out.println("服务器LOG ：  准备删除未读消息");
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery("from OfflineMessage as o where o.topicId=? and o.accepterId=?").setString(0,topic_id).setLong(1, accepter_id);
+			OfflineMessage offlineMessage = (OfflineMessage) query.uniqueResult();
+			session.delete(offlineMessage);
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		System.out.println("服务器LOG ：  删除未读消息成功");
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		WebSocketUtils w = new WebSocketUtils();
+//		w.addHistoryMessage(new HistoryMessage(1, "1", (long) 1, 1, "1", "1", "1", "1", 1, 1));
+//		w.setUnreadMessageNum((long) 100, "200");
+//		List<String> list = w.getTopicUserIdList("C798242451CE56E29DE813B131AA2982");
+//		for (String string : list) {
+//			System.out.println(string);
+//		}
+//		List<String> list = w.getTopicId("1");
+//		for (String string : list) {
+//			System.out.println(string);
+//		}
+//		w.deleteUnreadMessage("200",100);
+	}
+}
