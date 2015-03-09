@@ -2,6 +2,7 @@ package so.xunta.topic.model.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -81,11 +82,13 @@ public class TopicModelImpl implements TopicModel{
 		}
 		//获取与该话题id对应的话题历史
 		List<TopicHistory> topicHistoryList = topicManager.findTopicHistoryByTopicId(topicIdList);
+		if(topicHistoryList==null){return null;}
 		for(TopicHistory t:topicHistoryList)
 		{
 			//System.out.println(t.topicId+"  "+t.publish_or_join);
 			//遍历每个话题下的成员
 			String key = t.authorId;
+			System.out.println("话题成员id:"+key);
 			if(matchedMap.containsKey(key)){//存在直接添加
 				MatchedPeopleDetail  matchedPeopleDetail = matchedMap.get(key);
 				//判断该用户是发起还是参与
@@ -97,6 +100,7 @@ public class TopicModelImpl implements TopicModel{
 				}
 			}else{//不存在要创建
 				MatchedPeopleDetail  matchedPeopleDetail = new MatchedPeopleDetail();
+				matchedPeopleDetail.userId=Integer.parseInt(key);
 				//判断该用户是发起还是参与
 				if(t.publish_or_join=='p'){//发起话题
 					matchedPeopleDetail.addPulishTopic(t.topicId);
@@ -107,7 +111,30 @@ public class TopicModelImpl implements TopicModel{
 				matchedMap.put(key,matchedPeopleDetail);
 			}
 		}
-		
-		return (List<MatchedPeopleDetail>) matchedMap.values();
+		Iterator<MatchedPeopleDetail> it=matchedMap.values().iterator();
+		List<MatchedPeopleDetail> temp_list=new ArrayList<MatchedPeopleDetail>();
+		while(it.hasNext()){
+			MatchedPeopleDetail m=it.next();
+			temp_list.add(m);
+		}
+		return temp_list;
+	}
+	public static void main(String[] args) {
+		TopicManager topicManager =new TopicManagerImpl();
+		List<Topic> topiclist=topicManager.matchMyTopic("随州");
+		for(Topic topic:topiclist)
+		{
+			System.out.println(topic.userId+"==>"+topic.topicName+" ===>"+topic.topicContent);
+		}
+		TopicModel topicModel = new TopicModelImpl();
+		List<MatchedPeopleDetail>  d=topicModel.matchedPeopleDetaiList(topiclist);
+		if(d==null){
+			System.out.println("没有");
+			return ;
+		}
+		for(MatchedPeopleDetail m:d)
+		{
+			System.out.println("用户id:"+m.userId+"  参与的相关话题数 ==>"+m.getJoinTopicNum()+" 发起的相关话题数 ===>"+m.getpublishTopicNum());
+		}
 	}
 }

@@ -17,6 +17,9 @@ public interface TopicManager {
 	public List<Topic> matchMyTopicByUserId(String userId);
 	public List<Topic> matchUserRelativeTopic(String userId,String topicContent);
 	public List<Topic> matchUserRelativeTopic(String userId,String topicName,String topicContent);
+	
+	//话题推荐
+	public List<Topic> recommendTopics(String userId);
 
 	//将话题保存到数据库中
 	public void saveTopic(Topic topic);

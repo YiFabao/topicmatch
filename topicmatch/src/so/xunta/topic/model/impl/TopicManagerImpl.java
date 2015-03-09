@@ -36,7 +36,10 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
+import so.xunta.entity.Tag;
 import so.xunta.localcontext.LocalContext;
+import so.xunta.manager.TagsManager;
+import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
@@ -367,7 +370,15 @@ public class TopicManagerImpl implements TopicManager {
 			System.out.println("话题作者id:"+t.authorId);
 			System.out.println("===========================");
 		}*/
-		topicmanager.addTopicJoinNumByOne("69078E1A128D0E3A9327037A3DB4BD9E");
+		//topicmanager.addTopicJoinNumByOne("69078E1A128D0E3A9327037A3DB4BD9E");
+		List<Topic> topicList = topicmanager.recommendTopics("49");
+		for(Topic topic:topicList)
+		{
+			System.out.println(topic.getUserId()+":"+"标题:"+topic.getTopicName()+"      内容:"+topic.getTopicContent());
+		}
+	/*	TagsManager tagmanaManager = new TagsManagerImpl();
+		tagmanaManager.addOneTag(new Tag(49,"测试"));*/
+		
 
 	}
 
@@ -797,6 +808,9 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	public List<TopicHistory> findTopicHistoryByTopicId(List<String> topicIdList) {
+		if(topicIdList.size()==0){
+			return null;
+		}
 		Session session = HibernateUtils.openSession();
 		String hql = "from TopicHistory as t where t.topicId in (:topicIdList)";
 		org.hibernate.Query query = session.createQuery(hql);
@@ -826,6 +840,70 @@ public class TopicManagerImpl implements TopicManager {
 			session.close();
 		}
 	}
-	
 
+	@Override
+	public List<Topic> recommendTopics(String userId2) {
+		//根据userId查询出 该用户的标签
+		TagsManager tagmanager = new TagsManagerImpl();
+		List<Tag> tagslist = tagmanager.findAllTagsByUserId(Long.parseLong(userId2));
+		for(Tag tag:tagslist)
+		{
+			System.out.println(tag.getTagname());
+		}
+		List<Topic> topicList=new ArrayList<>();
+		try {
+			BooleanQuery query=new BooleanQuery();
+			for(Tag tag:tagslist)
+			{
+				List<String> q=showTerms(tag.getTagname(),analyzer);
+				for(String t:q)
+				{
+					//没有同义词
+					TermQuery tq1=new TermQuery(new Term("topicContent",t));
+					TermQuery tq2=new TermQuery(new Term("topicName",t));
+					query.add(tq1,Occur.SHOULD);
+					query.add(tq2,Occur.SHOULD);
+	
+				}
+			}
+			if(directory==null)
+			{
+				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+			}
+		    DirectoryReader ireader = DirectoryReader.open(directory);
+		    IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits=searcher.search(query,Integer.MAX_VALUE).scoreDocs;
+			
+			for (int i = 0; i < hits.length; i++) {
+				int docID = hits[i].doc;
+				//话题唯一id
+				String topicId=searcher.doc(docID).get("topicId");
+				//匹配的话题
+				String topicContent = searcher.doc(docID).get("topicContent");
+				//话题名
+				String topicName = searcher.doc(docID).get("topicName");
+				//用户id
+				String userId = searcher.doc(docID).get("userId");
+				if(userId.equals(userId2))
+				{
+					continue;
+				}
+				//用户名
+				String userName = searcher.doc(docID).get("userName");
+				//日期
+				String createTime = searcher.doc(docID).get("createTime");
+				//匹配的话题高亮
+				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
+				
+				Topic topic = new Topic(topicId, userId, userName, topicName, hightLightTopic,"", createTime,"");
+				topicList.add(topic);
+			}
+			ireader.close();//关闭ireader
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Collections.sort(topicList);
+		return topicList;
+	}
+	
 }
