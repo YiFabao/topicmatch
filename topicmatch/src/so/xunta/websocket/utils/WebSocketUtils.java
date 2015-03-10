@@ -117,7 +117,11 @@ public class WebSocketUtils {
 			query = session.createQuery("from OfflineMessage as o where o.topicId=? and o.accepterId=?").setString(0,topic_id).setLong(1, accepter_id);
 			session.getTransaction().commit();
 			OfflineMessage offlineMessage = (OfflineMessage) query.uniqueResult();
-			string = offlineMessage.getCount()+"";
+			if(offlineMessage == null){
+				string = "0";
+			}else{
+				string = offlineMessage.getCount()+"";
+			}
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
@@ -138,8 +142,10 @@ public class WebSocketUtils {
 			session.beginTransaction();
 			Query query = session.createQuery("from OfflineMessage as o where o.topicId=? and o.accepterId=?").setString(0,topic_id).setLong(1, accepter_id);
 			OfflineMessage offlineMessage = (OfflineMessage) query.uniqueResult();
-			session.delete(offlineMessage);
-			session.getTransaction().commit();
+			if(offlineMessage != null){
+				session.delete(offlineMessage);
+				session.getTransaction().commit();
+			}
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
@@ -154,7 +160,7 @@ public class WebSocketUtils {
 	public static void main(String[] args) {
 		WebSocketUtils w = new WebSocketUtils();
 //		w.addHistoryMessage(new HistoryMessage(1, "1", (long) 1, 1, "1", "1", "1", "1", 1, 1));
-//		w.setUnreadMessageNum((long) 100, "200");
+		w.getUnreadMessageNum("200",100);
 //		List<String> list = w.getTopicUserIdList("C798242451CE56E29DE813B131AA2982");
 //		for (String string : list) {
 //			System.out.println(string);

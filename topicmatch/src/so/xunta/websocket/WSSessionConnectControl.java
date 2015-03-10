@@ -1,7 +1,11 @@
 package so.xunta.websocket;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.catalina.websocket.WsOutbound;
 
 import so.xunta.utils.Console;
@@ -29,5 +33,17 @@ public class WSSessionConnectControl {
 	public static WsOutbound getWindowConnect(int user_id) {
 		System.out.println("服务器LOG   WSSessionConnectControl  ：  43行 执行前 ");
 		return sessionConnectControl.get(user_id);
+	}
+	
+	public static void CloseSession (int user_id){
+		//测试，执行该方法后，客户端的console.log会打印出 code: 200 ，否则该方法有Bug,
+		try {
+			ByteBuffer byteBuffer = ByteBuffer.wrap("服务器主动中断连接".getBytes("UTF-8"));
+			sessionConnectControl.get(user_id).close(20, byteBuffer);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
