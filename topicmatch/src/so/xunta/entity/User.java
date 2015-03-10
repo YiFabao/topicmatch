@@ -5,7 +5,10 @@ import java.util.Date;
 public class User {
 	public long id;//用户全局标识；主键
 	public String xunta_username;
+	public String nickname;
 	public String password;
+	public String address;
+	public Date birthday;
 	public String email;
 	public String qq_openId;
 	public String qq_accessToken;
@@ -54,6 +57,13 @@ public class User {
 	public String getQq_accessToken() {
 		return qq_accessToken;
 	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public void setQq_accessToken(String qqAccessToken) {
 		qq_accessToken = qqAccessToken;
 	}
@@ -82,6 +92,20 @@ public class User {
 	public void setLatestLoginTime(String latestLoginTime) {
 		this.latestLoginTime = latestLoginTime;
 	}
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -99,6 +123,16 @@ public class User {
 		this.createTime = createTime;
 		this.latestLoginTime = latestLoginTime;
 		this.imageUrl = imageUrl;
+	}
+	
+	public User(String xunta_username,String nickname,String address,Date birthday ,String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
+			String latestLoginTime,String imageUrl) {
+		super();
+		new User(xunta_username, password, email, qq_openId, qq_accessToken, weibo_uid, weibo_accessToken, createTime, latestLoginTime, imageUrl);
+		this.setNickname(nickname);
+		this.setAddress(address);
+		this.setBirthday(birthday);
+		
 	}
 	
 	

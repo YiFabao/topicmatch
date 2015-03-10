@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
-import so.xunta.utils.DateTimeUtils;
 
 public class Login extends HttpServlet {
 
@@ -74,6 +73,7 @@ public class Login extends HttpServlet {
 					}
 				}
 				System.out.println("cookie长度:"+xunta_cookies.length);
+				
 				if(hasAigine_login_state){
 					System.out.println("添加cookie");
 					Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode("hasLogged","utf-8"));
@@ -95,6 +95,7 @@ public class Login extends HttpServlet {
 				response.addCookie(date_cookie);*/
 				//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 				response.getWriter().write("success");
+				//response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/topics_memory.jsp");
 			}
 		}
 		
