@@ -1,5 +1,5 @@
-//导航效果
 $(function(){
+	//导航效果
 	var var_a;
 	if($('.nav li').find(".current").length<0) var_a = false
 		else var_a = true
@@ -12,8 +12,8 @@ $(function(){
 			return false;
 		}
 	});
-	if(var_a) $(".nav li").removeClass("current") 
-		else $('.nav li.back').show()
+	if(var_a) $('.nav li.back').show()
+		else $(".nav li").removeClass("current") 
 	current = $(".nav").find(".current");
 	$(".nav li").hover(function(){
 		current.removeClass("current");
@@ -149,3 +149,20 @@ function optionClear(ab){
 function  IsRunYear(year){ 
    return(0==year%4&&(year%100!=0 || year%400==0));
 }
+//聊天框
+$('.topic-box .toggle').click(function(){
+	var title =$(this).attr("title");
+	if(title=="展开"){
+		$(this).attr("title","收缩");
+		$(this).find("i").html("&#xe605;");
+		$('.topic-box').animate({"right":0},'slow')
+	}
+	else{
+		$(this).attr("title","展开");
+		$(this).find("i").html("&#xe606;");
+		$('.topic-box').animate({"right":-82},'slow')
+	}
+})
+$('.topic-box .title .close').click(function(){
+	$('.topic-box').animate({"bottom":-620},'300')
+})

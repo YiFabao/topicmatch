@@ -24,6 +24,7 @@ import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.entity.MatchedTopic;
 import so.xunta.topic.entity.MessageAlert;
+import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.SysMessage;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
@@ -110,9 +111,30 @@ public class TopicService extends HttpServlet {
 		case "searchUnreadMsgNum":
 			searchUnreadMsgNum(request,response);
 			break;
+		case "recommendedPeople":
+			method_recommendedPeople(request,response);
+			break;
 		case "exit":
 			exit(request,response);
 			break;
+		}
+	}
+
+	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
+		String userId = request.getParameter("userId");
+		List<RecommendedPeople> recommendedPeopleList = topicModel.getRecommendedPeople(userId);
+		JSONArray jsonArray = new JSONArray();
+		for(RecommendedPeople r:recommendedPeopleList){
+			JSONObject obj=new JSONObject();
+			obj.put(r.getUserId(),r.getTopicHistoryId());
+			jsonArray.add(obj);
+		}
+		response.setContentType("text/json");
+		try {
+			response.getWriter().write(jsonArray.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

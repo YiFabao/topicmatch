@@ -41,6 +41,7 @@ import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.topic.entity.MessageAlert;
+import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
@@ -905,5 +906,8 @@ public class TopicManagerImpl implements TopicManager {
 		Collections.sort(topicList);
 		return topicList;
 	}
+
+
+
 	
 }

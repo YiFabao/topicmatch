@@ -1,10 +1,13 @@
 package so.xunta.topic.model.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +16,7 @@ import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.entity.MatchedPeopleDetail;
+import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
@@ -120,8 +124,8 @@ public class TopicModelImpl implements TopicModel{
 		return temp_list;
 	}
 	public static void main(String[] args) {
-		TopicManager topicManager =new TopicManagerImpl();
-		List<Topic> topiclist=topicManager.matchMyTopic("随州");
+		//TopicManager topicManager =new TopicManagerImpl();
+/*		List<Topic> topiclist=topicManager.matchMyTopic("随州");
 		for(Topic topic:topiclist)
 		{
 			System.out.println(topic.userId+"==>"+topic.topicName+" ===>"+topic.topicContent);
@@ -135,6 +139,70 @@ public class TopicModelImpl implements TopicModel{
 		for(MatchedPeopleDetail m:d)
 		{
 			System.out.println("用户id:"+m.userId+"  参与的相关话题数 ==>"+m.getJoinTopicNum()+" 发起的相关话题数 ===>"+m.getpublishTopicNum());
+		}*/
+		TopicModel t=new TopicModelImpl();
+		List<RecommendedPeople> recommendedPeopleList = t.getRecommendedPeople("1");
+		if(recommendedPeopleList==null){
+			System.out.println("空");
 		}
+		else{
+			for(RecommendedPeople r:recommendedPeopleList)
+			{
+				System.out.println(r.getUserId()+"  ==>"+ r.getTopicHistoryId());
+			}
+		}
+		
+	}
+	
+
+	@Override
+	public List<RecommendedPeople> getRecommendedPeople(String userId) {
+		//3.List<topic> ==>RecommendPeople
+		List<RecommendedPeople> recommendedPeopleList =new ArrayList<RecommendedPeople>();
+		Map<String,RecommendedPeople> userId_RecommendedPeople_map=new HashMap<String,RecommendedPeople>();
+		
+		TopicManager topicManager =new TopicManagerImpl();
+		List<Topic> topicList = topicManager.recommendTopics(userId);
+		if(topicList==null){return null;}
+		
+		//遍历每个topic
+		List<String> topicIdList =new ArrayList<String>();
+		for(Topic topic:topicList)
+		{
+			topicIdList.add(topic.topicId);
+		}
+		
+		//获取与该话题id对应的话题历史
+		List<TopicHistory> topicHistoryList = topicManager.findTopicHistoryByTopicId(topicIdList);
+		if(topicHistoryList==null){return null;}
+		
+		// 遍历
+		for(TopicHistory t:topicHistoryList)
+		{
+			//System.out.println(t.topicId+"  "+t.publish_or_join);
+			//遍历每个话题下的成员
+			String key = t.authorId;
+			if(userId_RecommendedPeople_map.containsKey(key)){//存在直接添加
+				RecommendedPeople  recommendedPeople = userId_RecommendedPeople_map.get(key);
+				recommendedPeople.setUserId(key);
+				recommendedPeople.setLatestTopicHistory(t);
+			}else{//不存在要创建
+				RecommendedPeople  recommendedPeople=new RecommendedPeople();
+				recommendedPeople.userId=key;
+				recommendedPeople.setLatestTopicHistory(t);
+				userId_RecommendedPeople_map.put(key,recommendedPeople);
+			}
+		}
+		if(userId_RecommendedPeople_map==null){
+			return null;
+		}
+		
+		Collection<RecommendedPeople> recommends=userId_RecommendedPeople_map.values();
+		Iterator<RecommendedPeople> it =recommends.iterator();
+		while(it.hasNext())
+		{
+			recommendedPeopleList.add(it.next());
+		}
+		return recommendedPeopleList;
 	}
 }
