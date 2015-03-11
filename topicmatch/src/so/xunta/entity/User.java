@@ -5,7 +5,7 @@ import java.util.Date;
 public class User {
 	public long id;//用户全局标识；主键
 	public String xunta_username;
-	public char sex;//‘m’：男　 ‘w’:女
+	public char sex=' ';//‘m’：男　 ‘w’:女
 	public String nickname;
 	public String password;
 	public String address;
