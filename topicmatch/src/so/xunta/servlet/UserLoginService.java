@@ -166,11 +166,8 @@ public class UserLoginService extends HttpServlet {
 					Calendar c =Calendar.getInstance();
 					c.clear();
 					System.out.println("year:"+ year+" month:"+(month)+" day:"+day);
-					c.set(Integer.parseInt(year),Integer.parseInt(month+1),Integer.parseInt(day));
-					Date birthday = c.getTime();
-					String birth=DateTimeUtils.getBirthdayFormatStr(birthday);
-					user.setBirthday(birth);
-					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birth);
+					user.setBirthday(year+"-"+month+"_"+day);
+					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+(year+"-"+month+"_"+day));
 				}
 				userManager.updateUser(user);
 			} catch (Exception e) {
