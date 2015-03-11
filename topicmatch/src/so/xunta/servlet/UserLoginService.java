@@ -116,6 +116,7 @@ public class UserLoginService extends HttpServlet {
 							System.out.println("nickname:"+nickname);
 							break;
 						case "sex":
+							System.out.println("sex:"+ds);
 							if(ds!=null&&!"".equals(ds)){
 								user.setSex(ds);
 							}						
@@ -173,7 +174,7 @@ public class UserLoginService extends HttpServlet {
 					c.clear();
 					System.out.println("year:"+ year+" month:"+(month)+" day:"+day);
 					user.setBirthday(year+"-"+month+"-"+day);
-					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+(year+"-"+month+"_"+day));
+					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+(year+"-"+month+"-"+day));
 				}
 				userManager.updateUser(user);
 			} catch (Exception e) {
