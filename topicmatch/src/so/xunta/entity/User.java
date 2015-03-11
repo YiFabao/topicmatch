@@ -8,7 +8,7 @@ public class User {
 	public String nickname;
 	public String password;
 	public String address;
-	public Date birthday;
+	public String birthday;
 	public String email;
 	public String qq_openId;
 	public String qq_accessToken;
@@ -99,11 +99,11 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
-	public Date getBirthday() {
+
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 	public User() {
@@ -125,7 +125,7 @@ public class User {
 		this.imageUrl = imageUrl;
 	}
 	
-	public User(String xunta_username,String nickname,String address,Date birthday ,String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
+	public User(String xunta_username,String nickname,String address,String birthday ,String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
 			String latestLoginTime,String imageUrl) {
 		super();
 		new User(xunta_username, password, email, qq_openId, qq_accessToken, weibo_uid, weibo_accessToken, createTime, latestLoginTime, imageUrl);

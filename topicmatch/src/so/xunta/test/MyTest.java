@@ -1,19 +1,13 @@
 package so.xunta.test;
 
-import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MyTest {
 	public static void main(String[] args) {
-		String aa=System.getProperty("user.dir") ; 
-		File f=new File(aa);
-		if(f.isDirectory())
-		{
-			File[] arrayF=f.listFiles();
-			for(int i=0;i<arrayF.length;i++)
-			{
-				System.out.println(arrayF[i].getName());
-			}
-		}
-		System.out.println(aa);
+	Calendar c =Calendar.getInstance();
+	c.set(2015, 2, 15);
+	Date d = c.getTime();
+	System.out.println(d);
 	}
 }

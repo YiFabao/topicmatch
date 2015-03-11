@@ -2,7 +2,9 @@ package so.xunta.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.HtmlRegexpUtil;
 
 /**
@@ -87,7 +90,6 @@ public class UserLoginService extends HttpServlet {
 				String day="";
 				String address="";
 				String email="";
-				Date birthday=null;
 				System.out.println(list.size());
 				
 				//完善用户资料
@@ -161,13 +163,14 @@ public class UserLoginService extends HttpServlet {
 				}
 				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
 				{
-					birthday=new Date();
-					birthday.setYear(Integer.parseInt(year));
-					birthday.setMonth(Integer.parseInt(month));
-					birthday.setDate(Integer.parseInt(day));
-					user.setBirthday(birthday);
+					Calendar c =Calendar.getInstance();
+					c.set(2015, 2, 15);
+					Date birthday = c.getTime();
+					String birth=DateTimeUtils.getBirthdayFormatStr(birthday);
+					user.setBirthday(birth);
+					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birth);
 				}
-				System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
+				
 				userManager.updateUser(user);
 			} catch (Exception e) {
 				e.printStackTrace();

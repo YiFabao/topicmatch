@@ -27,6 +27,12 @@ public class DateTimeUtils {
 		return sdf.parse(dateTime);
 	}
 	
+	//返回　年－月－日
+	public static String getBirthdayFormatStr(Date date){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf.format(date);
+	}
+	
 	/**
 	 * 指定格式的字符串日期转Date对象
 	 * @param dateTime
