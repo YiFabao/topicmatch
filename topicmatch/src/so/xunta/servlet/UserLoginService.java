@@ -167,23 +167,13 @@ public class UserLoginService extends HttpServlet {
 						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 					}
 				}
+				System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
+				userManager.updateUser(user);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}finally{
 				
-				
-				
-			
-				
-				
-				
-				
-				
-			
-			
-				
-				System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
-				userManager.updateUser(user);
+
 			}
 		}else{
 			try {
