@@ -114,9 +114,35 @@ public class TopicService extends HttpServlet {
 		case "recommendedPeople":
 			method_recommendedPeople(request,response);
 			break;
+		case "method_testcc":
+			method_testc(request,response);
+			break;
 		case "exit":
 			exit(request,response);
 			break;
+		}
+	}
+	
+	private void method_testc(HttpServletRequest request, HttpServletResponse response){
+		String data = request.getParameter("data");
+		System.out.println(data);
+		 JSONObject json=JSONObject.fromObject(data);
+		 System.out.println(json);
+		 List<Long> userIdList = new ArrayList<Long>();
+		 List<String> topicIdList = new ArrayList<String>();
+		 
+		 //获取List<User>
+		 UserManager usermanager = new UserManagerImpl();
+		 //List<User> userList = usermanager.findUserListByUserIdList(userIdList);
+		
+		 Iterator  it =json.keys();
+		 
+
+		try {
+			response.getWriter().write("ok");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

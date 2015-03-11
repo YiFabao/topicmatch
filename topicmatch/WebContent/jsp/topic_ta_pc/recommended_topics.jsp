@@ -442,9 +442,9 @@
 	}
 	
 	//
-	var currentPage;
-	var pageSum=0;
-	var pageNum=10;
+	var currentPage=1;//当前第几页
+	var pageSum=10;//总页数
+	var pageNum=10;//每页多少
 	//发送请求获取后台推荐数据
 	function doPost(){
 		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
@@ -453,6 +453,9 @@
 		},function(res,status){
 			console.log(res);
 			console.log("数组的大小:"+res.length);
+			pageSum=48;
+			pageSum =Math.floor(pageSum/10)+1;
+			console.log("总页数："+pageSum);
 			for(var i=0;i<res.length;i++)
 			{
 				var obj=res[i];
@@ -460,6 +463,62 @@
 			}
 		});
 	}
+	
+
+
+	
+	
+	$.post("${pageContext.request.contextPath}/servlet/topic_service",{
+		cmd:"recommendedPeople",
+		userId:1
+	},function(res,status){
+		console.log(res);
+		console.log("数组的大小:"+res.length);
+		pageSum=48;
+		pageSum =Math.floor(pageSum/10)+1;
+		console.log("总页数："+pageSum);
+		for(var i=0;i<res.length;i++)
+		{
+			var obj=res[i];
+			console.log(obj);
+		}
+	});
+	
+	var test_data={1:"11111",
+			2:"2222",
+			3:"3333",
+			4:"4444"
+};
+	console.log(JSON.stringify(test_data));
+	$.post("${pageContext.request.contextPath}/servlet/topic_service",{
+		cmd:"method_testcc",
+		data:JSON.stringify(test_data)
+	},function(res,status){
+		console.log(res);
+	});
+	
+	
+	//翻页
+	$(".iconfont.prev").click(function(){
+		if(currentPage>1){
+			currentPage=currentPage-1;
+		}
+		else{
+			console.log("已经是第一页");
+		}
+		console.log("上一页:"+currentPage);
+		$(".page-topic .cur").text(currentPage+"/"+pageSum);
+	});
+	
+	$(".iconfont.next").click(function(){
+		if(currentPage<pageSum){
+			currentPage = currentPage+1;
+		}else{
+			console.log("已经是最后一页");
+		}
+		console.log("下一页"+currentPage);
+		$(".page-topic .cur").text(currentPage+"/"+pageSum);
+	});
 
 	/**
 	 * 产生一个指定区间的随机数

@@ -10,6 +10,13 @@ public class RecommendedPeople {
 	public String userId;
 	public String topicHistoryId;
 	public User user;
+	public Topic topic;
+	public Topic getTopic() {
+		return topic;
+	}
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}
 	public TopicHistory latestTopicHistory;
 	public User getUser() {
 		return user;

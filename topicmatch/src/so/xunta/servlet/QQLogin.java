@@ -45,10 +45,13 @@ public class QQLogin extends HttpServlet {
 
 		response.setContentType("text/html");
 		String accessToken=request.getParameter("access_token");//获取参数accessToken
+		
 		System.out.println("获取参数accessToken:"+accessToken);
 		//非空判断
 		if(accessToken==null&&"".equals(accessToken)){
 			System.out.println("获取参数accessToken为空:"+accessToken);
+			response.getWriter().write("登录失败,请重新登录");
+			response.flushBuffer();
 			return;
 		}
 		//获取用户的基本信息　
@@ -91,32 +94,20 @@ public class QQLogin extends HttpServlet {
 		{
 			//用户没有绑定账号
 			user = new User(qquserInfo.getNickname(),"", "", openId, accessToken,"","",new Date(),DateTimeUtils.getCurrentTimeStr(),imageUrl);
-			
+			//获取ip
+			String ipaAddress = request.getRemoteAddr();
+			user.setAddress(ipaAddress);
 			//添加用户表
 			userManager.addUser(user);
-
 			//添加qq用户的基本信息
 			qquerinfomanager.addStaticQQUserInfo(qquserInfo);
 			//添加qq用户动态内容信息　
 			qquerinfomanager.addDynamicQQInfoContent(qqdynamicContent);
-			
 			//将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
-
-			
-/*			//添加记录登录状态的　cookie
-			Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
-			cookie.setPath("/");
-			
-			//记录该次的登录时间
-			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
-			date_cookie.setPath("/");
-			
-			response.addCookie(cookie);
-			response.addCookie(date_cookie);*/
-			
 			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/fillinfo.jsp?#&FillInfo");
+			//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 		else//用户基本信息存在
 		{
@@ -124,25 +115,11 @@ public class QQLogin extends HttpServlet {
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
 			
-			/*//添加记录登录状态的　cookie
-			Cookie cookie = new Cookie("aigine_login_state",user.xunta_username);
-			cookie.setMaxAge(30*24*3600);
-			cookie.setPath("/");
-			
-			//记录该次的登录时间
-			Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
-			date_cookie.setMaxAge(30*24*3600);
-			date_cookie.setPath("/");
-			
-			response.addCookie(cookie);
-			response.addCookie(date_cookie);*/
-			
 			//TODO 判断是否有标签
 			
 			//TODO 判断是否绑定账号
 			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/fillinfo.jsp?#&FillInfo");
 			//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-			
 		}
 	}
 
