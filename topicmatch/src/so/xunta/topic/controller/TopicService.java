@@ -136,6 +136,21 @@ public class TopicService extends HttpServlet {
 		 for(String s:topicIdList){
 			 System.out.println(s);
 		 }
+		 List<RecommendedTopicPublisher> rtpl = topicModel.getRecommendedTopicPUblisher(topicIdList);
+		 if(rtpl==null){
+			 try {
+				response.getWriter().write("null");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 return;
+		 }
+		 
+		 for(RecommendedTopicPublisher rtp:rtpl)
+		 {
+			 System.out.println(rtp.user.xunta_username+"  "+rtp.topic.topicName+"  "+rtp.topic.topicContent);
+		 }
 
 		try {
 			response.getWriter().write("ok");
@@ -147,11 +162,19 @@ public class TopicService extends HttpServlet {
 
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
-		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+/*		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
 			obj.put(rtp.getUserId(),rtp.getTopicId());
+			jsonArray.add(obj);
+		}*/
+		
+		//test
+		JSONArray jsonArray = new JSONArray();
+		for(int i=0;i<109;i++){
+			JSONObject obj=new JSONObject();
+			obj.put(i,"akjasdlkfjkskalfaj;skfj"+i);
 			jsonArray.add(obj);
 		}
 		response.setContentType("text/json");

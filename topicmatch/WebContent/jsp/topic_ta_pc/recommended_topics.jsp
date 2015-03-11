@@ -474,74 +474,46 @@
 	
 	//
 	var currentPage=1;//当前第几页
-	var pageSum=10;//总页数
+	var pageSum=0;//总页数
 	var pageNum=3;//每页多少
+	var recommendedPeopleData ={};
+	var data_index_array = new Array();
 	//发送请求获取后台推荐数据
-	function doPost(){
+	function doPost(userId){
 		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
 			cmd:"recommendedPeople",
-			userId:1
+			userId:userId
 		},function(res,status){
-			console.log(res);
+			//console.log(res);
 			console.log("数组的大小:"+res.length);
-			pageSum=48;
-			pageSum =Math.floor(pageSum/10)+1;
+			pageSum=res.length;
+			pageSum =Math.floor(pageSum/pageNum)+1;//初始化总页数
 			console.log("总页数："+pageSum);
 			for(var i=0;i<res.length;i++)
 			{
 				var obj=res[i];
-				console.log(obj);
+				//console.log(obj);
+				for(var key in obj){
+					recommendedPeopleData[key]=obj[key];
+				}
 			}
+			console.log(recommendedPeopleData);
+			for(var index in recommendedPeopleData){
+				data_index_array.push(index);//数据下标
+				
+			}
+			$(".page-topic .cur").text(currentPage+"/"+pageSum);
+			getThPageData(1);//初始化第一页
 		});
 	}
 	
-
-	
-/* 	$.post("${pageContext.request.contextPath}/servlet/topic_service",{
-		cmd:"recommendedPeople",
-		userId:1
-	},function(res,status){
-		console.log(res);
-		console.log("数组的大小:"+res.length);
-		pageSum=48;
-		pageSum =Math.floor(pageSum/10)+1;
-		console.log("总页数："+pageSum);
-		for(var i=0;i<res.length;i++)
-		{
-			var obj=res[i];
-			console.log(obj);
-		}
-	}); */
-	
-	var test_data={1:"11111",
-			2:"2222",
-			3:"3333",
-			4:"4444",
-			5:"5555",
-			6:"6666",
-			7:"7777",
-			8:"8888",
-			9:"9999",
-			10:"1234",
-			11:"2345",
-			12:"4567",
-			13:"5678",
-			14:"7890",
-	};
-	
-	
-	var data_index_array = new Array();
-	for(var index in test_data){
-		data_index_array.push(index);
-		
-	}
-	pageSum=data_index_array.length;
-	pageSum =Math.floor(pageSum/3)+1;
-	console.log("总页数："+pageSum);
+doPost();
 	
 	//获取某一个页数据
 	//page 从1开始的页数
 	function getThPageData(page){
+		console.log("当前页:"+currentPage+"  总页数:"+pageSum+"  每页多个条:"+pageNum );
+		
 		if(page<1){
 			return null;
 		}
@@ -554,17 +526,28 @@
 		//
 		//判断是否是最后一页
 		if(page==pageSum){
-			var from_index = pageNum*(page-1);//0起始的下标
+			var from_index = pn*(page-1);//0起始的下标
 			var to_index = data_index_array.length-1;
+			console.log("from_index:"+from_index);
+			console.log("to_index:"+to_index);
+			//打印第 page 页的数据
+			for(var i=from_index;i<=to_index;i++){
+				console.log(data_index_array[i]+"==>"+recommendedPeopleData[data_index_array[i]]);
+				ret[data_index_array[i]]=recommendedPeopleData[data_index_array[i]];
+			}
 		}else{
-			var from_index = pageNum*(page-1);//0起始的下标
-			var to_index = pageNum*page-1;
+		
+			var from_index = pn*(page-1);//0起始的下标
+			var to_index = pn*page-1;
+			console.log("from_index:"+from_index);
+			console.log("to_index:"+to_index);
+			//打印第 page 页的数据
+			for(var i=from_index;i<=to_index;i++){
+				console.log(data_index_array[i]+"==>"+recommendedPeopleData[data_index_array[i]]);
+				ret[data_index_array[i]]=recommendedPeopleData[data_index_array[i]];
+			}
 		}
-		//打印第 page 页的数据
-		for(var i=from_index;i<=to_index;i++){
-			console.log(data_index_array[i]+"==>"+test_data[data_index_array[i]]);
-			ret[data_index_array[i]]=test_data[data_index_array[i]];
-		}
+
 		return ret;
 	}
 	
