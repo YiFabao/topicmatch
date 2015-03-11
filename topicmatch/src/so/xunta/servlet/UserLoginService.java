@@ -90,6 +90,7 @@ public class UserLoginService extends HttpServlet {
 				String day="";
 				String address="";
 				String email="";
+				char sex;
 				System.out.println(list.size());
 				
 				//完善用户资料
@@ -113,6 +114,12 @@ public class UserLoginService extends HttpServlet {
 								user.setNickname(nickname);
 							}
 							System.out.println("nickname:"+nickname);
+							break;
+						case "sex":
+							System.out.println("sex:"+ds);
+							if(ds!=null&&!"".equals(ds)){
+								user.setSex(ds);
+							}						
 							break;
 						case "year":
 							year=ds;
@@ -167,7 +174,7 @@ public class UserLoginService extends HttpServlet {
 					c.clear();
 					System.out.println("year:"+ year+" month:"+(month)+" day:"+day);
 					user.setBirthday(year+"-"+month+"-"+day);
-					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+(year+"-"+month+"_"+day));
+					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+(year+"-"+month+"-"+day));
 				}
 				userManager.updateUser(user);
 			} catch (Exception e) {
