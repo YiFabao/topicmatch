@@ -89,6 +89,15 @@ public class UserLoginService extends HttpServlet {
 				String email="";
 				Date birthday=null;
 				System.out.println(list.size());
+				
+				//完善用户资料
+				User user= (User) request.getSession().getAttribute("user");
+				if(user==null)
+				{
+					response.getWriter().write("illegal login,user in session is null...");
+					return ;
+				}
+				
 				for (FileItem ff : list) {
 					if (ff.isFormField()) {
 						String ds = ff.getString("UTF-8");// 处理中文
@@ -98,6 +107,9 @@ public class UserLoginService extends HttpServlet {
 						switch(filedname){
 						case "nickname":
 							nickname=ds;
+							if(nickname!=null&&!"".equals(nickname)){
+								user.setNickname(nickname);
+							}
 							System.out.println("nickname:"+nickname);
 							break;
 						case "year":
@@ -111,11 +123,25 @@ public class UserLoginService extends HttpServlet {
 							break;
 						case "address":
 							address=ds;
+							if(address!=null&&!"".equals(address)){
+								user.setAddress(address);
+							}
 							break;
 						case "email":
 							email=ds;
+							if(email!=null&&!"".equals(email)){
+								user.setEmail(email);
+							}
 							break;
 						default:
+							if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
+							{
+								birthday=new Date();
+								birthday.setYear(Integer.parseInt(year));
+								birthday.setMonth(Integer.parseInt(month));
+								birthday.setDate(Integer.parseInt(day));
+								user.setBirthday(birthday);
+							}
 							break;
 						}
 					} else {
@@ -127,44 +153,14 @@ public class UserLoginService extends HttpServlet {
 						String imgname=filename.substring(0,filename.lastIndexOf("."));
 						System.out.println("图片后缀为："+extension);
 						System.out.println("图片名称为："+imgname);
-						//完善用户资料
-						User user= (User) request.getSession().getAttribute("user");
-						if(user==null)
-						{
-							response.getWriter().write("illegal login,user in session is null...");
-							return ;
-						}
 						//重新构造文件名 　　　实际文件名_用户id_时间戳
 						String newImageName=imgname+"_"+user.id+"_"+(new Date().getTime())+extension;
-						
 						System.out.println("文件类型为："+contentType);
 						System.out.println("保存的路径为："+new File(path + "/" + newImageName).getAbsolutePath());
 						if(contentType.equals("image/jpeg")){
 							System.out.println("上传的是图片格式");
 						}
-						if(nickname!=null&&!"".equals(nickname)){
-							user.setNickname(nickname);
-						}
-						if(email!=null&&!"".equals(email)){
-							user.setEmail(email);
-						}
-						if(address!=null&&!"".equals(address)){
-							user.setAddress(address);
-						}
-						if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
-						{
-							birthday=new Date();
-							birthday.setYear(Integer.parseInt(year));
-							birthday.setMonth(Integer.parseInt(month));
-							birthday.setDate(Integer.parseInt(day));
-							user.setBirthday(birthday);
-						}
-						
-					
 						user.setImageUrl(new File(path + "/" + newImageName).getAbsolutePath());
-						
-						System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
-						userManager.updateUser(user);
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					
@@ -173,6 +169,21 @@ public class UserLoginService extends HttpServlet {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			}finally{
+				
+				
+				
+			
+				
+				
+				
+				
+				
+			
+			
+				
+				System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
+				userManager.updateUser(user);
 			}
 		}else{
 			try {
