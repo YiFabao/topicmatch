@@ -94,9 +94,11 @@ public class UserLoginService extends HttpServlet {
 						String ds = ff.getString("UTF-8");// 处理中文
 						//System.err.println(ff.getFieldName()+":" + ds);
 						String filedname = ff.getFieldName().trim();
+						System.out.println(filedname);
 						switch(filedname){
 						case "nickname":
 							nickname=ds;
+							System.out.println("nickname:"+nickname);
 							break;
 						case "year":
 							year=ds;
