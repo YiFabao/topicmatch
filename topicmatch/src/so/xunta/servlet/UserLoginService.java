@@ -117,13 +117,8 @@ public class UserLoginService extends HttpServlet {
 							break;
 						case "sex":
 							if(ds!=null&&!"".equals(ds)){
-								if(ds.equals("m")){
-									user.setSex('m');
-								}else if(ds.equals("w"))
-									{
-										user.setSex('w');
-									}
-								}
+								user.setSex(ds);
+							}						
 							break;
 						case "year":
 							year=ds;
