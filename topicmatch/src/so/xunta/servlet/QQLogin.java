@@ -16,6 +16,7 @@ import so.xunta.manager.QQUserInfoManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.topic.utils.IpUtils;
 import so.xunta.user.info.tencentUserInfo;
 import so.xunta.utils.DateTimeUtils;
 
@@ -96,7 +97,7 @@ public class QQLogin extends HttpServlet {
 			user = new User(qquserInfo.getNickname(),"", "", openId, accessToken,"","",new Date(),DateTimeUtils.getCurrentTimeStr(),imageUrl);
 			//获取ip
 			String ipaAddress = request.getRemoteAddr();
-			user.setAddress(ipaAddress);
+			user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 			//添加用户表
 			userManager.addUser(user);
 			//添加qq用户的基本信息

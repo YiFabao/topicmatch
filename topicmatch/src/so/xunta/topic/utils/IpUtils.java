@@ -38,7 +38,7 @@ public class IpUtils {
 		}
 	}
 	public static void main(String[] args) {
-		String aa = IpUtils.getInstance().getCountryByIdAddress("127.0.0");
+		String aa = IpUtils.getInstance().getCountryByIdAddress("222.73.202.253");
 		System.out.println(aa);
 	}
 }

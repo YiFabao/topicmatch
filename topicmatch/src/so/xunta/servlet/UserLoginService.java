@@ -92,8 +92,9 @@ public class UserLoginService extends HttpServlet {
 				for (FileItem ff : list) {
 					if (ff.isFormField()) {
 						String ds = ff.getString("UTF-8");// 处理中文
-						System.err.println(ff.getFieldName()+":" + ds);
-						switch(ff.getFieldName()){
+						//System.err.println(ff.getFieldName()+":" + ds);
+						String filedname = ff.getFieldName().trim();
+						switch(filedname){
 						case "nickname":
 							nickname=ds;
 							break;
@@ -157,8 +158,11 @@ public class UserLoginService extends HttpServlet {
 							user.setBirthday(birthday);
 						}
 						
-						userManager.updateUser(user);
+					
 						user.setImageUrl(new File(path + "/" + newImageName).getAbsolutePath());
+						
+						System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
+						userManager.updateUser(user);
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					
