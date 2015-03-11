@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import so.xunta.topic.entity.MatchedPeopleDetail;
 import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.RecommendedTopicPublisher;
@@ -29,8 +30,9 @@ public interface TopicModel {
 	List<RecommendedTopicPublisher> getRecommendedTopicPUblisherByTopicList(List<Topic> topicList);
 	
 	/**
-	 * List<RecommendedTopicPublisher> ==> JSONArray<JSONObject> ;JSONObject ==>{userId:xxx,xunta_username:xxxx,address:xxxx,}
+	 * List<RecommendedTopicPublisher> ==> JSONArray<JSONObject> ;JSONObject ==>{userId:xxx,xunta_username:xxxx,userImgUrl:xxx,address:xxxx,sex:xxx,topicId:xxx,topoicName:xxxxx}
 	 */
+	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList);
 	
 	
 }

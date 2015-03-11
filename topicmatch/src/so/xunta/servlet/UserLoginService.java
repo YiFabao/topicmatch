@@ -147,6 +147,9 @@ public class UserLoginService extends HttpServlet {
 						}
 					} else {
 						String filename = ff.getName();
+						if(filename==null){
+							continue;
+						}
 						String contentType=ff.getContentType();
 						filename = filename.substring(filename.lastIndexOf("\\") + 1);// 解析文件名
 						System.out.println("上传文件名为："+filename);
