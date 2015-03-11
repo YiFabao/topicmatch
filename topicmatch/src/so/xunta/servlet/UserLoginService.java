@@ -134,14 +134,6 @@ public class UserLoginService extends HttpServlet {
 							}
 							break;
 						default:
-							if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
-							{
-								birthday=new Date();
-								birthday.setYear(Integer.parseInt(year));
-								birthday.setMonth(Integer.parseInt(month));
-								birthday.setDate(Integer.parseInt(day));
-								user.setBirthday(birthday);
-							}
 							break;
 						}
 					} else {
@@ -160,12 +152,20 @@ public class UserLoginService extends HttpServlet {
 						if(contentType.equals("image/jpeg")){
 							System.out.println("上传的是图片格式");
 						}
-						user.setImageUrl(new File(path + "/" + newImageName).getAbsolutePath());
+						user.setImageUrl(request.getContextPath()+"/imgs/"+newImageName);
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					
 						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 					}
+				}
+				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
+				{
+					birthday=new Date();
+					birthday.setYear(Integer.parseInt(year));
+					birthday.setMonth(Integer.parseInt(month));
+					birthday.setDate(Integer.parseInt(day));
+					user.setBirthday(birthday);
 				}
 				System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+birthday);
 				userManager.updateUser(user);
