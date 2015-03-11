@@ -129,7 +129,7 @@ public class TopicModelImpl implements TopicModel{
 		return temp_list;
 	}
 	public static void main(String[] args) {
-		TopicManager topicManager =new TopicManagerImpl();
+//		TopicManager topicManager =new TopicManagerImpl();
 /*		List<Topic> topiclist=topicManager.matchMyTopic("随州");
 		for(Topic topic:topiclist)
 		{
@@ -145,29 +145,29 @@ public class TopicModelImpl implements TopicModel{
 		{
 			System.out.println("用户id:"+m.userId+"  参与的相关话题数 ==>"+m.getJoinTopicNum()+" 发起的相关话题数 ===>"+m.getpublishTopicNum());
 		}*/
-//		TopicModel t=new TopicModelImpl();
-//		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
-//		if(rl==null){
-//			System.out.println("没有推荐");
-//		}else{
-//			for(RecommendedTopicPublisher r:rl)
-//			{
-//				System.out.println(r.userId+"  "+r.topicId);
-//				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
-//			}
-//		}
+		TopicModel t=new TopicModelImpl();
+		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
+		if(rl==null){
+			System.out.println("没有推荐");
+		}else{
+			for(RecommendedTopicPublisher r:rl)
+			{
+				System.out.println(r.userId+"  "+r.topicId);
+				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
+			}
+		}
 	
 		
-		Topic t1 = new Topic();
-		t1.setId(1);
-		List<Topic> topicList = new ArrayList<Topic>();
-		topicList.add(t1);
-		TopicModelImpl t = new TopicModelImpl();
-		List<RecommendedTopicPublisher> list = t.getRecommendedTopicPUblisherByTopicList(topicList);
-		for (RecommendedTopicPublisher recommendedTopicPublisher : list) {
-			System.out.println("userId : "+recommendedTopicPublisher.getUser().getId());
-			System.out.println("nickname :"+recommendedTopicPublisher.getUser().getNickname());
-		}
+//		Topic t1 = new Topic();
+//		t1.setId(1);
+//		List<Topic> topicList = new ArrayList<Topic>();
+//		topicList.add(t1);
+//		TopicModelImpl t1 = new TopicModelImpl();
+//		List<RecommendedTopicPublisher> list = t.getRecommendedTopicPUblisherByTopicList(topicList);
+//		for (RecommendedTopicPublisher recommendedTopicPublisher : list) {
+//			System.out.println("userId : "+recommendedTopicPublisher.getUser().getId());
+//			System.out.println("nickname :"+recommendedTopicPublisher.getUser().getNickname());
+//		}
 	}
 	
 
