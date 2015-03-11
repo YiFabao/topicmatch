@@ -164,7 +164,7 @@ public class UserLoginService extends HttpServlet {
 				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
 				{
 					Calendar c =Calendar.getInstance();
-					c.set(2015, 2, 15);
+					c.set(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day));
 					Date birthday = c.getTime();
 					String birth=DateTimeUtils.getBirthdayFormatStr(birthday);
 					user.setBirthday(birth);

@@ -29,7 +29,7 @@ public class DateTimeUtils {
 	
 	//返回　年－月－日
 	public static String getBirthdayFormatStr(Date date){
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(date);
 	}
 	
