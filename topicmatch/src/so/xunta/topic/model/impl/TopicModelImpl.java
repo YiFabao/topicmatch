@@ -12,6 +12,9 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.qq.connect.utils.json.JSONException;
+import com.qq.connect.utils.json.JSONObject;
+
 import net.sf.json.JSONArray;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
@@ -142,17 +145,17 @@ public class TopicModelImpl implements TopicModel{
 		{
 			System.out.println("用户id:"+m.userId+"  参与的相关话题数 ==>"+m.getJoinTopicNum()+" 发起的相关话题数 ===>"+m.getpublishTopicNum());
 		}*/
-		TopicModel t=new TopicModelImpl();
-		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
-		if(rl==null){
-			System.out.println("没有推荐");
-		}else{
-			for(RecommendedTopicPublisher r:rl)
-			{
-				System.out.println(r.userId+"  "+r.topicId);
-				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
-			}
-		}
+//		TopicModel t=new TopicModelImpl();
+//		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
+//		if(rl==null){
+//			System.out.println("没有推荐");
+//		}else{
+//			for(RecommendedTopicPublisher r:rl)
+//			{
+//				System.out.println(r.userId+"  "+r.topicId);
+//				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
+//			}
+//		}
 	
 		
 //		Topic t1 = new Topic();
@@ -313,10 +316,32 @@ public class TopicModelImpl implements TopicModel{
 	}
 
 	@Override
+	//JSONObject ==>{userId:xxx,xunta_username:xxxx,userImgUrl:xxx, address:xxxx, sex:xxx, topicId:xxx,topoicName:xxxxx}
 	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList) {
-		// TODO Auto-generated method stub
-		return null;
+		JSONArray arrayJson = new JSONArray();
+		for (RecommendedTopicPublisher recommendedTopicPublisher : RecommTopicPublisherList) {
+			JSONObject json = new JSONObject();
+			Long userId = recommendedTopicPublisher.getUser().getId();
+			String userName = recommendedTopicPublisher.getUser().getXunta_username();
+			String imgUrl = recommendedTopicPublisher.getUser().getImageUrl();
+			String address = recommendedTopicPublisher.getUser().getAddress();
+			String sex = recommendedTopicPublisher.getUser().getSex();
+			int topicId = recommendedTopicPublisher.getTopic().getId();
+			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
+			try {
+				json.put("userId", userId);
+				json.put("xunta_username", userName);
+				json.put("userImgUrl", imgUrl);
+				json.put("address", address);
+				json.put("sex", sex);
+				json.put("topicId", topicId);
+				json.put("topicName", topicName);
+				arrayJson.add(json);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return arrayJson;
 	}
-	
-	
 }
