@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import so.xunta.topic.entity.MatchedPeopleDetail;
 import so.xunta.topic.entity.RecommendedPeople;
+import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.Topic;
 
 public interface TopicModel {
@@ -18,6 +19,13 @@ public interface TopicModel {
 	public List<MatchedPeopleDetail> matchedPeopleDetaiList(List<Topic> topicList);
 	
 	//传给一个登录用户的id
-	//返回给推荐的话题给该用户 具体信息封装成了RecommendedPeople
+	//返回给推荐的话题给该用户 具体信息封装成了RecommendedPeople　这个包括与话题相关的发起人和参与人
 	public List<RecommendedPeople> getRecommendedPeople(String userId);
+	
+	//userId ==>　List<RecommendedTopicPublisher>
+	List<RecommendedTopicPublisher> getRecommendedTopicPUblisher(String userId);
+	
+	List<RecommendedTopicPublisher> getRecommendedTopicPUblisher(List<String> topicIdList);
+	List<RecommendedTopicPublisher> getRecommendedTopicPUblisherByTopicList(List<Topic> topicList);
+	
 }

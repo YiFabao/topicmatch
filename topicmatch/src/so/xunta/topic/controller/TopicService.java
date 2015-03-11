@@ -25,6 +25,7 @@ import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.entity.MatchedTopic;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.RecommendedPeople;
+import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.SysMessage;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
@@ -125,18 +126,16 @@ public class TopicService extends HttpServlet {
 	
 	private void method_testc(HttpServletRequest request, HttpServletResponse response){
 		String data = request.getParameter("data");
-		System.out.println(data);
+		List<String> topicIdList = new ArrayList<String>();
 		 JSONObject json=JSONObject.fromObject(data);
-		 System.out.println(json);
-		 List<Long> userIdList = new ArrayList<Long>();
-		 List<String> topicIdList = new ArrayList<String>();
-		 
-		 //获取List<User>
-		 UserManager usermanager = new UserManagerImpl();
-		 //List<User> userList = usermanager.findUserListByUserIdList(userIdList);
-		
-		 Iterator  it =json.keys();
-		 
+		 Iterator it = json.keys();
+		 while(it.hasNext()){
+			String userId =  (String) it.next();
+			topicIdList.add(json.getString(userId));
+		 }
+		 for(String s:topicIdList){
+			 System.out.println(s);
+		 }
 
 		try {
 			response.getWriter().write("ok");
@@ -148,11 +147,11 @@ public class TopicService extends HttpServlet {
 
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
-		List<RecommendedPeople> recommendedPeopleList = topicModel.getRecommendedPeople(userId);
+		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
 		JSONArray jsonArray = new JSONArray();
-		for(RecommendedPeople r:recommendedPeopleList){
+		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
-			obj.put(r.getUserId(),r.getTopicHistoryId());
+			obj.put(rtp.getUserId(),rtp.getTopicId());
 			jsonArray.add(obj);
 		}
 		response.setContentType("text/json");

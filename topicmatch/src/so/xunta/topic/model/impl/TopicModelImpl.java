@@ -1,5 +1,6 @@
 package so.xunta.topic.model.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,11 +13,14 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.helper.DataUtil;
+
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.entity.MatchedPeopleDetail;
 import so.xunta.topic.entity.RecommendedPeople;
+import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
@@ -141,16 +145,18 @@ public class TopicModelImpl implements TopicModel{
 			System.out.println("用户id:"+m.userId+"  参与的相关话题数 ==>"+m.getJoinTopicNum()+" 发起的相关话题数 ===>"+m.getpublishTopicNum());
 		}*/
 		TopicModel t=new TopicModelImpl();
-		List<RecommendedPeople> recommendedPeopleList = t.getRecommendedPeople("1");
-		if(recommendedPeopleList==null){
-			System.out.println("空");
-		}
-		else{
-			for(RecommendedPeople r:recommendedPeopleList)
+		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
+		if(rl==null){
+			System.out.println("没有推荐");
+		}else{
+			for(RecommendedTopicPublisher r:rl)
 			{
-				System.out.println(r.getUserId()+"  ==>"+ r.getTopicHistoryId());
+				System.out.println(r.userId+"  "+r.topicId);
+				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
 			}
 		}
+	
+		
 		
 	}
 	
@@ -161,7 +167,6 @@ public class TopicModelImpl implements TopicModel{
 		List<RecommendedPeople> recommendedPeopleList =new ArrayList<RecommendedPeople>();
 		Map<String,RecommendedPeople> userId_RecommendedPeople_map=new HashMap<String,RecommendedPeople>();
 		
-		TopicManager topicManager =new TopicManagerImpl();
 		List<Topic> topicList = topicManager.recommendTopics(userId);
 		if(topicList==null){return null;}
 		
@@ -204,5 +209,78 @@ public class TopicModelImpl implements TopicModel{
 			recommendedPeopleList.add(it.next());
 		}
 		return recommendedPeopleList;
+	}
+
+	@Override
+	public List<RecommendedTopicPublisher> getRecommendedTopicPUblisher(String userId) {
+		List<Topic> topicList = topicManager.recommendTopics(userId);
+		if(topicList==null){
+			System.out.println("没有推荐的话题");
+			return null;
+		}
+		//如果一个用户对应多个相关话题，保留最新的 userId==>最新的相关话题
+		Map<String,Topic> userId_topic_map = new HashMap<String,Topic>();
+		Map<Long,User> userId_user_map = new HashMap<Long, User>();
+		List<Long> userIdList = new ArrayList<Long>();
+		for(Topic t:topicList)
+		{
+			if(!userId_topic_map.containsKey(t.userId)){
+				userId_topic_map.put(t.userId,t);
+				userIdList.add(Long.parseLong(t.userId));
+			}else{
+				Topic topic_c = userId_topic_map.get(t.userId);
+				Long c_time = null;
+				Long t_time = null;
+				try {
+					c_time = DateTimeUtils.getCurrentDateTimeObj(topic_c.createTime).getTime();
+					t_time = DateTimeUtils.getCurrentDateTimeObj(t.createTime).getTime();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				if(c_time<t_time){
+					userId_topic_map.put(t.userId,t);
+				}
+			}
+			
+		}
+		
+		List<User> userList = userManager.findUserListByUserIdList(userIdList);
+		if(userList==null){
+			return null;
+		}
+		
+		for(User u:userList)
+		{
+			userId_user_map.put(u.id,u);
+		}
+		
+		List<RecommendedTopicPublisher> rtpList = new ArrayList<RecommendedTopicPublisher>();
+		Collection<Topic> collection_t=userId_topic_map.values();
+		Iterator<Topic> it = collection_t.iterator();
+		while(it.hasNext()){
+			Topic t=it.next();
+			RecommendedTopicPublisher rtp =new RecommendedTopicPublisher();
+			rtp.setTopic(t);
+			rtp.setUser(userId_user_map.get(Long.parseLong(t.userId)));
+			rtpList.add(rtp);
+		}
+		return rtpList;
+	}
+
+	@Override
+	public List<RecommendedTopicPublisher> getRecommendedTopicPUblisher(List<String> topicIdList) {
+		if(topicIdList==null||topicIdList.size()==0){
+			return null;
+		}
+		List<Topic> topicList = topicManager.getTopicListByTopicIdList(topicIdList);
+		List<RecommendedTopicPublisher> rtbl = getRecommendedTopicPUblisherByTopicList(topicList);
+		return rtbl;
+	}
+
+	
+	@Override
+	public List<RecommendedTopicPublisher> getRecommendedTopicPUblisherByTopicList(List<Topic> topicList) {
+		
+		return null;
 	}
 }

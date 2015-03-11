@@ -251,11 +251,13 @@ public class UserManagerImpl implements UserManager {
 
 	@Override
 	public List<User> findUserListByUserIdList(List<Long> userIdList) {
+		if(userIdList==null||userIdList.size()==0){
+			return null;
+		}
 		Session session = HibernateUtils.openSession();
 		String hql = "from User as u where u.id in (:userIdList)";
 		org.hibernate.Query query = session.createQuery(hql);
 		query.setParameterList("userIdList", userIdList);
-		@SuppressWarnings("unchecked")
 		List<User> userList = query.list();
 		session.close();
 		return userList;

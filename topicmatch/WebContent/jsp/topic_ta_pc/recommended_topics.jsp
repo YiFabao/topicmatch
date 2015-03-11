@@ -35,13 +35,29 @@
 				</ul>
 			</nav>
 			<div class="user">
+				<!-- ==未登录 显示内容==
 				<a href="#" class="admin">登录</a>
 				<a href="#">注册</a>
+				-->
+				<div class="user-area">
+					<i class="user-pic"><img src="images/delete/user_pic.jpg" alt=""></i>
+					<span class="grade">T17</span>
+					<div class="pop">
+						<i class="link"></i>
+						<ul class="menu-list">
+							<li class="name">齐天大圣</li>
+							<li><a href="#"><i class="iconfont">&#xe60a;</i>个人信息</a></li>
+							<li><a href="#"><i class="iconfont">&#xe60c;</i>账号设置</a></li>
+							<li><a href="#"><i class="iconfont">&#xe60b;</i>退出</a></li>
+						</ul>
+					</div>
+				</div>
 				<a class="news" href="#">
 					<i class="iconfont">&#xe603;</i>
 					<span class="dunk">15</span>
 				</a>
 			</div>
+			<!-- 已登录 -->
 		</div>
 	</header>
 	<section class="content">
@@ -241,6 +257,21 @@
 		var pic_div=$("<div></div>")
 				.attr("class","pic");
 		pic_div.html(img);
+		
+		
+		var span_sex=$("<span></span>");
+		span_sex.attr("class","man");
+		span_sex.html("♂");
+		
+		var p_area=$("<p></p>");
+		p_area.attr("class","area").html("上海市");;
+		
+		var info = $("<div></div>");
+		info.attr("class","info");
+		info.append(span_sex);
+		info.append("上海小白脸");
+		info.append(p_area);
+		
 
 		var cont_div=$("<div></div>");
 		cont_div.attr("class","cont")
@@ -251,7 +282,7 @@
 		var i_node=$("<i></i>");
 		i_node.attr("class","tri");
 
-		li.append(pic_div).append(cont_div).append(i_node).attr("class","topic-item right");
+		li.append(pic_div).append(info).append(cont_div).append(i_node).attr("class","topic-item right");
 		var randomInt =getRandom(0,1);
 /*		if(randomInt==0)
 		{
@@ -444,7 +475,7 @@
 	//
 	var currentPage=1;//当前第几页
 	var pageSum=10;//总页数
-	var pageNum=10;//每页多少
+	var pageNum=3;//每页多少
 	//发送请求获取后台推荐数据
 	function doPost(){
 		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
@@ -465,10 +496,8 @@
 	}
 	
 
-
 	
-	
-	$.post("${pageContext.request.contextPath}/servlet/topic_service",{
+/* 	$.post("${pageContext.request.contextPath}/servlet/topic_service",{
 		cmd:"recommendedPeople",
 		userId:1
 	},function(res,status){
@@ -482,20 +511,73 @@
 			var obj=res[i];
 			console.log(obj);
 		}
-	});
+	}); */
 	
 	var test_data={1:"11111",
 			2:"2222",
 			3:"3333",
-			4:"4444"
-};
-	console.log(JSON.stringify(test_data));
-	$.post("${pageContext.request.contextPath}/servlet/topic_service",{
-		cmd:"method_testcc",
-		data:JSON.stringify(test_data)
-	},function(res,status){
-		console.log(res);
-	});
+			4:"4444",
+			5:"5555",
+			6:"6666",
+			7:"7777",
+			8:"8888",
+			9:"9999",
+			10:"1234",
+			11:"2345",
+			12:"4567",
+			13:"5678",
+			14:"7890",
+	};
+	
+	
+	var data_index_array = new Array();
+	for(var index in test_data){
+		data_index_array.push(index);
+		
+	}
+	pageSum=data_index_array.length;
+	pageSum =Math.floor(pageSum/3)+1;
+	console.log("总页数："+pageSum);
+	
+	//获取某一个页数据
+	//page 从1开始的页数
+	function getThPageData(page){
+		if(page<1){
+			return null;
+		}
+		var ret={};
+		var cur_page = currentPage;//当前第几页
+		var pn = pageNum;//每一页多少数据
+		//1页==> 1 -- pageNum*1
+		//2页==> pageNum*(2-1)+1 --pageNum*2
+		//**
+		//
+		//判断是否是最后一页
+		if(page==pageSum){
+			var from_index = pageNum*(page-1);//0起始的下标
+			var to_index = data_index_array.length-1;
+		}else{
+			var from_index = pageNum*(page-1);//0起始的下标
+			var to_index = pageNum*page-1;
+		}
+		//打印第 page 页的数据
+		for(var i=from_index;i<=to_index;i++){
+			console.log(data_index_array[i]+"==>"+test_data[data_index_array[i]]);
+			ret[data_index_array[i]]=test_data[data_index_array[i]];
+		}
+		return ret;
+	}
+	
+	function do_postForRecommendedData(param)
+	{
+		console.log(JSON.stringify(param));
+		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
+			cmd:"method_testcc",
+			data:JSON.stringify(param)
+		},function(res,status){
+			console.log(res);
+		});
+	}
 	
 	
 	//翻页
@@ -507,6 +589,9 @@
 			console.log("已经是第一页");
 		}
 		console.log("上一页:"+currentPage);
+		var param = getThPageData(currentPage);
+		do_postForRecommendedData(param);
+		
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
 	
@@ -517,6 +602,8 @@
 			console.log("已经是最后一页");
 		}
 		console.log("下一页"+currentPage);
+		var param = getThPageData(currentPage);
+		do_postForRecommendedData(param);
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
 

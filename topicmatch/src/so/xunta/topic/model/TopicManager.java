@@ -5,6 +5,7 @@ import java.util.List;
 import so.xunta.entity.User;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.RecommendedPeople;
+import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
@@ -21,6 +22,7 @@ public interface TopicManager {
 	
 	//话题推荐
 	public List<Topic> recommendTopics(String userId);
+
 
 
 	//将话题保存到数据库中
