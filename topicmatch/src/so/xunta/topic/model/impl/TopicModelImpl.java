@@ -7,15 +7,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jsoup.helper.DataUtil;
-
+import net.sf.json.JSONArray;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
@@ -313,6 +310,12 @@ public class TopicModelImpl implements TopicModel{
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
