@@ -90,6 +90,7 @@ public class UserLoginService extends HttpServlet {
 				String day="";
 				String address="";
 				String email="";
+				char sex;
 				System.out.println(list.size());
 				
 				//完善用户资料
@@ -113,6 +114,16 @@ public class UserLoginService extends HttpServlet {
 								user.setNickname(nickname);
 							}
 							System.out.println("nickname:"+nickname);
+							break;
+						case "sex":
+							if(ds!=null&&!"".equals(ds)){
+								if(ds.equals("m")){
+									user.setSex('m');
+								}else if(ds.equals("w"))
+									{
+										user.setSex('w');
+									}
+								}
 							break;
 						case "year":
 							year=ds;

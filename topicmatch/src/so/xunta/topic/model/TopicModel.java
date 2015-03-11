@@ -28,4 +28,9 @@ public interface TopicModel {
 	List<RecommendedTopicPublisher> getRecommendedTopicPUblisher(List<String> topicIdList);
 	List<RecommendedTopicPublisher> getRecommendedTopicPUblisherByTopicList(List<Topic> topicList);
 	
+	/**
+	 * List<RecommendedTopicPublisher> ==> JSONArray<JSONObject> ;JSONObject ==>{userId:xxx,xunta_username:xxxx,address:xxxx,}
+	 */
+	
+	
 }

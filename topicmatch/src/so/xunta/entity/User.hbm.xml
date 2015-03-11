@@ -8,6 +8,7 @@
     </id>
     <property name="xunta_username" not-null="false"/>
     <property name="nickname" not-null="false"/>
+    <property name="sex" not-null="false"/>
     <property name="address" not-null="false"/>
     <property name="birthday" not-null="false"/>
     <property name="password" not-null="false"/>
@@ -19,6 +20,7 @@
     <property name="createTime" not-null="false"/>
     <property name="latestLoginTime" not-null="false"/>
     <property name="imageUrl" not-null="false"/>
+
   
   </class>
 </hibernate-mapping>

@@ -5,6 +5,7 @@ import java.util.Date;
 public class User {
 	public long id;//用户全局标识；主键
 	public String xunta_username;
+	public char sex;//‘m’：男　 ‘w’:女
 	public String nickname;
 	public String password;
 	public String address;
@@ -66,6 +67,13 @@ public class User {
 	}
 	public void setQq_accessToken(String qqAccessToken) {
 		qq_accessToken = qqAccessToken;
+	}
+	
+	public char getSex() {
+		return sex;
+	}
+	public void setSex(char sex) {
+		this.sex = sex;
 	}
 	public String getWeibo_accessToken() {
 		return weibo_accessToken;
