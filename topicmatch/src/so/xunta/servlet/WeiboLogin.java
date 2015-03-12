@@ -140,6 +140,10 @@ public class WeiboLogin extends HttpServlet {
 			
 		}else{
 			System.out.println("数据库中存在该微博uid");
+			//更新accessToken
+			user.setWeibo_accessToken(token);
+			userManager.updateUser(user);
+			
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
 			//TODO判断是否填写有标签
