@@ -93,7 +93,9 @@ public class WeiboLogin extends HttpServlet {
 			
 			List<String> contentList = sinaUserInfo.getContent(token);
 			for (String string : contentList) {
-				System.out.println("content  :  "+ string);
+				WeiboDynamicInfoContent weiboDynamicInfoContent = new WeiboDynamicInfoContent(uid, string);
+				WeiboUserInfoManagerImpl weiboUserInfoManagerImpl = new WeiboUserInfoManagerImpl();
+				weiboUserInfoManagerImpl.addWeiboContentAndWeiboUserId(weiboDynamicInfoContent);
 			}
 			System.out.println("nickname:"+nickname);
 			System.out.println("uid:"+uid);

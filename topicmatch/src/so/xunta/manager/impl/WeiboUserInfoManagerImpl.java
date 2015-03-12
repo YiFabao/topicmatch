@@ -3,6 +3,7 @@ package so.xunta.manager.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import so.xunta.entity.Tag;
 import so.xunta.entity.WeiboDynamicInfoContent;
 import so.xunta.entity.WeiboUserInfo;
 import so.xunta.manager.WeiboUserInfoManager;
@@ -51,6 +52,21 @@ public class WeiboUserInfoManagerImpl implements WeiboUserInfoManager {
 		return content;
 	}
 	
+	@Override
+	public void addWeiboContentAndWeiboUserId(WeiboDynamicInfoContent weiboDynamicInfoContent) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			session.save(weiboDynamicInfoContent);
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		
+	}
 	public static void main(String[] args) {
 		WeiboUserInfoManagerImpl wm=new WeiboUserInfoManagerImpl();
 /*		WeiboUserInfo webo=new WeiboUserInfo("bb", "男", "湖北", "最最近一条　", "", "", "dd");
@@ -61,8 +77,7 @@ public class WeiboUserInfoManagerImpl implements WeiboUserInfoManager {
 		WeiboDynamicInfoContent wd=new WeiboDynamicInfoContent("sdsdf","最近一条　动态内容");
 		wm.addDynamicWeiboInfoContent(wd);*/
 		
+		WeiboDynamicInfoContent w = new WeiboDynamicInfoContent("1", "2");
+		wm.addWeiboContentAndWeiboUserId(w);
 	}
-	
-	
-
 }

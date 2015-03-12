@@ -12,4 +12,7 @@ public interface WeiboUserInfoManager {
 	
 	//根据openId查询用户最近一条微博
 	public String findLatestWeiContentByOpenId(String weibo_uid);
+	
+	//保存weiboContent 和  weiboUserId
+	public void addWeiboContentAndWeiboUserId(WeiboDynamicInfoContent weiboDynamicInfoContent);
 }
