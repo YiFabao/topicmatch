@@ -20,7 +20,7 @@ public class TagsManagerImpl implements TagsManager {
 		// TODO Auto-generated method stub
 		Session session = HibernateUtils.openSession();
 		try {
-			tag.setId(getTagTableId());
+			tag.setId(getTagTableId(session));
 			session.beginTransaction();
 			session.save(tag);
 			session.getTransaction().commit();
@@ -36,23 +36,13 @@ public class TagsManagerImpl implements TagsManager {
 
 	@Override
 	public void addTags(List<Tag> tagList) {
-		System.out.println("进入 addTags");
 		for (Tag tag : tagList) {
-			System.out.println("0");
 			Session session = HibernateUtils.openSession();
-			Long tagId = getTagTableId();
-			Long tagUserId = tag.getUserId();
-			String tagName = tag.getTagname();
-			Tag t = new Tag(tagUserId, tagName);
-			t.setId(tagId);
+			tag.setId(getTagTableId(session));
 			try {
-				System.out.println("1");
 				session.beginTransaction();
-				System.out.println("2");
-				session.save(t);
-				System.out.println("3");
+				session.save(tag);
 				session.getTransaction().commit();
-				System.out.println("4");
 			} catch (ConstraintViolationException c) {
 				System.out.println("编辑标签列表数据存储时，因数据重复，触发此异常");
 			} catch (RuntimeException e) {
@@ -145,33 +135,37 @@ public class TagsManagerImpl implements TagsManager {
 		}
 	}
 	
-	public Long getTagTableId(){
-		Session session = HibernateUtils.openSession();
+	public Long getTagTableId(Session session){
 		Query query;
 		try {
 			session.beginTransaction();
 			query = session.createQuery("select id from Tag order by id desc");
 			session.getTransaction().commit();
-			return (Long) query.list().get(0);
+			if(query.list().size() == 0){
+				return (long) 0;
+			}else{
+				return (Long) query.list().get(0);
+			}
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
-		}finally {
-			session.close();
 		}
 	}
 	
 
 	public static void main(String[] args) {
 //		 TagsManager tagManager=new TagsManagerImpl();
-		// Tag tag1 = new Tag(101,"足球");
-		// tagManager.addOneTag(tag1);
-		// Tag tag2 = new Tag(102,"篮球");
-		// List<Tag> list = new ArrayList<Tag>();
-		// list.add(tag1);
-		// list.add(tag2);
-		// tagManager.addTags(list);
-		// tagManager.deleteOneTagByTagId(8);
+//		 Tag tag1 = new Tag(101,"足球");
+//		 tag1.setId(1);
+//		 Tag tag2 = new Tag(102,"篮球");
+//		 tag2.setId(2);
+//		 List<Tag> list = new ArrayList<Tag>();
+//		 list.add(tag1);
+//		 list.add(tag2);
+//		 tagManager.addTags(list);
+		 
+		 
+//		 tagManager.deleteOneTagByTagId(8);
 
 		// List<Long> list = new ArrayList<Long>();
 		// list.add((long) 102);
@@ -185,8 +179,5 @@ public class TagsManagerImpl implements TagsManager {
 		// }
 
 		// System.out.println(tagManager.checkUserTagIsEmpty(101));
-//		TagsManagerImpl a = new TagsManagerImpl();
-//		System.out.println(a.getTagTableId());
 	}
-
 }
