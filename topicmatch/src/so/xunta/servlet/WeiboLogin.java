@@ -2,6 +2,7 @@ package so.xunta.servlet;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -79,7 +80,7 @@ public class WeiboLogin extends HttpServlet {
 		String token="";
 		String image="";
 		try {
-			JSONObject json = sinaUserInfo.get(code);
+			JSONObject json = sinaUserInfo.getInfo(code);
 			nickname =(String) json.get("nickname");
 			gender=(String)json.get("gender");
 			location=(String)json.get("location");
@@ -88,18 +89,12 @@ public class WeiboLogin extends HttpServlet {
 			tags=(String)json.get("tags");
 			token=(String)json.get("token");
 			image=(String)json.get("image");
-			JSONArray jsonContent  = (JSONArray) json.get("content");
-			System.out.println(json.get("content").toString());
-			System.out.println("获取的微博内容 ："+jsonContent.toString());
-			
-			
-			/*String[] ss=(String[])object_content.toString();
-			for(String s:ss)
-			{
-				System.out.println(s);
-			}*/
-			
 			uid=(String) json.get("userId");
+			
+			List<String> contentList = sinaUserInfo.getContent(token);
+			for (String string : contentList) {
+				System.out.println("content  :  "+ string);
+			}
 			System.out.println("nickname:"+nickname);
 			System.out.println("uid:"+uid);
 			System.out.println("token:"+token);
