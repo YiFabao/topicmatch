@@ -38,11 +38,19 @@ public class TagsManagerImpl implements TagsManager {
 	public void addTags(List<Tag> tagList) {
 		for (Tag tag : tagList) {
 			Session session = HibernateUtils.openSession();
-			tag.setId(getTagTableId());
+			Long tagId = getTagTableId();
+			Long tagUserId = tag.getUserId();
+			String tagName = tag.getTagname();
+			Tag t = new Tag(tagUserId, tagName);
+			t.setId(tagId);
 			try {
+				System.out.println("1");
 				session.beginTransaction();
-				session.save(tag);
+				System.out.println("2");
+				session.save(t);
+				System.out.println("3");
 				session.getTransaction().commit();
+				System.out.println("4");
 			} catch (ConstraintViolationException c) {
 				System.out.println("编辑标签列表数据存储时，因数据重复，触发此异常");
 			} catch (RuntimeException e) {
