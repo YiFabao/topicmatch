@@ -2,6 +2,7 @@ package so.xunta.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.jdt.internal.compiler.flow.FinallyFlowContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,6 +19,7 @@ public class TagsManagerImpl implements TagsManager {
 		// TODO Auto-generated method stub
 		Session session = HibernateUtils.openSession();
 		try {
+			tag.setId(getTagTableId(session));
 			session.beginTransaction();
 			session.save(tag);
 			session.getTransaction().commit();
@@ -29,13 +31,13 @@ public class TagsManagerImpl implements TagsManager {
 		} finally {
 			session.close();
 		}
-
 	}
 
 	@Override
 	public void addTags(List<Tag> tagList) {
 		for (Tag tag : tagList) {
 			Session session = HibernateUtils.openSession();
+			tag.setId(getTagTableId(session));
 			try {
 				session.beginTransaction();
 				session.save(tag);
@@ -131,9 +133,23 @@ public class TagsManagerImpl implements TagsManager {
 			session.close();
 		}
 	}
+	
+	public Long getTagTableId(Session session){
+		Query query;
+		try {
+			session.beginTransaction();
+			query = session.createQuery("select id from Tag order by id desc");
+			session.getTransaction().commit();
+			return (Long) query.list().get(0);
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		}
+	}
+	
 
 	public static void main(String[] args) {
-		// TagsManager tagManager=new TagsManagerImpl();
+//		 TagsManager tagManager=new TagsManagerImpl();
 		// Tag tag1 = new Tag(101,"足球");
 		// tagManager.addOneTag(tag1);
 		// Tag tag2 = new Tag(102,"篮球");

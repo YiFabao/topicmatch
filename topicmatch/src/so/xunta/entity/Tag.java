@@ -1,5 +1,7 @@
 package so.xunta.entity;
 
+import java.io.Serializable;
+
 
 /**
  * 用户的个人标签
@@ -7,7 +9,7 @@ package so.xunta.entity;
  * History:
  * 		2015/3/3 first release
  */
-public class Tag {
+public class Tag implements Serializable{
 	
 	public long id;//主键id
 	
