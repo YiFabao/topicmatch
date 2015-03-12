@@ -174,6 +174,16 @@ public class TopicService extends HttpServlet {
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+		if(recommendedTopicPUblisherList==null){
+			try {
+				response.setCharacterEncoding("utf-8");
+				response.getWriter().write("没有匹配的话题");
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
@@ -189,6 +199,7 @@ public class TopicService extends HttpServlet {
 			jsonArray.add(obj);
 		}*/
 		response.setContentType("text/json");
+		response.setCharacterEncoding("utf-8");
 		try {
 			response.getWriter().write(jsonArray.toString());
 		} catch (IOException e) {

@@ -2,7 +2,7 @@ package so.xunta.localcontext;
 
 public class LocalContext {
 	//话题索引位置
-	public static String indexFilePath="d://topicIndex";
+	//public static String indexFilePath="d://topicIndex";
 	
 	public static String getIndexFilePath(){
 		//判断操作系统
@@ -17,6 +17,7 @@ public class LocalContext {
 			System.out.println("windows系统");
 			return "d://topicIndex";
 		}else{
+			System.out.println("linux系统");
 			return "/mnt/data/topicIndex";
 		}
 	}
