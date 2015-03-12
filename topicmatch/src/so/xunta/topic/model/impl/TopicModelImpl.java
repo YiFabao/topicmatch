@@ -129,33 +129,36 @@ public class TopicModelImpl implements TopicModel{
 		return temp_list;
 	}
 	public static void main(String[] args) {
-//		TopicManager topicManager =new TopicManagerImpl();
-/*		List<Topic> topiclist=topicManager.matchMyTopic("随州");
+	TopicManager topicManager =new TopicManagerImpl();
+	List<String> topicIdList = new ArrayList<String>();
+	topicIdList.add("A9ABC6801C19522A0329450E29B92F0A");
+/*	List<Topic> topiclist=topicManager.getTopicListByTopicIdList(topicIdList);
 		for(Topic topic:topiclist)
 		{
 			System.out.println(topic.userId+"==>"+topic.topicName+" ===>"+topic.topicContent);
 		}
-		TopicModel topicModel = new TopicModelImpl();
-		List<MatchedPeopleDetail>  d=topicModel.matchedPeopleDetaiList(topiclist);
-		if(d==null){
-			System.out.println("没有");
-			return ;
-		}
-		for(MatchedPeopleDetail m:d)
+		TopicModel topicModel = new TopicModelImpl();*/
+
+		TopicModel t=new TopicModelImpl();
+		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
+		if(rl==null){
+			System.out.println("没有推荐");
+		}else{
+			JSONArray array = t.getJSONArrayFromRecommendedTopicPublisherList(rl);
+			System.out.println(array.toString());
+			/*if(array!=null){
+				
+				System.out.println(array.get(0));
+			}
+			else{
+				System.out.println("array为空");
+			}*/
+		for(RecommendedTopicPublisher r:rl)
 		{
-			System.out.println("用户id:"+m.userId+"  参与的相关话题数 ==>"+m.getJoinTopicNum()+" 发起的相关话题数 ===>"+m.getpublishTopicNum());
-		}*/
-//		TopicModel t=new TopicModelImpl();
-//		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
-//		if(rl==null){
-//			System.out.println("没有推荐");
-//		}else{
-//			for(RecommendedTopicPublisher r:rl)
-//			{
-//				System.out.println(r.userId+"  "+r.topicId);
-//				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
-//			}
-//		}
+				System.out.println("用户　id:"+r.userId+"  topicId:"+r.topicId);
+				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
+			}
+		}
 	
 		
 //		Topic t1 = new Topic();
@@ -168,6 +171,8 @@ public class TopicModelImpl implements TopicModel{
 //			System.out.println("userId : "+recommendedTopicPublisher.getUser().getId());
 //			System.out.println("nickname :"+recommendedTopicPublisher.getUser().getNickname());
 //		}
+		
+		
 	}
 	
 
@@ -336,7 +341,8 @@ public class TopicModelImpl implements TopicModel{
 				json.put("sex", sex);
 				json.put("topicId", topicId);
 				json.put("topicName", topicName);
-				arrayJson.add(json);
+				//print
+				arrayJson.add(json.toString());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

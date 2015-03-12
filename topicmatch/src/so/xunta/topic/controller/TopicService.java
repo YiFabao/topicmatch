@@ -162,21 +162,21 @@ public class TopicService extends HttpServlet {
 
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
-/*		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
 			obj.put(rtp.getUserId(),rtp.getTopicId());
 			jsonArray.add(obj);
-		}*/
+		}
 		
 		//test
-		JSONArray jsonArray = new JSONArray();
+/*		JSONArray jsonArray = new JSONArray();
 		for(int i=0;i<109;i++){
 			JSONObject obj=new JSONObject();
 			obj.put(i,"akjasdlkfjkskalfaj;skfj"+i);
 			jsonArray.add(obj);
-		}
+		}*/
 		response.setContentType("text/json");
 		try {
 			response.getWriter().write(jsonArray.toString());

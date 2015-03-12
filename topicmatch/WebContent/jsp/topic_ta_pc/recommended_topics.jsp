@@ -507,7 +507,7 @@
 		});
 	}
 	
-doPost();
+doPost(1);
 	
 	//获取某一个页数据
 	//page 从1开始的页数
@@ -574,7 +574,6 @@ doPost();
 		console.log("上一页:"+currentPage);
 		var param = getThPageData(currentPage);
 		do_postForRecommendedData(param);
-		
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
 	
