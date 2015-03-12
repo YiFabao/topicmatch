@@ -36,6 +36,7 @@ public class TagsManagerImpl implements TagsManager {
 
 	@Override
 	public void addTags(List<Tag> tagList) {
+		System.out.println("进入 addTags");
 		for (Tag tag : tagList) {
 			System.out.println("0");
 			Session session = HibernateUtils.openSession();
