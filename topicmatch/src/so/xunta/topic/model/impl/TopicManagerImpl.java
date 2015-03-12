@@ -68,7 +68,7 @@ public class TopicManagerImpl implements TopicManager {
 			}
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    DirectoryReader ireader = DirectoryReader.open(directory);
 		    IndexSearcher searcher = new IndexSearcher(ireader);
@@ -121,7 +121,7 @@ public class TopicManagerImpl implements TopicManager {
 			}
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    DirectoryReader ireader = DirectoryReader.open(directory);
 		    IndexSearcher searcher = new IndexSearcher(ireader);
@@ -173,7 +173,7 @@ public class TopicManagerImpl implements TopicManager {
 			}
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    DirectoryReader ireader = DirectoryReader.open(directory);
 		    IndexSearcher searcher = new IndexSearcher(ireader);
@@ -232,7 +232,7 @@ public class TopicManagerImpl implements TopicManager {
 			}
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    DirectoryReader ireader = DirectoryReader.open(directory);
 		    IndexSearcher searcher = new IndexSearcher(ireader);
@@ -321,7 +321,7 @@ public class TopicManagerImpl implements TopicManager {
 		try {
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_43, analyzer);
 		    IndexWriter iwriter = new IndexWriter(directory, config);
@@ -390,7 +390,7 @@ public class TopicManagerImpl implements TopicManager {
 			TermQuery query=new TermQuery(new Term("authorId",authorId));
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    DirectoryReader ireader = DirectoryReader.open(directory);
 		    IndexSearcher searcher = new IndexSearcher(ireader);
@@ -869,7 +869,7 @@ public class TopicManagerImpl implements TopicManager {
 			}
 			if(directory==null)
 			{
-				directory = FSDirectory.open(new File(LocalContext.indexFilePath));
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
 		    DirectoryReader ireader = DirectoryReader.open(directory);
 		    IndexSearcher searcher = new IndexSearcher(ireader);
