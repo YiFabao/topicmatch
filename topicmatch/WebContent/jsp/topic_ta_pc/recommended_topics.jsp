@@ -3,13 +3,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	User user = (User)session.getAttribute("user");
-	if(user==null){
+/* 	if(user==null){
 		user = new User();
 		user.setId(1L);
 		user.setXunta_username("测试账号");
 		user.setImageUrl(request.getContextPath()+"/jsp/topic/images/1.jpg");
 		session.setAttribute("user", user);
-	}
+	} */
 
 %>
 <!DOCTYPE html>
@@ -591,6 +591,7 @@
 			console.log("获取到的服务数据："+res);
 			//移除原有的数据
 			$("ul.topic-list").empty();
+			topic_li_node_array.length=0;
 			for(var i=0;i<res.length;i++)
 			{
 				console.log(res[i]);
@@ -598,7 +599,13 @@
 				//将数据显示出来
 				addOneLiNode(d.topicId,d.address,d.xunta_username,d.sex,d.topicName,d.picUrl);
 			}
-			test3();
+			if(topic_li_node_array.length==1)
+			{
+				var current = topic_li_node_array[0].find("div.cont");
+				console.log(current);
+			}else{
+				test3();
+			}
 		});
 	}
 	
