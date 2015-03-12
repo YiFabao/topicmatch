@@ -36,27 +36,19 @@ public class TagsManagerImpl implements TagsManager{
 	public void addTags(List<Tag> tagList) {
 		// TODO Auto-generated method stub
 		Session session = HibernateUtils.openSession();
-		try {
-			session.beginTransaction();
-			int count = 0;
-			for(Tag tag : tagList){
-				try{
-					session.save(tag);
-				}catch(ConstraintViolationException c){
-					System.out.println("编辑标签列表数据存储时，因数据重复，触发此异常");
-				}
-				if(++count % 20 == 0){
-					//当count是20的倍数时，刷新并清空session缓存，session批量写入时有一级缓存限制，防止session内存溢出
-					session.flush();
-					session.clear();
-				}
+		for(Tag tag : tagList){
+			try {
+				session.beginTransaction();
+				session.save(tag);
+				session.getTransaction().commit();
+			}catch(ConstraintViolationException c){
+				System.out.println("编辑标签列表数据存储时，因数据重复，触发此异常");
+			}  catch (RuntimeException e) {
+				session.getTransaction().rollback();
+				throw e;
+			} finally {
+				session.close();
 			}
-			session.getTransaction().commit();
-		} catch (RuntimeException e) {
-			session.getTransaction().rollback();
-			throw e;
-		} finally {
-			session.close();
 		}
 	}
 
