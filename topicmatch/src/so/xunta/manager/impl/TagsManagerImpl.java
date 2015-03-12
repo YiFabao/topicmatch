@@ -12,6 +12,7 @@ import so.xunta.entity.Tag;
 import so.xunta.manager.TagsManager;
 import so.xunta.utils.HibernateUtils;
 
+// fang
 public class TagsManagerImpl implements TagsManager {
 
 	@Override
@@ -19,7 +20,7 @@ public class TagsManagerImpl implements TagsManager {
 		// TODO Auto-generated method stub
 		Session session = HibernateUtils.openSession();
 		try {
-			tag.setId(getTagTableId(session));
+			tag.setId(getTagTableId());
 			session.beginTransaction();
 			session.save(tag);
 			session.getTransaction().commit();
@@ -37,7 +38,7 @@ public class TagsManagerImpl implements TagsManager {
 	public void addTags(List<Tag> tagList) {
 		for (Tag tag : tagList) {
 			Session session = HibernateUtils.openSession();
-			tag.setId(getTagTableId(session));
+			tag.setId(getTagTableId());
 			try {
 				session.beginTransaction();
 				session.save(tag);
@@ -134,7 +135,8 @@ public class TagsManagerImpl implements TagsManager {
 		}
 	}
 	
-	public Long getTagTableId(Session session){
+	public Long getTagTableId(){
+		Session session = HibernateUtils.openSession();
 		Query query;
 		try {
 			session.beginTransaction();
@@ -144,6 +146,8 @@ public class TagsManagerImpl implements TagsManager {
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
+		}finally {
+			session.close();
 		}
 	}
 	
@@ -171,6 +175,8 @@ public class TagsManagerImpl implements TagsManager {
 		// }
 
 		// System.out.println(tagManager.checkUserTagIsEmpty(101));
+//		TagsManagerImpl a = new TagsManagerImpl();
+//		System.out.println(a.getTagTableId());
 	}
 
 }
