@@ -168,7 +168,8 @@ public class UserLoginService extends HttpServlet {
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					
-						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+						//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+						response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/recommended_topics.jsp");// 话题推荐
 					}
 				}
 				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))

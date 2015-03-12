@@ -115,8 +115,8 @@ public class TopicService extends HttpServlet {
 		case "recommendedPeople":
 			method_recommendedPeople(request,response);
 			break;
-		case "method_testcc":
-			method_testc(request,response);
+		case "getRecommendPageData":
+			method_getRecommendPageData(request,response);
 			break;
 		case "exit":
 			exit(request,response);
@@ -124,7 +124,8 @@ public class TopicService extends HttpServlet {
 		}
 	}
 	
-	private void method_testc(HttpServletRequest request, HttpServletResponse response){
+	//返回真实的数据
+	private void method_getRecommendPageData(HttpServletRequest request, HttpServletResponse response){
 		String data = request.getParameter("data");
 		List<String> topicIdList = new ArrayList<String>();
 		 JSONObject json=JSONObject.fromObject(data);
@@ -133,10 +134,15 @@ public class TopicService extends HttpServlet {
 			String userId =  (String) it.next();
 			topicIdList.add(json.getString(userId));
 		 }
+		 System.out.println("获取的topicIdList=========>:");
 		 for(String s:topicIdList){
 			 System.out.println(s);
 		 }
+		 
+		 
 		 List<RecommendedTopicPublisher> rtpl = topicModel.getRecommendedTopicPUblisher(topicIdList);
+	
+		 
 		 if(rtpl==null){
 			 try {
 				response.getWriter().write("null");
@@ -146,23 +152,38 @@ public class TopicService extends HttpServlet {
 			}
 			 return;
 		 }
-		 
-		 for(RecommendedTopicPublisher rtp:rtpl)
+		 System.out.println("获取到的rtpl：");
+		 for(RecommendedTopicPublisher r:rtpl)
 		 {
-			 System.out.println(rtp.user.xunta_username+"  "+rtp.topic.topicName+"  "+rtp.topic.topicContent);
+			 System.out.println("userId:"+r.userId+"  topicId:"+r.topicId);
 		 }
+		 
+		 JSONArray jsonarray = topicModel.getJSONArrayFromRecommendedTopicPublisherList(rtpl);
 
 		try {
-			response.getWriter().write("ok");
+			response.setContentType("json/text");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(jsonarray.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	//返回[{userId,topicId},{userId2,topicId2},{}....,{userIdn,topicIdn}]
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+		if(recommendedTopicPUblisherList==null){
+			try {
+				response.setCharacterEncoding("utf-8");
+				response.getWriter().write("没有匹配的话题");
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
@@ -178,6 +199,7 @@ public class TopicService extends HttpServlet {
 			jsonArray.add(obj);
 		}*/
 		response.setContentType("text/json");
+		response.setCharacterEncoding("utf-8");
 		try {
 			response.getWriter().write(jsonArray.toString());
 		} catch (IOException e) {

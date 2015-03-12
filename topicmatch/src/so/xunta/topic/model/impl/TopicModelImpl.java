@@ -140,25 +140,52 @@ public class TopicModelImpl implements TopicModel{
 		TopicModel topicModel = new TopicModelImpl();*/
 
 		TopicModel t=new TopicModelImpl();
-		List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
+		//打印获取的userId
+		List<RecommendedTopicPublisher> rl =t.getRecommendedTopicPUblisher(topicIdList);
+		System.out.println("打印获取的userId:");
+		for(RecommendedTopicPublisher r:rl)
+		{
+			System.out.println(r.userId+":"+r.topicId);
+		}
+		
+		//测试获取用户id
+/*		List<Long> userIdList = new ArrayList<Long>();
+		String userId = "3";
+		userIdList.add((Long)userId);
+		
+		UserManager userManager = new UserManagerImpl();
+		List<User> userl = userManager.findUserListByUserIdList(userIdList);
+		
+		if(userl!=null)
+		{
+			System.out.println(userl.size());
+			for(User u:userl)
+			{
+				System.out.println(u.id);
+			}
+		}*/
+		
+		
+		/*List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
+		
 		if(rl==null){
 			System.out.println("没有推荐");
 		}else{
 			JSONArray array = t.getJSONArrayFromRecommendedTopicPublisherList(rl);
 			System.out.println(array.toString());
-			/*if(array!=null){
+			if(array!=null){
 				
 				System.out.println(array.get(0));
 			}
 			else{
 				System.out.println("array为空");
-			}*/
+			}
 		for(RecommendedTopicPublisher r:rl)
 		{
 				System.out.println("用户　id:"+r.userId+"  topicId:"+r.topicId);
 				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
 			}
-		}
+		}*/
 	
 		
 //		Topic t1 = new Topic();
@@ -288,7 +315,9 @@ public class TopicModelImpl implements TopicModel{
 			return null;
 		}
 		List<Topic> topicList = topicManager.getTopicListByTopicIdList(topicIdList);
+
 		List<RecommendedTopicPublisher> rtbl = getRecommendedTopicPUblisherByTopicList(topicList);
+
 		return rtbl;
 	}
 
@@ -302,7 +331,7 @@ public class TopicModelImpl implements TopicModel{
 		Long userId;
 		
 		for (Topic topic : topicList) {
-			userId = (long) topic.getId();
+			userId = Long.parseLong(topic.getUserId());
 			treeMap.put(userId, topic);
 			userIdList.add(userId);
 		}
@@ -331,14 +360,14 @@ public class TopicModelImpl implements TopicModel{
 			String imgUrl = recommendedTopicPublisher.getUser().getImageUrl();
 			String address = recommendedTopicPublisher.getUser().getAddress();
 			String sex = recommendedTopicPublisher.getUser().getSex();
-			int topicId = recommendedTopicPublisher.getTopic().getId();
+			String topicId = recommendedTopicPublisher.getTopic().getTopicId();//原getId,为主键自增id,已改为获取md5生成的id
 			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
 			try {
 				json.put("userId", userId);
 				json.put("xunta_username", userName);
 				json.put("userImgUrl", imgUrl);
-				json.put("address", address);
-				json.put("sex", sex);
+				json.put("address", address==null?"保密":address);
+				json.put("sex", sex==null?"保密":sex);
 				json.put("topicId", topicId);
 				json.put("topicName", topicName);
 				//print
@@ -348,6 +377,7 @@ public class TopicModelImpl implements TopicModel{
 			}
 			
 		}
+		System.out.print(arrayJson.toString());
 		return arrayJson;
 	}
 }

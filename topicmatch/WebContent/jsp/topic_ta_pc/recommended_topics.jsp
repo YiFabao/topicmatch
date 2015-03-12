@@ -1,5 +1,17 @@
+<%@page import="so.xunta.entity.User"%>
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	User user = (User)session.getAttribute("user");
+	if(user==null){
+		user = new User();
+		user.setId(1L);
+		user.setXunta_username("测试账号");
+		user.setImageUrl(request.getContextPath()+"/jsp/topic/images/1.jpg");
+		session.setAttribute("user", user);
+	}
+
+%>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -40,12 +52,12 @@
 				<a href="#">注册</a>
 				-->
 				<div class="user-area">
-					<i class="user-pic"><img src="images/delete/user_pic.jpg" alt=""></i>
+					<i class="user-pic"><img src="${sessionScope.user.imageUrl }" alt=""></i>
 					<span class="grade">T17</span>
 					<div class="pop">
 						<i class="link"></i>
 						<ul class="menu-list">
-							<li class="name">齐天大圣</li>
+							<li class="name">${sessionScope.user.xunta_username }</li>
 							<li><a href="#"><i class="iconfont">&#xe60a;</i>个人信息</a></li>
 							<li><a href="#"><i class="iconfont">&#xe60c;</i>账号设置</a></li>
 							<li><a href="#"><i class="iconfont">&#xe60b;</i>退出</a></li>
@@ -243,7 +255,7 @@
 	 * @param y
 	 * @return li
 	 */
-	function createItemRight(top,left,content,picUrl){
+	function createItemRight(top,left,topicId,address,xunta_username,sex,topicname,picUrl){
 		var li=$("<li></li>");
 		li.css({
 			top:top+"px",
@@ -251,8 +263,15 @@
 		});
 
 		var img = $("<img>");
-		img.attr("src","images/delete/user-pic2.jpg")
-				.attr("alt","");
+		if(!picUrl){
+			img.attr("src","images/delete/user-pic2.jpg")
+			.attr("alt","");
+		}
+		else{
+			img.attr("src",document.domain+"/"+picUrl)
+			.attr("alt","");
+		}
+
 
 		var pic_div=$("<div></div>")
 				.attr("class","pic");
@@ -261,15 +280,23 @@
 		
 		var span_sex=$("<span></span>");
 		span_sex.attr("class","man");
-		span_sex.html("♂");
+		if(sex=="m"){
+			span_sex.html("♂");
+		}else if(sex=="w"){
+			span_sex.html("♀");
+		}
+		else{
+			
+		}
+		
 		
 		var p_area=$("<p></p>");
-		p_area.attr("class","area").html("上海市");;
+		p_area.attr("class","area").html(address);
 		
 		var info = $("<div></div>");
 		info.attr("class","info");
 		info.append(span_sex);
-		info.append("上海小白脸");
+		info.append(xunta_username);
 		info.append(p_area);
 		
 
@@ -277,7 +304,7 @@
 		cont_div.attr("class","cont")
 				.css("display","none")
 				.css("z-index",999)
-				.text("今天天气真不错!");
+				.text(topicname);
 
 		var i_node=$("<i></i>");
 		i_node.attr("class","tri");
@@ -300,7 +327,6 @@
 	var h_min=50,h_max=500;
 	var R = 86.0;//图像的圆半径
 	var C = 40.0;
-
 	var topic_li_node_array=new Array();//存放已显示的li_node
 
 	/**
@@ -391,7 +417,7 @@
 	 * 在dom节点上添加一个匹配的话题节点.topic-item
 	 * @author fabao.yi
 	 */
-	function addOneLiNode(){
+	function addOneLiNode(topicId,address,xunta_username,sex,topicname,picUrl){
 		if(topic_li_node_array.length>20){
 			return;
 		}
@@ -400,7 +426,8 @@
 			return;
 		}
 		//console.log("top:"+coor.top+"  left:"+coor.left);
-		var li_node=createItemRight(coor.top,coor.left,"");
+		//createItemRight(top,left,topicId,address,xunta_username,sex,topicname,picUrl)
+		var li_node=createItemRight(coor.top,coor.left,topicId,address,xunta_username,sex,topicname,picUrl);
 		li_node.mouseenter(function(){
 			$(this).find("div.cont").show(200);
 		});
@@ -435,19 +462,20 @@
 			addOneLiNode();
 		}
 	}
-	test2();//　生成10个人
+	//test2();//　生成10个人
 
 	function test3(){
 		setTimeout(show_and_hide,9);
-		setTimeout(test3,21000);
+		setTimeout(test3,3000*(topic_li_node_array.length)-1000*(topic_li_node_array.length-1));
 	}
-	test3();
-	function show_and_hide(){
 
+	function show_and_hide(){
+		
 		var t=0;
-		for(var i=0;i<topic_li_node_array.length-1;i++)
+		for(var i=0;i<=topic_li_node_array.length-1;i++)
 		{
 			var current = topic_li_node_array[i].find("div.cont");
+			//console.log(current);
 			setTimeout(_showc(current),t);
 			setTimeout(_hidec(current),t+3000);
 			t+=2000;
@@ -503,13 +531,14 @@
 				
 			}
 			$(".page-topic .cur").text(currentPage+"/"+pageSum);
-			getThPageData(1);//初始化第一页
+			var param = getThPageData(1);//初始化第一页
+			do_postForRecommendedData(param);
 		});
 	}
+	console.log("<%=user.id%>");
+	doPost("<%=user.id%>");//1为当前登录用户的id
 	
-doPost(1);
-	
-	//获取某一个页数据
+	//获取某一个页数据对应的{userId:topicId,...}
 	//page 从1开始的页数
 	function getThPageData(page){
 		console.log("当前页:"+currentPage+"  总页数:"+pageSum+"  每页多个条:"+pageNum );
@@ -551,14 +580,25 @@ doPost(1);
 		return ret;
 	}
 	
+	//获取某一页的数据
 	function do_postForRecommendedData(param)
 	{
 		console.log(JSON.stringify(param));
 		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
-			cmd:"method_testcc",
+			cmd:"getRecommendPageData",
 			data:JSON.stringify(param)
 		},function(res,status){
-			console.log(res);
+			console.log("获取到的服务数据："+res);
+			//移除原有的数据
+			$("ul.topic-list").empty();
+			for(var i=0;i<res.length;i++)
+			{
+				console.log(res[i]);
+				var d=res[i];
+				//将数据显示出来
+				addOneLiNode(d.topicId,d.address,d.xunta_username,d.sex,d.topicName,d.picUrl);
+			}
+			test3();
 		});
 	}
 	
@@ -570,6 +610,7 @@ doPost(1);
 		}
 		else{
 			console.log("已经是第一页");
+			return;
 		}
 		console.log("上一页:"+currentPage);
 		var param = getThPageData(currentPage);
@@ -582,6 +623,7 @@ doPost(1);
 			currentPage = currentPage+1;
 		}else{
 			console.log("已经是最后一页");
+			return;
 		}
 		console.log("下一页"+currentPage);
 		var param = getThPageData(currentPage);
