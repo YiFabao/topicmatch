@@ -88,9 +88,10 @@ public class WeiboLogin extends HttpServlet {
 			tags=(String)json.get("tags");
 			token=(String)json.get("token");
 			image=(String)json.get("image");
-		
-			Object object_content = json.get("content");
-			System.out.println("获取的微博内容："+object_content.toString());
+			weibo4j.org.json.JSONArray jsonContent  = (weibo4j.org.json.JSONArray) json.get("content");
+			System.out.println("获取的微博内容："+jsonContent.toString());
+			
+			
 			/*String[] ss=(String[])object_content.toString();
 			for(String s:ss)
 			{
