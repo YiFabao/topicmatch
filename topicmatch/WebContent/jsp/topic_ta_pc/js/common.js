@@ -39,6 +39,9 @@ $(function(){
 	//单选按钮模拟
 	$(".form .radio").click(function(){
 		$(this).addClass("checked-r").siblings().removeClass("checked-r")
+		//start=====fabao.yi 
+		var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
+		//end ========fabao.yi
 		return false;
 	})
 	//下拉框的模拟

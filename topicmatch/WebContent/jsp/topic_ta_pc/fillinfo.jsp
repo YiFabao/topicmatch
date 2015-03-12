@@ -218,7 +218,7 @@
 							<div class="item">
 								<label class="dt">性&emsp;&emsp;别</label>
 								<div class="dd pt5">
-									<label for="Man" class="radio ml20 mr50"><input type="radio" id="Man" name="sex" class="dn" value="m"><i></i>男</label>
+									<label for="Man" class="radio ml20 mr50 checked-r"><input type="radio" id="Man" name="sex" class="dn" value="m" checked="checked"><i></i>男</label>
 									<label for="Woman" class="radio"><input type="radio" id="Woman" name="sex" class="dn" value="w"><i></i>女</label>
 								</div>
 							</div>
