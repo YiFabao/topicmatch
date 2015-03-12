@@ -17,10 +17,8 @@ public class TagsManagerImpl implements TagsManager {
 
 	@Override
 	public void addOneTag(Tag tag) {
-		// TODO Auto-generated method stub
 		Session session = HibernateUtils.openSession();
 		try {
-			tag.setId(getTagTableId(session));
 			session.beginTransaction();
 			session.save(tag);
 			session.getTransaction().commit();
@@ -38,7 +36,6 @@ public class TagsManagerImpl implements TagsManager {
 	public void addTags(List<Tag> tagList) {
 		for (Tag tag : tagList) {
 			Session session = HibernateUtils.openSession();
-			tag.setId(getTagTableId(session));
 			try {
 				session.beginTransaction();
 				session.save(tag);
@@ -135,6 +132,9 @@ public class TagsManagerImpl implements TagsManager {
 		}
 	}
 	
+	/**
+	 * 获取tab表中最大的ID值
+	 * */
 	public Long getTagTableId(Session session){
 		Query query;
 		try {

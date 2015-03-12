@@ -16,6 +16,8 @@ public class Tag implements Serializable{
 	public long userId;//用户的唯一id
 	
 	public String tagname;//标签
+	
+	public String md5;
 
 	public long getUserId() {
 		return userId;
@@ -23,7 +25,12 @@ public class Tag implements Serializable{
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-
+	public String getMd5() {
+		return md5;
+	}
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
 	public long getId() {
 		return id;
 	}
@@ -42,9 +49,10 @@ public class Tag implements Serializable{
 	public Tag() {
 		super();
 	}
-	public Tag(long userId, String tagname) {
+	public Tag(long userId, String tagname, String md5) {
 		super();
 		this.userId = userId;
 		this.tagname = tagname;
+		this.md5 = md5;
 	}
 }

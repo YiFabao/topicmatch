@@ -3,11 +3,12 @@
 
 <hibernate-mapping>
 	<class table="tag" name="so.xunta.entity.Tag">
-		<composite-id>
-			<key-property name="userId" />
-			<key-property name="tagname"/>
-		</composite-id>
-		<property name="id" not-null="false"></property>
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="userId" not-null="false" />
+		<property name="tagname" not-null="false" />
+		<property name="md5" not-null="false" unique="true"/>
 	</class>
 </hibernate-mapping>
 

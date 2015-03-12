@@ -24,6 +24,7 @@ import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.HtmlRegexpUtil;
 
@@ -258,7 +259,7 @@ public class UserLoginService extends HttpServlet {
 			for (int i = 0; i < tagArray.length; i++) {
 				String tag = tagArray[i];
 				System.out.println("将标签存入数据库  ==>   userId : "+userId+"  --   tag : "+tag);
-				list.add(new Tag(userId, tag));
+				list.add(new Tag(userId, tag, SecurityUtil.strToMD5(userId+tag)));
 			}
 			new TagsManagerImpl().addTags(list);
 			response.getWriter().write("ok");
