@@ -37,6 +37,7 @@ public class TagsManagerImpl implements TagsManager {
 	@Override
 	public void addTags(List<Tag> tagList) {
 		for (Tag tag : tagList) {
+			System.out.println("0");
 			Session session = HibernateUtils.openSession();
 			Long tagId = getTagTableId();
 			Long tagUserId = tag.getUserId();

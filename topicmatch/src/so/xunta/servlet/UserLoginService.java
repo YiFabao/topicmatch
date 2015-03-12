@@ -260,7 +260,9 @@ public class UserLoginService extends HttpServlet {
 				System.out.println("将标签存入数据库  ==>   userId : "+userId+"  --   tag : "+tag);
 				list.add(new Tag(userId, tag));
 			}
+			System.out.println("555  :" + list.toString());
 			new TagsManagerImpl().addTags(list);
+			System.out.println("666");
 			response.getWriter().write("ok");
 		}catch (Exception e){
 			try {
