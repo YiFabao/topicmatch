@@ -90,6 +90,7 @@ public class WeiboLogin extends HttpServlet {
 			image=(String)json.get("image");
 		
 			Object object_content = json.get("content");
+			System.out.println("获取的微博内容："+object_content.toString());
 			/*String[] ss=(String[])object_content.toString();
 			for(String s:ss)
 			{
