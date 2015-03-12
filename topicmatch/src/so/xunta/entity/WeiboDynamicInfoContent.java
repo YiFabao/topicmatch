@@ -1,6 +1,7 @@
 package so.xunta.entity;
 
-public class WeiboDynamicInfoContent {
+
+public class WeiboDynamicInfoContent{
 	
 	public int id;
 	public String weibo_uid;//唯一标识

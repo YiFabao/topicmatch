@@ -2,6 +2,7 @@ package so.xunta.manager.impl;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 import so.xunta.entity.Tag;
 import so.xunta.entity.WeiboDynamicInfoContent;
@@ -59,6 +60,8 @@ public class WeiboUserInfoManagerImpl implements WeiboUserInfoManager {
 			session.beginTransaction();
 			session.save(weiboDynamicInfoContent);
 			session.getTransaction().commit();
+		}catch(ConstraintViolationException c){
+			System.out.println("使用新浪微博登录后，获取其历史数据存储时，因数据重复，触发此异常");
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
@@ -77,7 +80,7 @@ public class WeiboUserInfoManagerImpl implements WeiboUserInfoManager {
 		WeiboDynamicInfoContent wd=new WeiboDynamicInfoContent("sdsdf","最近一条　动态内容");
 		wm.addDynamicWeiboInfoContent(wd);*/
 		
-		WeiboDynamicInfoContent w = new WeiboDynamicInfoContent("1", "2");
+		WeiboDynamicInfoContent w = new WeiboDynamicInfoContent("1", "1");
 		wm.addWeiboContentAndWeiboUserId(w);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import org.eclipse.jdt.internal.compiler.flow.FinallyFlowContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
+
 import so.xunta.entity.Tag;
 import so.xunta.manager.TagsManager;
 import so.xunta.utils.HibernateUtils;
@@ -19,7 +21,9 @@ public class TagsManagerImpl implements TagsManager{
 			session.beginTransaction();
 			session.save(tag);
 			session.getTransaction().commit();
-		} catch (RuntimeException e) {
+		}catch(ConstraintViolationException c){
+			System.out.println("编辑标签数据存储时，因数据重复，触发此异常");
+		}  catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
 		} finally {
@@ -36,7 +40,11 @@ public class TagsManagerImpl implements TagsManager{
 			session.beginTransaction();
 			int count = 0;
 			for(Tag tag : tagList){
-				session.save(tag);
+				try{
+					session.save(tag);
+				}catch(ConstraintViolationException c){
+					System.out.println("编辑标签列表数据存储时，因数据重复，触发此异常");
+				}
 				if(++count % 20 == 0){
 					//当count是20的倍数时，刷新并清空session缓存，session批量写入时有一级缓存限制，防止session内存溢出
 					session.flush();

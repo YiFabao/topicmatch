@@ -2,13 +2,14 @@ package so.xunta.manager.impl;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 import so.xunta.entity.QQDynamicInfoContent;
 import so.xunta.entity.QQUserInfo;
 import so.xunta.manager.QQUserInfoManager;
 import so.xunta.utils.HibernateUtils;
 
-public class QQUserInfoManagerImpl implements QQUserInfoManager{
+public class QQUserInfoManagerImpl implements QQUserInfoManager {
 
 	@Override
 	public void addStaticQQUserInfo(QQUserInfo qquserInfo) {
@@ -24,7 +25,7 @@ public class QQUserInfoManagerImpl implements QQUserInfoManager{
 		} finally {
 			session.close();
 		}
-		
+
 	}
 
 	@Override
@@ -34,6 +35,8 @@ public class QQUserInfoManagerImpl implements QQUserInfoManager{
 			session.beginTransaction();
 			session.save(qqdynamicInfoContent);
 			session.getTransaction().commit();
+		} catch (ConstraintViolationException c) {
+			System.out.println("使用新浪微博登录后，获取其历史数据存储时，因数据重复，触发此异常");
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
