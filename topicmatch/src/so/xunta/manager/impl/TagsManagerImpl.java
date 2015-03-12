@@ -41,13 +41,13 @@ public class TagsManagerImpl implements TagsManager {
 				try {
 					session.beginTransaction();
 					session.save(tag);
-					session.getTransaction().commit();
 				} catch (ConstraintViolationException c) {
 					System.out.println("编辑标签列表数据存储时，因数据重复，触发此异常");
-				} catch (RuntimeException e) {
-					session.getTransaction().rollback();
-				}
+				} 
 			}
+			session.getTransaction().commit();
+		}catch (RuntimeException e) {
+			session.getTransaction().rollback();
 		} finally {
 			session.close();
 		}
