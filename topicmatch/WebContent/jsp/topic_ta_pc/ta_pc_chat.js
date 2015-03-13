@@ -45,13 +45,12 @@ function create_one_topicMember_item(){
 	var topicMemberItem_cur = $(".rec-topic-list #1");
 	
 	topicMemberItem_cur.append("<span class=\"num\"></span>");
-	$(".rec-topic-list #1 span").text("测试  房");
+	$(".rec-topic-list #1 span").text("99");
 	
 	topicMemberItem_cur.append("<p class=\"name\" title=\"测试 房\"></p>");
 	$(".rec-topic-list #1 p").text("测试 房");
 	
-	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\"></a>");
-	$(".rec-topic-list #1 a").text("&#xe601");
+	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\">&#xe601</a>");
 }
 
 /**
