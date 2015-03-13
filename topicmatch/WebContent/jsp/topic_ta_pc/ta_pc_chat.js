@@ -50,7 +50,7 @@ function create_one_topicMember_item(){
 	topicMemberItem_cur.append("<p class=\"name\" title=\"测试 房\"></p>");
 	$(".rec-topic-list #1 p").text("测试 房");
 	
-	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\">&#xe601</a>");
+	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\">&#xe601;</a>");
 }
 
 /**
