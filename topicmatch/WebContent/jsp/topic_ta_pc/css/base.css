@@ -262,7 +262,7 @@ right: -4px;}
 .page-topic .cur{display: inline-block;width: 635px;text-align: center;vertical-align: middle;}
     /*聊天框*/
 .topic-box{position: fixed;bottom:0;right: 0;height: 620px;z-index: 999}
-.topic-box .left{width: 150px;background-color: #37383d;height: 100%;float: left}
+.topic-box .left{width: 150px;background-color: #37383d;height: 100%;float: left;overflow-y:auto;}
 .rec-topic-list{overflow: hidden;margin-bottom: -1px;}
 .rec-topic-list .name{color: #e2e2e2;font-size: 14px;}
 .rec-topic-list li{padding:0 45px 0 15px ;line-height: 48px;border-bottom:1px solid #37383d;position: relative;background-color: #353536}
@@ -271,14 +271,15 @@ right: -4px;}
 .rec-topic-list .close{position: absolute;background-color: #858585;border-radius:22px; width: 22px;height: 22px;top:10px;right:10px;line-height: 22px;
 text-align: center;font-size: 15px;
 font-weight: bold;}
-.rec-topic-list .close:hover{color:#e31e48;}
+.rec-topic-list .close:hover{color:#FFF;}
 .topic-box .center{float: left;width: 465px}
 .topic-box .title{height: 48px;background-color: #37383d;color: #fff;padding: 0 54px 0 65px;position: relative;}
 .topic-box .title h3{font-size: 16px;font-weight: normal;line-height: 48px;}
 .topic-box .title .pic{border-radius: 50%;height: 35px;width: 35px;overflow: hidden;position: absolute;left: 10px;
 top: 3px;}
 .topic-box .title .pic img{width: 100%;height: 100%;}
-.topic-box .title .close{position: absolute;top:3px;right: 24px;color: #fff;font-size: 30px;}
+.topic-box .title .close{position: absolute;top:3px;right: 24px;color: #fff;font-size: 30px;top: 0;bottom: 0;width: 70px;text-align: center;background-color: #1f2023;right: 0;line-height: 48px}
+.topic-box .title .close:hover{color: #fe9600}
 .chat-box{height: 380px;background-color: #f6fbff;overflow-y:auto;}
 .topic-box .dec{border:1px solid #eee;height: 66px;background-color: #f6f6f6;}
 .topic-box .dec .txt{line-height: 1.6em;padding: 8px 10px;color: #4e4e4f}
@@ -293,7 +294,6 @@ border-radius: 8px;display: inline-block;margin-top: 8px;}
 .chat-box .my{text-align: right;}
 .chat-box .my .detail{margin-right: 52px;background-color:#f1e1ff}
 .chat-box .other .user-pic{top:0;}
-.chat-box .other{}
 .chat-box .other .detail{margin-left: 52px;background-color:#f5fbff}
 .chat-box .other .user-pic{left:0;}
 .chat-box .system{color: #868686;text-align: center;}
@@ -302,7 +302,19 @@ border-radius: 8px;display: inline-block;margin-top: 8px;}
 .send-box .send-btn{background-color: #9d9d9d;color: #fff;border:none;border-radius: 5px; font-size: 38px;height: 40px;width: 70px;position: absolute;right: 15px}
 .topic-box .toggle{width: 25px;background-color: #3c3d43;height: 100%;float: left;position: relative;}
 .topic-box .toggle i{position: absolute;color: #fff;font-size: 30px;left:0;right: 0;top:0;bottom:0;margin: auto;height: 40px;cursor: default;}
-.topic-box .right{width: 82px;height: 100%;float: left;background-color: #37383d;color: #ecebe7;text-align: center;position: relative;}
+.topic-box .right{width: 82px;height: 100%;float: left;background-color: #37383d;color: #ecebe7;text-align: center;position: relative;overflow-y: auto;}
 .topic-box .right .user-pic{display: inline-block;}
 .topic-box .right h4{font-size: 16px;margin-bottom: 5px;font-weight:normal;}
 .user-list li{border-bottom:1px solid #525256;padding: 15px 10px 5px;}
+/**/
+.confirm-box{border-radius:8px;background-color: #37383d;color: #fff;position: absolute;top:170px;right: 200px;width: 400px;z-index:1000}
+.confirm-box .cont{padding: 30px 45px 25px;font-size: 18px;}
+.form .btn-c{height: 24px;border-radius: 5px;background:none;border:1px solid #cbcbcb;cursor: pointer;padding: 0 30px;font-size: 16px;}
+.form .btn-c:hover{border-color: #ff9600}
+.confirm-box .close{width: 28px;height: 28px;position: absolute;top:12px;right: 12px;background-color:#7d7d7d;border-radius: 50%;line-height: 28px;text-align: center;color:#37383d;font-weight: bold;}
+.confirm-box .close:hover{color:#fff;}
+.confirm-box .btn-area{padding-top: 50px;text-align: center;}
+.mintopic-box{border-radius: 5px;background-color: #37383d;line-height: 40px;position: absolute;bottom:0;color: #f6f6f6;padding-left:15px;right:0;font-size: 16px;height: 40px;overflow: hidden;}
+.mintopic-box .num{background-color: #e31e48;font-size: 22px;border-radius: 5px;padding: 0 10px;vertical-align: middle;margin: 0 25px   }
+.mintopic-box .unfold{color: #fff;display: inline-block;width: 55px;height: 100%;background-color: #1f2023;text-align: center;font-size: 30px;vertical-align: middle;}
+.mintopic-box .unfold:hover{color: #ff9600}
