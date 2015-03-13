@@ -32,10 +32,31 @@ function create_one_topic_item(topicId){
 /**
  * 创建某个话题的参与人列表项
  * @param obj_json {topicId:, 参与人id: ,imgUrl: ,name:	,...}
+ * History :
+ * 		2015/3/13 fang
  */
 function create_one_topicMember_item(obj_json){
 	//创建聊天框右侧的一个参与人列表项
 	console.log("创建聊天框右侧的一个参与人列表项");
+	
+	var topicMemberItem = $(".topic-box .left .rec-topic-list");
+	topicMemberItem.append("<li></li>").attr({
+	    "class" : "cur",
+	    "topicId" : "1"
+	});
+	
+	var topicMemberItem_cur = $(".cur");
+	topicMemberItem_cur.append("<span></span>").attr("class","num").text("3");
+	topicMemberItem_cur.append("<p></p>").attr({
+	    "class" : "name",
+	    "title" : "测试"
+	}).text("测试");
+	
+	topicMemberItem_cur.append("<a></a>").attr({
+	    "href" : "#",
+	    "class" : "iconfont close"
+	}).text("&#xe601");
+	
 }
 
 /**
