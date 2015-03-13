@@ -43,20 +43,15 @@ function create_one_topicMember_item(){
 	topicMemberItem.append("<li id=\"1\" class=\"cur\"></li>");
 	
 	var topicMemberItem_cur = $(".rec-topic-list #1");
+	
 	topicMemberItem_cur.append("<span class=\"num\"></span>");
-	$(".rec-topic-list #1 span").text("测试");
-
+	$(".rec-topic-list #1 span").text("测试  房");
 	
-	//	topicMemberItem_cur.append("<p></p>").attr({
-//	    "class" : "name",
-//	    "title" : "测试"
-//	}).text("测试");
-//	
-//	topicMemberItem_cur.append("<a></a>").attr({
-//	    "href" : "#",
-//	    "class" : "iconfont close"
-//	}).text("&#xe601");
+	topicMemberItem_cur.append("<p class=\"name\" title=\"测试 房\"></p>");
+	$(".rec-topic-list #1 p").text("测试 房");
 	
+	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\"></a>");
+	$(".rec-topic-list #1 a").text("&#xe601");
 }
 
 /**
