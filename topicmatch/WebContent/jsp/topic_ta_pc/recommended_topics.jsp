@@ -9,7 +9,7 @@
 		user.setXunta_username("测试账号");
 		user.setImageUrl(request.getContextPath()+"/jsp/topic/images/1.jpg");
 		session.setAttribute("user", user);
-	}
+	} 
 
 %>
 <!DOCTYPE html>
@@ -99,7 +99,7 @@
 				<a href="#" class="iconfont next">&#xe608;</a>
 			</div>
 			<!--话题聊天框-->
-			<!--<div class="topic-box">
+			<div class="topic-box">
 				<div class="left">
 					<ul class="rec-topic-list">
 						<li class="cur">
@@ -176,14 +176,32 @@
 						</li>
 					</ul>
 				</div>
-			</div>-->
+			</div>
+						<!-- 隐藏状态 -->
+			<div class="mintopic-box">
+				未读消息 <span class="num">23</span>
+				<a href="javascript:;" class="iconfont unfold">&#xe60d;</a>
+			</div>
+		
 		</div>
 	</section>
+	<div class="form confirm-box">
+		<div class="cont">
+			<p class="detail">XXX邀请您参与"XXX"话题</p>
+			<div class="btn-area">
+				<button class="btn-c">拒绝</button>
+				&emsp;
+				<button class="btn-c">同意</button>
+			</div>
+			<a href="javascript:;" class="iconfont close">&#xe601;</a>
+		</div>
+	</div>
 <script src="js/jquery-1.4.4.min.js"></script>
 <script src="js/jquery-powerSwitch-min.js"></script>
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/jquery.lavalamp.min.js"></script>
 <script src="js/common.js"></script>
+<script src="ta_pc_chat.js"></script>
 <script>
 	$(".tab-menu a").powerSwitch({
 	    classAdd: "selected"
@@ -261,6 +279,7 @@
 			top:top+"px",
 			left:left+"px"
 		});
+		li.click(func_joinTopic);
 
 		var img = $("<img>");
 		if(!picUrl){
@@ -591,6 +610,7 @@
 			console.log("获取到的服务数据："+res);
 			//移除原有的数据
 			$("ul.topic-list").empty();
+			topic_li_node_array.length=0;
 			for(var i=0;i<res.length;i++)
 			{
 				console.log(res[i]);
@@ -598,7 +618,13 @@
 				//将数据显示出来
 				addOneLiNode(d.topicId,d.address,d.xunta_username,d.sex,d.topicName,d.picUrl);
 			}
-			test3();
+			if(topic_li_node_array.length==1)
+			{
+				var current = topic_li_node_array[0].find("div.cont");
+				console.log(current);
+			}else{
+				test3();
+			}
 		});
 	}
 	
@@ -630,6 +656,13 @@
 		do_postForRecommendedData(param);
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
+	
+	//发送消息按钮添加点击或按回车键发送消息
+	 $(document).keydown(function(event){
+		    if(event.keyCode==13){
+		    	create_and_show_one_message(1,{message:"测试消息"})
+		    }
+	 });
 
 	/**
 	 * 产生一个指定区间的随机数

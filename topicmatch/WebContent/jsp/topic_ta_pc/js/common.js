@@ -39,9 +39,7 @@ $(function(){
 	//单选按钮模拟
 	$(".form .radio").click(function(){
 		$(this).addClass("checked-r").siblings().removeClass("checked-r")
-		//start=====fabao.yi 
 		var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
-		//end ========fabao.yi
 		return false;
 	})
 	//下拉框的模拟
@@ -168,4 +166,11 @@ $('.topic-box .toggle').click(function(){
 })
 $('.topic-box .title .close').click(function(){
 	$('.topic-box').animate({"bottom":-620},'300')
+})
+$('.mintopic-box .unfold').click(function(){
+	$('.topic-box').animate({"bottom":0},'300')
+})
+//关闭确认框
+$('.confirm-box .close').click(function(){
+	$(this).parents(".confirm-box").hide()
 })
