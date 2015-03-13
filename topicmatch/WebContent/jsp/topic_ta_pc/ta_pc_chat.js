@@ -44,7 +44,7 @@ function create_one_topicMember_item(){
 	
 	var topicMemberItem_cur = $(".rec-topic-list #1");
 	topicMemberItem_cur.append("<span class=\"num\"></span>");
-	$(".rec-topic-list #1 span").text(测试);
+	$(".rec-topic-list #1 span").text("测试");
 
 	
 	//	topicMemberItem_cur.append("<p></p>").attr({
