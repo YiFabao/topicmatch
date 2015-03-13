@@ -40,12 +40,14 @@ function create_one_topicMember_item(){
 	console.log("创建聊天框右侧的一个参与人列表项");
 	
 	var topicMemberItem = $(".topic-box .left .rec-topic-list");
-	topicMemberItem.append("<li topicId=\"1\" class=\"cur\"></li>");
+	topicMemberItem.append("<li id=\"1\" class=\"cur\"></li>");
 	
+	var topicMemberItem_cur = $(".rec-topic-list #1");
+	topicMemberItem_cur.append("<span class=\"num\"></span>");
+	$(".rec-topic-list #1 span").text(测试);
+
 	
-//	var topicMemberItem_cur = $(".cur");
-//	topicMemberItem_cur.append("<span></span>").attr("class","num").text("3");
-//	topicMemberItem_cur.append("<p></p>").attr({
+	//	topicMemberItem_cur.append("<p></p>").attr({
 //	    "class" : "name",
 //	    "title" : "测试"
 //	}).text("测试");
