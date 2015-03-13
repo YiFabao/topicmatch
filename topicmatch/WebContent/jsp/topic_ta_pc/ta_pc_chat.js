@@ -40,7 +40,7 @@ function create_one_topicMember_item(){
 	console.log("创建聊天框右侧的一个参与人列表项");
 	
 	var topicMemberItem = $(".topic-box .left .rec-topic-list");
-	topicMemberItem.append("<li></li>").attr("class","cur");
+	topicMemberItem.append("<li topicId=\"1\" class=\"cur\"></li>");
 	
 	
 //	var topicMemberItem_cur = $(".cur");
