@@ -35,7 +35,7 @@ function create_one_topic_item(topicId){
  * History :
  * 		2015/3/13 fang
  */
-function create_one_topicMember_item(obj_json){
+function create_one_topicMember_item(){
 	//创建聊天框右侧的一个参与人列表项
 	console.log("创建聊天框右侧的一个参与人列表项");
 	

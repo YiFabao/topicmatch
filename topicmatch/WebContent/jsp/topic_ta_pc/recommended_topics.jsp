@@ -61,7 +61,7 @@
 							<li><a href="#"><i class="iconfont">&#xe60a;</i>个人信息</a></li>
 							<li><a href="#"><i class="iconfont">&#xe60c;</i>账号设置</a></li>
 							<li><a href="#"><i class="iconfont">&#xe60b;</i>退出</a></li>
-							<li><button>测试</button></li>
+							<button onclick="create_one_topicMember_item()">测试</button>
 						</ul>
 					</div>
 				</div>
