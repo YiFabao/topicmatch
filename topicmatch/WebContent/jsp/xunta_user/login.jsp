@@ -5,6 +5,13 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
+	String access_token = request.getParameter("access_token");
+	String code = request.getParameter("code");
+	if(access_token!=null&&"".equals(access_token)){
+		request.getRequestDispatcher("/servlet/qq_login").forward(request, response);
+	}else if(code!=null && "".equals(code)){
+		request.getRequestDispatcher("/servlet/weiboLogin").forward(request, response);
+	}
 %>
 
 <!DOCTYPE html>
