@@ -34,12 +34,12 @@
 				<a href="#">注册</a>
 				-->
 				<div class="h user-area">
-					<i class="user-pic"><img src="images/delete/user_pic.jpg" alt=""></i>
+					<i class="user-pic"><img src="${pageContext.request.contextpath}/${sessionScope.user.imageUrl}" alt=""></i>
 					<span class="grade">T17</span>
 					<div class="pop">
 						<i class="link"></i>
 						<div class="t">
-							<p class="name">齐天大圣</p>
+							<p class="name">${sessionScope.user.xunta_username }</p>
 							<ul class="menu-list">
 								<li><a href="#"><i class="iconfont">&#xe60a;</i>个人信息</a></li>
 								<li><a href="#"><i class="iconfont">&#xe60c;</i>账号设置</a></li>
