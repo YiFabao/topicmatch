@@ -70,10 +70,10 @@
 											<time>2015-3-15&emsp;12:24:13</time>
 											<ul class="fix opera">
 												<li class="btn">
-													<button class="yes">同意</button>
+													<button class="yes" onclick="topicMsgInformStatusChange(this,0)">同意</button>
 												</li>
 												<li class="btn">
-													<button class="no">拒绝</button>
+													<button class="no" onclick="topicMsgInformStatusChange(this,1)">拒绝</button>
 												</li>
 											</ul>
 										</li>
@@ -112,5 +112,4 @@
 			<!-- 已登录 -->
 		</div>
 	</header>
-
 </html>

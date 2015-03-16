@@ -116,6 +116,90 @@ function create_and_show_one_message(topicId,message_obj_json){
 	console.log("创建消息并显示在对应topicId的对话框里:"+message_obj_json.message);
 }
 
+/**
+ * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
+ * @param topicId
+ * @param content
+ * @param img-url
+ * */
+function createMessage(contentType){
+	var chatBox = $(".chat-box");
+	
+	var p_node = $("<p></p>").attr("class","detail").text("测试");
+	var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
+	var div_node = $("<div></div>").attr("class","user-pic");
+	div_node.append(img_url);
+	
+	if(contentType == 0){
+		//等于0表示自己的发言
+		var myDiv = $("<div></div>").attr("class","user my");
+		myDiv.append(p_node).append(div_node);
+		chatBox.append(myDiv);
+	}else{
+		var otherDiv = $("<div></div>").attr("class","user other");
+		otherDiv.append(p_node).append(div_node);
+		chatBox.append(otherDiv);
+	}
+}
 
+/**
+ * 当用户进入某话题聊天框后在聊天记录框插入一条提示消息  ”-某某加入该对话组
+ * */
+function userEnterTopic(userName){
+	var div_node = $("<div></div>").attr("class","system").text("-"+userName+"加入该对话组")
+	$(".center .chat-box").append(div_node);
+}
+/**
+ * 系统通知
+ * */
+function systemMsgInform(time,message){
+	var ul_node = $(".tab-content .tab-panel.dn .news-list");
+	var li_node = $("<li></li>").attr("class","panel");
+	var p_node = $("<p></p>").attr("class","txt").text("测试：系统通知消息");
+	var time = $("<time></time>").text("1111-1-1 11:11:11");
+	ul_node.append(li_node.append(p_node).append(time));
+}
 
+/**
+ * 话题消息通知
+ * */
+function topicMsgInform(time,message){
+	var ul_node = $(".tab-content .tab-panel .news-list");
+	
+	var li_node = $("<li></li>").attr("class","panel");
+	var p_node = $("<p></p>").attr("class","txt").text("测试：系统通知消息");
+	var time_node = $("<time></time>").text("1111-1-1 11:11:11");
+	
+	var ul = $("<ul></ul>").attr("class","fix opera");
+	var liYes = $("<li></li>").attr("class","btn");
+	var liNo = $("<li></li>").attr("class","btn");
+	var yes = $("<button></button>").attr("class","yes").text("同意");
+	var no = $("<button></button>").attr("class","no").text("拒绝");
+	
+	ul_node.append(li_node.append(p_node).append(time_node).append(ul.append(liYes.append(yes)).append(liNo.append(no))));
+	
+}
 
+/**
+ * 用户点击通知消息里的同意或拒绝后元素修改
+ * */
+function topicMsgInformStatusChange(node,btnType){
+	
+	var li_node = $(node).parent().parent().parent();
+	$(node).parent().parent().remove();
+	
+	var ul_node = $("<ul></ul>").attr("class","fix opera");
+	
+	var btn_vh = $("<li></li>").attr("class","btn vh");
+	btn_vh.append($("<button></button>").attr("class","yes"));
+	
+	if(btnType == 0){
+		var btn = $("<li></li>").attr("class","btn").text("已同意");
+		ul_node.append(btn_vh).append(btn);
+		li_node.append(ul_node);
+	}else{
+		var btn = $("<li></li>").attr("class","btn").text("已拒绝");
+		ul_node.append(btn_vh).append(btn);
+		li_node.append(ul_node);
+	}
+}
