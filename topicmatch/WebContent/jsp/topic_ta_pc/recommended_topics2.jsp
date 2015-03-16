@@ -10,10 +10,27 @@
 		user.setImageUrl(request.getContextPath()+"/jsp/topic/images/1.jpg");
 		session.setAttribute("user", user);
 	} 
-
 %>
 <!DOCTYPE html>
 <html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>话题推荐-寻TA网</title>
+	<link rel="stylesheet" href="css/base.css">
+	<!--[if lte IE 8]>
+		<style>
+			/*ie8支持css3
+			.header .search,.top-memory .tab-menu,.talk-list .tp,.talk-list .enter,.form .load{behavior:url(js/ie-css3.htc);}*/
+		</style>
+		<script src="js/html5.js"></script>
+	<![endif]-->	
+	<style>
+		.content,.main{position: absolute;bottom: 0;left:0;right:0;}
+		.content{top:120px;}
+		.main{top:0;overflow-y:auto;}
+	</style>
+</head>
+<body>
 	<header class="header">
 		<div class="head">
 			<h1 class="logo"><a href="/">寻TA网</a></h1>
@@ -23,9 +40,9 @@
 			</div>
 			<nav class="nav">
 				<ul class="fix">
-					<li class="current"><a href="#" id="httj">话题推荐</a></li>
-					<li><a href="#" id="htjy">话题记忆</a></li>
-					<li><a href="#" id="fqht">发起话题</a></li>
+					<li class="current"><a href="#">话题推荐</a></li>
+					<li><a href="topics_memory.html">话题记忆</a></li>
+					<li><a href="#">发起话题</a></li>
 				</ul>
 			</nav>
 			<div class="user">
@@ -113,4 +130,5 @@
 		</div>
 	</header>
 
+</body>
 </html>
