@@ -10,7 +10,6 @@
 		user.setImageUrl(request.getContextPath()+"/jsp/topic/images/1.jpg");
 		session.setAttribute("user", user);
 	} 
-
 %>
 <!DOCTYPE html>
 <html lang="zh">
