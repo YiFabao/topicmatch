@@ -27,6 +27,28 @@ function create_one_topic_item(topicId){
 	console.log("创建聊天框左侧的话题列表项");
 	//初始化显示的历史消息记录数为0
 	topicId_count_map[topicId]=0;
+	var topicMemberItem = $(".topic-box .left .rec-topic-list");
+	
+	
+	var li_node = $("<li></li>");
+	li_node.attr("id",topicId);
+	li_node.attr("class","cur");
+	
+	topicMemberItem.append(li_node);
+	
+	
+	var topicMemberItem_cur = $(".rec-topic-list #1");
+	
+	topicMemberItem_cur.append("<span></span>");
+	$(".rec-topic-list #1 span").text("99");
+	
+	topicMemberItem_cur.append("<p class=\"name\" title=\"测试 房\"></p>");
+	$(".rec-topic-list #1 p").text("测试 房");
+	
+	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\">&#xe601;</a>");
+	
+
+	
 };
 
 /**
@@ -39,18 +61,7 @@ function create_one_topicMember_item(){
 	//创建聊天框右侧的一个参与人列表项
 	console.log("创建聊天框右侧的一个参与人列表项");
 	
-	var topicMemberItem = $(".topic-box .left .rec-topic-list");
-	topicMemberItem.append("<li id=\"1\" class=\"cur\"></li>");
-	
-	var topicMemberItem_cur = $(".rec-topic-list #1");
-	
-	topicMemberItem_cur.append("<span class=\"num\"></span>");
-	$(".rec-topic-list #1 span").text("99");
-	
-	topicMemberItem_cur.append("<p class=\"name\" title=\"测试 房\"></p>");
-	$(".rec-topic-list #1 p").text("测试 房");
-	
-	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\">&#xe601;</a>");
+
 }
 
 /**
