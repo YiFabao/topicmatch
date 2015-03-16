@@ -5,6 +5,14 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
+	String access_token = request.getParameter("access_token");
+	String code = request.getParameter("code");
+
+	if(access_token!=null&&!"".equals(access_token))
+	{
+		response.sendRedirect(request.getContextPath()+"/servlet/qq_login?access_token="+access_token);
+	}
+
 %>
 
 <!DOCTYPE html>
@@ -517,6 +525,8 @@ $("#UserName,#PassWord").focus(function(){
      console.log("delete cookie");
      document.cookie = "aigine_login_state=; expires="+new Date();
  }
+ 
+
 
 </script>
 </body>
