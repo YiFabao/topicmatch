@@ -571,7 +571,8 @@ public class TopicService extends HttpServlet {
 		request.setAttribute("myTopic",topic);
 		//匹配话题
 		List<so.xunta.topic.entity.Topic> matchedtopicList=topicManager.matchMyTopic(topic.topicName,topic.topicContent);
-		//按userId分组
+		
+		/*//按userId分组
 		Map<String,List<Topic>> topicMap = new HashMap<String,List<Topic>>();
 		for(Topic t:matchedtopicList)
 		{
@@ -601,9 +602,9 @@ public class TopicService extends HttpServlet {
 			mtlist.add(mt);
 		}
 		System.out.println("mtlist====>"+mtlist.size());
-		request.setAttribute("matchedTopicList",mtlist);
+		request.setAttribute("matchedTopicList",mtlist);*/
 		try {
-			request.getRequestDispatcher("/jsp/topic/fqht.jsp").forward(request,response);
+			request.getRequestDispatcher("/jsp/topic/include/sponsored_topic.jsp").forward(request,response);
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

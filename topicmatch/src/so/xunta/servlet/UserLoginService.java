@@ -165,7 +165,12 @@ public class UserLoginService extends HttpServlet {
 						if(contentType.equals("image/jpeg")){
 							System.out.println("上传的是图片格式");
 						}
-						user.setImageUrl("imgs/"+newImageName);
+						String path2 = request.getContextPath();
+						String basePath = request.getScheme() + "://"
+								+ request.getServerName() + ":" + request.getServerPort()
+								+ path2 + "/"; 
+		
+						user.setImageUrl(basePath+"imgs/"+newImageName);
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					
