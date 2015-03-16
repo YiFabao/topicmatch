@@ -34,7 +34,7 @@
 				<a href="#">注册</a>
 				-->
 				<div class="h user-area">
-					<i class="user-pic"><img src="${pageContext.request.contextpath+'\\'+sessionScope.user.imageUrl}" alt=""></i>
+					<i class="user-pic"><img src="${pageContext.request.contextPath}\\${sessionScope.user.imageUrl}" alt=""></i>
 					<span class="grade">T17</span>
 					<div class="pop">
 						<i class="link"></i>
