@@ -52,9 +52,9 @@
 			<div class="dialog-box login-1">
 				<h3>第三方登录</h3>
 				<ul class="quick-login">
-					<li><a href="#" title="微信"><img src="images/wx.png">微信</a></li>
-					<li><a href="#" title="腾讯QQ"><img src="images/qq.png">QQ</a></li>
-					<li><a href="#" title="新浪微博"><img src="images/sina.png">新浪</a></li>
+					<li><a href="#" title="微信"><img src="<%=basePath %>jsp/topic/images/wx.png">微信</a></li>
+					<li><a href="#" title="腾讯QQ"><img src="<%=basePath %>jsp/topic/images/qq.png">QQ</a></li>
+					<li><a href="#" title="新浪微博"><img src="<%=basePath %>jsp/topic/images/sina.png">新浪</a></li>
 					<li class="justify-fix">&nbsp;</li>
 				</ul>
 				<div class="tc f16">
@@ -92,9 +92,9 @@
 				<div class="login-1 l">
 					<h3>第三方登录</h3>
 					<ul class="quick-login">
-						<li><a href="#" title="微信"><img src="images/wx.png">微信</a></li>
-						<li><a href="#" title="腾讯QQ"><img src="images/qq.png">QQ</a></li>
-						<li><a href="#" title="新浪微博"><img src="images/sina.png">新浪</a></li>
+						<li><a href="#" title="微信"><img src="<%=basePath %>jsp/topic/images/wx.png">微信</a></li>
+						<li><a href="#" title="腾讯QQ"><img src="<%=basePath %>jsp/topic/images/qq.png">QQ</a></li>
+						<li><a href="#" title="新浪微博"><img src="<%=basePath %>jsp/topic/images/sina.png">新浪</a></li>
 						<li class="justify-fix">&nbsp;</li>
 					</ul>
 				</div>
@@ -110,15 +110,7 @@
 						<div class="dd">
 							<div class="interests">
 								<div class="cont mb10" id="user_input_tags">
-									<a href="#" class="tag">文学<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">地理<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">整治<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">语文<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">数学<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">文学<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">地理<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">整治<i class="iconfont del">&#xe601;</i></a>
-									<a href="#" class="tag">语文<i class="iconfont del">&#xe601;</i></a>
+									<a href="#" class="tag">测试<i class="iconfont del">&#xe601;</i></a>
 								</div>
 								<lable class="placeholder">填写或选择感兴趣的标签,以，隔开</lable>
 								<div class="mb10">
@@ -278,14 +270,14 @@
 			</div>
 		</div>
 	</div>
-<script src="js/jquery-1.4.4.min.js"></script>
-<script src="js/jquery.placeholder-1.0.js"></script>
-<script src="js/jquery-powerSwitch-min.js"></script>
-<script src="js/jquery.easing.min.js"></script>
-<script src="js/jquery.lavalamp.min.js"></script>
-<script src="js/mobilebone-min.js"></script>
-<script src="js/jquery-html5Validate-min.js"></script>
-<script src="js/common.js"></script>
+<script src="<%=basePath %>jsp/topic/js/jquery-1.4.4.min.js"></script>
+<script src="<%=basePath %>jsp/topic/js/jquery.placeholder-1.0.js"></script>
+<script src="<%=basePath %>jsp/topic/js/jquery-powerSwitch-min.js"></script>
+<script src="<%=basePath %>jsp/topic/js/jquery.easing.min.js"></script>
+<script src="<%=basePath %>jsp/topic/js/jquery.lavalamp.min.js"></script>
+<script src="<%=basePath %>jsp/topic/js/mobilebone-min.js"></script>
+<script src="<%=basePath %>jsp/topic/js/jquery-html5Validate-min.js"></script>
+<script src="<%=basePath %>jsp/topic/js/common.js"></script>
 <script src="<%=basePath %>jsp/static/js/uploadPreview.js"></script>
 
 <script>
