@@ -57,11 +57,29 @@ function create_one_topic_item(topicId,topicContent,topicUnreadNum){
  * History :
  * 		2015/3/13 fang
  */
-function create_one_topicMember_item(){
+function create_one_topicMember_item(obj_json){
 	//创建聊天框右侧的一个参与人列表项
 	console.log("创建聊天框右侧的一个参与人列表项");
 	
+	var topicUserList = $(".topic-box .right .user-list");
+	
+	var li_node = $("<li></li>");
+	li_node.attr("id","参与人id")
+	
+	var div_node = $("<div></div>");
+	div_node.attr("class","user-pic");
+	
+	var img_node = $("<img alt>");
+	img_node.attr("src","images/delete/user-pic2.jpg");
 
+	var p_node = $("<p></p>");
+	p_node.attr("class","name");
+	p_node.attr("title","测试-房");
+	p_node.text("测试-房");
+	
+	div_node.append(img_node);
+	li_node.append(div_node).append(p_node);
+	topicUserList.append(li_node);
 }
 
 /**
