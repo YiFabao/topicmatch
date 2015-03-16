@@ -23,32 +23,32 @@ function func_joinTopic(topicId){
  * History :
  * 		2015/3/13 10:10 fabao.yi first release
  */
-function create_one_topic_item(topicId){
+function create_one_topic_item(topicId,topicContent,topicUnreadNum){
 	console.log("创建聊天框左侧的话题列表项");
 	//初始化显示的历史消息记录数为0
 	topicId_count_map[topicId]=0;
-	var topicMemberItem = $(".topic-box .left .rec-topic-list");
 	
+	var topicMemberItem = $(".topic-box .left .rec-topic-list");
 	
 	var li_node = $("<li></li>");
 	li_node.attr("id",topicId);
 	li_node.attr("class","cur");
 	
+	var span_node = $("<span></span>");
+	span_node.attr("class","num");
+	span_node.text(topicUnreadNum);
+	
+	var p_node = $("<p></p>");
+	p_node.attr("class","name");
+	p_node.attr("title",topicContent);
+	p_node.text(topicContent);
+	
+	var a_node = $("<a>&#xe601;</a>");
+	a_node.attr("href","#");
+	a_node.attr("class","iconfont close");
+	
+	li_node.append(span_node).append(p_node).append(a_node);
 	topicMemberItem.append(li_node);
-	
-	
-	var topicMemberItem_cur = $(".rec-topic-list #1");
-	
-	topicMemberItem_cur.append("<span></span>");
-	$(".rec-topic-list #1 span").text("99");
-	
-	topicMemberItem_cur.append("<p class=\"name\" title=\"测试 房\"></p>");
-	$(".rec-topic-list #1 p").text("测试 房");
-	
-	topicMemberItem_cur.append("<a href=\"#\" class=\"iconfont close\">&#xe601;</a>");
-	
-
-	
 };
 
 /**
