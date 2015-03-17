@@ -645,8 +645,6 @@
 			} 
 		}
 		
-		
-		
 		//添加联系人
 		function addContactor(contact)
 		{
@@ -793,7 +791,6 @@
 		   	  setBottom(mainBoxNode);	
 	   	};
 	   	
-	   	
 	   	//往消息框里显示一条新用户进群的通知消息
 	   	function addMsgContetntIntoDialogueBoxAboutNewUserComeIn(dialogueBox,nickname,dateTime){
 	   		console.log("新用户进话题组");
@@ -833,8 +830,6 @@
 	   			return false;
 	   		}
 	   	}
-	   	
-
 	   	var state_fang = "0";
 
 	    //websocket状态发生变化时触发
@@ -1013,7 +1008,6 @@
 			console.log("初始化聊天框");
 			getTopicListByTopicIdArray(json_topicIdKey_unreadMsgNumValue);
 	  };
-	  
 
 	  //获取对象的键,以数组返回
 	  function getKeys(json)

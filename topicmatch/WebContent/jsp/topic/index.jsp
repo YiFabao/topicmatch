@@ -107,6 +107,8 @@
 		</ul>
 	</div>
 </div>
+
+
 <!-- 隐藏状态 -->
 <div class="mintopic-box">
 	未读消息 <span class="num">23</span>
@@ -137,7 +139,7 @@
 
 <script>
 	$(function(){
-		//加载话题记忆页面
+		//加载话题推荐页面
 		$.post("<%=request.getContextPath()%>/jsp/topic/include/recommended_topics.jsp",null,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);

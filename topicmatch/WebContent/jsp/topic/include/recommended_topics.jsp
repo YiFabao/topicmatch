@@ -17,31 +17,36 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-<!--				<li class="topic-item right" style="top:30px;left:200px">
+				
+				<li class="topic-item right" style="top:30px;left:200px" topicId="1">
 					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
+					<div class="info">
+						<i class="iconfont man">&#xe60f;</i>非洲小白脸
+						<p class="area">上海市</p>
+					</div>
 					<div class="cont">
 						今天用了迪素牛奶瓶男香，橙汁味道
 					</div>
 					<i class="tri"></i>
 				</li>
-				<li class="topic-item" style="top:100px;left:500px">
+				
+				<li class="topic-item left" style="top:230px;left:600px" topicId="2">
 					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				</li>
-				<li class="topic-item left" style="top:230px;left:600px">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
+					<div class="info">
+						<i class="iconfont woman">&#xe60e;</i>余温未了
+						<p class="area">上海市</p>
+					</div>
 					<div class="cont">
 						今天用了迪素牛奶瓶男香，橙汁味道
 					</div>
 					<i class="tri"></i>
-				</li>-->
+				</li>
 			</ul>
-			
 			<div class="page-topic">
 				<a href="#" class="iconfont prev">&#xe609;</a>
 				<span class="cur">1/14</span>
 				<a href="#" class="iconfont next">&#xe608;</a>
 			</div>
-		
 		</div>
 	</section>
 
@@ -399,7 +404,7 @@
 		});
 	}
 	console.log("<%=user.id%>");
-	doPost("<%=user.id%>");//1为当前登录用户的id
+	//doPost("<%=user.id%>");//1为当前登录用户的id
 	
 	//获取某一个页数据对应的{userId:topicId,...}
 	//page 从1开始的页数

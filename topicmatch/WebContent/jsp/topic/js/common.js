@@ -154,11 +154,13 @@ function  IsRunYear(year){
 $('.topic-box .toggle').click(function(){
 	var title =$(this).attr("title");
 	if(title=="展开"){
+		console.log("展开");
 		$(this).attr("title","收缩");
 		$(this).find("i").html("&#xe605;");
 		$('.topic-box').animate({"right":0},'slow')
 	}
 	else{
+		console.log("收缩");
 		$(this).attr("title","展开");
 		$(this).find("i").html("&#xe606;");
 		$('.topic-box').animate({"right":-82},'slow')
