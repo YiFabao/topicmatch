@@ -58,6 +58,8 @@ function func_joinTopic(topicId){
  * @param topicId 话题id
  * History :
  * 		2015/3/13 10:10 fabao.yi first release
+ * 
+ * fang
  */
 function create_one_topic_item(obj,topicUnreadNum){
 	console.log("创建聊天框左侧的话题列表项");
@@ -196,7 +198,7 @@ function create_one_topicMember_item(member){
  * @param topicId　话题ID
  * @param count 全局变量,topicId已经显示的历史消息数
  * History :
- * 		2015/3/13 10:13　fabao.yi　first release,没有测试
+ * 		2015/3/13 10:13　fang
  */
 
 function getHistoryMessagesByTopicId(topicId,count){
@@ -230,6 +232,7 @@ function create_and_show_one_message(topicId,message_obj_json){
  * @param topicId
  * @param content
  * @param img-url
+ * fang
  * */
 function createMessage(contentType,obj_json){
 	if(contentType==0){//自己发消息
@@ -267,6 +270,7 @@ function createMessage(contentType,obj_json){
 
 /**
  * 当用户进入某话题聊天框后在聊天记录框插入一条提示消息  ”-某某加入该对话组
+ * fang
  * */
 function userEnterTopic(userName){
 	var div_node = $("<div></div>").attr("class","system").text("-"+userName+"加入该对话组")
@@ -274,6 +278,7 @@ function userEnterTopic(userName){
 }
 /**
  * 系统通知
+ * fang
  * */
 function systemMsgInform(time,message){
 	var ul_node = $(".tab-content .tab-panel.dn .news-list");
@@ -285,6 +290,7 @@ function systemMsgInform(time,message){
 
 /**
  * 话题消息通知
+ * fang
  * */
 function topicMsgInform(time,message){
 	var ul_node = $(".tab-content .tab-panel .news-list");
@@ -305,6 +311,7 @@ function topicMsgInform(time,message){
 
 /**
  * 用户点击通知消息里的同意或拒绝后元素修改
+ * fang
  * */
 function topicMsgInformStatusChange(node,btnType){
 	
