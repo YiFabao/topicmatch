@@ -17,9 +17,8 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-				
-				<li class="topic-item right" style="top:30px;left:200px" topicId="1">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
+				<li class="topic-item right" style="top:30px;left:200px" topicId="t1" onclick="create_one_topic_item(this,null)">
+					<div class="pic"><img src="images/delete/user-pic2.jpg" alt="" ></div>
 					<div class="info">
 						<i class="iconfont man">&#xe60f;</i>非洲小白脸
 						<p class="area">上海市</p>
@@ -29,15 +28,14 @@
 					</div>
 					<i class="tri"></i>
 				</li>
-				
-				<li class="topic-item left" style="top:230px;left:600px" topicId="2">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
+				<li class="topic-item right" style="top:230px;left:600px" topicId="t2" onclick="create_one_topic_item(this,null)"> 
+					<div class="pic"><img src="images/delete/user-pic2.jpg" alt="" ></div>
 					<div class="info">
-						<i class="iconfont woman">&#xe60e;</i>余温未了
-						<p class="area">上海市</p>
+						<i class="iconfont woman">&#xe60e;</i>丁山填海
+						<p class="area">杭州市</p>
 					</div>
 					<div class="cont">
-						今天用了迪素牛奶瓶男香，橙汁味道
+						每天不知道吃些什么？
 					</div>
 					<i class="tri"></i>
 				</li>
@@ -52,6 +50,7 @@
 
 
 <script>
+
 	$(".tab-menu a").powerSwitch({
 	    classAdd: "selected"
 	}).eq(0).trigger("click");

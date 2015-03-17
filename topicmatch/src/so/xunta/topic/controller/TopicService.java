@@ -518,14 +518,47 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String topicId = request.getParameter("topicId");
 		//调用用户参与话题的业务处理逻辑模型
-		topicModel.joinTopic(request, response, userId, topicId);
+		//topicModel.joinTopic(request, response, userId, topicId);
+		System.out.println("userId:"+userId);
+		System.out.println("topicId:"+topicId);
+
+		
+		JSONObject user_p = new JSONObject();
+		user_p.put("userId",userId);
+		user_p.put("userName", "易发宝");
+		user_p.put("imageUrl","/images/URL");
+		
+		JSONObject topic_json=new JSONObject();
+		topic_json.put("topicId",topicId);
+		topic_json.put("topicTitle","上海哪里好玩");
+		topic_json.put("topicContent","一直不知道上海哪好玩");
+		
+		JSONArray memberList = new JSONArray();
+		JSONObject json1 = new JSONObject();
+		json1.put("userId","2");
+		json1.put("userName", "张三");
+		json1.put("imageUrl","images/delete/user-pic2.jpg");
+		JSONObject json2 = new JSONObject();
+		json2.put("userId","3");
+		json2.put("userName", "李四");
+		json2.put("imageUrl","/images/2.jpg");
+		memberList.add(json1);
+		memberList.add(json2);
+		
+		JSONObject all = new JSONObject();
+		all.put("user_p",user_p);
+		all.put("topic",topic_json);
+		all.put("memberList",memberList);
+		System.out.println(all.toString());
 		try {
-			request.getRequestDispatcher("/jsp/topic/include/dialogue_box.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
+			response.setContentType("text/json");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(all.toString());
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	private void htss(HttpServletRequest request, HttpServletResponse response) {
