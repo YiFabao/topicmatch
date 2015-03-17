@@ -9,6 +9,7 @@ public class MatchTopicPeople {
 	public List<String> tagList;
 	public int p_num;// 发起相关话题数
 	public int j_num;//	参与相关话题数
+	
 	public String getName() {
 		return name;
 	}
