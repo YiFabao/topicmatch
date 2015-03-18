@@ -32,7 +32,7 @@
 <div class="topic-box">
 	<div class="left">
 		<ul class="rec-topic-list">
-			<li class="cur">
+<!-- 			<li class="cur">
 				<span class="num">3</span>
 				<p class="name" title="你多活一天你都干了些什么？">你多活一天你都干了些什么？</p>
 				<a href="#" class="iconfont close">&#xe601;</a>
@@ -41,24 +41,14 @@
 				<span class="num">3</span>
 				<p class="name" title="你多活一天你都干了些什么？">你多活一天你都干了些什么？</p>
 				<a href="#" class="iconfont close">&#xe601;</a>
-			</li>
-			<li>
-				<span class="num">3</span>
-				<p class="name" title="你多活一天你都干了些什么？">你多活一天你都干了些什么？</p>
-				<a href="#" class="iconfont close">&#xe601;</a>
-			</li>
-			<li>
-				<span class="num">3</span>
-				<p class="name" title="你多活一天你都干了些什么？">你多活一天你都干了些什么？</p>
-				<a href="#" class="iconfont close">&#xe601;</a>
-			</li>
+			</li> -->
 		</ul>
 	</div>
-	<div class="center">
+	<div class="center" topicId="1">
 		<div class="title">
 			<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
 			<h3 title="话题：心底总会有声音不停提醒“不快乐”。">话题：心底总会有声音不停提醒“不快乐”。</h3>
-			<a href="#" class="iconfont close">&#xe607;</a>
+			<a href="javascript:chat_box_close()" class="iconfont close">&#xe607;</a>
 		</div>
 		<div class="dec">
 			<p class="txt">
@@ -79,34 +69,31 @@
 		</div>
 		<div class="send-box">
 			<textarea name="" id=""></textarea>
-			<button class="iconfont send-btn">&#xe604;</button>
+			<button class="iconfont send-btn" onclick="createMessage(0,null)">&#xe604;</button>
 		</div>
 	</div>
-	<div class="toggle" title="收缩">
+	<div class="toggle" title="收缩" topicId="1" onclick="topic_member_toggle(this)">
 		<i class="iconfont">&#xe605;</i>
 	</div>
-	<div class="right">
+	<div class="right" topicId="999">
 		<h4>参与人</h4>
 		<ul class="user-list">
-			<li>
+			<li　userId="111">
 				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="顽皮的小废话">顽皮的小废话</p>
+				<p class="name" title="张三">张三</p>
 			</li>
-			<li>
-				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="顽皮的小废话">顽皮的小废话</p>
+			<li userId="222">
+				<div class="user-pic"><img src="images/2.jpg" alt=""></div>
+				<p class="name" title="李四">李四</p>
 			</li>
-			<li>
-				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="顽皮的小废话">顽皮的小废话</p>
-			</li>
-			<li>
-				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="顽皮的小废话">顽皮的小废话</p>
+			<li userId="333">
+				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
+				<p class="name" title="王二麻子">王二麻子</p>
 			</li>
 		</ul>
 	</div>
 </div>
+
 <!-- 隐藏状态 -->
 <div class="mintopic-box">
 	未读消息 <span class="num">23</span>
@@ -138,14 +125,18 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/topic_memory_fang.js"></script>
 
 <script>
+
+	var contextPath = "${pageContext.request.contextPath}";
+	var myselfId = "${sessionScope.user.id}";
+	var userImageUrl = "${sessionScope.user.imageUrl}";
+
 	$(function(){
-		//加载话题记忆页面
+		//加载话题推荐页面
 		$.post("<%=request.getContextPath()%>/jsp/topic/include/recommended_topics.jsp",null,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		});
 	});
- 	
 	
 	$("#httj").click(function(){
 		console.log("话题推荐");
@@ -171,6 +162,16 @@
 		});
 	});
 	
+	//发送消息按钮添加点击或按回车键发送消息
+	 $(document).keydown(function(event){
+		    if(event.keyCode==13){
+		    	createMessage(0,null);
+		    	return false;
+		    }
+	 });
+	
+	//创建websocket
+	createWebsocketConnect("${sessionScope.user.id}");
 
 </script>
 

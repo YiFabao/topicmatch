@@ -3,6 +3,7 @@ package so.xunta.topic.entity;
 import java.util.List;
 
 public class MatchTopicPeople {
+	public Long userId;
 	public String name;
 	public String imgUrl;
 	public String signature;
@@ -10,6 +11,13 @@ public class MatchTopicPeople {
 	public int p_num;// 发起相关话题数
 	public int j_num;//	参与相关话题数
 	
+	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getName() {
 		return name;
 	}

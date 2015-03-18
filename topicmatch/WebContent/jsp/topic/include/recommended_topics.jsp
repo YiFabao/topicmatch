@@ -17,36 +17,40 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-<!--				<li class="topic-item right" style="top:30px;left:200px">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
+				<li class="topic-item right" style="top:30px;left:200px" topicId="t1" onclick="create_one_topic_item(this,null)">
+					<div class="pic"><img src="images/delete/user-pic2.jpg" alt="" ></div>
+					<div class="info">
+						<i class="iconfont man">&#xe60f;</i>非洲小白脸
+						<p class="area">上海市</p>
+					</div>
 					<div class="cont">
 						今天用了迪素牛奶瓶男香，橙汁味道
 					</div>
 					<i class="tri"></i>
 				</li>
-				<li class="topic-item" style="top:100px;left:500px">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				</li>
-				<li class="topic-item left" style="top:230px;left:600px">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
+				<li class="topic-item right" style="top:230px;left:600px" topicId="t2" onclick="create_one_topic_item(this,null)"> 
+					<div class="pic"><img src="images/delete/user-pic2.jpg" alt="" ></div>
+					<div class="info">
+						<i class="iconfont woman">&#xe60e;</i>丁山填海
+						<p class="area">杭州市</p>
+					</div>
 					<div class="cont">
-						今天用了迪素牛奶瓶男香，橙汁味道
+						每天不知道吃些什么？
 					</div>
 					<i class="tri"></i>
-				</li>-->
+				</li>
 			</ul>
-			
 			<div class="page-topic">
 				<a href="#" class="iconfont prev">&#xe609;</a>
 				<span class="cur">1/14</span>
 				<a href="#" class="iconfont next">&#xe608;</a>
 			</div>
-		
 		</div>
 	</section>
 
 
 <script>
+
 	$(".tab-menu a").powerSwitch({
 	    classAdd: "selected"
 	}).eq(0).trigger("click");
@@ -399,7 +403,7 @@
 		});
 	}
 	console.log("<%=user.id%>");
-	doPost("<%=user.id%>");//1为当前登录用户的id
+	//doPost("<%=user.id%>");//1为当前登录用户的id
 	
 	//获取某一个页数据对应的{userId:topicId,...}
 	//page 从1开始的页数
@@ -501,12 +505,6 @@
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
 	
-	//发送消息按钮添加点击或按回车键发送消息
-	 $(document).keydown(function(event){
-		    if(event.keyCode==13){
-		    	create_and_show_one_message(1,{message:"测试消息"})
-		    }
-	 });
 
 	/**
 	 * 产生一个指定区间的随机数
