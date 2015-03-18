@@ -17,25 +17,25 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-				<li class="topic-item right" style="top:30px;left:200px" topicId="t1" onclick="create_one_topic_item(this,null)">
-					<div class="pic"><img src="images/delete/user-pic2.jpg" alt="" ></div>
+				<li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
+					<div class="pic"><img src="images/2.jpg" alt="" ></div>
 					<div class="info">
-						<i class="iconfont man">&#xe60f;</i>非洲小白脸
+						<i class="iconfont man">&#xe60f;</i>fabaoyi
 						<p class="area">上海市</p>
 					</div>
 					<div class="cont">
-						今天用了迪素牛奶瓶男香，橙汁味道
+						春天来了
 					</div>
 					<i class="tri"></i>
 				</li>
-				<li class="topic-item right" style="top:230px;left:600px" topicId="t2" onclick="create_one_topic_item(this,null)"> 
+				<li class="topic-item right" style="top:230px;left:600px" topicId="A2B1B0F770C4E24FCB05BAADCEE47A6D" onclick="create_one_topic_item(this,null)"> 
 					<div class="pic"><img src="images/delete/user-pic2.jpg" alt="" ></div>
 					<div class="info">
-						<i class="iconfont woman">&#xe60e;</i>丁山填海
+						<i class="iconfont woman">&#xe60e;</i>candy
 						<p class="area">杭州市</p>
 					</div>
 					<div class="cont">
-						每天不知道吃些什么？
+						我是candy,来到寻Ta网,想找到一个能聊得来的小伙伴
 					</div>
 					<i class="tri"></i>
 				</li>

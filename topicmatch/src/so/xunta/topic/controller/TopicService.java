@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.qq.connect.utils.json.JSONException;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import so.xunta.entity.User;
@@ -52,6 +54,7 @@ public class TopicService extends HttpServlet {
 	private TopicManager topicManager = new TopicManagerImpl();
 	private MsgManager msgManager = new MsgManagerImpl();
 	private TopicModel topicModel = new TopicModelImpl();
+	private UserManager usermanager = new UserManagerImpl();
     public TopicService() {
         super();
     }
@@ -118,12 +121,74 @@ public class TopicService extends HttpServlet {
 		case "getRecommendPageData":
 			method_getRecommendPageData(request,response);
 			break;
+		case "getTopicAndTopicMembersByTopicId"://传topicId,获取Topic,List<User>用于创建对话框
+			getTopicAndTopicMembersByTopicId(request,response);
+			break;
 		case "exit":
 			exit(request,response);
 			break;
 		}
 	}
 	
+	private void getTopicAndTopicMembersByTopicId(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		//参与话题
+		String topicId = request.getParameter("topicId");
+		//查询出　Topic
+		Topic topic = topicManager.findTopicByTopicId(topicId);
+		
+		User p_user = usermanager.findUserById(topic.id);
+		
+		//查询出List<User>
+		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
+		List<Long> userIdList_l = new ArrayList<Long>();
+		for(String s:userIdList)
+		{
+			userIdList_l.add(Long.parseLong(s));
+		}
+		List<User> userList = usermanager.findUserListByUserIdList(userIdList_l);
+		
+		//封装成json
+		JSONObject topic_json=new JSONObject();
+		if(topic!=null){
+			topic_json.put("topicId",topicId);
+			topic_json.put("topicTitle",topic.topicName);
+			topic_json.put("topicContent",topic.topicContent);
+		}else{
+			System.err.print("topicId==>Topic 为空");
+		}
+		
+
+		JSONObject user_p = new JSONObject();
+		user_p.put("userId",p_user.id);
+		user_p.put("userName",p_user.xunta_username);
+		user_p.put("imageUrl",p_user.imageUrl);
+	
+		
+		JSONArray memberList = new JSONArray();
+		if(userList !=null){
+			for(User u:userList){
+				JSONObject json = new JSONObject();
+				json.put("userId",u.id);
+				json.put("userName", u.xunta_username);
+				json.put("imageUrl",u.imageUrl);
+				memberList.add(json.toString());
+			}
+		}
+		JSONObject all = new JSONObject();
+		all.put("topic",topic_json);
+		all.put("memberList",memberList);
+		all.put("user_p",user_p);
+		System.out.println(all.toString());
+		try {
+			response.setContentType("text/json");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(all.toString());
+		} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+
 	//返回真实的数据
 	private void method_getRecommendPageData(HttpServletRequest request, HttpServletResponse response){
 		String data = request.getParameter("data");
@@ -518,47 +583,9 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String topicId = request.getParameter("topicId");
 		//调用用户参与话题的业务处理逻辑模型
-		//topicModel.joinTopic(request, response, userId, topicId);
-		System.out.println("userId:"+userId);
-		System.out.println("topicId:"+topicId);
-
-		
-		JSONObject user_p = new JSONObject();
-		user_p.put("userId",userId);
-		user_p.put("userName", "易发宝");
-		user_p.put("imageUrl","/images/URL");
-		
-		JSONObject topic_json=new JSONObject();
-		topic_json.put("topicId",topicId);
-		topic_json.put("topicTitle","上海哪里好玩");
-		topic_json.put("topicContent","一直不知道上海哪好玩");
-		
-		JSONArray memberList = new JSONArray();
-		JSONObject json1 = new JSONObject();
-		json1.put("userId","2");
-		json1.put("userName", "张三");
-		json1.put("imageUrl","images/delete/user-pic2.jpg");
-		JSONObject json2 = new JSONObject();
-		json2.put("userId","3");
-		json2.put("userName", "李四");
-		json2.put("imageUrl","/images/2.jpg");
-		memberList.add(json1);
-		memberList.add(json2);
-		
-		JSONObject all = new JSONObject();
-		all.put("user_p",user_p);
-		all.put("topic",topic_json);
-		all.put("memberList",memberList);
-		System.out.println(all.toString());
-		try {
-			response.setContentType("text/json");
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().write(all.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		topicModel.joinTopic(request, response, userId, topicId);
+		//System.out.println("userId:"+userId);
+		//System.out.println("topicId:"+topicId);
 	}
 
 	private void htss(HttpServletRequest request, HttpServletResponse response) {
