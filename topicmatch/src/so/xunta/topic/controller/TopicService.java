@@ -8,25 +8,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.qq.connect.utils.json.JSONException;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import so.xunta.entity.Tag;
 import so.xunta.entity.User;
+import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
-import so.xunta.topic.entity.MatchedTopic;
+import so.xunta.topic.entity.MatchTopicPeople;
 import so.xunta.topic.entity.MessageAlert;
-import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.SysMessage;
 import so.xunta.topic.entity.Topic;
@@ -54,7 +52,11 @@ public class TopicService extends HttpServlet {
 	private TopicManager topicManager = new TopicManagerImpl();
 	private MsgManager msgManager = new MsgManagerImpl();
 	private TopicModel topicModel = new TopicModelImpl();
-	private UserManager usermanager = new UserManagerImpl();
+
+	//用户发起话题后查询相关用户
+	private UserManager userManager = new UserManagerImpl();
+	private TagsManager tagsManager = new TagsManagerImpl();
+
     public TopicService() {
         super();
     }
@@ -137,7 +139,7 @@ public class TopicService extends HttpServlet {
 		//查询出　Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
-		User p_user = usermanager.findUserById(topic.id);
+		User p_user = userManager.findUserById(topic.id);
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
@@ -146,7 +148,7 @@ public class TopicService extends HttpServlet {
 		{
 			userIdList_l.add(Long.parseLong(s));
 		}
-		List<User> userList = usermanager.findUserListByUserIdList(userIdList_l);
+		List<User> userList = userManager.findUserListByUserIdList(userIdList_l);
 		
 		//封装成json
 		JSONObject topic_json=new JSONObject();
@@ -584,8 +586,10 @@ public class TopicService extends HttpServlet {
 		String topicId = request.getParameter("topicId");
 		//调用用户参与话题的业务处理逻辑模型
 		topicModel.joinTopic(request, response, userId, topicId);
+
 		//System.out.println("userId:"+userId);
 		//System.out.println("topicId:"+topicId);
+
 	}
 
 	private void htss(HttpServletRequest request, HttpServletResponse response) {
@@ -629,9 +633,145 @@ public class TopicService extends HttpServlet {
 		SaveTopicThread saveTopicThread = new SaveTopicThread(topicManager, topic);
 		new Thread(saveTopicThread).start();//保存话题，话题组，话题历史
 		request.setAttribute("myTopic",topic);
-		//匹配话题
-		List<so.xunta.topic.entity.Topic> matchedtopicList=topicManager.matchMyTopic(topic.topicName,topic.topicContent);
 		
+		//匹配话题
+		//List<so.xunta.topic.entity.Topic> matchedtopicList=topicManager.matchMyTopic(topic.topicName,topic.topicContent);
+		List<String> matchedtopicListIds=topicManager.matchMyTopicIds(topic.topicName,topic.topicContent);
+		
+		//从数据库查询前面从索引中查到的发过或参与过相关话题的用户
+		List<TopicHistory> matchedTopicFromDB = topicManager.findTopicHistoryByTopicId(matchedtopicListIds);
+		//要返回到前台页面的匹配的结果用户，之所以用Map不用List是为了根据userId快速查出已经添加进去的MatchTopicPeople，返回到前台时只返回values组成的List
+		Map<Long,MatchTopicPeople> mtpList = new HashMap<Long,MatchTopicPeople>();
+		
+		//记录该用户id是否已经在结果集mtpList中了
+		//Set<Long> userHasAdd = new HashSet<Long>();
+		//话题id是主键，参与过该话题的用户id的list为value，这样做是为了使用findUserListByUserIdList()更快地查询所有用户
+		Map<String,List<Long>> userIdsOfEachTopic = new HashMap<String,List<Long>>();
+		//话题ID+Xunta+用户id作为key，P_Or_J作为value
+		Map<String,String> userPJ_EachTopic = new HashMap<String,String>();
+		for(TopicHistory outerth : matchedTopicFromDB)
+		{
+			String tid = outerth.getTopicId();
+			List<Long> userIds = new ArrayList<Long>();
+			for(TopicHistory th: matchedTopicFromDB)
+			{
+				if(th.getTopicId().equals(tid))
+				{
+					userPJ_EachTopic.put(tid+"=xunta="+th.getAuthorId(), String.valueOf(th.getPublish_or_join()));
+					userIds.add(Long.parseLong(th.getAuthorId()));
+				}
+			}
+			userIdsOfEachTopic.put(tid, userIds);
+		}
+		Iterator<String> iter = userIdsOfEachTopic.keySet().iterator();
+		while (iter.hasNext()) {
+		    String key = iter.next();
+		    List<Long> userIDs = userIdsOfEachTopic.get(key);
+		    //通过List集合的方式一下查询多个用户更高效
+		    List<User> relatedUsers = userManager.findUserListByUserIdList(userIDs);
+		    
+		    for(User u : relatedUsers)
+		    {
+		    	//该mtp是否添加过了，如果还没添加过，则添加
+		    	if(!mtpList.containsKey(u.getId()))
+		    	{
+			    	MatchTopicPeople mtp = new MatchTopicPeople();
+			    	mtp.setUserId(u.getId());
+			    	mtp.setName(u.getXunta_username());
+			    	mtp.setImgUrl(u.getImageUrl());
+			    	List<Tag> userTagList = tagsManager.findAllTagsByUserId(u.getId());
+			    	//数据库查询到的是Tag类型的，MatchTopicPeople里只使用它的name，提取一下
+					List<String> userTagName = new ArrayList<String>();
+					for(Tag tag:userTagList)
+					{
+						userTagName.add(tag.getTagname());
+					}
+			    	mtp.setTagList(userTagName);
+			    	//暂时使用taglist作为用户签名，后面待改
+			    	mtp.setSignature(mtp.tagListToString());
+			    	//将P_or_J设为1
+			    	String p_or_j = userPJ_EachTopic.get(key+"=xunta="+u.getId());
+			    	if(p_or_j!=null && p_or_j.equals("p"))
+			    	{
+			    		mtp.setP_num(1);
+			    		mtp.setJ_num(0);
+			    	}
+			    	else
+			    	{
+			    		mtp.setJ_num(1);
+			    		mtp.setP_num(0);
+			    	}
+			    	mtpList.put(u.getId(), mtp);
+			    	
+			    	//userHasAdd.add(u.getId());
+		    	}
+		    	else{//否则只是将P_OR_J加1
+		    		MatchTopicPeople mtp = mtpList.get(u.getId());
+		    		String p_or_j = userPJ_EachTopic.get(key+"=xunta="+u.getId());
+					if(p_or_j!=null && p_or_j.equals("p"))
+						mtp.setP_num(mtp.getP_num()+1);
+					else
+						mtp.setJ_num(mtp.getJ_num()+1);
+		    	}
+		    	
+		    }
+		}
+		
+		//被注释掉的也是可行的，但是可能相对低效些
+/*		boolean hasAdded = false;
+		for(TopicHistory th : matchedTopicFromDB)
+		{
+			String currentUserId = th.getAuthorId();
+			//从user表里查询user的信息
+			User user = userManager.findUserById(Integer.parseInt(currentUserId));
+			
+			//先判断这个用户是否已经在mtpList中了，因为他可能在前面话题遍历的时候
+			//已经添加进来了，如果已经进来了这里要修改的就只是他的P_num或J_num了
+			int counter = 0;
+			for(MatchTopicPeople p : mtpList)
+			{
+				if(p!=null && p.getName().equals(user.getXunta_username()))
+				{
+					hasAdded = true;
+					char p_or_j = th.getPublish_or_join();
+					if(p_or_j=='p')
+						p.setP_num(p.getP_num()+1);
+					else
+						p.setJ_num(p.getJ_num()+1);
+					break;
+				}
+				counter++;
+			}
+			if(counter==mtpList.size())
+				hasAdded = false;
+			if(!hasAdded)
+			{
+				hasAdded = false;
+				MatchTopicPeople mtp = new MatchTopicPeople();
+				List<Tag> userTagList = tagsManager.findAllTagsByUserId(Long.parseLong(currentUserId));
+				//数据库查询到的是Tag类型的，MatchTopicPeople里只使用它的name，提取一下
+				List<String> userTagName = new ArrayList<String>();
+				for(Tag tag:userTagList)
+				{
+					userTagName.add(tag.getTagname());
+				}
+				mtp.setUserId(user.getId());
+				mtp.setName(user.getXunta_username());
+				mtp.setImgUrl(user.getImageUrl());
+				mtp.setTagList(userTagName);
+				//暂时用tag代替签名
+				mtp.setSignature(mtp.tagListToString());
+				char p_or_j = th.getPublish_or_join();
+				if(p_or_j=='p')
+					mtp.setP_num(1);
+				else
+					mtp.setJ_num(1);
+				
+				mtpList.add(mtp);
+			}
+		}*/
+		
+		request.setAttribute("matchedTopicList",new ArrayList<MatchTopicPeople>(mtpList.values()));
 		/*//按userId分组
 		Map<String,List<Topic>> topicMap = new HashMap<String,List<Topic>>();
 		for(Topic t:matchedtopicList)

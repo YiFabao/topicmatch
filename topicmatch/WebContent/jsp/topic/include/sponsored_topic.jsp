@@ -25,7 +25,7 @@
 				</form>
 				<div class="most-man">
 
-						<c:if test="${requestScope.matchedTopicList!=null}">
+						<%-- <c:if test="${requestScope.matchedTopicList!=null}">
 						<h3 class="title">最匹配的"话题人"</h3>
 						<ul class="talk-list">
 							<c:forEach var="matched_topic" items="${requestScope.matchedTopicList}" varStatus="status">
@@ -49,6 +49,43 @@
 										</ul>
 									</div>
 									<a href="#" class="enter" userId="${matched_topic.userId }" userName="${matched_topic.userName }">邀请</a>
+								</div>
+							</li>
+							</c:if>
+							</c:forEach>
+						</ul>
+						</div>
+						</c:if> --%>
+						
+						<c:if test="${requestScope.matchedTopicList!=null}">
+						<h3 class="title">最匹配的"话题人"</h3>
+						<ul class="talk-list">
+							<c:forEach var="matched_topic" items="${requestScope.matchedTopicList}" varStatus="status">
+							<c:if test="${matched_topic.userId!=sessionScope.user.id}">
+							<li class="tp" userId="${matched_topic.userId }">
+								<div class="hd">
+									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
+									<div class="info">
+										<p class="nc">${matched_topic.name}</p>
+										<p class="signature">${matched_topic.signature}</p>
+										<div>
+											<i class="iconfont mark">&#xe610;</i>
+											<ul class="tag-lists">
+											<c:forEach var="tag" items="${matched_topic.tagList}" varStatus="status">	
+												<li>${tag}</li>
+											</c:forEach>
+											</ul>
+											<!-- <ul class="tag-lists">
+												<li>90后</li>
+												<li>不靠谱</li>
+											</ul> -->
+										</div>
+										<ul class="fix other">
+											<li>发起相关话题数<span class="num">${matched_topic.p_num}</span></li>
+											<li>&emsp;&emsp;参与相关话题数<span class="num">${matched_topic.j_num}</span></li>
+										</ul>
+									</div>
+									<a href="#" class="enter" userId="${matched_topic.userId }" userName="${matched_topic.name }">邀请</a>
 								</div>
 							</li>
 							</c:if>
