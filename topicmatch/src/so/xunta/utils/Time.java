@@ -16,12 +16,25 @@ public class Time {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(date);
 	}
-	public static int getDate(Date date){
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-		return Integer.parseInt(format.format(date));
+	public static String getDate_ta_pc(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.format(date);
 	}
-	public static int getTime(Date date){
+	public static String getTime_ta_pc(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		return format.format(date);
+	}
+	public static String getDate(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		return format.format(date);
+	}
+	public static String getTime(Date date){
 		SimpleDateFormat format = new SimpleDateFormat("HHmmss");
-		return Integer.parseInt(format.format(date));
+		return format.format(date);
+	}
+	
+	public static String getMonth(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("MM");
+		return format.format(date);
 	}
 }

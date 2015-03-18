@@ -40,8 +40,7 @@ public class UserManagerImpl implements UserManager {
 		try {
 			session.beginTransaction();
 			String query = "from User as u where u.uid=?";
-			User user = (User) session.createQuery(query).setParameter(0, uid)
-					.uniqueResult();
+			User user = (User) session.createQuery(query).setParameter(0, uid).uniqueResult();
 			session.getTransaction().commit();
 			return user;
 		} catch (RuntimeException e) {
@@ -153,8 +152,9 @@ public class UserManagerImpl implements UserManager {
 	public static void main(String[] args) {
 	
 			UserManager um=new UserManagerImpl();
-			User user=um.checkRegisterUserExist("1019357922@qq.com","962297");
-			System.out.println(user);
+			System.out.println(um.findUserById(1).getXunta_username());
+//			User user=um.checkRegisterUserExist("1019357922@qq.com","962297");
+//			System.out.println(user);
 		
 	
 	

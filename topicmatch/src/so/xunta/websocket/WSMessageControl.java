@@ -38,8 +38,8 @@ public class WSMessageControl {
 				Long messageId = Long.parseLong(messageJsonObject.getString("messageId"));
 				String messages = messageJsonObject.getString("message");
 				String dateTime = Time.getDateAndTime(currentDate);
-				int date = Time.getDate(currentDate);
-				int time = Time.getTime(currentDate);
+				int date = Integer.parseInt(Time.getDate(currentDate));
+				int time = Integer.parseInt(Time.getTime(currentDate));
 				JSONArray accepterIdArray = messageJsonObject.getJSONArray("accepterIds");
 				//将消息存储到历史消息库  如果插入重复就break,还没捕捉插入冲突异常
 				WebSocketUtils.addHistoryMessage(new HistoryMessage(1, topicId, messageId, senderId, accepterIdArray.toString(), messages, dateTime, nickname, date, time));
