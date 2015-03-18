@@ -218,14 +218,6 @@ function getHistoryMessagesByTopicId(topicId,count){
 	});
 };
 
-/**
- * 创建消息并显示在对应topicId的对话框里
- * @param topicId 话题ID
- * @param message_obj_json　消息{messageContent: ,memberImgUrl: ,memberName: ,dateTime: }
- */
-function create_and_show_one_message(topicId,message_obj_json){
-	console.log("创建消息并显示在对应topicId的对话框里:"+message_obj_json.message);
-}
 
 /**
  * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
@@ -246,24 +238,19 @@ function createMessage(contentType,obj_json){
 		var myDiv = $("<div></div>").attr("class","user my");
 		myDiv.append(p_node).append(div_node);
 		chatBox.append(myDiv);
-		
+		$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
+		$(".topic-box .send-box").find("textarea").val("");
 	}else{
 		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html("测试");
+		var p_node = $("<p></p>").attr("class","detail").html(msg);
 		var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
 		var div_node = $("<div></div>").attr("class","user-pic");
 		div_node.append(img_url);
-		
-		if(contentType == 0){
-			//等于0表示自己的发言
-			var myDiv = $("<div></div>").attr("class","user my");
-			myDiv.append(p_node).append(div_node);
-			chatBox.append(myDiv);
-		}else{
-			var otherDiv = $("<div></div>").attr("class","user other");
-			otherDiv.append(p_node).append(div_node);
-			chatBox.append(otherDiv);
-		}
+
+		var otherDiv = $("<div></div>").attr("class","user other");
+		otherDiv.append(p_node).append(div_node);
+		chatBox.append(otherDiv);
+		$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
 	}
 	
 }

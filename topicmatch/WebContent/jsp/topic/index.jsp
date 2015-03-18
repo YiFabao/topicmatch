@@ -123,6 +123,7 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/ta_pc_chat.js"></script>
 
 <script>
+
 	var contextPath = "${pageContext.request.contextPath}";
 	var myselfId = "${sessionScope.user.id}";
 	var userImageUrl = "${sessionScope.user.imageUrl}";
@@ -134,7 +135,6 @@
 			$("#container_all").append(res);
 		});
 	});
- 	
 	
 	$("#httj").click(function(){
 		console.log("话题推荐");
@@ -160,6 +160,16 @@
 		});
 	});
 	
+	//发送消息按钮添加点击或按回车键发送消息
+	 $(document).keydown(function(event){
+		    if(event.keyCode==13){
+		    	createMessage(0,null);
+		    	return false;
+		    }
+	 });
+	
+	//创建websocket
+	createWebsocketConnect("${sessionScope.user.id}");
 
 </script>
 

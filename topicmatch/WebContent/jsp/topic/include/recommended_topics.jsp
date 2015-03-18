@@ -505,12 +505,6 @@
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
 	
-	//发送消息按钮添加点击或按回车键发送消息
-	 $(document).keydown(function(event){
-		    if(event.keyCode==13){
-		    	create_and_show_one_message(1,{message:"测试消息"})
-		    }
-	 });
 
 	/**
 	 * 产生一个指定区间的随机数
