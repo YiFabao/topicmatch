@@ -28,7 +28,6 @@ public class WSEvent extends MessageInbound{
 	}
 	@Override
 	protected void onTextMessage(CharBuffer message) throws IOException {
-		System.out.println(message.toString());
 		WSMessageControl.messagePuth(userId, message);
 	}
 	@Override
