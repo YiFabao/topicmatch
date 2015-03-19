@@ -904,7 +904,7 @@ public class TopicManagerImpl implements TopicManager {
 		try {
 			session.beginTransaction();
 			String hql = "from TopicHistory where authorId=? and publish_or_join=? order by datetime desc";
-			org.hibernate.Query query = session.createQuery(hql).setFirstResult(titleNum).setMaxResults(titleNum + 20);
+			org.hibernate.Query query = session.createQuery(hql).setFirstResult(titleNum).setMaxResults(10);
 			query.setString(0, authorId);
 			query.setString(1, publish_or_join);
 			List<TopicHistory> topicIdList = query.list();
