@@ -13,8 +13,8 @@ import net.sf.json.JSONArray;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import so.xunta.topic.entity.TopicHistoryMessage;
 import so.xunta.utils.HibernateUtils;
+import so.xunta.websocket.entity.HistoryMessage;
 
 public class TopicHistory extends HttpServlet {
 
@@ -35,16 +35,16 @@ public class TopicHistory extends HttpServlet {
 			JSONArray jsonArray = new JSONArray();
 			
 			Session session = HibernateUtils.openSession();
-			String hql = "from TopicHistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.dateAndTime asc limit "+biginIndex+","+endIndex+"";
+			String hql = "from HistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.dateAndTime asc limit "+biginIndex+","+endIndex+"";
 			System.out.println("获取话题历史消息的HQL语句 ：  "+hql);
 			Query query = session.createQuery(hql).setString(0, topic_Id);
-			List<TopicHistoryMessage> topicHistoryMessageList = query.list();
+			List<HistoryMessage> topicHistoryMessageList = query.list();
 			if(topicHistoryMessageList == null){
 				System.out.println("topicHistoryMessageList == null");
 			}else{
 				System.out.println(topicHistoryMessageList.size());
 			}
-			for(TopicHistoryMessage thm:topicHistoryMessageList){
+			for(HistoryMessage thm:topicHistoryMessageList){
 				String status = thm.getStatus()+"";
 				String topicId = thm.getTopicId();
 				String messageId = thm.getMessageId()+"";
