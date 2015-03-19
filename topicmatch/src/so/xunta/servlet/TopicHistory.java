@@ -35,9 +35,9 @@ public class TopicHistory extends HttpServlet {
 			JSONArray jsonArray = new JSONArray();
 			
 			Session session = HibernateUtils.openSession();
-			String hql = "from HistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.dateAndTime asc limit "+biginIndex+","+endIndex+"";
+			String hql = "from HistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.dateAndTime asc";
 			System.out.println("获取话题历史消息的HQL语句 ：  "+hql);
-			Query query = session.createQuery(hql).setString(0, topic_Id);
+			Query query = session.createQuery(hql).setString(0, topic_Id).setFirstResult(Integer.parseInt(biginIndex)).setMaxResults(20);
 			List<HistoryMessage> topicHistoryMessageList = query.list();
 			if(topicHistoryMessageList == null){
 				System.out.println("topicHistoryMessageList == null");
