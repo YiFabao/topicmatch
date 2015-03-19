@@ -332,7 +332,7 @@ function createChatBox_center(topicObj,userObj){
 	    	ret_msgs=res;
 	    	//更改已加载历史消息记录数
 	    	console.log("获取的历史消息数为："+res.length);
-	    	topicId_count_map[topicObj.topicId]=parseInt(topicId_count_map[topicObj.topicId]) + 20;
+	    	topicId_count_map[topicObj.topicId]=parseInt(topicId_count_map[topicObj.topicId])+res.length;
 	    	console.log("异步");
 	    	console.log(ret_msgs);
 	     } ,
@@ -736,24 +736,6 @@ window.webimHandle = function(json) {
 	}
 };
 
-//获取聊天框相应topicId 下的聊天框
-function getHistoryMessage(topicId, count) {
-	console.log("执行获取历史消息方法");
-  	var ret_msgs = null;
-	var parameters = {
-		topicId: topicId,
-		biginIndex: count,
-		endIndex: parseInt(count) + 20
-	};
-	$.post("http://"+document.domain+":8080/topicmatch/TopicHistoryMessage/test", parameters, function(res, status) {
-		console.log("status:" + status);
-		console.log("执行获取历史消息post请求");
-		if (window.historyMessageHandle) {
-			historyMessageHandle(res);
-			console.log("请求成功    historyMessageHandle");
-		}
-	});
-};
 
 //获取联系人id数组
 function getContactsArray(){
@@ -764,25 +746,6 @@ function getContactsArray(){
 		contacts.push($(userIds[i]).attr("userid"));
 	}
 	return contacts;
-}
-
-//test
-function testAjaxAsync(){
-	var result;
-	$.ajax({  
-	     type : "post",  
-	     url : contextPath+"/servlet/topic_service",
-	     data : {cmd:"test"},  
-	     async : false,  //同步
-	     datatype:"json",
-	     success : function(res){  
-	    	result=res;
-	    	console.log("异步");
-	       console.log(result);
-	     }  
-	});
-	console.log("同步");
-	console.log(result);
 }
 
 
