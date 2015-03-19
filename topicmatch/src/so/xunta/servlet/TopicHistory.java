@@ -39,22 +39,24 @@ public class TopicHistory extends HttpServlet {
 			System.out.println("获取话题历史消息的HQL语句 ：  "+hql);
 			Query query = session.createQuery(hql).setString(0, topic_Id).setFirstResult(Integer.parseInt(biginIndex)).setMaxResults(Integer.parseInt(maxNum));
 			List<HistoryMessage> topicHistoryMessageList = query.list();
+			
 			if(topicHistoryMessageList == null){
 				System.out.println("topicHistoryMessageList == null");
 			}else{
 				System.out.println(topicHistoryMessageList.size());
-			}
-			for(HistoryMessage thm:topicHistoryMessageList){
-				String status = thm.getStatus()+"";
-				String topicId = thm.getTopicId();
-				String messageId = thm.getMessageId()+"";
-				String senderId = thm.getSenderId()+"";
-				String content = thm.getContent();
-				String dateAndTime = thm.getDateAndTime();
-				String nickname = thm.getNickname();
-				String date = thm.getDate()+"";
-				String time = thm.getTime()+"";
-				jsonArray.add("{\"status\":\""+status+"\",\"topicId\":\""+topicId+"\",\"msgId\":\""+messageId+"\",\"sender\":\""+senderId+"\",\"message\":\""+content+"\",\"dateTime\":\""+dateAndTime+"\",\"date\":\""+date+"\",\"time\":\""+time+"\",\"nickname\":\""+nickname+"\"}");
+				for ( int i = (topicHistoryMessageList.size()-1); i >= 0; i--) {
+					HistoryMessage thm = topicHistoryMessageList.get(i);
+					String status = thm.getStatus()+"";
+					String topicId = thm.getTopicId();
+					String messageId = thm.getMessageId()+"";
+					String senderId = thm.getSenderId()+"";
+					String content = thm.getContent();
+					String dateAndTime = thm.getDateAndTime();
+					String nickname = thm.getNickname();
+					String date = thm.getDate()+"";
+					String time = thm.getTime()+"";
+					jsonArray.add("{\"status\":\""+status+"\",\"topicId\":\""+topicId+"\",\"msgId\":\""+messageId+"\",\"sender\":\""+senderId+"\",\"message\":\""+content+"\",\"dateTime\":\""+dateAndTime+"\",\"date\":\""+date+"\",\"time\":\""+time+"\",\"nickname\":\""+nickname+"\"}");
+				}
 			}
 			response.getWriter().write(jsonArray.toString());
 			session.close();
