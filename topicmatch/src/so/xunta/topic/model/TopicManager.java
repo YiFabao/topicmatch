@@ -2,7 +2,6 @@ package so.xunta.topic.model;
 
 import java.util.List;
 import java.util.Map;
-
 import so.xunta.entity.User;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.RecommendedPeople;
@@ -10,7 +9,6 @@ import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
-import so.xunta.topic.entity.TopicHistoryMessage;
 import so.xunta.websocket.entity.HistoryMessage;
 import weibo4j.org.json.JSONArray;
 

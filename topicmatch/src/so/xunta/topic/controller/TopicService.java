@@ -34,7 +34,6 @@ import so.xunta.topic.entity.SysMessage;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
-import so.xunta.topic.entity.TopicHistoryMessage;
 import so.xunta.topic.entity.TopicRequestMsg;
 import so.xunta.topic.entity.TopicRequestMsgPlusTopicDetail;
 import so.xunta.topic.model.MsgManager;

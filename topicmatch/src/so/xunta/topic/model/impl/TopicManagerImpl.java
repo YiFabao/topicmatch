@@ -47,7 +47,6 @@ import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
-import so.xunta.topic.entity.TopicHistoryMessage;
 import so.xunta.topic.model.TopicManager;
 import so.xunta.utils.HibernateUtils;
 import so.xunta.websocket.entity.HistoryMessage;
