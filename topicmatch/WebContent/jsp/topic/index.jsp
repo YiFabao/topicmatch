@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <%-- 这就是一个顶级容器，唯一不变的就是聊天框，其他任何元素都通过js获取更换--%>
@@ -121,14 +122,20 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/common.js"></script>
 <%--end   ======= 余. js文件搬到此引用,动态加载页面后，会调用 --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/ta_pc_chat.js"></script>
+<<<<<<< HEAD
+<script src="${pageContext.request.contextPath }/jsp/topic/js/websocket.js"></script>
+=======
 <%-- ======= 房 开发话题记忆模块引用独立文件js --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/topic_memory_fang.js"></script>
+>>>>>>> 77a3b4c3c51115d9c444ed314d884283c803181a
 
 <script>
 
 	var contextPath = "${pageContext.request.contextPath}";
 	var myselfId = "${sessionScope.user.id}";
+	var myname = "${sessionScope.user.xunta_username}";
 	var userImageUrl = "${sessionScope.user.imageUrl}";
+	console.log("自己的图像："+userImageUrl);
 
 	$(function(){
 		//加载话题推荐页面
@@ -171,7 +178,7 @@
 	 });
 	
 	//创建websocket
-	createWebsocketConnect("${sessionScope.user.id}");
+	createWebsocketConnect(myselfId);
 
 </script>
 

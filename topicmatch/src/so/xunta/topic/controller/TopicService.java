@@ -9,21 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.omg.CORBA.UserException;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -34,9 +28,7 @@ import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.entity.MatchTopicPeople;
-import so.xunta.topic.entity.MatchedTopic;
 import so.xunta.topic.entity.MessageAlert;
-import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.SysMessage;
 import so.xunta.topic.entity.Topic;
@@ -68,9 +60,11 @@ public class TopicService extends HttpServlet {
 	private TopicManager topicManager = new TopicManagerImpl();
 	private MsgManager msgManager = new MsgManagerImpl();
 	private TopicModel topicModel = new TopicModelImpl();
+
 	//用户发起话题后查询相关用户
 	private UserManager userManager = new UserManagerImpl();
 	private TagsManager tagsManager = new TagsManagerImpl();
+
     public TopicService() {
         super();
     }
@@ -137,6 +131,9 @@ public class TopicService extends HttpServlet {
 		case "getRecommendPageData":
 			method_getRecommendPageData(request,response);
 			break;
+		case "getTopicAndTopicMembersByTopicId"://传topicId,获取Topic,List<User>用于创建对话框
+			getTopicAndTopicMembersByTopicId(request,response);
+			break;
 		case "exit":
 			exit(request,response);
 			break;
@@ -146,6 +143,65 @@ public class TopicService extends HttpServlet {
 		}
 	}
 	
+	private void getTopicAndTopicMembersByTopicId(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		//参与话题
+		String topicId = request.getParameter("topicId");
+		//查询出　Topic
+		Topic topic = topicManager.findTopicByTopicId(topicId);
+		
+		User p_user = userManager.findUserById(topic.id);
+		
+		//查询出List<User>
+		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
+		List<Long> userIdList_l = new ArrayList<Long>();
+		for(String s:userIdList)
+		{
+			userIdList_l.add(Long.parseLong(s));
+		}
+		List<User> userList = userManager.findUserListByUserIdList(userIdList_l);
+		
+		//封装成json
+		JSONObject topic_json=new JSONObject();
+		if(topic!=null){
+			topic_json.put("topicId",topicId);
+			topic_json.put("topicTitle",topic.topicName);
+			topic_json.put("topicContent",topic.topicContent);
+		}else{
+			System.err.print("topicId==>Topic 为空");
+		}
+		
+
+		JSONObject user_p = new JSONObject();
+		user_p.put("userId",p_user.id);
+		user_p.put("userName",p_user.xunta_username);
+		user_p.put("imageUrl",p_user.imageUrl);
+	
+		
+		JSONArray memberList = new JSONArray();
+		if(userList !=null){
+			for(User u:userList){
+				JSONObject json = new JSONObject();
+				json.put("userId",u.id);
+				json.put("userName", u.xunta_username);
+				json.put("imageUrl",u.imageUrl);
+				memberList.add(json.toString());
+			}
+		}
+		JSONObject all = new JSONObject();
+		all.put("topic",topic_json);
+		all.put("memberList",memberList);
+		all.put("user_p",user_p);
+		System.out.println(all.toString());
+		try {
+			response.setContentType("text/json");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(all.toString());
+		} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+
 	//返回真实的数据
 	private void method_getRecommendPageData(HttpServletRequest request, HttpServletResponse response){
 		String data = request.getParameter("data");
@@ -541,13 +597,10 @@ public class TopicService extends HttpServlet {
 		String topicId = request.getParameter("topicId");
 		//调用用户参与话题的业务处理逻辑模型
 		topicModel.joinTopic(request, response, userId, topicId);
-		try {
-			request.getRequestDispatcher("/jsp/topic/include/dialogue_box.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		//System.out.println("userId:"+userId);
+		//System.out.println("topicId:"+topicId);
+
 	}
 
 	private void htss(HttpServletRequest request, HttpServletResponse response) {

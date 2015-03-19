@@ -140,27 +140,15 @@ function create_one_topic_item(obj,topicUnreadNum){
 		chat_box_fold[topicId]=fold;
 		
 		var memberList = res.memberList;
+		console.log(memberList);
+		for(var i=0;i<memberList.length;i++){
+			console.log(memberList[i]);
+		}
+		
 		var right = createChatBox_right(topicId,memberList);
 		chat_box_right[topic.topicId]=right;
 		console.log("打印topicId======>"+topicId);
 		changeTopicChatBox(topicId);
-		
-/*		for(var index in res.user_p){
-			console.log(index +":"+res.user_p[index]);
-		} 
-		console.log("===================================");
-		//console.log(res.topic);
-		for(var index in res.topic){
-			console.log(index+":"+res.topic[index]);
-		}
-		console.log("===================================");
-		//console.log(res.memberList);
-		for(var i=0;i<res.memberList.length;i++){
-			var obj = res.memberList[i];
-			for(var index in obj){
-				console.log(index +":"+obj[index]);
-			}
-		}*/
 	});
 };
 
@@ -219,41 +207,7 @@ function getHistoryMessagesByTopicId(topicId,count){
 };
 
 
-/**
- * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
- * @param topicId
- * @param content
- * @param img-url
- * fang
- * */
-function createMessage(contentType,obj_json){
-	if(contentType==0){//自己发消息
-		var msg = $(".topic-box .send-box").find("textarea").val();
-		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html(msg);
-		var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
-		var div_node = $("<div></div>").attr("class","user-pic");
-		div_node.append(img_url);
-		//等于0表示自己的发言
-		var myDiv = $("<div></div>").attr("class","user my");
-		myDiv.append(p_node).append(div_node);
-		chatBox.append(myDiv);
-		$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
-		$(".topic-box .send-box").find("textarea").val("");
-	}else{
-		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html(msg);
-		var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
-		var div_node = $("<div></div>").attr("class","user-pic");
-		div_node.append(img_url);
 
-		var otherDiv = $("<div></div>").attr("class","user other");
-		otherDiv.append(p_node).append(div_node);
-		chatBox.append(otherDiv);
-		$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
-	}
-	
-}
 
 /**
  * 当用户进入某话题聊天框后在聊天记录框插入一条提示消息  ”-某某加入该对话组
@@ -487,6 +441,277 @@ var jjj={
 	]
 };
 
+//测试var json ={userId:4,topicId:"DEC38294FCADEDFFA835C1D04D2DA2E1"};
+//接收广播消息
+window.receiveBroadcast = function(json)
+{
+	console.log("收到广播消息...");
+	console.log("用户上线"+json.userId+"   "+json.topicId);
+	/*//查询当前对应的话题窗口有没有打开
+	if(!getDialogueByBoxId(json.topicId)){
+		console.log("接收广播消息==>查询当查询当前对应的话题窗口是否已经加载==>未加载");
+		return;
+	}
+	//如果窗口对应的话题聊天窗口存在,那么查询在该聊天窗口下有没有该联系人
+	var flag=checkUserIdExistInTopicGroupList(json.userId,json.topicId);
+	console.log("flag:"+flag);
+	if(!flag){
+		//var nickname = searchUser(json.userId);
+		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
+			cmd:"searchnicknameByUserId",
+			userId:json.userId
+		},function(res,status){
+			var nickname = res.nickname;
+			console.log(json.userId+"对应的昵称："+nickname);
+			var contact={
+					topic_id:json.topicId,
+					topic_memberId:json.userId,
+					topic_member_name:nickname
+			};
+			console.log("添加联系人");
+			addContactor(contact);
+			//在消息框显示新用户进群
+			var dialogueBox = getDialogueByBoxId(json.topicId);
+			var dateTime = new Date().format("yyyy-MM-dd hh:mm:ss");
+			addMsgContetntIntoDialogueBoxAboutNewUserComeIn(dialogueBox,nickname,dateTime);
+			
+		})
+	}
+	else{
+		console.log("联系人在列表中已经存在");
+	} */
+}
+/**
+ * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
+ * @param topicId
+ * @param content
+ * @param img-url
+ * fang
+ * */
+function createMessage(contentType,obj_json){
+	if(contentType==0){//自己发消息
+		var msg = $(".topic-box .send-box").find("textarea").val();
+		if(msg==null||msg.trim()==""){
+			return;
+		}
+		var chatBox = $(".chat-box");
+		var p_node = $("<p></p>").attr("class","detail").html(msg);
+		var img_url = $("<img alt>").attr("src",userImageUrl);
+		var div_node = $("<div></div>").attr("class","user-pic");
+		div_node.append(img_url);
+		//等于0表示自己的发言
+		var myDiv = $("<div></div>").attr("class","user my");
+		myDiv.append(p_node).append(div_node);
+		chatBox.append(myDiv);
+		$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
+		$(".topic-box .send-box").find("textarea").val("");
+		
+		//发送消息
+		//发送消息需要传的参数，话题ID,消息id,发送人id,联系人id数组,消息,时间,发送人昵称
+    	//1.话题id
+    	//2获取联系人　id[]
+    	//获取连系人的id 数组
+    	var contactsIdArray = getContactsArray();
+    	//3消息 
+    	
+    	//4发送人id
+    	var fromUserId = myselfId;
+    	//5发送人昵称
+    	var fromUserName = myname;
+    	//6 topicId
+    	var topicId = $(".topic-box .center").attr("topicId");
+    	//7 消息id
+    	var msgId = fromUserId+""+new Date().getTime();
+    	
+    	console.log("话题id:"+topicId);
+    	console.log("发送人id:"+fromUserId);
+    	console.log("发送人昵称:"+fromUserName);
+    	console.log("消息:"+msg);
+    	console.log("消息id:"+msgId);
+    	console.log("联系人:"+contactsIdArray);
+    	sendMsg(topicId,msgId,fromUserId,fromUserName,msg.toString().trim(),contactsIdArray); 
+		
+	}else{
+		var chatBox = $(".chat-box");
+		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message));
+		//根据userid从好友列表中获取图像url
+		var userid = obj_json.senderId;
+		var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
+		console.log("imageUrl:"+imageUrl);
+		//var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
+		var img_url = $("<img alt>").attr("src",imageUrl);
+		var div_node = $("<div></div>").attr("class","user-pic");
+		div_node.append(img_url);
+
+		var otherDiv = $("<div></div>").attr("class","user other");
+		otherDiv.append(p_node).append(div_node);
+		chatBox.append(otherDiv);
+		$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
+	}
+	
+}
+//创建消息处理函数
+window.webimHandle = function(json) {
+	/**
+	 * key:status=====>value:1
+	 * key:topicId=====>value:DEC38294FCADEDFFA835C1D04D2DA2E1
+	 * key:messageId=====>value:21422350893108 key:senderId=====>value:2
+	 * key:nickname=====>value: oliver key:message=====>value:%E4%B8%8A%E6%B5%B7
+	 * key:accepterIds=====>value:1,2 key:dateTime=====>value:2015-01-27
+	 * 17:27:38 key:date=====>value:20150127 key:time=====>value:172738
+	 */
+	// 获取对应topicId 的窗口
+	var msgStr = "";
+	var topicId = json.topicId;
+	console.log("接收到消息:" + json);
+	/**
+	 * 接收到消息 1.判断当前已经打开的对话框是否是消息所要显示的目的对话框 2.如果是，则直接显示
+	 * 3.如果不是,将收到的消息放入到未读消息的全局变量中 ,并更新显示的未读消息数 如果存在：将未读消息数改为全局变量中的未读消息数 如果不存在：
+	 * 创建话题列表项,未读消息数为全局变量中的未读消息数 创建对话框，保存到全局变量 4.创建话题列表项
+	 */
+	if (topicId == null || topicId == "") {
+		console.log("Error:topicId为空值");
+		return;
+	}
+	// 判断当前已经打开的对话框是否是消息所要显示的目的对话框
+	var cur_topicId = $(".topic-box .center").attr("topicid");
+	if (cur_topicId == topicId) {// 是当前窗口
+		// 判断是否是自己发的消息
+		if (json.senderId == myselfId) {
+			// TODO:是自己发的消息,将消息改为发送成功
+		} else {
+			createMessage(1, json);
+		}
+	} else {// 不是当前窗口
+		// 将未读消息保存到全局变量
+		if (topicId_unreadMsgArray[topicId]) {
+			topicId_unreadMsgArray[topicId].push(json);
+		} else {
+			var arr = new Array();
+			arr.push(json);
+			topicId_unreadMsgArray[topicId] = arr;
+		}
+		// 判断话题列表项是否存在
+		if (topicItemArray.in_array(topicId)) {// 存在话题列表项,更新显示未读消息数
+			// TODO:
+			var topicUnreadNum = topicId_unreadMsgArray[topicId].length;
+			// 判断是否存在<span class="num">2</span>
+			// 不在就创建，存在就更新里面的text内容
+		} else {// 创建话题列表项及创建话题对话框
+			// 发送请求获取对应topicId：Topic,List<User>
+			$.post(contextPath + "/servlet/topic_service", {
+				cmd : "getTopicAndTopicMembersByTopicId",
+				topicId : topicId
+			}, function(res, status) {
+				console.log(res);
+				console.log(res.topic);
+				console.log(res.memberList);
+
+				var topic = res.topic;
+				var memberList = res.memberList;// 话题成员
+				var user_p = res.user_p;
+
+				var center = createChatBox_center(topic, user_p);
+				var fold = createChatBox_fold(topicId);
+				var right = createChatBox_right(topicId, memberList);
+
+				chat_box_center[topicId] = center;// 保存到全局变量
+				chat_box_fold[topicId] = fold;
+				chat_box_right[topic.topicId] = right;
+
+				// 创建话题列表项
+				var topicMemberItem = $(".topic-box .left .rec-topic-list");
+				var li_node = $("<li></li>");
+				li_node.attr("topicId", topicId);
+				var span_node = $("<span></span>");
+				span_node.attr("class", "num");
+				var topicUnreadNum = topicId_unreadMsgArray[topicId].length;
+				span_node.text(topicUnreadNum);
+				li_node.append(span_node);
+
+				var p_node = $("<p></p>");
+				p_node.attr("class", "name");
+				p_node.attr("title", topic.topicTitle);
+				p_node.text(topic.topicTitle);
+
+				var a_node = $("<a>&#xe601;</a>");
+				a_node.attr("href", "#");
+				a_node.attr("class", "iconfont close");
+				a_node.click(function() {
+					$(this).parent().remove();// 移除
+					topicItemArray.remove(topicId);
+					if (chat_box_center.topicId != null) {
+						chat_box_center[topicId] = undefined;
+					}
+					if (chat_box_fold.topicId != null) {
+						chat_box_fold[topicId] = undefined;
+					}
+					if (chat_box_right.topicId != null) {
+						chat_box_right[topicId] = undefined;
+					}
+				});
+
+				li_node.append(p_node).append(a_node);
+				// li_node添加事件:点击事件
+				li_node.click(function(e) {
+					$(this).attr("class", "cur").siblings().removeClass("cur");
+					// 从全局变量中取出对应的html
+					changeTopicChatBox(topicId);
+				});
+
+				topicMemberItem.append(li_node);
+				topicItemArray.push(topicId);
+			});
+		}
+	}
+};
+
+// websocket状态发生变化时触发
+window.webimStateChange = function(state) {
+	if (state == "ok") {
+		msgManagerReady = true;
+		console.log("websocket创建成功");
+		// 获取未读消息数======================================>未读消息数
+		console.log("开始获取未读消息");
+		getUnreadMessageNum(myselfId);// 调用方法后，需要在回调函数中接收数据
+	} else if (state = "no") {
+		if (state_fang == "0") {
+			msgManagerReady = false;
+			console.log("websocket异常,尝试从新连接websocket");
+			setTimeout(createWS, 6000);
+			state_fang = "1";
+		} else if (state_fang == "1") {
+			msgManagerReady = false;
+			console.log("websocket异常,尝试从新连接websocket");
+			setTimeout(createWS, 8000);
+			state_fang = "2";
+		} else if (state_fang == "2") {
+			msgManagerReady = false;
+			console.log("websocket异常,尝试从新连接websocket");
+			setTimeout(createWS, 10000);
+			state_fang = "3";
+		} else if (state_fang = "3") {
+			// 告知用户让其 手动 选择 连接
+			console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
+		}
+	}
+}; 
+//重新加载
+function createWS(){
+	//createWebsocketConnect("${sessionScope.user.id}");
+	window.location.reload();
+}
+
+//获取联系人id数组
+function getContactsArray(){
+	var userIds = $(".user-list").find("li");
+	var contacts=new Array();
+	for(var i=0;i<userIds.length;i++)
+	{
+		contacts.push($(userIds[i]).attr("userid"));
+	}
+	return contacts;
+}
 
 
 

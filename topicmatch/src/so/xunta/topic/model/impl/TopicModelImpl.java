@@ -1,5 +1,6 @@
 package so.xunta.topic.model.impl;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,6 +78,55 @@ public class TopicModelImpl implements TopicModel{
 		request.setAttribute("topic",topic);
 		request.setAttribute("publisher",publisher);
 		request.setAttribute("memberList",memberList);
+		
+		JSONObject user_p = new JSONObject();
+		try {
+			user_p.put("userId",userId);
+			user_p.put("userName",publisher.xunta_username);
+			user_p.put("imageUrl",publisher.imageUrl);
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		
+		JSONObject topic_json=new JSONObject();
+		try {
+			topic_json.put("topicId",topicId);
+			topic_json.put("topicTitle",topic.topicName);
+			topic_json.put("topicContent",topic.topicContent);
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		
+		JSONArray memberList_json = new JSONArray();
+		for(User u:memberList){
+			try {
+				JSONObject json = new JSONObject();
+				json.put("userId",u.id);
+				json.put("userName", u.xunta_username);
+				json.put("imageUrl",u.imageUrl);
+				memberList_json.add(json.toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(memberList_json.toString());
+		
+		JSONObject all = new JSONObject();
+		try {
+			all.put("user_p",user_p);
+			all.put("topic",topic_json);
+			all.put("memberList",memberList_json);
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(all.toString());
+		try {
+			response.setContentType("text/json");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(all.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
