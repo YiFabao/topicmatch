@@ -841,6 +841,7 @@ public class TopicService extends HttpServlet {
 //					System.out.println(month);
 //					System.out.println(accepters);
 					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("topicId", topicId);
 					jsonObject.put("nickname", userName);
 					jsonObject.put("userImgUrl", userImgUrl);
 					jsonObject.put("topicName", topicName);

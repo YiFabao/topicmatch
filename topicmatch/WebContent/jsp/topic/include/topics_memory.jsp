@@ -6,8 +6,8 @@
 		<div class="main">
 			<div class="form top-memory">
 				<ul class="tab-menu">
-					<li><a href="#launch" class="selected">我发起的话题</a></li>
-					<li><a href="#participate">我参与的话题</a></li>
+					<li><a href="#launch" class="selected" onclick="getTopicMemory(myselfId,'p','0');">我发起的话题</a></li>
+					<li><a href="#participate" onclick="getTopicMemory(myselfId,'j','0');">我参与的话题</a></li>
 				</ul>
 				<ul class="fix tab-box talk-list">
 					<li id="launch" class="item launch">

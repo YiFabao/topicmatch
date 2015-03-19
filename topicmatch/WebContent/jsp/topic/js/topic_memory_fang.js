@@ -6,10 +6,17 @@ $(function() {
  * 我发起的话题 p
  */
 function topic_p(request) {
-	console.log(request.HHmm);
+	
+	var exist = $(".fix #"+request.topicId);
+	console.log("exist.length : "+exist.length);
+	if(exist.length == 1){
+		return;
+	}
+	
+	
 		var ul_l_node = $(".column.l");// 定位父级元素
 		var ul_r_node = $(".column.r");// 定位父级元素
-		var li_node = $("<li></li>").attr("class", "tp");// 创造元素父级标签
+		var li_node = $("<li></li>").attr("class", "tp").attr("id",request.topicId);// 创造元素父级标签
 		// 话题标题及相关参数 如 发起人 时间 等
 		var div_hd_node = $("<div></div>").attr("class", "hd");
 		var user_pic = $("<a></a>").attr("class", "user-pic").attr("href", "#");
@@ -54,15 +61,23 @@ function topic_p(request) {
  * 我参与的话题 j
  */
 function topic_j(request) {
+	
+	var exist = $(".fix #"+request.topicId);
+	console.log("exist.length : "+exist.length);
+	if(exist.length == 1){
+		return;
+	}
+	
+	
 	// 定义父节点
 	var ul_pateUl = $("#pateUl");
 
 		var classType = $("#pateUl li").last().attr("class");
 		var li_node;
 		if (classType.indexOf("even") > 0) {
-			li_node = $("<li></li>").attr("class", "column tp odd");
+			li_node = $("<li></li>").attr("class", "column tp odd").attr("id",request.topicId);
 		} else {
-			li_node = $("<li></li>").attr("class", "column tp even");
+			li_node = $("<li></li>").attr("class", "column tp even").attr("id",request.topicId);
 		}
 		// 定义元素父节点
 
