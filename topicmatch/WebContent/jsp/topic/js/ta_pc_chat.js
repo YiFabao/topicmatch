@@ -258,7 +258,7 @@ function topicMsgInform(userName,topicName,time){
 	var ul_node = $("#topicsRequest .news-list");
 	
 	var li_node = $("<li></li>").attr("class","panel");
-	var p_node = $("<p></p>").attr("class","txt").text(userName+"邀请您参与话题#"+topicName+"#");
+	var p_node = $("<p></p>").attr("class","txt;").text(userName+"邀请您参与话题#"+topicName+"#");
 	var time_node = $("<time></time>").text(time);
 	
 	var ul = $("<ul></ul>").attr("class","fix opera");
