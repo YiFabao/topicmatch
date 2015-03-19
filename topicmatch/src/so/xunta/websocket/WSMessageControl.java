@@ -11,6 +11,7 @@ import net.sf.json.JSONObject;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.utils.Console;
+import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.Time;
 import so.xunta.websocket.entity.HistoryMessage;
 import so.xunta.websocket.utils.WebSocketUtils;
@@ -110,14 +111,17 @@ public class WSMessageControl {
 				String invite_Id = messageJsonObject.get("inviteId").toString();
 				String user_Id = messageJsonObject.get("userId").toString();
 				String topic_Id = messageJsonObject.get("topicId").toString();
+				String time_str = DateTimeUtils.getCurrentTimeStr();
 				String user_name = new UserManagerImpl().findUserById(Integer.parseInt(user_Id)).getXunta_username();
 				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
 					int userId6 = Integer.parseInt(invite_Id);
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
+						System.out.println("将邀请消息推送给用户ID  ：  "+userId6);
 						JSONObject jsonObject = new JSONObject();
 						jsonObject.put("status", "4");
 						jsonObject.put("userName", user_name);
 						jsonObject.put("topicName", topic_name);
+						jsonObject.put("time", time_str);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
 					}
 				break;
@@ -151,6 +155,7 @@ public class WSMessageControl {
 	private static void puth(int accepter_id,CharBuffer message){
 		try {
 			System.out.println("服务器LOG ：   执行puth方法前");
+			System.out.println("推送ID ： "+accepter_id);
 			WSSessionConnectControl.getWindowConnect(accepter_id).writeTextMessage(message);
 			System.out.println("服务器LOG ：   执行puth方法后");
 		} catch (IOException e) {

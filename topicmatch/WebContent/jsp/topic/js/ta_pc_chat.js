@@ -240,12 +240,13 @@ function systemMsgInform(time,message){
  * 话题消息通知
  * fang
  * */
-function topicMsgInform(time,message){
+function topicMsgInform(userName,topicName,time){
+	console.log("进入topicMsgInform");
 	var ul_node = $(".tab-content .tab-panel .news-list");
 	
 	var li_node = $("<li></li>").attr("class","panel");
-	var p_node = $("<p></p>").attr("class","txt").text("测试：系统通知消息");
-	var time_node = $("<time></time>").text("1111-1-1 11:11:11");
+	var p_node = $("<p></p>").attr("class","txt").text(userName+"邀请您参与话题#"+topicName+"#");
+	var time_node = $("<time></time>").text(time);
 	
 	var ul = $("<ul></ul>").attr("class","fix opera");
 	var liYes = $("<li></li>").attr("class","btn");

@@ -181,7 +181,7 @@
  			if(res == "ok"){
  				//请求成功
  				console.log("话题邀请请求成功")
- 				inviteFriend(invite_user_id, topic_id,user_id);
+ 				inviteUser(invite_user_id, topic_id,user_id);
  			}else{
  				//请求失败。。。
  			}
