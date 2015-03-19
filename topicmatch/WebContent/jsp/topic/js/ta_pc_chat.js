@@ -319,7 +319,7 @@ function createChatBox_center(topicObj,userObj){
 	var parameters = {
 			topicId: topicObj.topicId,
 			biginIndex: topicId_count_map[topicObj.topicId],//初始历史消息值
-			endIndex: parseInt(topicId_count_map[topicObj.topicId]) + 20
+			maxNum:20
 		};
 	var ret_msgs;
 	$.ajax({  
