@@ -93,5 +93,5 @@ public interface TopicManager {
 	//根据topicId 获取 topic   fang
 	public Topic findTopicIdByTopic(String topicId);
 	//根据topicId 获取 TopicHistory   fang
-	public String findTopicIdByTopicHistory(String topicId);
+	public String findTopicIdByTopicHistory(String topicId,String userId);
 }

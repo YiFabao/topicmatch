@@ -872,7 +872,7 @@ public class TopicService extends HttpServlet {
 				String topicName = topic.getTopicName();
 				String createTime = topic.getCreateTime();
 				String userImgUrl = new UserManagerImpl().findUserById(Integer.parseInt(topic.getUserId())).getImageUrl();
-				String time_j = topicManager.findTopicIdByTopicHistory(topicId);
+				String time_j = topicManager.findTopicIdByTopicHistory(topicId,userId);
 				String month ="";
 				String yyyyMMdd="";
 				String HHmm="";

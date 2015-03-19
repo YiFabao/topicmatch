@@ -379,7 +379,7 @@ public class TopicManagerImpl implements TopicManager {
 		 * TagsManager tagmanaManager = new TagsManagerImpl();
 		 * tagmanaManager.addOneTag(new Tag(49,"测试"));
 		 */
-		System.out.println(topicmanager.findTopicIdByTopicHistory("1DF33880055B9160F2F1ED19A641024D"));
+//		System.out.println(topicmanager.findTopicIdByTopicHistory("1DF33880055B9160F2F1ED19A641024D", "1"));
 	}
 
 	@Override
@@ -921,13 +921,14 @@ public class TopicManagerImpl implements TopicManager {
 	
 	@Override
 	// fang
-	public String findTopicIdByTopicHistory(String topicId) {
+	public String findTopicIdByTopicHistory(String topicId,String userId) {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql = "select datetime from TopicHistory where topicId=?";
+			String hql = "select datetime from TopicHistory where topicId=? and authorId=?";
 			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, topicId);
+			query.setString(1, userId);
 			String datetime = (String) query.uniqueResult();
 			session.getTransaction().commit();
 			return datetime;
