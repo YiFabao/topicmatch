@@ -7,6 +7,7 @@ $(function(){
 //全局变量
 var topicId_count_map={};//{话题ID：已经显示的历史消息数,在创建一个话题列表项的时候要在该全局变量中添加初始化记录
 var topicId_unreadMsgArray={};//话题topicId：未读消息数组,在聊天框隐藏状态下,保存到该数组中，显示后清空该数组
+var topicId_historyMsgArray={};//话题　topicId:获取的历史消息
 /**
  * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
  */
@@ -312,7 +313,7 @@ function createChatBox_center(topicObj,userObj){
 	
 	var div_chat_box = $("<div></div>").attr("class","chat-box");
 	//同步ajax获取历史消息
-	console.log("ajax异步获取历史消息：");
+	console.log("ajax同步获取历史消息：");
 	console.log("topicId:"+topicObj.topicId);
 	console.log("biginIndex："+topicId_count_map[topicObj.topicId]);
 	console.log("endIndex:"+(parseInt(topicId_count_map[topicObj.topicId]) + 20));
@@ -321,7 +322,6 @@ function createChatBox_center(topicObj,userObj){
 			biginIndex: topicId_count_map[topicObj.topicId],//初始历史消息值
 			maxNum:20
 		};
-	var ret_msgs;
 	$.ajax({  
 	     type : "post",  
 	     url : contextPath+"/TopicHistoryMessage/test",
@@ -335,11 +335,51 @@ function createChatBox_center(topicObj,userObj){
 	    	topicId_count_map[topicObj.topicId]=parseInt(topicId_count_map[topicObj.topicId])+res.length;
 	    	console.log("异步");
 	    	console.log(ret_msgs);
+	    	if(topicId_historyMsgArray[topicObj.topicId]){//存在该话题的历史消息数组
+	    		for(var i=0;i<ret_msgs.length;i++){
+	    			topicId_historyMsgArray[topicObj.topicId].push(ret_msgs[i]);
+	    		}
+	    	}else{
+	    		var msgArray = new Array();
+	    		for(var i=0;i<ret_msgs.length;i++){
+	    			msgArray.push(ret_msgs[i]);
+	    		}
+	    		topicId_historyMsgArray[topicObj.topicId]=msgArray;
+	    	}
 	     } ,
 	     error:function(){
 	    	 console.log("获取历史消息失败");
 	     }
 	});
+/*	if(ret_msgs!=null){
+		for(var i=0;i<ret_msgs.length;i++){
+			var msg = ret_msgs[i];
+			if(msg.sender==myselfId){
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+				var img_url = $("<img alt>").attr("src",userImageUrl);
+				var div_node = $("<div></div>").attr("class","user-pic");
+				div_node.append(img_url);
+				//等于0表示自己的发言
+				var myDiv = $("<div></div>").attr("class","user my");
+				myDiv.append(p_node).append(div_node);
+				div_chat_box.append(myDiv);
+			}else{
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+				//根据userid从好友列表中获取图像url
+				var userid = msg.sender;
+				var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
+				//console.log("imageUrl:"+imageUrl);
+				//var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
+				var img_url = $("<img alt>").attr("src",imageUrl);
+				var div_node = $("<div></div>").attr("class","user-pic");
+				div_node.append(img_url);
+
+				var otherDiv = $("<div></div>").attr("class","user other");
+				otherDiv.append(p_node).append(div_node);
+				div_chat_box.append(otherDiv);
+			}
+		}
+	}*/
 	////////////////////////////////////////////////////
 	var div_send_box = $("<div></div>").attr("class","send-box");
 	var textarea_node = $("<textarea></textarea>").attr("name","").attr("id","");
@@ -426,7 +466,42 @@ function changeTopicChatBox(topicId){
 	$(".topic-box").append(_center);
 	$(".topic-box").append(_toggle);
 	$(".topic-box").append(_right);
-	
+	//加载全局变量中的历史消息
+	if(topicId_historyMsgArray[topicId]){
+		var msgArray = topicId_historyMsgArray[topicId];
+		for(var i=0;i<msgArray.length;i++){
+			var msg = msgArray[i];
+			if(msg.sender==myselfId){
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+				var img_url = $("<img alt>").attr("src",userImageUrl);
+				var div_node = $("<div></div>").attr("class","user-pic");
+				div_node.append(img_url);
+				//等于0表示自己的发言
+				var myDiv = $("<div></div>").attr("class","user my");
+				myDiv.append(p_node).append(div_node);
+				$(".chat-box").append(myDiv);
+				$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
+			}else{
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+				//根据userid从好友列表中获取图像url
+				var userid = msg.sender;
+				var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
+				//console.log("imageUrl:"+imageUrl);
+				//var img_url = $("<img alt>").attr("src","images/delete/user-pic2.jpg");
+				var img_url = $("<img alt>").attr("src",imageUrl);
+				var div_node = $("<div></div>").attr("class","user-pic");
+				div_node.append(img_url);
+
+				var otherDiv = $("<div></div>").attr("class","user other");
+				otherDiv.append(p_node).append(div_node);
+				$(".chat-box").append(otherDiv);
+				$(".chat-box").scrollTop($(".chat-box").height()); //滚动条置底
+			}
+		}
+		//从全局变量中删除历史消息记录
+		delete topicId_historyMsgArray[topicId];
+	}
+		
 	//加载全局变量中存储的未读消息到聊天框
 	if(topicId_unreadMsgArray[topicId]){
 		console.log("加载全局变量中存储的未读消息到聊天框……");
