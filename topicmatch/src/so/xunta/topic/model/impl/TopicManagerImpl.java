@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -45,220 +47,215 @@ import so.xunta.topic.entity.RecommendedPeople;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
+import so.xunta.topic.entity.TopicHistoryMessage;
 import so.xunta.topic.model.TopicManager;
 import so.xunta.utils.HibernateUtils;
+import so.xunta.websocket.entity.HistoryMessage;
+import weibo4j.org.json.JSONArray;
 
 public class TopicManagerImpl implements TopicManager {
 	static Analyzer analyzer = new IKAnalyzer();// IK分词器
-	Directory directory =null;
+	Directory directory = null;
+
 	@Override
-	public  List<Topic> matchMyTopic(String mytopic) {
-		List<Topic> topicList=new ArrayList<>();
+	public List<Topic> matchMyTopic(String mytopic) {
+		List<Topic> topicList = new ArrayList<>();
 		try {
-			List<String> q=showTerms(mytopic,analyzer);
-			BooleanQuery query=new BooleanQuery();
-			for(String t:q)
-			{
-				//没有同义词
-				TermQuery tq1=new TermQuery(new Term("topicContent",t));
-				TermQuery tq2=new TermQuery(new Term("topicName",t));
-				query.add(tq1,Occur.SHOULD);
-				query.add(tq2,Occur.SHOULD);
+			List<String> q = showTerms(mytopic, analyzer);
+			BooleanQuery query = new BooleanQuery();
+			for (String t : q) {
+				// 没有同义词
+				TermQuery tq1 = new TermQuery(new Term("topicContent", t));
+				TermQuery tq2 = new TermQuery(new Term("topicName", t));
+				query.add(tq1, Occur.SHOULD);
+				query.add(tq2, Occur.SHOULD);
 
 			}
-			if(directory==null)
-			{
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    DirectoryReader ireader = DirectoryReader.open(directory);
-		    IndexSearcher searcher = new IndexSearcher(ireader);
-			ScoreDoc[] hits=searcher.search(query,Integer.MAX_VALUE).scoreDocs;
-			
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, Integer.MAX_VALUE).scoreDocs;
+
 			for (int i = 0; i < hits.length; i++) {
 				int docID = hits[i].doc;
-				//话题唯一id
-				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+				// 匹配的话题
 				String topicContent = searcher.doc(docID).get("topicContent");
-				//话题名
+				// 话题名
 				String topicName = searcher.doc(docID).get("topicName");
-				//用户id
+				// 用户id
 				String userId = searcher.doc(docID).get("userId");
-				//用户名
+				// 用户名
 				String userName = searcher.doc(docID).get("userName");
-				//日期
+				// 日期
 				String createTime = searcher.doc(docID).get("createTime");
-				//匹配的话题高亮
+				// 匹配的话题高亮
 				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
-				
-				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent,"", createTime,"");
+
+				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent, "", createTime, "");
 				topicList.add(topic);
 			}
-			ireader.close();//关闭ireader
+			ireader.close();// 关闭ireader
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Collections.sort(topicList);
 		return topicList;
 	}
-	
+
 	@Override
 	public List<Topic> matchMyTopic(String _topicName, String mytopic) {
-		List<Topic> topicList=new ArrayList<>();
+		List<Topic> topicList = new ArrayList<>();
 		try {
-			List<String> q=showTerms(mytopic,analyzer);
+			List<String> q = showTerms(mytopic, analyzer);
 			List<String> q2 = showTerms(_topicName, analyzer);
 			q.addAll(q2);
-			BooleanQuery query=new BooleanQuery();
-			for(String t:q)
-			{
-				//没有同义词
-				TermQuery tq1=new TermQuery(new Term("topicContent",t));
-				TermQuery tq2= new TermQuery(new Term("topicName",t));
-				query.add(tq1,Occur.SHOULD);
-				query.add(tq2,Occur.SHOULD);
+			BooleanQuery query = new BooleanQuery();
+			for (String t : q) {
+				// 没有同义词
+				TermQuery tq1 = new TermQuery(new Term("topicContent", t));
+				TermQuery tq2 = new TermQuery(new Term("topicName", t));
+				query.add(tq1, Occur.SHOULD);
+				query.add(tq2, Occur.SHOULD);
 
 			}
-			if(directory==null)
-			{
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    DirectoryReader ireader = DirectoryReader.open(directory);
-		    IndexSearcher searcher = new IndexSearcher(ireader);
-			ScoreDoc[] hits=searcher.search(query,Integer.MAX_VALUE).scoreDocs;
-			
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, Integer.MAX_VALUE).scoreDocs;
+
 			for (int i = 0; i < hits.length; i++) {
 				int docID = hits[i].doc;
-				//话题唯一id
-				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+				// 匹配的话题
 				String topicContent = searcher.doc(docID).get("topicContent");
-				//话题名
+				// 话题名
 				String topicName = searcher.doc(docID).get("topicName");
-				//用户id
+				// 用户id
 				String userId = searcher.doc(docID).get("userId");
-				//用户名
+				// 用户名
 				String userName = searcher.doc(docID).get("userName");
-				//日期
+				// 日期
 				String createTime = searcher.doc(docID).get("createTime");
-				//匹配的话题高亮
+				// 匹配的话题高亮
 				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
-				
-				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent,"", createTime,"");
+
+				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent, "", createTime, "");
 				topicList.add(topic);
 			}
-			ireader.close();//关闭ireader
+			ireader.close();// 关闭ireader
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Collections.sort(topicList);
 		return topicList;
 	}
-	
+
 	@Override
 	public List<Topic> matchUserRelativeTopic(String userId, String topicContent) {
-		List<Topic> topicList=new ArrayList<>();
+		List<Topic> topicList = new ArrayList<>();
 		try {
-			List<String> q=showTerms(topicContent,analyzer);
-			BooleanQuery query=new BooleanQuery();
-			TermQuery termquery = new TermQuery(new Term("userId",userId));
-			for(String t:q)
-			{
-				BooleanQuery  bq = new BooleanQuery();
-				
-				TermQuery tq1=new TermQuery(new Term("topicContent",t));
-				bq.add(tq1,Occur.MUST);
-				bq.add(termquery,Occur.MUST);
-				query.add(bq,Occur.SHOULD);
+			List<String> q = showTerms(topicContent, analyzer);
+			BooleanQuery query = new BooleanQuery();
+			TermQuery termquery = new TermQuery(new Term("userId", userId));
+			for (String t : q) {
+				BooleanQuery bq = new BooleanQuery();
+
+				TermQuery tq1 = new TermQuery(new Term("topicContent", t));
+				bq.add(tq1, Occur.MUST);
+				bq.add(termquery, Occur.MUST);
+				query.add(bq, Occur.SHOULD);
 			}
-			if(directory==null)
-			{
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    DirectoryReader ireader = DirectoryReader.open(directory);
-		    IndexSearcher searcher = new IndexSearcher(ireader);
-			ScoreDoc[] hits=searcher.search(query,Integer.MAX_VALUE).scoreDocs;
-			
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, Integer.MAX_VALUE).scoreDocs;
+
 			for (int i = 0; i < hits.length; i++) {
 				int docID = hits[i].doc;
-				//话题唯一id
-				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+				// 匹配的话题
 				String _topicContent = searcher.doc(docID).get("topicContent");
-				//话题名
+				// 话题名
 				String topicName = searcher.doc(docID).get("topicName");
-				//用户id
+				// 用户id
 				String _userId = searcher.doc(docID).get("userId");
-				//用户名
+				// 用户名
 				String userName = searcher.doc(docID).get("userName");
-				//日期
+				// 日期
 				String createTime = searcher.doc(docID).get("createTime");
-				//匹配的话题高亮
+				// 匹配的话题高亮
 				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
-				
-				Topic topic = new Topic(topicId, _userId, userName, topicName, _topicContent,"", createTime,"");
+
+				Topic topic = new Topic(topicId, _userId, userName, topicName, _topicContent, "", createTime, "");
 				topicList.add(topic);
 			}
-			ireader.close();//关闭ireader
+			ireader.close();// 关闭ireader
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Collections.sort(topicList);
 		return topicList;
 	}
-	
 
 	@Override
 	public List<Topic> matchUserRelativeTopic(String userId, String _topicName, String topicContent) {
-		List<Topic> topicList=new ArrayList<>();
+		List<Topic> topicList = new ArrayList<>();
 		try {
-			List<String> q=showTerms(topicContent,analyzer);
-			List<String> q2=showTerms(_topicName, analyzer);
+			List<String> q = showTerms(topicContent, analyzer);
+			List<String> q2 = showTerms(_topicName, analyzer);
 			q.addAll(q2);
-			BooleanQuery query=new BooleanQuery();
-			TermQuery termquery = new TermQuery(new Term("userId",userId));
-			for(String t:q)
-			{
-				BooleanQuery  bq = new BooleanQuery();
+			BooleanQuery query = new BooleanQuery();
+			TermQuery termquery = new TermQuery(new Term("userId", userId));
+			for (String t : q) {
+				BooleanQuery bq = new BooleanQuery();
 				BooleanQuery topicBooleanQuery = new BooleanQuery();
-				TermQuery tq1=new TermQuery(new Term("topicContent",t));
-				TermQuery tq2 = new  TermQuery(new Term("topicName",t));
-				topicBooleanQuery.add(tq1,Occur.SHOULD);
-				topicBooleanQuery.add(tq2,Occur.SHOULD);
-				
-				bq.add(topicBooleanQuery,Occur.MUST);
-				bq.add(termquery,Occur.MUST);
-				query.add(bq,Occur.SHOULD);
+				TermQuery tq1 = new TermQuery(new Term("topicContent", t));
+				TermQuery tq2 = new TermQuery(new Term("topicName", t));
+				topicBooleanQuery.add(tq1, Occur.SHOULD);
+				topicBooleanQuery.add(tq2, Occur.SHOULD);
+
+				bq.add(topicBooleanQuery, Occur.MUST);
+				bq.add(termquery, Occur.MUST);
+				query.add(bq, Occur.SHOULD);
 			}
-			if(directory==null)
-			{
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    DirectoryReader ireader = DirectoryReader.open(directory);
-		    IndexSearcher searcher = new IndexSearcher(ireader);
-			ScoreDoc[] hits=searcher.search(query,Integer.MAX_VALUE).scoreDocs;
-			
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, Integer.MAX_VALUE).scoreDocs;
+
 			for (int i = 0; i < hits.length; i++) {
 				int docID = hits[i].doc;
-				//话题唯一id
-				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+				// 匹配的话题
 				String _topicContent = searcher.doc(docID).get("topicContent");
-				//话题名
+				// 话题名
 				String topicName = searcher.doc(docID).get("topicName");
-				//用户id
+				// 用户id
 				String _userId = searcher.doc(docID).get("userId");
-				//用户名
+				// 用户名
 				String userName = searcher.doc(docID).get("userName");
-				//日期
+				// 日期
 				String createTime = searcher.doc(docID).get("createTime");
-				//匹配的话题高亮
+				// 匹配的话题高亮
 				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
-				
-				Topic topic = new Topic(topicId, _userId, userName, topicName, _topicContent,"", createTime,"");
+
+				Topic topic = new Topic(topicId, _userId, userName, topicName, _topicContent, "", createTime, "");
 				topicList.add(topic);
 			}
-			ireader.close();//关闭ireader
+			ireader.close();// 关闭ireader
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -266,9 +263,9 @@ public class TopicManagerImpl implements TopicManager {
 		return topicList;
 	}
 
-
 	/**
 	 * 分词
+	 * 
 	 * @param topic
 	 * @param analyzer
 	 * @return
@@ -280,16 +277,18 @@ public class TopicManagerImpl implements TopicManager {
 		CharTermAttribute term = tokenStream.addAttribute(CharTermAttribute.class);
 
 		tokenStream.reset();
-		
-		List<String> q=new ArrayList<String>();
+
+		List<String> q = new ArrayList<String>();
 		while (tokenStream.incrementToken()) {
 			System.out.print(term + "\t");
 			q.add(term.toString());
 		}
 		return q;
 	}
+
 	/**
 	 * 高度
+	 * 
 	 * @param textToBeHighLighted
 	 * @param query
 	 * @param analyzer
@@ -297,7 +296,8 @@ public class TopicManagerImpl implements TopicManager {
 	 * @param numOfHightlightedKeywords
 	 * @return
 	 */
-	public static String highLighter(String textToBeHighLighted, Query query, Analyzer analyzer, int numOfHighlightWords, int numOfHightlightedKeywords) {
+	public static String highLighter(String textToBeHighLighted, Query query, Analyzer analyzer,
+			int numOfHighlightWords, int numOfHightlightedKeywords) {
 		QueryScorer scorer = new QueryScorer(query);
 		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer, numOfHighlightWords);// 后一个参数是加亮前后的保留字数
 		SimpleHTMLFormatter formatter = new SimpleHTMLFormatter("<font color='red'>", "</font>");
@@ -315,114 +315,113 @@ public class TopicManagerImpl implements TopicManager {
 		}
 		return highterResult;
 	}
-	
+
 	@Override
 	public void createTopicIndex(Topic topic) {
 		try {
-			if(directory==null)
-			{
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_43, analyzer);
-		    IndexWriter iwriter = new IndexWriter(directory, config);
-		    
-		    Document doc = new Document();
-		    
-		    FieldType fieldType1=new FieldType();
-		    fieldType1.setIndexed(true);
-		    fieldType1.setStored(true);
-		    fieldType1.storeTermVectors();
-		    fieldType1.storeTermVectorPositions();
-		    fieldType1.storeTermVectorPayloads();
-		    
-		    FieldType fieldType2=new FieldType();
-		    fieldType2.setIndexed(true);
-		    fieldType2.setStored(true);
-		    fieldType2.setTokenized(false);
-		    
-		    doc.add(new Field("userId",topic.userId,fieldType2));
-		    doc.add(new Field("userName",topic.userName,fieldType2));
-		    doc.add(new Field("topicId",topic.topicId,fieldType2));
-		    doc.add(new Field("topicName",topic.topicName,fieldType1));
-		    doc.add(new Field("topicContent",topic.topicContent,fieldType1));
-		    doc.add(new Field("createTime",topic.createTime,fieldType2));
-		    iwriter.addDocument(doc);
-		    iwriter.commit();
-		    iwriter.close();
+			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_43, analyzer);
+			IndexWriter iwriter = new IndexWriter(directory, config);
+
+			Document doc = new Document();
+
+			FieldType fieldType1 = new FieldType();
+			fieldType1.setIndexed(true);
+			fieldType1.setStored(true);
+			fieldType1.storeTermVectors();
+			fieldType1.storeTermVectorPositions();
+			fieldType1.storeTermVectorPayloads();
+
+			FieldType fieldType2 = new FieldType();
+			fieldType2.setIndexed(true);
+			fieldType2.setStored(true);
+			fieldType2.setTokenized(false);
+
+			doc.add(new Field("userId", topic.userId, fieldType2));
+			doc.add(new Field("userName", topic.userName, fieldType2));
+			doc.add(new Field("topicId", topic.topicId, fieldType2));
+			doc.add(new Field("topicName", topic.topicName, fieldType1));
+			doc.add(new Field("topicContent", topic.topicContent, fieldType1));
+			doc.add(new Field("createTime", topic.createTime, fieldType2));
+			iwriter.addDocument(doc);
+			iwriter.commit();
+			iwriter.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	
 	public static void main(String[] args) {
-		TopicManager topicmanager=new TopicManagerImpl();
-/*		topicmanager.createTopicIndex("1","黄山哪好玩","001","Candy","2014-1-1");
-		topicmanager.createTopicIndex("2","黄山登山谁去","001","Candy","2014-1-2");
-		topicmanager.createTopicIndex("3","过年大家都在做什么？","001","Candy","2014-1-2");
-		List<Topic> list=topicmanager.matchMyTopicByUserId("001");
-		for(Topic t:list)
-		{
-			System.out.println("话题ID:"+t.topicId);
-			System.out.println("话题内容:"+t.topicContent);
-			System.out.println("话题创建时间:"+t.topicCreatetime);
-			System.out.println("话题作者昵称:"+t.authorName);
-			System.out.println("话题作者id:"+t.authorId);
-			System.out.println("===========================");
-		}*/
-		//topicmanager.addTopicJoinNumByOne("69078E1A128D0E3A9327037A3DB4BD9E");
-		List<Topic> topicList = topicmanager.recommendTopics("49");
-		for(Topic topic:topicList)
-		{
-			System.out.println(topic.getUserId()+":"+"标题:"+topic.getTopicName()+"      内容:"+topic.getTopicContent());
-		}
-	/*	TagsManager tagmanaManager = new TagsManagerImpl();
-		tagmanaManager.addOneTag(new Tag(49,"测试"));*/
-		
-
+		TopicManager topicmanager = new TopicManagerImpl();
+		/*
+		 * topicmanager.createTopicIndex("1","黄山哪好玩","001","Candy","2014-1-1");
+		 * topicmanager.createTopicIndex("2","黄山登山谁去","001","Candy","2014-1-2");
+		 * topicmanager
+		 * .createTopicIndex("3","过年大家都在做什么？","001","Candy","2014-1-2");
+		 * List<Topic> list=topicmanager.matchMyTopicByUserId("001"); for(Topic
+		 * t:list) { System.out.println("话题ID:"+t.topicId);
+		 * System.out.println("话题内容:"+t.topicContent);
+		 * System.out.println("话题创建时间:"+t.topicCreatetime);
+		 * System.out.println("话题作者昵称:"+t.authorName);
+		 * System.out.println("话题作者id:"+t.authorId);
+		 * System.out.println("==========================="); }
+		 */
+		// topicmanager.addTopicJoinNumByOne("69078E1A128D0E3A9327037A3DB4BD9E");
+//		List<Topic> topicList = topicmanager.recommendTopics("49");
+//		for (Topic topic : topicList) {
+//			System.out.println(topic.getUserId() + ":" + "标题:" + topic.getTopicName() + "      内容:"
+//					+ topic.getTopicContent());
+//		}
+		/*
+		 * TagsManager tagmanaManager = new TagsManagerImpl();
+		 * tagmanaManager.addOneTag(new Tag(49,"测试"));
+		 */
+		System.out.println(topicmanager.findTopicIdByTopicHistory("1DF33880055B9160F2F1ED19A641024D"));
 	}
 
 	@Override
 	public List<Topic> matchMyTopicByUserId(String authorId) {
-		List<Topic> topicList=new ArrayList<>();
+		List<Topic> topicList = new ArrayList<>();
 		try {
-			TermQuery query=new TermQuery(new Term("authorId",authorId));
-			if(directory==null)
-			{
+			TermQuery query = new TermQuery(new Term("authorId", authorId));
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    DirectoryReader ireader = DirectoryReader.open(directory);
-		    IndexSearcher searcher = new IndexSearcher(ireader);
-			ScoreDoc[] hits=searcher.search(query,100).scoreDocs;
-			
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, 100).scoreDocs;
+
 			for (int i = 0; i < hits.length; i++) {
 				int docID = hits[i].doc;
-				//话题唯一id
-				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+				// 匹配的话题
 				String topicContent = searcher.doc(docID).get("topicContent");
-				//作者名
+				// 作者名
 				String topicAuthor = searcher.doc(docID).get("topicAuthorName");
-				//作者id
+				// 作者id
 				String topicAuthorId = searcher.doc(docID).get("authorId");
-				
-				//日期
+
+				// 日期
 				String datetime = searcher.doc(docID).get("topicCreatetime");
 
-				//(String topicId,String authorId,String hightLightTopic, String authorName,String topicCreatetime) 
-				//Topic topicObj = new Topic(topicId,topicAuthorId,topicContent,topicAuthor,datetime);
-				
-				//topicList.add(topicObj);
+				// (String topicId,String authorId,String hightLightTopic,
+				// String authorName,String topicCreatetime)
+				// Topic topicObj = new
+				// Topic(topicId,topicAuthorId,topicContent,topicAuthor,datetime);
+
+				// topicList.add(topicObj);
 			}
-			ireader.close();//关闭ireader
+			ireader.close();// 关闭ireader
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Collections.sort(topicList);
 		return topicList;
 	}
-
 
 	@Override
 	public void saveTopic(Topic topic) {
@@ -438,6 +437,7 @@ public class TopicManagerImpl implements TopicManager {
 			session.close();
 		}
 	}
+
 	@Override
 	public void saveTopicGroup(TopicGroup topicMember) {
 		Session session = HibernateUtils.openSession();
@@ -455,13 +455,13 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	public List<MessageAlert> searchMyMessage(String authorId) {
-		//TODO 从数据库中查询出自己的消息
+		// TODO 从数据库中查询出自己的消息
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="from MessageAlert as m where m.authorId=? and m.isHandle = 0";
+			String hql = "from MessageAlert as m where m.authorId=? and m.isHandle = 0";
 			org.hibernate.Query query = session.createQuery(hql);
-			query.setString(0,authorId);
+			query.setString(0, authorId);
 			List<MessageAlert> l = query.list();
 			Collections.sort(l);
 			session.getTransaction().commit();
@@ -473,12 +473,11 @@ public class TopicManagerImpl implements TopicManager {
 			session.close();
 		}
 
-		
 	}
 
 	@Override
 	public void addMessageAlert(MessageAlert messageAlert) {
-		//System.out.println("添加消息提醒");
+		// System.out.println("添加消息提醒");
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
@@ -509,15 +508,15 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	public long searchNotReadmessageNum(String authorId) {
-		//System.out.println("查询未读消息数");
+		// System.out.println("查询未读消息数");
 		Session session = HibernateUtils.openSession();
 		try {
-			
+
 			session.beginTransaction();
-			String hql="select count(*) from SysMessage m where m.toUserId=? and m.isHandle=0";
+			String hql = "select count(*) from SysMessage m where m.toUserId=? and m.isHandle=0";
 			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, authorId);
-			long num=(Long)query.uniqueResult();
+			long num = (Long) query.uniqueResult();
 			session.getTransaction().commit();
 			return num;
 		} catch (RuntimeException e) {
@@ -533,13 +532,13 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			org.hibernate.Query query=session.createQuery("from TopicGroup as tg where tg.topicMemberId=? and tg.topicId = ?");
-			query.setString(0,memberId);
-			query.setString(1,topicId);
-			List<TopicGroup> topicMemberList=query.list();
+			org.hibernate.Query query = session
+					.createQuery("from TopicGroup as tg where tg.topicMemberId=? and tg.topicId = ?");
+			query.setString(0, memberId);
+			query.setString(1, topicId);
+			List<TopicGroup> topicMemberList = query.list();
 			session.getTransaction().commit();
-			if(topicMemberList.size()>0)
-			{
+			if (topicMemberList.size() > 0) {
 				return true;
 			}
 		} catch (RuntimeException e) {
@@ -553,14 +552,14 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	public List<TopicGroup> searchTopicMemberList(String topicId) {
-		
-		List<TopicGroup> topicMembers=new ArrayList<TopicGroup>();
+
+		List<TopicGroup> topicMembers = new ArrayList<TopicGroup>();
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="from TopicGroup tg where tg.topicId=?";
-			org.hibernate.Query query=session.createQuery(hql);
-			topicMembers=query.setString(0,topicId).list();
+			String hql = "from TopicGroup tg where tg.topicId=?";
+			org.hibernate.Query query = session.createQuery(hql);
+			topicMembers = query.setString(0, topicId).list();
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
@@ -576,10 +575,10 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="select topicContent from Topic t where t.topicId=?";
-			org.hibernate.Query query=session.createQuery(hql);
+			String hql = "select topicContent from Topic t where t.topicId=?";
+			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, topicId);
-			String topicContent=(String) query.uniqueResult();
+			String topicContent = (String) query.uniqueResult();
 			session.getTransaction().commit();
 			return topicContent;
 		} catch (RuntimeException e) {
@@ -595,11 +594,11 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="from Topic t where t.authorId=? order by t.topicCreatetime desc";
-			org.hibernate.Query query=session.createQuery(hql);
+			String hql = "from Topic t where t.authorId=? order by t.topicCreatetime desc";
+			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, authorId);
 			query.setMaxResults(1);
-			Topic topic=(Topic)query.uniqueResult();
+			Topic topic = (Topic) query.uniqueResult();
 			session.getTransaction().commit();
 			return topic;
 		} catch (RuntimeException e) {
@@ -615,15 +614,15 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String sql="select topic.* from topic,topichistory where topichistory.authorId=? and topic.topicId=topichistory.topicId ";
-			SQLQuery sqlquery=session.createSQLQuery(sql);
+			String sql = "select topic.* from topic,topichistory where topichistory.authorId=? and topic.topicId=topichistory.topicId ";
+			SQLQuery sqlquery = session.createSQLQuery(sql);
 			sqlquery.addEntity(Topic.class);
-			sqlquery.setString(0,authorId);
-			List<Topic> topicList=sqlquery.list();
+			sqlquery.setString(0, authorId);
+			List<Topic> topicList = sqlquery.list();
 			session.getTransaction().commit();
 			Collections.sort(topicList);
 			return topicList;
-			
+
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
@@ -637,8 +636,8 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="update MessageAlert as ma set ma.isRead=1 where ma.authorId=?";
-			org.hibernate.Query query=session.createQuery(hql);
+			String hql = "update MessageAlert as ma set ma.isRead=1 where ma.authorId=?";
+			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, authorId);
 			query.executeUpdate();
 			session.getTransaction().commit();
@@ -648,7 +647,7 @@ public class TopicManagerImpl implements TopicManager {
 		} finally {
 			session.close();
 		}
-		
+
 	}
 
 	@Override
@@ -656,20 +655,17 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="from TopicHistory t where t.authorId=? and t.topicId=?";
+			String hql = "from TopicHistory t where t.authorId=? and t.topicId=?";
 			org.hibernate.Query query = session.createQuery(hql);
-			
+
 			query.setString(0, authorId);
 			query.setString(1, topicId);
-			
-			List<TopicHistory> topicHistoryList=query.list();
+
+			List<TopicHistory> topicHistoryList = query.list();
 			session.getTransaction().commit();
-			if(topicHistoryList.size()>0)
-			{
+			if (topicHistoryList.size() > 0) {
 				return true;
-			}
-			else
-			{
+			} else {
 				return false;
 			}
 		} catch (RuntimeException e) {
@@ -685,9 +681,9 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="select xunta_username from User where id = ?";
+			String hql = "select xunta_username from User where id = ?";
 			org.hibernate.Query query = session.createQuery(hql);
-			query.setInteger(0,userId);
+			query.setInteger(0, userId);
 			String nickname = (String) query.uniqueResult();
 			session.getTransaction().commit();
 			return nickname;
@@ -704,7 +700,7 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="delete MessageAlert as m where m.id = ?";
+			String hql = "delete MessageAlert as m where m.id = ?";
 			org.hibernate.Query query = session.createQuery(hql);
 			query.setInteger(0, id);
 			query.executeUpdate();
@@ -722,8 +718,8 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="update MessageAlert as ma set ma.isHandle=1 where id=?";
-			org.hibernate.Query query=session.createQuery(hql);
+			String hql = "update MessageAlert as ma set ma.isHandle=1 where id=?";
+			org.hibernate.Query query = session.createQuery(hql);
 			query.setInteger(0, pid);
 			query.executeUpdate();
 			session.getTransaction().commit();
@@ -740,9 +736,9 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="from Topic as t where t.userId =? ";
-			org.hibernate.Query query=session.createQuery(hql);
-			query.setString(0,userId);
+			String hql = "from Topic as t where t.userId =? ";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, userId);
 			List<Topic> topicList = query.list();
 			session.getTransaction().commit();
 			return topicList;
@@ -759,7 +755,7 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String sql="select t.* from topic  as t where t.topicId in (select th.topicId from topichistory as th where th.authorId=? and th.publish_or_join = 'j')";
+			String sql = "select t.* from topic  as t where t.topicId in (select th.topicId from topichistory as th where th.authorId=? and th.publish_or_join = 'j')";
 			SQLQuery query = session.createSQLQuery(sql);
 			query.setString(0, userId);
 			query.addEntity(Topic.class);
@@ -801,7 +797,7 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		String hql = "from Topic as t where t.topicId in (:topicIdList)";
 		org.hibernate.Query query = session.createQuery(hql);
-		query.setParameterList("topicIdList",topicIdList);
+		query.setParameterList("topicIdList", topicIdList);
 		List<Topic> topicList = query.list();
 		session.close();
 		return topicList;
@@ -809,14 +805,14 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	public List<TopicHistory> findTopicHistoryByTopicId(List<String> topicIdList) {
-		if(topicIdList.size()==0){
+		if (topicIdList.size() == 0) {
 			return null;
 		}
 		Session session = HibernateUtils.openSession();
 		String hql = "from TopicHistory as t where t.topicId in (:topicIdList)";
 		org.hibernate.Query query = session.createQuery(hql);
-		query.setParameterList("topicIdList",topicIdList);
-		
+		query.setParameterList("topicIdList", topicIdList);
+
 		List<TopicHistory> TopicHistoryList = query.list();
 		session.close();
 		return TopicHistoryList;
@@ -827,11 +823,11 @@ public class TopicManagerImpl implements TopicManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql="from Topic where topicId=?";
+			String hql = "from Topic where topicId=?";
 			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, topicId);
 			Topic topic = (Topic) query.uniqueResult();
-			topic.setJoin_people_num(topic.getJoin_people_num()+1);
+			topic.setJoin_people_num(topic.getJoin_people_num() + 1);
 			session.update(topic);
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
@@ -844,62 +840,57 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	public List<Topic> recommendTopics(String userId2) {
-		//根据userId查询出 该用户的标签
+		// 根据userId查询出 该用户的标签
 		TagsManager tagmanager = new TagsManagerImpl();
 		List<Tag> tagslist = tagmanager.findAllTagsByUserId(Long.parseLong(userId2));
-		for(Tag tag:tagslist)
-		{
+		for (Tag tag : tagslist) {
 			System.out.println(tag.getTagname());
 		}
-		List<Topic> topicList=new ArrayList<>();
+		List<Topic> topicList = new ArrayList<>();
 		try {
-			BooleanQuery query=new BooleanQuery();
-			for(Tag tag:tagslist)
-			{
-				List<String> q=showTerms(tag.getTagname(),analyzer);
-				for(String t:q)
-				{
-					//没有同义词
-					TermQuery tq1=new TermQuery(new Term("topicContent",t));
-					TermQuery tq2=new TermQuery(new Term("topicName",t));
-					query.add(tq1,Occur.SHOULD);
-					query.add(tq2,Occur.SHOULD);
-	
+			BooleanQuery query = new BooleanQuery();
+			for (Tag tag : tagslist) {
+				List<String> q = showTerms(tag.getTagname(), analyzer);
+				for (String t : q) {
+					// 没有同义词
+					TermQuery tq1 = new TermQuery(new Term("topicContent", t));
+					TermQuery tq2 = new TermQuery(new Term("topicName", t));
+					query.add(tq1, Occur.SHOULD);
+					query.add(tq2, Occur.SHOULD);
+
 				}
 			}
-			if(directory==null)
-			{
+			if (directory == null) {
 				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
 			}
-		    DirectoryReader ireader = DirectoryReader.open(directory);
-		    IndexSearcher searcher = new IndexSearcher(ireader);
-			ScoreDoc[] hits=searcher.search(query,Integer.MAX_VALUE).scoreDocs;
-			
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, Integer.MAX_VALUE).scoreDocs;
+
 			for (int i = 0; i < hits.length; i++) {
 				int docID = hits[i].doc;
-				//话题唯一id
-				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+				// 匹配的话题
 				String topicContent = searcher.doc(docID).get("topicContent");
-				//话题名
+				// 话题名
 				String topicName = searcher.doc(docID).get("topicName");
-				//用户id
+				// 用户id
 				String userId = searcher.doc(docID).get("userId");
-				if(userId.equals(userId2))
-				{
+				if (userId.equals(userId2)) {
 					continue;
 				}
-				//用户名
+				// 用户名
 				String userName = searcher.doc(docID).get("userName");
-				//日期
+				// 日期
 				String createTime = searcher.doc(docID).get("createTime");
-				//匹配的话题高亮
+				// 匹配的话题高亮
 				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
-				
-				Topic topic = new Topic(topicId, userId, userName, topicName, hightLightTopic,"", createTime,"");
+
+				Topic topic = new Topic(topicId, userId, userName, topicName, hightLightTopic, "", createTime, "");
 				topicList.add(topic);
 			}
-			ireader.close();//关闭ireader
+			ireader.close();// 关闭ireader
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -908,6 +899,45 @@ public class TopicManagerImpl implements TopicManager {
 	}
 
 	@Override
+	// fang
+	public List<TopicHistory> findAuthorIdAndPublish_or_joinByTopicId(String authorId, String publish_or_join, int titleNum) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "from TopicHistory where authorId=? and publish_or_join=? order by datetime desc";
+			org.hibernate.Query query = session.createQuery(hql).setFirstResult(titleNum).setMaxResults(titleNum + 20);
+			query.setString(0, authorId);
+			query.setString(1, publish_or_join);
+			List<TopicHistory> topicIdList = query.list();
+			session.getTransaction().commit();
+			return topicIdList;
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
+	@Override
+	// fang
+	public String findTopicIdByTopicHistory(String topicId) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "select datetime from TopicHistory where topicId=?";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, topicId);
+			String datetime = (String) query.uniqueResult();
+			session.getTransaction().commit();
+			return datetime;
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
 	public List<String> matchMyTopicIds(String _topicName, String mytopic) {
 		List<String> topicList=new ArrayList<>();
 		try {
@@ -961,6 +991,51 @@ public class TopicManagerImpl implements TopicManager {
 	}
 
 
+	@Override
+	// fang
+	public Map<String, HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list) {
+		Map<String, HistoryMessage> historyMessageMap = new HashMap<String, HistoryMessage>();
+		for (TopicHistory topicHistory : list) {
+			Session session = HibernateUtils.openSession();
+			String topicId = topicHistory.getTopicId();
+			try {
+				session.beginTransaction();
+				String hql = "from HistoryMessage where topicId = ? order by dateandtime desc";
+				org.hibernate.Query query = session.createQuery(hql);
+				query.setString(0, topicId);
+				if (query.list().size() == 0) {
+					historyMessageMap.put(topicId, null);
+				} else {
+					historyMessageMap.put(topicId, (HistoryMessage) query.list().get(0));
+				}
+				session.getTransaction().commit();
+			} catch (RuntimeException e) {
+				session.getTransaction().rollback();
+				throw e;
+			} finally {
+				session.close();
+			}
+		}
+		return historyMessageMap;
+	};
 
-	
+	@Override
+	// fang
+	public Topic findTopicIdByTopic(String topicId) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "from Topic where topicId = ? ";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, topicId);
+			Topic topic =  (Topic) query.uniqueResult();
+			session.getTransaction().commit();
+			return topic;
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	};
 }

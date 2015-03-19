@@ -3,7 +3,11 @@ package so.xunta.topic.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +34,7 @@ import so.xunta.topic.entity.SysMessage;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
+import so.xunta.topic.entity.TopicHistoryMessage;
 import so.xunta.topic.entity.TopicRequestMsg;
 import so.xunta.topic.entity.TopicRequestMsgPlusTopicDetail;
 import so.xunta.topic.model.MsgManager;
@@ -42,6 +47,9 @@ import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.topic.model.impl.TopicModelImpl;
 import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.DateTimeUtils;
+import so.xunta.utils.Time;
+import so.xunta.websocket.entity.HistoryMessage;
+import weibo4j.org.json.JSONException;
 
 /**
  * Servlet implementation class TopicService
@@ -128,6 +136,9 @@ public class TopicService extends HttpServlet {
 			break;
 		case "exit":
 			exit(request,response);
+			break;
+		case "topicMemory"://fang
+			getTopicMemory(request,response);
 			break;
 		}
 	}
@@ -811,9 +822,107 @@ public class TopicService extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * 获取话题历史
+	 * 房
+	 * */
+	@SuppressWarnings({ "deprecation", "rawtypes" })
+	private void getTopicMemory(HttpServletRequest request, HttpServletResponse response) {
+		String userId = request.getParameter("userId");
+		String topicType = request.getParameter("topicType");
+		String topicNum = request.getParameter("topicNum");
+		System.out.println("TopicService  ==> getTopicMemory from Fang  ==>   userId : "+userId+", topicType : "+topicType+", topicNum : "+topicNum);
+		List<TopicHistory> topicIdList = topicManager.findAuthorIdAndPublish_or_joinByTopicId(userId, topicType,Integer.parseInt(topicNum));
+		if(topicIdList.size() == 0){
+			//该用户在topicHistory里面没有符合topicType的记录
+			System.out.println("TopicService  ==> getTopicMemory from Fang  ==>  当前用户ID ： "+userId+",  没有符合 titleType : "+topicType+", 的记录");
+			weibo4j.org.json.JSONObject jsonObject = new weibo4j.org.json.JSONObject();
+			try {
+				jsonObject.put("notTopic", "yes");
+				response.setContentType("text/json");
+				response.setCharacterEncoding("utf-8");
+				response.getWriter().write(jsonObject.toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			//topic history message  string : topicId
+			Map<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
+			Iterator<?> iter = topicHistoryMessageMap.entrySet().iterator();
+			JSONArray arrayJson = new JSONArray();
+			JSONObject objectJson = new JSONObject();
+			while (iter.hasNext()) {
+				Map.Entry entry = (Map.Entry) iter.next();
+				String topicId = (String) entry.getKey();
+				String acceppterIds="[\"1\"]";
+				String content="";
+				String lastTime="";
+				if(entry.getValue() != null){
+					//如果该用户只发布了话题，但是没有说话， 会导致获取不到最后回复内容及最后回复时间及话题参与人数，用默认值代替
+					HistoryMessage val = (HistoryMessage) entry.getValue();
+					content = URLDecoder.decode(val.getContent());
+					acceppterIds = val.getAccepterId();
+					lastTime = val.getDateAndTime();
+				}
+				Topic topic = topicManager.findTopicIdByTopic(topicId);
+				String userName = topic.getUserName();
+				String topicName = topic.getTopicName();
+				String createTime = topic.getCreateTime();
+				String userImgUrl = new UserManagerImpl().findUserById(Integer.parseInt(topic.getUserId())).getImageUrl();
+				String time_j = topicManager.findTopicIdByTopicHistory(topicId);
+				String month ="";
+				String yyyyMMdd="";
+				String HHmm="";
+				try {
+					
+					System.out.println(time_j);
+					Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time_j);
+					yyyyMMdd = Time.getDate_ta_pc(date)+"  ";
+					HHmm = Time.getTime_ta_pc(date);
+					month = Time.getMonth(date);
+					JSONArray jsonArray = JSONArray.fromObject(acceppterIds);
+					String accepters = jsonArray.size()+"";
+//					System.out.println(userName);
+//					System.out.println(userImgUrl);
+//					System.out.println(topicName);
+//					System.out.println(createTime);
+//					System.out.println(content);
+//					System.out.println(lastTime);
+//					System.out.println(month);
+//					System.out.println(accepters);
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("nickname", userName);
+					jsonObject.put("userImgUrl", userImgUrl);
+					jsonObject.put("topicName", topicName);
+					jsonObject.put("createTime", createTime);
+					jsonObject.put("content", content);
+					jsonObject.put("lastTime", lastTime);
+					jsonObject.put("month", month);
+					jsonObject.put("accepters", accepters);
+					jsonObject.put("yyyyMMdd", yyyyMMdd);
+					jsonObject.put("HHmm", HHmm);
+//					System.out.println(jsonObject.toString());
+					arrayJson.add(jsonObject);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				response.setContentType("text/json");
+				response.setCharacterEncoding("utf-8");
+				objectJson.put("notTopic", "no");
+				objectJson.put("msg", arrayJson.toString());
+				System.out.println(objectJson.toString());
+				response.getWriter().write(objectJson.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request,response);
 	}
-
 }

@@ -1,6 +1,7 @@
 package so.xunta.topic.model;
 
 import java.util.List;
+import java.util.Map;
 
 import so.xunta.entity.User;
 import so.xunta.topic.entity.MessageAlert;
@@ -9,6 +10,9 @@ import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
+import so.xunta.topic.entity.TopicHistoryMessage;
+import so.xunta.websocket.entity.HistoryMessage;
+import weibo4j.org.json.JSONArray;
 
 public interface TopicManager {
 	//创建话题索引 
@@ -82,5 +86,12 @@ public interface TopicManager {
 	//将话题参与人数加1
 	public void addTopicJoinNumByOne(String topicId);
 
-
+	//根据authorId 和  publish_or_join 获取对应的topicId   fang
+	public List<TopicHistory> findAuthorIdAndPublish_or_joinByTopicId(String authorId, String publish_or_join, int titleNum);
+	//根据topicId 获取 topicHistoryMessage   fang
+	public Map<String,HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list);
+	//根据topicId 获取 topic   fang
+	public Topic findTopicIdByTopic(String topicId);
+	//根据topicId 获取 TopicHistory   fang
+	public String findTopicIdByTopicHistory(String topicId);
 }

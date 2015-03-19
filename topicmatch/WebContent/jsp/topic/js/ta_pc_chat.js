@@ -553,301 +553,117 @@ function createMessage(contentType,obj_json){
 //创建消息处理函数
 window.webimHandle = function(json) {
 	/**
-	key:status=====>value:1
-	key:topicId=====>value:DEC38294FCADEDFFA835C1D04D2DA2E1
-	key:messageId=====>value:21422350893108
-	key:senderId=====>value:2
-	key:nickname=====>value: oliver
-	key:message=====>value:%E4%B8%8A%E6%B5%B7
-	key:accepterIds=====>value:1,2
-	key:dateTime=====>value:2015-01-27 17:27:38
-	key:date=====>value:20150127
-	key:time=====>value:172738
+	 * key:status=====>value:1
+	 * key:topicId=====>value:DEC38294FCADEDFFA835C1D04D2DA2E1
+	 * key:messageId=====>value:21422350893108 key:senderId=====>value:2
+	 * key:nickname=====>value: oliver key:message=====>value:%E4%B8%8A%E6%B5%B7
+	 * key:accepterIds=====>value:1,2 key:dateTime=====>value:2015-01-27
+	 * 17:27:38 key:date=====>value:20150127 key:time=====>value:172738
 	 */
-	//获取对应topicId 的窗口
+	// 获取对应topicId 的窗口
 	var msgStr = "";
 	var topicId = json.topicId;
-	console.log("接收到消息:"+json);
+	console.log("接收到消息:" + json);
 	/**
-	 * 接收到消息
-	 * 	1.判断当前已经打开的对话框是否是消息所要显示的目的对话框
-	 * 	2.如果是，则直接显示
-	 * 	3.如果不是,将收到的消息放入到未读消息的全局变量中 ,并更新显示的未读消息数
-	 * 		如果存在：将未读消息数改为全局变量中的未读消息数
-	 * 		如果不存在：　	创建话题列表项,未读消息数为全局变量中的未读消息数
-	 * 			　　　　	创建对话框，保存到全局变量
-	 * 4.创建话题列表项
+	 * 接收到消息 1.判断当前已经打开的对话框是否是消息所要显示的目的对话框 2.如果是，则直接显示
+	 * 3.如果不是,将收到的消息放入到未读消息的全局变量中 ,并更新显示的未读消息数 如果存在：将未读消息数改为全局变量中的未读消息数 如果不存在：
+	 * 创建话题列表项,未读消息数为全局变量中的未读消息数 创建对话框，保存到全局变量 4.创建话题列表项
 	 */
-	if(topicId==null||topicId==""){
+	if (topicId == null || topicId == "") {
 		console.log("Error:topicId为空值");
 		return;
 	}
-	//判断当前已经打开的对话框是否是消息所要显示的目的对话框
+	// 判断当前已经打开的对话框是否是消息所要显示的目的对话框
 	var cur_topicId = $(".topic-box .center").attr("topicid");
-	if(cur_topicId==topicId){//是当前窗口
-		//判断是否是自己发的消息
-		if(json.senderId == myselfId){
-			//TODO:是自己发的消息,将消息改为发送成功
-		}else{
+	if (cur_topicId == topicId) {// 是当前窗口
+		// 判断是否是自己发的消息
+		if (json.senderId == myselfId) {
+			// TODO:是自己发的消息,将消息改为发送成功
+		} else {
 			createMessage(1, json);
 		}
-	}else{//不是当前窗口
-		//将未读消息保存到全局变量
-		if(topicId_unreadMsgArray[topicId]){
+	} else {// 不是当前窗口
+		// 将未读消息保存到全局变量
+		if (topicId_unreadMsgArray[topicId]) {
 			topicId_unreadMsgArray[topicId].push(json);
-		}else{
-			var arr =new Array();
+		} else {
+			var arr = new Array();
 			arr.push(json);
-			topicId_unreadMsgArray[topicId]=arr;
+			topicId_unreadMsgArray[topicId] = arr;
 		}
-		
-		//判断话题列表项是否存在
-		if(topicItemArray.in_array(topicId)){//存在话题列表项,更新显示未读消息数
-			//TODO:
-			var topicUnreadNum=topicId_unreadMsgArray[topicId].length;
-			//判断是否存在<span class="num"></span>
-			$("")
-		}else{//创建话题列表项及创建话题对话框
-			//发送请求获取对应topicId：Topic,List<User>
-			$.post(contextPath+"/servlet/topic_service",{
-				cmd:"getTopicAndTopicMembersByTopicId",
-				topicId:topicId
-			},function(res,status){
-				//console.log(res);
+		// 判断话题列表项是否存在
+		if (topicItemArray.in_array(topicId)) {// 存在话题列表项,更新显示未读消息数
+			// TODO:
+			var topicUnreadNum = topicId_unreadMsgArray[topicId].length;
+			// 判断是否存在<span class="num">2</span>
+			// 不在就创建，存在就更新里面的text内容
+		} else {// 创建话题列表项及创建话题对话框
+			// 发送请求获取对应topicId：Topic,List<User>
+			$.post(contextPath + "/servlet/topic_service", {
+				cmd : "getTopicAndTopicMembersByTopicId",
+				topicId : topicId
+			}, function(res, status) {
+				console.log(res);
 				console.log(res.topic);
 				console.log(res.memberList);
-				
+
 				var topic = res.topic;
-				var memberList = res.memberList;//话题成员
+				var memberList = res.memberList;// 话题成员
 				var user_p = res.user_p;
-				
-				var center = createChatBox_center(topic,user_p);
+
+				var center = createChatBox_center(topic, user_p);
 				var fold = createChatBox_fold(topicId);
-				var right = createChatBox_right(topicId,memberList);
-				
-				chat_box_center[topicId]=center;//保存到全局变量
-				chat_box_fold[topicId]=fold;
-				chat_box_right[topic.topicId]=right;
-				
-				//创建话题列表项
+				var right = createChatBox_right(topicId, memberList);
+
+				chat_box_center[topicId] = center;// 保存到全局变量
+				chat_box_fold[topicId] = fold;
+				chat_box_right[topic.topicId] = right;
+
+				// 创建话题列表项
 				var topicMemberItem = $(".topic-box .left .rec-topic-list");
 				var li_node = $("<li></li>");
-				li_node.attr("topicId",topicId);
+				li_node.attr("topicId", topicId);
 				var span_node = $("<span></span>");
-				span_node.attr("class","num");
-				var topicUnreadNum=topicId_unreadMsgArray[topicId].length;
+				span_node.attr("class", "num");
+				var topicUnreadNum = topicId_unreadMsgArray[topicId].length;
 				span_node.text(topicUnreadNum);
 				li_node.append(span_node);
-				
+
 				var p_node = $("<p></p>");
-				p_node.attr("class","name");
-				p_node.attr("title",topic.topicTitle);
+				p_node.attr("class", "name");
+				p_node.attr("title", topic.topicTitle);
 				p_node.text(topic.topicTitle);
-				
+
 				var a_node = $("<a>&#xe601;</a>");
-				a_node.attr("href","#");
-				a_node.attr("class","iconfont close");
-				a_node.click(function(){
-					$(this).parent().remove();//移除
+				a_node.attr("href", "#");
+				a_node.attr("class", "iconfont close");
+				a_node.click(function() {
+					$(this).parent().remove();// 移除
 					topicItemArray.remove(topicId);
-					if(chat_box_center.topicId!=null){
-						chat_box_center[topicId]=undefined;
+					if (chat_box_center.topicId != null) {
+						chat_box_center[topicId] = undefined;
 					}
-					if(chat_box_fold.topicId!=null){
-						chat_box_fold[topicId]=undefined;
+					if (chat_box_fold.topicId != null) {
+						chat_box_fold[topicId] = undefined;
 					}
-					if(chat_box_right.topicId!=null){
-						chat_box_right[topicId]=undefined;
+					if (chat_box_right.topicId != null) {
+						chat_box_right[topicId] = undefined;
 					}
 				});
-				
+
 				li_node.append(p_node).append(a_node);
-				//li_node添加事件:点击事件
-				li_node.click(function(e){
-					$(this).attr("class","cur").siblings().removeClass("cur");
-					//从全局变量中取出对应的html
+				// li_node添加事件:点击事件
+				li_node.click(function(e) {
+					$(this).attr("class", "cur").siblings().removeClass("cur");
+					// 从全局变量中取出对应的html
 					changeTopicChatBox(topicId);
 				});
-				
+
 				topicMemberItem.append(li_node);
 				topicItemArray.push(topicId);
-				
-	/*			
-				chat_box_center[topicId]=center;//保存到全局变量
-				
-				var fold = createChatBox_fold(topicId);
-				chat_box_fold[topicId]=fold;
-				
-				var memberList = res.memberList;
-				var right = createChatBox_right(topicId,memberList);
-				chat_box_right[topic.topicId]=right;
-				console.log("打印topicId======>"+topicId);
-				changeTopicChatBox(topicId);*/
-				
 			});
 		}
-		
-		
-		
-		
-		
-		
 	}
-	
-	if(topicItemArray.in_array(topicId)){
-		//判断是否是自己发的消息
-		if(json.senderId == myselfId){
-			//TODO:是自己发的消息,将消息改为发送成功
-		}else{
-			createMessage(1, json);
-		}
-	}else{
-		//将未读消息保存到全局变量
-		if(topicId_unreadMsgArray[topicId]){
-			topicId_unreadMsgArray[topicId].push(json);
-		}else{
-			var arr =new Array();
-			arr.push(json);
-			topicId_unreadMsgArray[topicId]=arr;
-		}
-		
-		//创建话题对话框
-		//发送请求获取对应topicId：Topic,List<User>
-		$.post(contextPath+"/servlet/topic_service",{
-			cmd:"getTopicAndTopicMembersByTopicId",
-			topicId:topicId
-		},function(res,status){
-			//console.log(res);
-			console.log(res.topic);
-			console.log(res.memberList);
-			
-			var topic = res.topic;
-			var memberList = res.memberList;//话题成员
-			var user_p = res.user_p;
-			
-			var center = createChatBox_center(topic,user_p);
-			var fold = createChatBox_fold(topicId);
-			var right = createChatBox_right(topicId,memberList);
-			
-			chat_box_center[topicId]=center;//保存到全局变量
-			chat_box_fold[topicId]=fold;
-			chat_box_right[topic.topicId]=right;
-			
-			//创建话题列表项
-			var topicMemberItem = $(".topic-box .left .rec-topic-list");
-			var li_node = $("<li></li>");
-			li_node.attr("topicId",topicId);
-			var span_node = $("<span></span>");
-			span_node.attr("class","num");
-			var topicUnreadNum=topicId_unreadMsgArray[topicId].length;
-			span_node.text(topicUnreadNum);
-			li_node.append(span_node);
-			
-			var p_node = $("<p></p>");
-			p_node.attr("class","name");
-			p_node.attr("title",topic.topicTitle);
-			p_node.text(topic.topicTitle);
-			
-			var a_node = $("<a>&#xe601;</a>");
-			a_node.attr("href","#");
-			a_node.attr("class","iconfont close");
-			a_node.click(function(){
-				$(this).parent().remove();//移除
-				topicItemArray.remove(topicId);
-				if(chat_box_center.topicId!=null){
-					chat_box_center[topicId]=undefined;
-				}
-				if(chat_box_fold.topicId!=null){
-					chat_box_fold[topicId]=undefined;
-				}
-				if(chat_box_right.topicId!=null){
-					chat_box_right[topicId]=undefined;
-				}
-			});
-			
-			li_node.append(p_node).append(a_node);
-			//li_node添加事件:点击事件
-			li_node.click(function(e){
-				$(this).attr("class","cur").siblings().removeClass("cur");
-				//从全局变量中取出对应的html
-				changeTopicChatBox(topicId);
-			});
-			
-			topicMemberItem.append(li_node);
-			topicItemArray.push(topicId);
-			
-/*			
-			chat_box_center[topicId]=center;//保存到全局变量
-			
-			var fold = createChatBox_fold(topicId);
-			chat_box_fold[topicId]=fold;
-			
-			var memberList = res.memberList;
-			var right = createChatBox_right(topicId,memberList);
-			chat_box_right[topic.topicId]=right;
-			console.log("打印topicId======>"+topicId);
-			changeTopicChatBox(topicId);*/
-			
-		});
-/*		var center = createChatBox_center(topic,user_p);
-		chat_box_center[topicId]=center;//保存到全局变量
-		
-		var fold = createChatBox_fold(topicId);
-		chat_box_fold[topicId]=fold;
-		
-		var memberList = res.memberList;
-		var right = createChatBox_right(topicId,memberList);
-		chat_box_right[topic.topicId]=right;
-		console.log(memberList);*/
-	}
-	
-	
-	//var dialogueBox = getDialogueByBoxId(topicId);
-	/*if (dialogueBox == null) {
-		console.log("发送过来的消息，没有相应的窗口");
-
-		handleDialogueIsNull(topicId); //如果topicId对应的窗口没有加载，则创建话题列表,加载对应的聊天窗口
-		//总的消息数+1
-		var c_total_num = getTotalUnReadMsgNum();
-		changeMessageAlertState(c_total_num + 1);
-
-	} else {
-		//console.log(dialogueBox);
-		addMsgContetntIntoDialogueBox(dialogueBox, json);//往消息框里添加一条消息内容
-
-		if (isDialogueBoxHidden()) {
-			//处于隐藏状态下的逻辑
-			console.log("test隐藏状态");
-			//1.总的消息数+1
-			var totalUnreadMsgNum = getTotalUnReadMsgNum();
-			changeMessageAlertState(totalUnreadMsgNum + 1);
-			//2.对应话题的消息数+1,并显示数字
-			var W_new_count_node = getW_new_countByTopicId(topicId);
-			var curr_num = getTopicItemAboutUnreadMsgByTopicId(topicId);
-
-			changeW_new_count_unreadMsgNum(topicId, curr_num + 1);//改变红块显示的数目　
-		} else {
-			//不处于隐藏状态下的逻辑
-			//判断当前的来的消息对应的topicId聊天窗口是否处于活动状态
-			var isActive = isTopicItemActive(topicId);
-			if (isActive) {
-				//处于活动态的逻辑
-				console.log("处于活动态==>Todo");
-				//不做任何处理
-			} else {
-				//不处于活动状态的逻辑
-				console.log("不处于活动态==>");
-				//2.对应话题的消息数+1,并显示数字
-				var W_new_count_node = getW_new_countByTopicId(topicId);
-				var curr_num = getTopicItemAboutUnreadMsgByTopicId(topicId);
-				changeW_new_count_unreadMsgNum(topicId, curr_num + 1);//改变红块显示的数目　
-
-				//总的消息数+1
-				var totalUnreadMsgNum = getTotalUnReadMsgNum();
-				changeMessageAlertState(totalUnreadMsgNum + 1);
-			}
-		}
-	}*/
 };
 
 // websocket状态发生变化时触发

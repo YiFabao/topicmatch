@@ -27,7 +27,10 @@ public class HistoryMessage {
 		this.date = date;
 		this.time = time;
 	}
-
+	
+	public HistoryMessage(){
+		
+	}
 	public long getId() {
 		return id;
 	}
