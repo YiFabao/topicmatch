@@ -75,9 +75,9 @@ public class TopicModelImpl implements TopicModel{
 		}
 		
 		//将　发起人　Topic 及　用户列表 保存到request范围
-		request.setAttribute("topic",topic);
+/*		request.setAttribute("topic",topic);
 		request.setAttribute("publisher",publisher);
-		request.setAttribute("memberList",memberList);
+		request.setAttribute("memberList",memberList);*/
 		
 		JSONObject user_p = new JSONObject();
 		try {

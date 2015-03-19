@@ -206,9 +206,6 @@ function getHistoryMessagesByTopicId(topicId,count){
 	});
 };
 
-
-
-
 /**
  * 当用户进入某话题聊天框后在聊天记录框插入一条提示消息  ”-某某加入该对话组
  * fang
@@ -390,6 +387,23 @@ function changeTopicChatBox(topicId){
 	$(".topic-box").append(_center);
 	$(".topic-box").append(_toggle);
 	$(".topic-box").append(_right);
+	
+	//加载全局变量中存储的未读消息到聊天框
+	console.log("加载全局变量中存储的未读消息到聊天框……");
+	console.log("topicId:"+topicId);
+	if(topicId_unreadMsgArray[topicId]){
+		var unreadMsgArray = topicId_unreadMsgArray[topicId];
+		console.log(unreadMsgArray);
+		for(var i=0;i<unreadMsgArray.length;i++){
+			createMessage(1,unreadMsgArray[i]);//显示未读消息
+		}
+		//删除未读消息
+		delete topicId_unreadMsgArray[topicId];
+	}
+	//将未读消息提醒元素删除
+	var num_node = $(".rec-topic-list").find("li[topicId="+topicId+"]").find("span.num");
+	num_node.remove();
+	
 }
 
 
