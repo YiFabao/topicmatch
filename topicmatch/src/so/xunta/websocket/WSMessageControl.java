@@ -9,6 +9,8 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.topic.entity.Notification;
+import so.xunta.topic.model.impl.NotificationManagerImpl;
 import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.utils.Console;
 import so.xunta.utils.DateTimeUtils;
@@ -123,6 +125,10 @@ public class WSMessageControl {
 						jsonObject.put("topicName", topic_name);
 						jsonObject.put("time", time_str);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
+					}else{
+						//好友不在线，邀请消息将转为离线消息，待该好友上线后推送话题邀请通知
+						NotificationManagerImpl notificationManagerImpl = new NotificationManagerImpl();
+						notificationManagerImpl.addNotificationMsg(new Notification(topic_Id, "4", user_name, topic_name, time_str, invite_Id));
 					}
 				break;
 			case 5:
