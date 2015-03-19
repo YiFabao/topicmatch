@@ -24,7 +24,7 @@ public class TopicHistory extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		System.out.println(request.getRemoteAddr()+" |"+request.getRemoteHost()+" |"+request.getRequestURI());
 		String biginIndex = request.getParameter("biginIndex");
-		String endIndex = request.getParameter("endIndex");
+		String maxNum = request.getParameter("maxNum");
 		String topic_Id = request.getParameter("topicId");
 		if(!(topic_Id == null || topic_Id.equals("null"))){
 			System.out.println("服务器接受到客户端请求获取话题历史消息， 话题ID ： "+topic_Id);
@@ -37,7 +37,7 @@ public class TopicHistory extends HttpServlet {
 			Session session = HibernateUtils.openSession();
 			String hql = "from HistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.dateAndTime asc";
 			System.out.println("获取话题历史消息的HQL语句 ：  "+hql);
-			Query query = session.createQuery(hql).setString(0, topic_Id).setFirstResult(Integer.parseInt(biginIndex)).setMaxResults(20);
+			Query query = session.createQuery(hql).setString(0, topic_Id).setFirstResult(Integer.parseInt(biginIndex)).setMaxResults(Integer.parseInt(maxNum));
 			List<HistoryMessage> topicHistoryMessageList = query.list();
 			if(topicHistoryMessageList == null){
 				System.out.println("topicHistoryMessageList == null");
