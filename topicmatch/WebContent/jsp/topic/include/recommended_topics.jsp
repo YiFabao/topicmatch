@@ -17,7 +17,7 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-				<li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
+				<!-- <li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
 					<div class="pic"><img src="images/2.jpg" alt="" ></div>
 					<div class="info">
 						<i class="iconfont man">&#xe60f;</i>fabaoyi
@@ -38,11 +38,11 @@
 						我是candy,来到寻Ta网,想找到一个能聊得来的小伙伴
 					</div>
 					<i class="tri"></i>
-				</li>
+				</li> -->
 			</ul>
 			<div class="page-topic">
 				<a href="#" class="iconfont prev">&#xe609;</a>
-				<span class="cur">1/14</span>
+				<span class="cur">1/1</span>
 				<a href="#" class="iconfont next">&#xe608;</a>
 			</div>
 		</div>
@@ -369,8 +369,8 @@
 	
 	//
 	var currentPage=1;//当前第几页
-	var pageSum=0;//总页数
-	var pageNum=3;//每页多少
+	var pageSum=1;//总页数
+	var pageNum=5;//每页多少
 	var recommendedPeopleData ={};
 	var data_index_array = new Array();
 	//发送请求获取后台推荐数据
@@ -379,31 +379,41 @@
 			cmd:"recommendedPeople",
 			userId:userId
 		},function(res,status){
-			//console.log(res);
-			console.log("数组的大小:"+res.length);
-			pageSum=res.length;
-			pageSum =Math.floor(pageSum/pageNum)+1;//初始化总页数
-			console.log("总页数："+pageSum);
-			for(var i=0;i<res.length;i++)
-			{
-				var obj=res[i];
-				//console.log(obj);
-				for(var key in obj){
-					recommendedPeopleData[key]=obj[key];
+			if(res=="没有匹配的话题"){
+				alert("无推荐话题，请完善标签！");
+				console.log(res);
+			}else{
+				console.log("数组的大小:"+res.length);
+				pageSum=res.length;
+				if(res.length==0){
+					console.log("无推荐，需无善标签信息");
+					return;
 				}
+				console.log(res.length);
+				pageSum =Math.floor(pageSum/pageNum)+1;//初始化总页数
+				console.log("总页数："+pageSum);
+				for(var i=0;i<res.length;i++)
+				{
+					var obj=res[i];
+					//console.log(obj);
+					for(var key in obj){
+						recommendedPeopleData[key]=obj[key];
+					}
+				}
+				console.log(recommendedPeopleData);
+				for(var index in recommendedPeopleData){
+					data_index_array.push(index);//数据下标
+					
+				}
+				$(".page-topic .cur").text(currentPage+"/"+pageSum);
+				var param = getThPageData(1);//初始化第一页
+				do_postForRecommendedData(param);
 			}
-			console.log(recommendedPeopleData);
-			for(var index in recommendedPeopleData){
-				data_index_array.push(index);//数据下标
-				
-			}
-			$(".page-topic .cur").text(currentPage+"/"+pageSum);
-			var param = getThPageData(1);//初始化第一页
-			do_postForRecommendedData(param);
+
 		});
 	}
-	console.log("<%=user.id%>");
-	//doPost("<%=user.id%>");//1为当前登录用户的id
+	//console.log("<%=user.id%>");
+	doPost("<%=user.id%>");//1为当前登录用户的id
 	
 	//获取某一个页数据对应的{userId:topicId,...}
 	//page 从1开始的页数

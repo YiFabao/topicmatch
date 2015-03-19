@@ -3,7 +3,6 @@ package so.xunta.topic.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -234,15 +233,14 @@ public class TopicService extends HttpServlet {
 		 while(it.hasNext()){
 			String userId =  (String) it.next();
 			topicIdList.add(json.getString(userId));
+			System.out.println(userId+":"+json.getString(userId));
 		 }
 		 System.out.println("获取的topicIdList=========>:");
 		 for(String s:topicIdList){
 			 System.out.println(s);
 		 }
 		 
-		 
 		 List<RecommendedTopicPublisher> rtpl = topicModel.getRecommendedTopicPUblisher(topicIdList);
-	
 		 
 		 if(rtpl==null){
 			 try {
@@ -289,16 +287,8 @@ public class TopicService extends HttpServlet {
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
 			obj.put(rtp.getUserId(),rtp.getTopicId());
-			jsonArray.add(obj);
+			jsonArray.add(obj.toString());
 		}
-		
-		//test
-/*		JSONArray jsonArray = new JSONArray();
-		for(int i=0;i<109;i++){
-			JSONObject obj=new JSONObject();
-			obj.put(i,"akjasdlkfjkskalfaj;skfj"+i);
-			jsonArray.add(obj);
-		}*/
 		response.setContentType("text/json");
 		response.setCharacterEncoding("utf-8");
 		try {
