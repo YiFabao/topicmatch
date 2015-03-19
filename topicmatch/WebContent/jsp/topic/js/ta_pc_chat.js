@@ -224,11 +224,11 @@ function userEnterTopic(userName){
 	$(".center .chat-box").append(div_node);
 }
 /**
- * 系统通知
+ * 话题邀请
  * fang
  * */
-function systemMsgInform(time,message){
-	var ul_node = $(".tab-content .tab-panel .news-list");
+function topicMsgInform(userName,topicName,time){
+	var ul_node = $("#topicsRequest .news-list");
 	
 	var li_node = $("<li></li>").attr("class","panel");
 	var p_node = $("<p></p>").attr("class","txt").text(userName+"邀请您参与话题#"+topicName+"#");
@@ -237,25 +237,23 @@ function systemMsgInform(time,message){
 	var ul = $("<ul></ul>").attr("class","fix opera");
 	var liYes = $("<li></li>").attr("class","btn");
 	var liNo = $("<li></li>").attr("class","btn");
-	var yes = $("<button></button>").attr("class","yes").text("同意");
-	var no = $("<button></button>").attr("class","no").text("拒绝");
+	var yes = $("<button onclick=topicMsgInformStatusChange(this,0)></button>").attr("class","yes").text("同意");
+	var no = $("<button onclick=topicMsgInformStatusChange(this,1)></button>").attr("class","no").text("拒绝");
 	
 	ul_node.append(li_node.append(p_node).append(time_node).append(ul.append(liYes.append(yes)).append(liNo.append(no))));
 }
 
 /**
- * 话题消息通知
+ * 系统消息
  * fang
  * */
-function topicMsgInform(userName,topicName,time){
-	console.log("进入topicMsgInform");
-	var ul_node = $(".tab-content .tab-panel.dn .news-list");
+function systemMsgInform(userName,topicName,time){
+	var ul_node = $("#systemMessages .news-list");
 	var li_node = $("<li></li>").attr("class","panel");
 	var p_node = $("<p></p>").attr("class","txt").text("测试：系统通知消息");
 	var time = $("<time></time>").text("1111-1-1 11:11:11");
 	ul_node.append(li_node.append(p_node).append(time));
 }
-
 /**
  * 用户点击通知消息里的同意或拒绝后元素修改
  * fang
