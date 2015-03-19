@@ -555,11 +555,12 @@ public class TopicService extends HttpServlet {
 	private void invite(HttpServletRequest request, HttpServletResponse response) {
 		//获取请求参数
 		String fromUserId = request.getParameter("fromUserId");
+		String fromUserName = userManager.findUserById(Integer.parseInt(fromUserId)).getXunta_username();
 		String to_userId = request.getParameter("to_userId");
-		
-		String fromUserName = request.getParameter("fromUserName");
 		String to_userName = request.getParameter("to_userName");
 		String topicId = request.getParameter("topicId");
+		
+		
 		System.out.println("用户发出邀请参与话题请求：");
 		System.out.println("fromUserId:"+fromUserId);
 		System.out.println("fromUserName:"+fromUserName);
@@ -807,6 +808,7 @@ public class TopicService extends HttpServlet {
 		}*/
 		
 		request.setAttribute("matchedTopicList",new ArrayList<MatchTopicPeople>(mtpList.values()));
+		request.setAttribute("my_topicId",topicId);
 		/*//按userId分组
 		Map<String,List<Topic>> topicMap = new HashMap<String,List<Topic>>();
 		for(Topic t:matchedtopicList)

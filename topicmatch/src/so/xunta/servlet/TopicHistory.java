@@ -39,6 +39,11 @@ public class TopicHistory extends HttpServlet {
 			System.out.println("获取话题历史消息的HQL语句 ：  "+hql);
 			Query query = session.createQuery(hql).setString(0, topic_Id);
 			List<TopicHistoryMessage> topicHistoryMessageList = query.list();
+			if(topicHistoryMessageList == null){
+				System.out.println("topicHistoryMessageList == null");
+			}else{
+				System.out.println(topicHistoryMessageList.size());
+			}
 			for(TopicHistoryMessage thm:topicHistoryMessageList){
 				String status = thm.getStatus()+"";
 				String topicId = thm.getTopicId();

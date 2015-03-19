@@ -132,11 +132,8 @@ function websocketEvent(userId) {
 			}
 		} else if (status == "4") {
 			// 好友邀请
-			if (window.receiveTopicInviteRequestMsg) {
-				console.log("console       5");
-				receiveTopicInviteRequestMsg(json.inviteMsg); // 接收话题邀请消息提示
-			}
-			// alert(json.inviteMsg);
+			console.log(json.userName);
+			console.log(json.topicName);
 		} else if (status == "5") {
 			// 消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
 			if (window.unreadMessagesNum) {
@@ -206,12 +203,11 @@ function broadcast(user_id, topic_id) {
 }
 
 // 邀请好友
-function inviteFriend(inviteIds, inviteMsg) {
+function inviteFriend(inviteId, topicId, userId) {
 	// inviteIds is jsonArray
 	console.log("测试  -----    发送邀请好友消息时 ws的状态如下");
 	console.log(ws.readyState);
-	ws.send('{"status" : "4","inviteIds" : "' + inviteIds + '","inviteMsg" : "'
-			+ inviteMsg + '"}');
+	ws.send('{"status" : "4","inviteId" : "' + inviteId + '","userId" : "' + userId + '","topicId" : "'+ topicId + '"}');
 }
 
 // 未读消息

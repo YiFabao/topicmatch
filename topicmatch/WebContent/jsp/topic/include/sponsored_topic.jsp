@@ -85,7 +85,7 @@
 											<li>&emsp;&emsp;参与相关话题数<span class="num">${matched_topic.j_num}</span></li>
 										</ul>
 									</div>
-									<a href="#" class="enter" userId="${matched_topic.userId }" userName="${matched_topic.name }">邀请</a>
+									<a href="#" class="enter" userId="${matched_topic.userId }" userName="${matched_topic.name }" onclick="topicInvite(mytopicId,myselfId);">邀请</a>
 								</div>
 							</li>
 							</c:if>
@@ -120,9 +120,10 @@
 			</div>
 		</div>
 	</section>
-
+	
 <script>
-
+	var mytopicId = "${requestScope.my_topicId}";
+	console.log("我刚发起topicId:"+mytopicId);
 	 $("form").html5Validate(function() {
 		var self = this;
 			//self.submit(); 
@@ -164,5 +165,27 @@
 		}); 
 		//$("#form1").submit();
 	});
+	 
+	function topicInvite(topic_id,user_id){
+		var invite_user_id = $(".enter").attr("userId");
+		var invite_user_name = $(".enter").attr("userName");
+		//console.log(topic_id+"  "+user_id+"  "+invite_user_id+"  "+invite_user_name);
+		var parameters={
+				"topicId":topic_id,
+				"fromUserId":user_id,
+				"to_userId":invite_user_id,
+				"to_userName":invite_user_name
+		};
+ 		$.post("${pageContext.request.contextPath}/servlet/topic_service?cmd=invite",parameters,function(res,status){
+ 			console.log(res);
+ 			if(res == "ok"){
+ 				//请求成功
+ 				console.log("话题邀请请求成功")
+ 				inviteFriend(invite_user_id, topic_id,user_id);
+ 			}else{
+ 				//请求失败。。。
+ 			}
+		}); 
+	}
 </script>
 </html>
