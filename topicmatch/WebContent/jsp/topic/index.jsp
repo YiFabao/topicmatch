@@ -122,13 +122,9 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/common.js"></script>
 <%--end   ======= 余. js文件搬到此引用,动态加载页面后，会调用 --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/ta_pc_chat.js"></script>
-<<<<<<< HEAD
 <script src="${pageContext.request.contextPath }/jsp/topic/js/websocket.js"></script>
-=======
 <%-- ======= 房 开发话题记忆模块引用独立文件js --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/topic_memory_fang.js"></script>
->>>>>>> 77a3b4c3c51115d9c444ed314d884283c803181a
-
 <script>
 
 	var contextPath = "${pageContext.request.contextPath}";

@@ -5,8 +5,11 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.utils.Console;
 import so.xunta.utils.Time;
 import so.xunta.websocket.entity.HistoryMessage;
@@ -103,18 +106,20 @@ public class WSMessageControl {
 				break;
 			case 4:
 				//好友邀请
-				System.out.println("好友邀请  :  "+messageJsonObject.getJSONArray("inviteIds"));
-				JSONArray inviteIds = messageJsonObject.getJSONArray("inviteIds");
-				String inviteMsg = messageJsonObject.get("inviteMsg").toString();
-				for (int i = 0; i < inviteIds.size(); i++) {
-					int userId6 = Integer.parseInt(inviteIds.get(i).toString());
+				System.out.println("好友邀请  :  "+messageJsonObject.get("inviteId").toString());
+				String invite_Id = messageJsonObject.get("inviteId").toString();
+				String user_Id = messageJsonObject.get("userId").toString();
+				String topic_Id = messageJsonObject.get("topicId").toString();
+				String user_name = new UserManagerImpl().findUserById(Integer.parseInt(user_Id)).getXunta_username();
+				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
+					int userId6 = Integer.parseInt(invite_Id);
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
 						JSONObject jsonObject = new JSONObject();
 						jsonObject.put("status", "4");
-						jsonObject.put("inviteMsg", inviteMsg);
+						jsonObject.put("userName", user_name);
+						jsonObject.put("topicName", topic_name);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
 					}
-				}
 				break;
 			case 5:
 				System.out.println("5  " + messageJsonObject.toString());
