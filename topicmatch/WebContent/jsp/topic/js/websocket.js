@@ -69,11 +69,7 @@ function websocketEvent(userId) {
 		var seconds = date.getSeconds();
 		var time = hours + ':' + minutes + ':' + seconds;
 		console.log('测试  -----    客户端中断了ws连接 时间 ： ' + time);
-		var closeEvent = event;
-		console.log('closeEvent ： ' + closeEvent);
-		if (closeEvent.indexOf("code: 200") > 0) {
-			return;
-		}
+		console.log(event.code);
 		if (window.navigator.onLine == true) {
 			console.log('测试  -----    客户端中断了ws连接 ，网络正常');
 		} else {
