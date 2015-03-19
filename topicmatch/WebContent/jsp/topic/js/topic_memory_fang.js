@@ -16,7 +16,7 @@ function topic_p(request) {
 	
 		var ul_l_node = $(".column.l");// 定位父级元素
 		var ul_r_node = $(".column.r");// 定位父级元素
-		var li_node = $("<li></li>").attr("class", "tp").attr("id",request.topicId);// 创造元素父级标签
+		var li_node = $("<li></li>").attr("class", "tp").attr("topicId",request.topicId);// 创造元素父级标签
 		// 话题标题及相关参数 如 发起人 时间 等
 		var div_hd_node = $("<div></div>").attr("class", "hd");
 		var user_pic = $("<a></a>").attr("class", "user-pic").attr("href", "#");
@@ -25,13 +25,12 @@ function topic_p(request) {
 		user_pic.append(img_node);
 		var p_nc = $("<p></p>").attr("class", "nc").text(request.nickname);
 		var p_name = $("<p></p>").attr("class", "name");
-		var a_node = $("<a></a>").attr("title", request.topicName).attr("href",
-				"#").text(request.topicName);
+		var a_node = $("<a></a>").attr("title", request.topicName).attr("href","#").text(request.topicName);
 		p_name.append(a_node);
 		var time_node = $("<time></time>").text(request.yyyyMMdd);
 		var b_hour = $("<b></b>").attr("class", "hour").text(request.HHmm);
 		time_node.append(b_hour);
-		var a_enter = $("<a></a>").attr("class", "enter").attr("href", "#")
+		var a_enter = $("<a onclick=create_on_topic_item_jy_p(this,null)></a>").attr("class", "enter").attr("href", "javascript:void(0)")
 				.text("进入");
 
 		// div整合
@@ -75,9 +74,9 @@ function topic_j(request) {
 		var classType = $("#pateUl li").last().attr("class");
 		var li_node;
 		if (classType.indexOf("even") > 0) {
-			li_node = $("<li></li>").attr("class", "column tp odd").attr("id",request.topicId);
+			li_node = $("<li></li>").attr("class", "column tp odd").attr("topicId",request.topicId);
 		} else {
-			li_node = $("<li></li>").attr("class", "column tp even").attr("id",request.topicId);
+			li_node = $("<li></li>").attr("class", "column tp even").attr("topicId",request.topicId);
 		}
 		// 定义元素父节点
 

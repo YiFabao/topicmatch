@@ -179,6 +179,7 @@
 	//创建websocket
 	createWebsocketConnect(myselfId);
 	// websocket状态发生变化时触发
+	var state_fang = "0";
 	window.webimStateChange = function(state) {
 		if (state == "ok") {
 			msgManagerReady = true;

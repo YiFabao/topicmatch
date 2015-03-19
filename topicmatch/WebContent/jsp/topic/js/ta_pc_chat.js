@@ -61,25 +61,19 @@ function func_joinTopic(topicId){
 }
 
 /**
- * 创建一个话题列表项
- * @param topicId 话题id
- * History :
- * 		2015/3/13 10:10 fabao.yi first release
- * 
- * fang
+ * 创建话题列表项
+ * @param topicId
+ * @param topicContent
+ * @param topicUnreadNum
+ * @author fabao.yi
  */
-function create_one_topic_item(obj,topicUnreadNum){
-	console.log("创建聊天框左侧的话题列表项");
-	chat_box_unfold();
-	_this = $(obj);
-	var topicId = _this.attr("topicId");
-	
+function create_topic_item(topicId,topicContent,topicUnreadNum){
 	//初始化显示的历史消息记录数为0
 	topicId_count_map[topicId]=0;
-	
-	var topicContent = _this.find(".cont").html();
 	console.log("topicContent:"+topicContent);
 	console.log("topicId:"+topicId);
+	
+	
 	var topicMemberItem = $(".topic-box .left .rec-topic-list");
 	if(topicItemArray.in_array(topicId)){
 		console.log("已经存在该话题");
@@ -110,13 +104,13 @@ function create_one_topic_item(obj,topicUnreadNum){
 		$(this).parent().remove();//移除
 		topicItemArray.remove(topicId);
 		if(chat_box_center.topicId!=null){
-			chat_box_center[topicId]=undefined;
+			delete chat_box_center[topicId];
 		}
 		if(chat_box_fold.topicId!=null){
-			chat_box_fold[topicId]=undefined;
+			delete chat_box_fold[topicId];
 		}
 		if(chat_box_right.topicId!=null){
-			chat_box_right[topicId]=undefined;
+			delete chat_box_right[topicId];
 		}
 	});
 	
@@ -160,7 +154,39 @@ function create_one_topic_item(obj,topicUnreadNum){
 		console.log("打印topicId======>"+topicId);
 		changeTopicChatBox(topicId);
 	});
+}
+
+/**
+ * 话题推荐页面　onclick　 事件调用的函数
+ * @param topicId 话题id
+ * History :
+ * 		2015/3/13 10:10 fabao.yi first release
+ * 
+ * fang
+ */
+function create_one_topic_item(obj,topicUnreadNum){
+	console.log("创建聊天框左侧的话题列表项");
+	chat_box_unfold();
+	_this = $(obj);
+	var topicId = _this.attr("topicId");
+	var topicContent = _this.find(".cont").html();
+	create_topic_item(topicId,topicContent,topicUnreadNum);
+	
 };
+
+/**
+ * 话题记忆页面　onclick调用的函数
+ */
+function create_on_topic_item_jy_p(obj,topicUnreadNum){
+	chat_box_unfold();
+	var topicId = $(obj).parentsUntil("li.tp").parent().attr("topicId");
+	var topicContent = $(obj).parentsUntil("li.tp").find("p.name").find("a").attr("title");
+	console.log(topicId+":"+topicContent);
+	if(topicId&&topicContent){
+		create_topic_item(topicId,topicContent,topicUnreadNum);
+	}
+	
+}
 
 /**
  * 创建某个话题的参与人列表项

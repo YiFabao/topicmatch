@@ -17,7 +17,7 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-				<!-- <li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
+				<li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
 					<div class="pic"><img src="images/2.jpg" alt="" ></div>
 					<div class="info">
 						<i class="iconfont man">&#xe60f;</i>fabaoyi
@@ -38,7 +38,7 @@
 						我是candy,来到寻Ta网,想找到一个能聊得来的小伙伴
 					</div>
 					<i class="tri"></i>
-				</li> -->
+				</li>
 			</ul>
 			<div class="page-topic">
 				<a href="#" class="iconfont prev">&#xe609;</a>
@@ -380,7 +380,7 @@
 			userId:userId
 		},function(res,status){
 			if(res=="没有匹配的话题"){
-				alert("无推荐话题，请完善标签！");
+				console.log("无推荐话题，请完善标签！");
 				console.log(res);
 			}else{
 				console.log("数组的大小:"+res.length);
