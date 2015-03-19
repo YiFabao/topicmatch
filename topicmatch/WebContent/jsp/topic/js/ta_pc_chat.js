@@ -6,8 +6,18 @@ $(function(){
 
 //全局变量
 var topicId_count_map={};//{话题ID：已经显示的历史消息数,在创建一个话题列表项的时候要在该全局变量中添加初始化记录
-var allUnreadMsgCount=0;//总共的未读消息数
 var topicId_unreadMsgArray={};//话题topicId：未读消息数组,在聊天框隐藏状态下,保存到该数组中，显示后清空该数组
+/**
+ * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
+ */
+function getTotalUnreadMsg(){
+	var sum=0;
+	for(var index in topicId_unreadMsgArray){
+		sum+=topicId_unreadMsgArray[index].length;
+	} 
+	console.log("总未读消息："+sum);
+	return sum;
+}
 
 Array.prototype.in_array = function(e)
 {
@@ -33,10 +43,6 @@ Array.prototype.remove = function(val) {
 
 //全局变量
 var topicItemArray = new Array();//用来保存已经加载过的话题列表对应的topicId
-topicItemArray.push("111");
-topicItemArray.push("222");
-topicItemArray.in_array("111");//判断数组中是否存在该对象
-topicItemArray.remove("111");
 
 //全局变量
 var chat_box_center={};//保存的是 topiId ==> 聊天框的 html
@@ -64,10 +70,12 @@ function func_joinTopic(topicId){
 function create_one_topic_item(obj,topicUnreadNum){
 	console.log("创建聊天框左侧的话题列表项");
 	chat_box_unfold();
-	//初始化显示的历史消息记录数为0
-	//topicId_count_map[topicId]=0;
 	_this = $(obj);
 	var topicId = _this.attr("topicId");
+	
+	//初始化显示的历史消息记录数为0
+	topicId_count_map[topicId]=0;
+	
 	var topicContent = _this.find(".cont").html();
 	console.log("topicContent:"+topicContent);
 	console.log("topicId:"+topicId);
@@ -134,6 +142,7 @@ function create_one_topic_item(obj,topicUnreadNum){
 		
 		var topic = res.topic;
 		var center = createChatBox_center(topic,user_p);
+	
 		chat_box_center[topicId]=center;//保存到全局变量
 		
 		var fold = createChatBox_fold(topicId);
@@ -302,6 +311,36 @@ function createChatBox_center(topicObj,userObj){
 	div_dec.append(p_txt);
 	
 	var div_chat_box = $("<div></div>").attr("class","chat-box");
+	//同步ajax获取历史消息
+	console.log("ajax异步获取历史消息：");
+	console.log("topicId:"+topicObj.topicId);
+	console.log("biginIndex："+topicId_count_map[topicObj.topicId]);
+	console.log("endIndex:"+(parseInt(topicId_count_map[topicObj.topicId]) + 20));
+	var parameters = {
+			topicId: topicObj.topicId,
+			biginIndex: topicId_count_map[topicObj.topicId],//初始历史消息值
+			endIndex: parseInt(topicId_count_map[topicObj.topicId]) + 20
+		};
+	var ret_msgs;
+	$.ajax({  
+	     type : "post",  
+	     url : contextPath+"/TopicHistoryMessage/test",
+	     data : parameters,  
+	     async : false,  //同步
+	     datatype:"json",
+	     success : function(res){  
+	    	ret_msgs=res;
+	    	//更改已加载历史消息记录数
+	    	console.log("获取的历史消息数为："+res.length);
+	    	topicId_count_map[topicObj.topicId]=parseInt(topicId_count_map[topicObj.topicId])+res.length;
+	    	console.log("异步");
+	    	console.log(ret_msgs);
+	     } ,
+	     error:function(){
+	    	 console.log("获取历史消息失败");
+	     }
+	});
+	////////////////////////////////////////////////////
 	var div_send_box = $("<div></div>").attr("class","send-box");
 	var textarea_node = $("<textarea></textarea>").attr("name","").attr("id","");
 	var button = $("<button></button>").attr("class","iconfont send-btn").html("&#xe604;");
@@ -389,9 +428,8 @@ function changeTopicChatBox(topicId){
 	$(".topic-box").append(_right);
 	
 	//加载全局变量中存储的未读消息到聊天框
-	console.log("加载全局变量中存储的未读消息到聊天框……");
-	console.log("topicId:"+topicId);
 	if(topicId_unreadMsgArray[topicId]){
+		console.log("加载全局变量中存储的未读消息到聊天框……");
 		var unreadMsgArray = topicId_unreadMsgArray[topicId];
 		console.log(unreadMsgArray);
 		for(var i=0;i<unreadMsgArray.length;i++){
@@ -399,13 +437,12 @@ function changeTopicChatBox(topicId){
 		}
 		//删除未读消息
 		delete topicId_unreadMsgArray[topicId];
+		//将未读消息提醒元素删除
+		var num_node = $(".rec-topic-list").find("li[topicId="+topicId+"]").find("span.num");
+		num_node.remove();
+		$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
 	}
-	//将未读消息提醒元素删除
-	var num_node = $(".rec-topic-list").find("li[topicId="+topicId+"]").find("span.num");
-	num_node.remove();
-	
 }
-
 
 function chat_box_close(){
 	$('.topic-box').animate({"bottom":-620},'300');
@@ -428,7 +465,6 @@ function topic_member_toggle(obj){
 		$('.topic-box').animate({"right":-82},'slow')
 	}
 }
-
 
 var jjj={
 	"user_p":{
@@ -597,7 +633,8 @@ window.webimHandle = function(json) {
 			createMessage(1, json);
 		}
 	} else {// 不是当前窗口
-		// 将未读消息保存到全局变量
+		// 将未读消息保存到全局变量,注意同步总未读消息数
+		console.log("不是当前窗口");
 		if (topicId_unreadMsgArray[topicId]) {
 			topicId_unreadMsgArray[topicId].push(json);
 		} else {
@@ -605,13 +642,33 @@ window.webimHandle = function(json) {
 			arr.push(json);
 			topicId_unreadMsgArray[topicId] = arr;
 		}
+		$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
 		// 判断话题列表项是否存在
 		if (topicItemArray.in_array(topicId)) {// 存在话题列表项,更新显示未读消息数
+			console.log("列表项存在");
 			// TODO:
 			var topicUnreadNum = topicId_unreadMsgArray[topicId].length;
 			// 判断是否存在<span class="num">2</span>
 			// 不在就创建，存在就更新里面的text内容
-		} else {// 创建话题列表项及创建话题对话框
+			var num_node = $(".rec-topic-list li[topicId="+topicId+"]").find("span.num");
+			console.log("num_length:"+num_node.length);
+			if(num_node.length){
+				//存在,更新未读消息数,从全局未读消息数中获取
+				console.log("存在num节点元素："+num_node[0]);
+				num_node.html(topicId_unreadMsgArray[topicId].length);
+			}
+			else{
+				//不存在,创建节点元素
+				console.log("不存在num节点元素,创建节点元素");
+				var span_node = $("<span></span>").addClass("num").html(topicId_unreadMsgArray[topicId].length);
+				console.log(span_node[0]);
+				//添加
+				var topic_list_node = $(".rec-topic-list li[topicId="+topicId+"]");
+				topic_list_node.prepend(span_node);
+			}
+		} else {
+			console.log("列表项不存在");
+			// 创建话题列表项及创建话题对话框
 			// 发送请求获取对应topicId：Topic,List<User>
 			$.post(contextPath + "/servlet/topic_service", {
 				cmd : "getTopicAndTopicMembersByTopicId",
@@ -672,7 +729,6 @@ window.webimHandle = function(json) {
 					// 从全局变量中取出对应的html
 					changeTopicChatBox(topicId);
 				});
-
 				topicMemberItem.append(li_node);
 				topicItemArray.push(topicId);
 			});
@@ -680,41 +736,6 @@ window.webimHandle = function(json) {
 	}
 };
 
-// websocket状态发生变化时触发
-window.webimStateChange = function(state) {
-	if (state == "ok") {
-		msgManagerReady = true;
-		console.log("websocket创建成功");
-		// 获取未读消息数======================================>未读消息数
-		console.log("开始获取未读消息");
-		getUnreadMessageNum(myselfId);// 调用方法后，需要在回调函数中接收数据
-	} else if (state = "no") {
-		if (state_fang == "0") {
-			msgManagerReady = false;
-			console.log("websocket异常,尝试从新连接websocket");
-			setTimeout(createWS, 6000);
-			state_fang = "1";
-		} else if (state_fang == "1") {
-			msgManagerReady = false;
-			console.log("websocket异常,尝试从新连接websocket");
-			setTimeout(createWS, 8000);
-			state_fang = "2";
-		} else if (state_fang == "2") {
-			msgManagerReady = false;
-			console.log("websocket异常,尝试从新连接websocket");
-			setTimeout(createWS, 10000);
-			state_fang = "3";
-		} else if (state_fang = "3") {
-			// 告知用户让其 手动 选择 连接
-			console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
-		}
-	}
-}; 
-//重新加载
-function createWS(){
-	//createWebsocketConnect("${sessionScope.user.id}");
-	window.location.reload();
-}
 
 //获取联系人id数组
 function getContactsArray(){
@@ -726,6 +747,7 @@ function getContactsArray(){
 	}
 	return contacts;
 }
+
 
 
 

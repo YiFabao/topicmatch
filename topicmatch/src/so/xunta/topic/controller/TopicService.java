@@ -139,9 +139,33 @@ public class TopicService extends HttpServlet {
 		case "topicMemory"://fang
 			getTopicMemory(request,response);
 			break;
+		case "test":
+			test_m(request,response);
+			break;
 		}
 	}
 	
+	private void test_m(HttpServletRequest request, HttpServletResponse response) {
+		response.setContentType("text/json");
+		response.setCharacterEncoding("utf-8");
+		JSONObject obj = new JSONObject();
+		obj.put("msg","你好啊");
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			response.getWriter().write(obj.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+
 	private void getTopicAndTopicMembersByTopicId(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		//参与话题

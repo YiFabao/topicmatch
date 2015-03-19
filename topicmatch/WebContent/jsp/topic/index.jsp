@@ -96,12 +96,13 @@
 </div>
 
 <!-- 隐藏状态 -->
-<div class="mintopic-box">
-	未读消息 <span class="num">23</span>
+<div class="mintopic-box">　
+	未读消息 <span class="num">0</span>
 	<a href="javascript:;" class="iconfont unfold">&#xe60d;</a>
 </div>
 
-<div class="form confirm-box">
+<!-- 多余 -->
+<!-- <div class="form confirm-box">
 	<div class="cont">
 		<p class="detail">XXX邀请您参与"XXX"话题</p>
 		<div class="btn-area">
@@ -111,7 +112,7 @@
 		</div>
 		<a href="javascript:;" class="iconfont close">&#xe601;</a>
 	</div>
-</div>
+</div> -->
 
 <%--start ======= 余. js文件搬到此引用,动态加载页面后，会调用 --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
@@ -121,10 +122,12 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-powerSwitch-min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/common.js"></script>
 <%--end   ======= 余. js文件搬到此引用,动态加载页面后，会调用 --%>
+
 <script src="${pageContext.request.contextPath }/jsp/topic/js/ta_pc_chat.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/websocket.js"></script>
 <%-- ======= 房 开发话题记忆模块引用独立文件js --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/topic_memory_fang.js"></script>
+
 <script>
 
 	var contextPath = "${pageContext.request.contextPath}";
@@ -175,7 +178,41 @@
 	
 	//创建websocket
 	createWebsocketConnect(myselfId);
-
+	// websocket状态发生变化时触发
+	window.webimStateChange = function(state) {
+		if (state == "ok") {
+			msgManagerReady = true;
+			console.log("websocket创建成功");
+			// 获取未读消息数======================================>未读消息数
+			console.log("开始获取未读消息");
+			//getUnreadMessageNum(myselfId);// 调用方法后，需要在回调函数中接收数据
+		} else if (state = "no") {
+			if (state_fang == "0") {
+				msgManagerReady = false;
+				console.log("websocket异常,尝试从新连接websocket");
+				setTimeout(createWS, 6000);
+				state_fang = "1";
+			} else if (state_fang == "1") {
+				msgManagerReady = false;
+				console.log("websocket异常,尝试从新连接websocket");
+				setTimeout(createWS, 8000);
+				state_fang = "2";
+			} else if (state_fang == "2") {
+				msgManagerReady = false;
+				console.log("websocket异常,尝试从新连接websocket");
+				setTimeout(createWS, 10000);
+				state_fang = "3";
+			} else if (state_fang = "3") {
+				// 告知用户让其 手动 选择 连接
+				console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
+			}
+		}
+	}; 
+	//重新加载
+	function createWS(){
+		//createWebsocketConnect("${sessionScope.user.id}");
+		window.location.reload();
+	}
 </script>
 
 

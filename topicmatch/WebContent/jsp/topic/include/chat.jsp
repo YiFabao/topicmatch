@@ -10,7 +10,6 @@
                 <span class="pos">
                     <a href="javascript:;" title="搜索">f</a>
                 </span>
-
             </span>
         </div>
         <div class="topic_group_list">
