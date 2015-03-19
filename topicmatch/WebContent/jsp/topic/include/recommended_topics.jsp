@@ -505,7 +505,6 @@
 		$(".page-topic .cur").text(currentPage+"/"+pageSum);
 	});
 	
-
 	/**
 	 * 产生一个指定区间的随机数
 	 * @author fabao.yi
