@@ -229,19 +229,6 @@ function userEnterTopic(userName){
  * fang
  * */
 function systemMsgInform(time,message){
-	var ul_node = $(".tab-content .tab-panel.dn .news-list");
-	var li_node = $("<li></li>").attr("class","panel");
-	var p_node = $("<p></p>").attr("class","txt").text("测试：系统通知消息");
-	var time = $("<time></time>").text("1111-1-1 11:11:11");
-	ul_node.append(li_node.append(p_node).append(time));
-}
-
-/**
- * 话题消息通知
- * fang
- * */
-function topicMsgInform(userName,topicName,time){
-	console.log("进入topicMsgInform");
 	var ul_node = $(".tab-content .tab-panel .news-list");
 	
 	var li_node = $("<li></li>").attr("class","panel");
@@ -255,7 +242,19 @@ function topicMsgInform(userName,topicName,time){
 	var no = $("<button></button>").attr("class","no").text("拒绝");
 	
 	ul_node.append(li_node.append(p_node).append(time_node).append(ul.append(liYes.append(yes)).append(liNo.append(no))));
-	
+}
+
+/**
+ * 话题消息通知
+ * fang
+ * */
+function topicMsgInform(userName,topicName,time){
+	console.log("进入topicMsgInform");
+	var ul_node = $(".tab-content .tab-panel.dn .news-list");
+	var li_node = $("<li></li>").attr("class","panel");
+	var p_node = $("<p></p>").attr("class","txt").text("测试：系统通知消息");
+	var time = $("<time></time>").text("1111-1-1 11:11:11");
+	ul_node.append(li_node.append(p_node).append(time));
 }
 
 /**
