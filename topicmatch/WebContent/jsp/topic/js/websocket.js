@@ -132,7 +132,8 @@ function websocketEvent(userId) {
 			console.log(json.userName);
 			console.log(json.topicName);
 			console.log(json.time);
-			topicMsgInform(json.userName, json.topicName, json.time);
+			console.log(json.topicId);
+			topicMsgInform(json.userName, json.topicName, json.time, json.topicId);
 		} else if (status == "5") {
 			// 消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
 			if (window.unreadMessagesNum) {

@@ -254,7 +254,7 @@ function userEnterTopic(userName){
  * 话题邀请
  * fang
  * */
-function topicMsgInform(userName,topicName,time){
+function topicMsgInform(userName,topicName,time,topicId){
 	var ul_node = $("#topicsRequest .news-list");
 	
 	var li_node = $("<li></li>").attr("class","panel");
@@ -264,8 +264,8 @@ function topicMsgInform(userName,topicName,time){
 	var ul = $("<ul></ul>").attr("class","fix opera");
 	var liYes = $("<li></li>").attr("class","btn");
 	var liNo = $("<li></li>").attr("class","btn");
-	var yes = $("<button onclick=topicMsgInformStatusChange(this,0)></button>").attr("class","yes").text("同意");
-	var no = $("<button onclick=topicMsgInformStatusChange(this,1)></button>").attr("class","no").text("拒绝");
+	var yes = $("<button onclick=topicMsgInformStatusChange(this,0,"+topicId+")></button>").attr("class","yes").text("同意");
+	var no = $("<button onclick=topicMsgInformStatusChange(this,1,"+topicId+")></button>").attr("class","no").text("拒绝");
 	
 	ul_node.append(li_node.append(p_node).append(time_node).append(ul.append(liYes.append(yes)).append(liNo.append(no))));
 }
@@ -285,7 +285,8 @@ function systemMsgInform(userName,topicName,time){
  * 用户点击通知消息里的同意或拒绝后元素修改
  * fang
  * */
-function topicMsgInformStatusChange(node,btnType){
+function topicMsgInformStatusChange(node,btnType,topicId){
+	
 	
 	var li_node = $(node).parent().parent().parent();
 	$(node).parent().parent().remove();
@@ -299,10 +300,12 @@ function topicMsgInformStatusChange(node,btnType){
 		var btn = $("<li></li>").attr("class","btn").text("已同意");
 		ul_node.append(btn_vh).append(btn);
 		li_node.append(ul_node);
+		console.log("topicId : "+topicId);
 	}else{
 		var btn = $("<li></li>").attr("class","btn").text("已拒绝");
 		ul_node.append(btn_vh).append(btn);
 		li_node.append(ul_node);
+		console.log("topicId : "+topicId);
 	}
 }
 

@@ -124,6 +124,7 @@ public class WSMessageControl {
 						jsonObject.put("userName", user_name);
 						jsonObject.put("topicName", topic_name);
 						jsonObject.put("time", time_str);
+						jsonObject.put("topicId", topic_Id);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
 					}else{
 						//好友不在线，邀请消息将转为离线消息，待该好友上线后推送话题邀请通知
