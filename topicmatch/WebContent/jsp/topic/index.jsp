@@ -206,6 +206,7 @@
 			} else if (state_fang = "3") {
 				// 告知用户让其 手动 选择 连接
 				console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
+				state_fang = "0";
 			}
 		}
 	}; 

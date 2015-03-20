@@ -94,7 +94,7 @@ function websocketEvent(userId) {
 				.log('测试  -----    客户端出现了错误，执行onerror事件 此时客户端是否中断了连接？？ 查看心跳及close打印信息 发生时间 ： '
 						+ time);
 		var closeEvent = event;
-		console.log(closeEvent);
+		console.log(event.code);
 	}
 	// 客户端接受到消息触发该事件
 	ws.onmessage = function(event) {
