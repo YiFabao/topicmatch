@@ -107,7 +107,7 @@ public class QQLogin extends HttpServlet {
 			//将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
 			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/fillinfo.jsp?#&FillInfo");
+			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
 			//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 		else//用户基本信息存在
