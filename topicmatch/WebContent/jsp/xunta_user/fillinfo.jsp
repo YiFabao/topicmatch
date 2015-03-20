@@ -194,7 +194,7 @@
 								<label class="dt dtt">头&emsp;&emsp;像</label>
 								<div class="dd">
 									<span class="pic-area">
-										<div id="imgdiv"><img id="imgShow" width="120" height="120" style="margin-top:-1px;margin-left:-1px"/></div>
+										<div id="imgdiv"><img id="imgShow" width="100%" height="100%" style="margin-top:-1px;margin-left:-1px"/></div>
 									</span>
 									
 									<a href="javascript:up_img.click();"  class="f14 a1">
