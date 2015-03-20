@@ -48,6 +48,8 @@ public class FileUploadServlet extends HttpServlet {
 		System.out.println("图片上传");
 		if (isMultipart == true) {
 			DiskFileItemFactory f = new DiskFileItemFactory();// 磁盘对象
+			//判断操作系统
+			//判断文件目录是否存在，不存在就创建，存在就不创建
 			f.setRepository(new File("d:/a"));// 设置临时目录
 			f.setSizeThreshold(1024 * 8);// 8k的缓冲区,文件大于8K则保存到临时目录
 			ServletFileUpload upload = new ServletFileUpload(f);// 声明解析request的对象

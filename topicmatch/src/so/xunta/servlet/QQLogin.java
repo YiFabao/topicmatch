@@ -41,7 +41,6 @@ public class QQLogin extends HttpServlet {
 		super.destroy(); // Just puts "destroy" string in log
 	}
 
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.setContentType("text/html");
