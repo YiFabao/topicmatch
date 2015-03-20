@@ -98,7 +98,7 @@ function websocketEvent(userId) {
 	}
 	// 客户端接受到消息触发该事件
 	ws.onmessage = function(event) {
-		console.log("消息：" + event.data);
+		console.log("消息 onmessage ：" + event.data);
 		var json = JSON.parse(event.data);
 		var status = json.status;
 		if (status == '2') {
@@ -129,11 +129,12 @@ function websocketEvent(userId) {
 		} else if (status == "4") {
 			// 好友邀请
 			console.log("4444444444444");
-			console.log(json.userName);
-			console.log(json.topicName);
-			console.log(json.time);
-			console.log(json.topicId);
-			topicMsgInform(json.userName, json.topicName, json.time, json.topicId);
+			console.log("userName : "+json.userName);
+			console.log("topicName : "+json.topicName);
+			console.log("time : "+json.time);
+			console.log("topicId : "+json.topicId);
+			console.log("userId : "+json.userId);
+			topicMsgInform(json.userName, json.topicName, json.time, json.topicId, json.userId);
 		} else if (status == "5") {
 			// 消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
 			if (window.unreadMessagesNum) {
@@ -141,6 +142,14 @@ function websocketEvent(userId) {
 				unreadMessagesNum(json);
 			}
 			// alert(json.unreadNum);
+		}else if(status == "6"){
+			console.log("6666666666666");
+			var date = new Date();
+			var hours = date.getHours();
+			var minutes = date.getMinutes();
+			var seconds = date.getSeconds();
+			var time = hours + ':' + minutes + ':' + seconds;
+			topicInformMsgFeedback(time, json.feedbackMsg);
 		}
 	}
 }
@@ -162,8 +171,7 @@ function websocketEvent(userId) {
  *            2014-12-1 12:00:01
  */
 
-function sendMsg(topic_id, message_id, sender_id, nickname, message,
-		accepter_id) {
+function sendMsg(topic_id, message_id, sender_id, nickname, message,accepter_id) {
 	// 发送消息后可以做一个发送中的动画效果,发送成功后,会触发
 	// onmessage中的status==2,表明发送消息成功,取消动画效果,如果在10秒钟还没有发送成功,会触发 if条件表达式,显示消息发送失败
 	var msg = jsonStr(1, topic_id, message_id, sender_id, nickname,
@@ -208,6 +216,16 @@ function inviteUser(inviteId, topicId, userId) {
 	console.log("测试  -----    发送邀请好友消息时 ws的状态如下");
 	console.log(ws.readyState);
 	ws.send('{"status" : "4","inviteId" : "' + inviteId + '","userId" : "' + userId + '","topicId" : "'+ topicId + '"}');
+}
+
+//邀请用户消息反馈
+function inviteUserMsgFeedback(userId,feedbackMsg) {
+	// inviteIds is jsonArray
+	console.log("测试  -----    发送邀请好友消息反馈时 ws的状态如下");
+	console.log("测试  -----    "+userId);
+	console.log("测试  -----    "+feedbackMsg);
+	console.log(ws.readyState);
+	ws.send('{"status" : "6","feedbackMsg" : "' + feedbackMsg + '","userId" : "' + userId + '"}');
 }
 
 // 未读消息

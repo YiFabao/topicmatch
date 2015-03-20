@@ -125,6 +125,7 @@ public class WSMessageControl {
 						jsonObject.put("topicName", topic_name);
 						jsonObject.put("time", time_str);
 						jsonObject.put("topicId", topic_Id);
+						jsonObject.put("userId", user_Id);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
 					}else{
 						//好友不在线，邀请消息将转为离线消息，待该好友上线后推送话题邀请通知
@@ -151,6 +152,16 @@ public class WSMessageControl {
 				}
 				puth(accepterId5 , CharBuffer.wrap(jsonObject.toString()));
 				System.out.println("执行第5分支结束");
+				break;
+			case 6:
+				int user_id6 = Integer.parseInt(messageJsonObject.get("userId").toString());
+				String feedbackMsg = messageJsonObject.get("feedbackMsg").toString();
+				System.out.println("推送给客户端Id : "+user_id6+"  邀请反馈消息");
+				JSONObject jsonObject6 = new JSONObject();
+				jsonObject6.put("status", "6");
+				jsonObject6.put("userId", user_id6);
+				jsonObject6.put("feedbackMsg", feedbackMsg);
+				puth(user_id6, CharBuffer.wrap(jsonObject6.toString()));
 				break;
 		}
 	}
