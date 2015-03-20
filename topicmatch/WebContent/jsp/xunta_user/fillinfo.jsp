@@ -26,22 +26,22 @@
 		<div class="head">
 			<h1 class="logo"><a href="/">寻TA网</a></h1>
 			<div class="form search">
-				<input type="text" class="text">
-				<input type="submit" class="iconfont submit" value="&#xe602;">
+				<input type="text" class="text" disabled>
+				<input type="submit" class="iconfont submit" value="&#xe602;" disabled>
 			</div>
 			<nav class="nav">
 				<ul class="fix">
-					<li><a href="#">话题推荐</a></li>
-					<li><a href="#">话题记忆</a></li>
-					<li><a href="#">发起话题</a></li>
+					<li><a href="#" >话题推荐</a></li>
+					<li><a href="#" >话题记忆</a></li>
+					<li><a href="#" >发起话题</a></li>
 				</ul>
 			</nav>
 			<div class="user">
-				<a href="#" class="admin">登录</a>
-				<a href="#">注册</a>
-				<a class="news" href="#">
+				<a href="#" class="admin" disabled>未登录，请登录</a>
+			<!-- 	<a href="#">注册</a> -->
+				<a class="news" href="#" style="line-height:48px;">
 					<i class="iconfont">&#xe603;</i>
-					<span class="dunk">15</span>
+			<!-- 		<span class="dunk"></span> -->
 				</a>
 			</div>
 		</div>
@@ -104,20 +104,20 @@
 		<div class="page out" id="FillInfo" data-params="root=$&amp;callback=fillinfo&amp;fallback=fillinOut">
 			<div class="dialog-box d2">
 				<div class="login-3 l form">
-					<h3>基本资料填写<span class="f14">（提交个人兴趣, 找到同趣之人）</span></h3>
+					<h3　align="center">基本资料填写<span class="f14"></span></h3>
 					<div class="item">
 						<span class="dt">个人兴趣</span>
 						<div class="dd">
 							<div class="interests">
 								<div class="cont mb10" id="user_input_tags">
-									<a href="#" class="tag">测试<i class="iconfont del">&#xe601;</i></a>
+									<!-- <a href="#" class="tag">测试<i class="iconfont del">&#xe601;</i></a> -->
 								</div>
 								<lable class="placeholder">填写或选择感兴趣的标签,以，隔开</lable>
 								<div class="mb10">
 									输入标签：<input type="text" class="text-c">
 									<button class="btn-b w80" type="button" id="AddTagBtn">确定</button>
 								</div>
-								<p class="tag-list">
+<!-- 								<p class="tag-list">
 									<span class="mr15">您可能感兴趣的标签:</span>
 									<a href="#" class="tag"><span class="add">+</span>Duang</a>
 									<a href="#" class="tag"><span class="add">+</span>标签</a>
@@ -128,10 +128,10 @@
 									<a href="#" class="tag"><span class="add">+</span>Duang</a>
 									<a href="#" class="tag"><span class="add">+</span>标签</a>
 								</p>
-								<div class="tr"><a href="#" class="a1 mr20">换一换</a></div>
+								<div class="tr"><a href="#" class="a1 mr20">换一换</a></div> -->
 							</div>
 							<div class="fix">
-								<a href="#Login" class="l f16 lh34">已有账号，直接登录</a>
+							<!-- 	<a href="#Login" class="l f16 lh34">已有账号，直接登录</a> -->
 							<!-- 	<button class="btn-b r wtb" data-url="#Reg" id="reg_tag">下一步</button> -->
 								<button class="btn-b r wtb"  id="reg_tag">下一步</button>
 							</div>
@@ -144,7 +144,7 @@
 		<div class="page out" id="Reg" data-params="root=$&amp;callback=reg&amp;fallback=regOut">
 			<div class="dialog-box d2">
 				<div class="login-4 form">
-					<h3>基本资料填写是否需要创建一个本地账户？</h3>
+					<h3>二.创建本地账号</h3>
 					<form  class="l" data-preventDefault="validate_false" >
 						<div class="item">
 							<label class="dt" for="UserNameR">用&ensp;户&ensp;名</label>
@@ -175,8 +175,9 @@
 							<button class="btn-d wtb" id="bind_local_account">下一步</button>
 						</div>
 					</form>
+					
 					<div class="r">
-						<p class="tip">本地账户关联您的第三方账户之后，<br>你可以在第三方登录无法登录时，<br>选择本地账户登录</p>
+						<p class="tip">本地帐号将关联您的第三方登，<br>录帐号. 在第三方登录失效时,<br>可直接用本地帐号登录.<br>如果”毅然跳过”, 以后可在”昵<br>称->个人资料”中设置.</p>
 						<button class="btn-b wtb" data-url="#ComReg">毅然跳过</button>
 					</div>
 				</div>
@@ -197,7 +198,8 @@
 									</span>
 									
 									<a href="javascript:up_img.click();"  class="f14 a1">
-										本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
+										本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/><br>
+										<small>(头像文件必须不大于1M)</small>
 									</a>
 								</div>
 							</div>
