@@ -181,12 +181,9 @@
 	// websocket状态发生变化时触发
 	var state_fang = "0";
 	window.webimStateChange = function(state) {
+		console.log("websocket状态:"+state);
 		if (state == "ok") {
-			msgManagerReady = true;
 			console.log("websocket创建成功");
-			// 获取未读消息数======================================>未读消息数
-			console.log("开始获取未读消息");
-			//getUnreadMessageNum(myselfId);// 调用方法后，需要在回调函数中接收数据
 		} else if (state = "no") {
 			if (state_fang == "0") {
 				msgManagerReady = false;
@@ -208,7 +205,7 @@
 				console.log("尝试从新连接websocket第三次异常，告知用户检查网络环境，手动请求连接websocket服务器");
 				state_fang = "0";
 			}
-		}
+		} 
 	}; 
 	//重新加载
 	function createWS(){

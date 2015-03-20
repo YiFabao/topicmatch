@@ -11,6 +11,8 @@
 	if(access_token!=null&&!"".equals(access_token))
 	{
 		response.sendRedirect(request.getContextPath()+"/servlet/qq_login?access_token="+access_token);
+	}else if(code!=null&&!"".equals(code)){
+		response.sendRedirect(request.getContextPath()+"/servlet/weiboLogin?code="+code);
 	}
 
 %>
