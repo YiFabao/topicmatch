@@ -72,8 +72,9 @@ function topic_j(request) {
 	var ul_pateUl = $("#pateUl");
 
 		var classType = $("#pateUl li").last().attr("class");
+		console.log("type : "+classType);
 		var li_node;
-		if (classType.indexOf("even") > 0) {
+		if (classType == undefined || classType.indexOf("even") > 0) {
 			li_node = $("<li></li>").attr("class", "column tp odd").attr("topicId",request.topicId);
 		} else {
 			li_node = $("<li></li>").attr("class", "column tp even").attr("topicId",request.topicId);
@@ -128,13 +129,14 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 			res, status) {
 		console.log("请求话题记忆时      status   :    " + status);
 		console.log("执行获取话题记忆post请求 ");
+		if(res.notTopic == "yes"){
+			console.log("没有历史话题");
+			return;
+		}
 		var arrayJson = res.msg;
 		console.log(arrayJson);
 		for (var i = 0; i < arrayJson.length; i++) {
 			console.log(res.notTopic);
-			if (res.notTopic == "yes") {
-				console.log("没有历史话题");
-			} else {
 				if (topic_type == "p") {
 					console.log("p");
 					topic_p(arrayJson[i]);
@@ -142,7 +144,6 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 					console.log("j");
 					topic_j(arrayJson[i]);
 				}
-			}
 		}
 	});
 };

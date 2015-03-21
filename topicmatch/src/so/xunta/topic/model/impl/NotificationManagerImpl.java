@@ -5,14 +5,15 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import so.xunta.topic.entity.Notification;
+import so.xunta.topic.entity.SystemMessageNotification;
+import so.xunta.topic.entity.TopicInviteNotification;
 import so.xunta.topic.model.NotificationManager;
 import so.xunta.utils.HibernateUtils;
 
 public class NotificationManagerImpl implements NotificationManager{
 
 	@Override
-	public void addNotificationMsg(Notification notification) {
+	public void addTopicNotificationMsg(TopicInviteNotification notification) {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
@@ -28,21 +29,21 @@ public class NotificationManagerImpl implements NotificationManager{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Notification> findUserIdByNotification(String userId) {
+	public List<TopicInviteNotification> findUserIdByTopicInviteNotification(String userId) {
 		Session session = HibernateUtils.openSession();
-		String hql = "from Notification where userId=? ";
+		String hql = "from TopicInviteNotification where toUserId=? ";
 		Query query = session.createQuery(hql).setString(0, userId);
 		return query.list();
 	}
 
 	@Override
-	public void deleteNotification(String userId) {
+	public void deleteTopicInviteNotification(String topicId) {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql = "delete Notification where userId = ?";
+			String hql = "delete TopicInviteNotification where topicId = ?";
 			org.hibernate.Query query = session.createQuery(hql);
-			query.setString(0, userId);
+			query.setString(0, topicId);
 			query.executeUpdate();
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
@@ -53,4 +54,44 @@ public class NotificationManagerImpl implements NotificationManager{
 		}
 	}
 
+	@Override
+	public void addSystemNotificationMsg(SystemMessageNotification notification) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			session.save(notification);
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<SystemMessageNotification> findUserIdBySystemNotification(String userId) {
+		Session session = HibernateUtils.openSession();
+		String hql = "from SystemMessageNotification where userId=? ";
+		Query query = session.createQuery(hql).setString(0, userId);
+		return query.list();
+	}
+	
+	@Override
+	public void deleteSystemMessageNotification(String topicId) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "delete SystemMessageNotification where userId = ?";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, topicId);
+			query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
 }

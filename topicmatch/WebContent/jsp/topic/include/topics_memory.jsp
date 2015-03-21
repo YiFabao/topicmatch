@@ -12,129 +12,14 @@
 				<ul class="fix tab-box talk-list">
 					<li id="launch" class="item launch">
 						<ul class="column l">
-							<li class="tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<p class="nc">齐天大圣</p>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-02  <b class="hour">09:12</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									<p class="txt"><b>最后回复：</b>1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？<br> 2、有没有什么法律或者规定来限制保险公司用拆东墙补西墙的方法来兑现用户承诺的呢？<br>3、保险这个东西，在人民生活中普及才不过几年，那遥远的多少年以后的利益怎么去保证？是不是如果有严重通胀、战争等情况，这些都化为乌有？&emsp;<i class="ago">(3天前)</i></p>
-								</div>
-							</li>
-							<li class="tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<p class="nc">齐天大圣</p>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-02  <b class="hour">09:12</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									<p class="txt"><b>最后回复：</b>1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？&emsp;<i class="ago">(3天前)</i></p>
-								</div>
-							</li>
 						</ul>
 						<ul class="column r">
-							<li class="tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<p class="nc">齐天大圣</p>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-02  <b class="hour">09:12</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									<p class="txt"><b>最后回复：</b>1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？&emsp;<i class="ago">(3天前)</i></p>
-								</div>
-							</li>
-							<li class="tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<p class="nc">齐天大圣</p>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-02  <b class="hour">09:12</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									<p class="txt"><b>最后回复：</b>1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？&emsp;<i class="ago">(3天前)</i></p>
-								</div>
-							</li>
 						</ul>
 						<button class="load"><img src="images/loading.gif" alt="">加载中...</button>
 					</li>
 					<li id="participate" class="dn item pate">
 						<ul class="fix" id="pateUl">
-							<li class="column tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<span class="area">希达</span>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-16  <b class="hour">16:24:35</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									来自: 
-									<p class="txt">1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？<br> 2、有没有什么法律或者规定来限制保险公司用拆东墙补西墙的方法来兑现用户承诺的呢？<br>3、保险这个东西，在人民生活中普及才不过几年，那遥远的多少年以后的利益怎么去保证？是不是如果有严重通胀、战争等情况，这些都化为乌有？（3天前）</p>
-								</div>
-								<div class="date">
-									<time>2月10日-2015年</time>
-									<p class="man">234人参与</p>
-								</div>
-							</li>
-							<li class="column tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<span class="area">希达</span>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-16  <b class="hour">16:24:35</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									来自: 
-									<p class="txt">1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？<br> 2、有没有什么法律或者规定来限制保险公司用拆东墙补西墙的方法来兑现用户承诺的呢？<br>3、保险这个东西，在人民生活中普及才不过几年，那遥远的多少年以后的利益怎么去保证？是不是如果有严重通胀、战争等情况，这些都化为乌有？（3天前）</p>
-								</div>
-								<div class="date">
-									<time>2月10日-2015年</time>
-									<p class="man">234人参与</p>
-								</div>
-							</li>
-							<li class="column tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<span class="area">希达</span>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-16  <b class="hour">16:24:35</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									来自: 
-									<p class="txt">1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？<br> 2、有没有什么法律或者规定来限制保险公司用拆东墙补西墙的方法来兑现用户承诺的呢？<br>3、保险这个东西，在人民生活中普及才不过几年，那遥远的多少年以后的利益怎么去保证？是不是如果有严重通胀、战争等情况，这些都化为乌有？（3天前）</p>
-								</div>
-								<div class="date">
-									<time>2月10日-2015年</time>
-									<p class="man">234人参与</p>
-								</div>
-							</li>
-							<li class="column tp">
-								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
-									<span class="area">希达</span>
-									<p class="name"><a href="#" title="最近在用的香水-still">「保险」到底保险吗？-still</a></p>
-									<time>2015-02-16  <b class="hour">16:24:35</b></time>
-									<a href="#" class="enter">进入</a>
-								</div>
-								<div class="bd">
-									来自: 
-									<p class="txt">1、保险业的本质就是保险公司和客户之间对赌，而保险公司押的是大概率，用户永远押的都是小概率事件。从整体上分析，客户的总体收益永远是亏损的，对不对？<br> 2、有没有什么法律或者规定来限制保险公司用拆东墙补西墙的方法来兑现用户承诺的呢？<br>3、保险这个东西，在人民生活中普及才不过几年，那遥远的多少年以后的利益怎么去保证？是不是如果有严重通胀、战争等情况，这些都化为乌有？（3天前）</p>
-								</div>
-								<div class="date">
-									<time>2月10日-2015年</time>
-									<p class="man">234人参与</p>
-								</div>
-							</li>
+							
 						</ul>
 						<div class="bt">
 							<button class="load" id="loadMoreBtn"><img src="images/loading.gif" alt="">加载中...</button>

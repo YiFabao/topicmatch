@@ -50,7 +50,7 @@
 				<div class="h news-area">
 					<i class="news" href="#">
 						<i class="iconfont">&#xe603;</i>
-						<span class="dunk">15</span>
+						
 					</i>
 					<div class="pop">
 						<i class="link"></i>
@@ -64,30 +64,6 @@
 							<ul class="tab-content">
 								<li class="tab-panel" id="topicsRequest">
 									<ul class="news-list">
-										<li class="panel">
-											<p class="txt">某某moumou 邀请你参与话题#我们去过的地方#</p>
-											<time>2015-3-15&emsp;12:24:13</time>
-											<ul class="fix opera">
-												<li class="btn">
-													<button class="yes" onclick="topicMsgInformStatusChange(this,0)">同意</button>
-												</li>
-												<li class="btn">
-													<button class="no" onclick="topicMsgInformStatusChange(this,1)">拒绝</button>
-												</li>
-											</ul>
-										</li>
-										<li class="panel">
-											<p class="txt">某某moumou 邀请你参与话题#我们去过的地方#</p>
-											<time>2015-3-15</time>
-											<ul class="fix opera">
-												<li class="btn vh">
-													<button class="yes"></button>
-												</li>
-												<li class="btn">
-													已同意
-												</li>
-											</ul>
-										</li>
 									</ul>
 								</li>
 								<li class="tab-panel dn" id="systemMessages">

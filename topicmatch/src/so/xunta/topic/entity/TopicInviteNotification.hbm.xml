@@ -2,16 +2,18 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class table="notification" name="so.xunta.topic.entity.Notification">
+	<class table="topicInviteNotification" name="so.xunta.topic.entity.TopicInviteNotification">
 		<id name="id">
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="false" />
-		<property name="userName" not-null="false" />
+		<property name="fromUserName" not-null="false" />
 		<property name="topicName" not-null="false" />
 		<property name="time" not-null="false" />
-		<property name="userId" not-null="false" />
 		<property name="topicId" not-null="false" />
+		<property name="fromUserId" not-null="false" />
+		<property name="toUserId" not-null="false" />
+		<property name="toUserName" not-null="false" />
 	</class>
 </hibernate-mapping>
 

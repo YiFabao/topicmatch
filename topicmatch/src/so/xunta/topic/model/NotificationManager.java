@@ -1,14 +1,22 @@
 package so.xunta.topic.model;
 
 import java.util.List;
-import so.xunta.topic.entity.Notification;
+
+import so.xunta.topic.entity.SystemMessageNotification;
+import so.xunta.topic.entity.TopicInviteNotification;
 
 
 public interface NotificationManager {
-	//存储离线通知消息
-	public void addNotificationMsg(Notification notification);
-	//获取离线通知消息
-	public List<Notification> findUserIdByNotification(String userId);
+	//存储离线话题邀请通知消息
+	public void addTopicNotificationMsg(TopicInviteNotification notification);
+	//存储系统通知消息
+	public void addSystemNotificationMsg(SystemMessageNotification notification);
+	//获取离线话题邀请通知消息
+	public List<TopicInviteNotification> findUserIdByTopicInviteNotification(String userId);
+	//获取系统通知消息
+	public List<SystemMessageNotification> findUserIdBySystemNotification(String userId);
 	//删除离线通知消息
-	public void deleteNotification(String userId);
+	public void deleteTopicInviteNotification(String userId);
+	//删除离线通知消息
+	public void deleteSystemMessageNotification(String userId);
 }

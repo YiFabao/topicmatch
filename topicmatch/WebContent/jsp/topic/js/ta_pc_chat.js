@@ -8,6 +8,7 @@ $(function(){
 var topicId_count_map={};//{话题ID：已经显示的历史消息数,在创建一个话题列表项的时候要在该全局变量中添加初始化记录
 var topicId_unreadMsgArray={};//话题topicId：未读消息数组,在聊天框隐藏状态下,保存到该数组中，显示后清空该数组
 var topicId_historyMsgArray={};//话题　topicId:获取的历史消息
+var notifiction_count=0;
 /**
  * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
  */
@@ -254,18 +255,23 @@ function userEnterTopic(userName){
  * 话题邀请
  * fang
  * */
-function topicMsgInform(userName,topicName,time,topicId,userId){
+function topicMsgInform(fromUserName,topicName,time,topicId,toUserId,fromUserId,toUserName){
+	notifiction_count++;
+	var span_dunk = $("<span></span>").attr("class","dunk").text(notifiction_count);
+	$(".news").remove(".dunk");
+	$(".news").append(span_dunk);
+	
 	var ul_node = $("#topicsRequest .news-list");
 	
 	var li_node = $("<li></li>").attr("class","panel");
-	var p_node = $("<p></p>").attr("class","txt;").text(userName+"邀请您参与话题#"+topicName+"#");
+	var p_node = $("<p></p>").attr("class","txt;").text(fromUserName+"邀请您参与话题#"+topicName+"#");
 	var time_node = $("<time></time>").text(time);
 	
 	var ul = $("<ul></ul>").attr("class","fix opera");
 	var liYes = $("<li></li>").attr("class","btn");
 	var liNo = $("<li></li>").attr("class","btn");
-	var yes = $("<button onclick=topicMsgInformStatusChange(this,0)></button>").attr("topicName",topicName).attr("userName",userName).attr("userId",userId).attr("topicId",topicId).attr("class","yes").text("同意");
-	var no = $("<button onclick=topicMsgInformStatusChange(this,1)></button>").attr("topicName",topicName).attr("userName",userName).attr("userId",userId).attr("topicId",topicId).attr("class","no").text("拒绝");
+	var yes = $("<button onclick=topicMsgInformStatusChange(this,0)></button>").attr("toUserName",toUserName).attr("fromUserId",fromUserId).attr("topicName",topicName).attr("fromUserName",fromUserName).attr("toUserId",toUserId).attr("topicId",topicId).attr("class","yes").text("同意");
+	var no = $("<button onclick=topicMsgInformStatusChange(this,1)></button>").attr("toUserName",toUserName).attr("fromUserId",fromUserId).attr("topicName",topicName).attr("fromUserName",fromUserName).attr("toUserId",toUserId).attr("topicId",topicId).attr("class","no").text("拒绝");
 	ul_node.prepend(li_node.append(p_node).append(time_node).append(ul.append(liYes.append(yes)).append(liNo.append(no))));
 }
 
@@ -300,13 +306,17 @@ function systemMsgInform(userName,topicName,time){
  * */
 function topicMsgInformStatusChange(node,btnType){
 	var topic_id = $(node).attr("topicId");
-	var user_id = $(node).attr("userId");
+	var to_user_id = $(node).attr("toUserId");
+	var from_user_id = $(node).attr("fromUserId");
 	var topic_name = $(node).attr("topicName");
-	var user_name = $(node).attr("userName");
+	var fromUserName = $(node).attr("fromUserName");
+	var toUserName = $(node).attr("toUserName");
 	console.log("邀请消息反馈   topic_id : "+topic_id);
-	console.log("邀请消息反馈   user_id : "+user_id);
+	console.log("邀请消息反馈   user_id : "+to_user_id);
 	console.log("邀请消息反馈   topic_name : "+topic_name);
-	console.log("邀请消息反馈   user_name : "+user_name);
+	console.log("邀请消息反馈   user_name : "+fromUserName);
+	console.log("邀请消息反馈   from_user_id : "+from_user_id);
+	console.log("邀请消息反馈   toUserName : "+toUserName);
 	
 	var li_node = $(node).parent().parent().parent();
 	$(node).parent().parent().remove();
@@ -320,18 +330,23 @@ function topicMsgInformStatusChange(node,btnType){
 		var btn = $("<li></li>").attr("class","btn").text("已同意");
 		ul_node.append(btn_vh).append(btn);
 		li_node.append(ul_node);
-		var feedbackMsg = user_name+"同意了您的#"+topic_name+"#话题邀请!";
-		inviteUserMsgFeedback(user_id,feedbackMsg);//推送给邀请人被邀请人的选择项
+		var feedbackMsg = toUserName+"同意了您的#"+topic_name+"#话题邀请!";
+		inviteUserMsgFeedback(from_user_id,feedbackMsg);//推送给邀请人被邀请人的选择项
 		
+		notifiction_count--;
+		$(".news .dunk").text(notifiction_count);
+		deleteTopicInvite(topic_id);
 		//用户点击同意后 在这里 通过topicId来打开聊天框
 //		topic_id
 	}else{
 		var btn = $("<li></li>").attr("class","btn").text("已拒绝");
 		ul_node.append(btn_vh).append(btn);
 		li_node.append(ul_node);
-		var feedbackMsg = user_name+"拒绝了您的#"+topic_name+"#话题邀请!";
-		inviteUserMsgFeedback(user_id,feedbackMsg);//推送给邀请人被邀请人的选择项
-		
+		var feedbackMsg = toUserName+"拒绝了您的#"+topic_name+"#话题邀请!";
+		inviteUserMsgFeedback(from_user_id,feedbackMsg);//推送给邀请人被邀请人的选择项
+		notifiction_count--;
+		$(".news .dunk").text(notifiction_count);
+		deleteTopicInvite(topic_id);
 		//用户点击拒绝后 在这里最相对应的事情
 	}
 }
@@ -877,6 +892,17 @@ function getContactsArray(){
 	return contacts;
 }
 
+//删除邀请话题消息通知
+function deleteTopicInvite(topicId){
+	var parameters={
+			"topicId":topicId
+	};
+	
+	$.post("http://"+document.domain+":8080/topicmatch/Notification", parameters, function(res, status) {
+		console.log("status:" + status);
+		console.log("执行 - 删除邀请话题消息通知 - 请求");
+	});
+}
 
 
 

@@ -167,6 +167,7 @@
 	});
 	 
 	function topicInvite(topic_id,user_id){
+		$(".enter").text("已发出邀请");
 		var invite_user_id = $(".enter").attr("userId");
 		var invite_user_name = $(".enter").attr("userName");
 		//console.log(topic_id+"  "+user_id+"  "+invite_user_id+"  "+invite_user_name);

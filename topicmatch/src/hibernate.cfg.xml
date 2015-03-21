@@ -32,7 +32,8 @@
 		<mapping resource="so/xunta/entity/Tag.hbm.xml" />
 		<mapping resource="so/xunta/websocket/entity/HistoryMessage.hbm.xml" />
 		<mapping resource="so/xunta/websocket/entity/OfflineMessage.hbm.xml" />
-		<mapping resource="so/xunta/topic/entity/Notification.hbm.xml" />
+		<mapping resource="so/xunta/topic/entity/TopicInviteNotification.hbm.xml" />
+		<mapping resource="so/xunta/topic/entity/SystemMessageNotification.hbm.xml" />
 		
 	</session-factory>
 </hibernate-configuration>

@@ -9,7 +9,8 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import so.xunta.manager.impl.UserManagerImpl;
-import so.xunta.topic.entity.Notification;
+import so.xunta.topic.entity.SystemMessageNotification;
+import so.xunta.topic.entity.TopicInviteNotification;
 import so.xunta.topic.model.impl.NotificationManagerImpl;
 import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.utils.Console;
@@ -20,6 +21,7 @@ import so.xunta.websocket.utils.WebSocketUtils;
 
 public class WSMessageControl {
 	public static ArrayList<JSONObject> messageMonitorList = new ArrayList<JSONObject>();
+	private static NotificationManagerImpl notificationManagerImpl = new NotificationManagerImpl();
 	public static void messagePuth(int user_id , CharBuffer message){
 		System.out.println("CLIENT send : " + message.toString());
 		Date currentDate = new Date();
@@ -109,29 +111,30 @@ public class WSMessageControl {
 				break;
 			case 4:
 				//好友邀请
-				System.out.println("好友邀请  :  "+messageJsonObject.get("inviteId").toString());
-				String invite_Id = messageJsonObject.get("inviteId").toString();
-				String user_Id = messageJsonObject.get("userId").toString();
+				System.out.println("好友邀请  :  "+messageJsonObject.get("toUserId").toString());
+				String toUserId = messageJsonObject.get("toUserId").toString();
+				String fromUserId = messageJsonObject.get("fromUserId").toString();
 				String topic_Id = messageJsonObject.get("topicId").toString();
+				String toUserName = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getXunta_username();
 				String time_str = DateTimeUtils.getCurrentTimeStr();
-				String user_name = new UserManagerImpl().findUserById(Integer.parseInt(user_Id)).getXunta_username();
+				String from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getXunta_username();
 				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
-					int userId6 = Integer.parseInt(invite_Id);
+					int userId6 = Integer.parseInt(toUserId);
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
 						System.out.println("将邀请消息推送给用户ID  ：  "+userId6);
 						JSONObject jsonObject = new JSONObject();
 						jsonObject.put("status", "4");
-						jsonObject.put("userName", user_name);
+						jsonObject.put("from_user_name", from_user_name);
+						jsonObject.put("to_user_name", toUserName);
 						jsonObject.put("topicName", topic_name);
 						jsonObject.put("time", time_str);
 						jsonObject.put("topicId", topic_Id);
-						jsonObject.put("userId", user_Id);
+						jsonObject.put("toUserId", toUserId);
+						jsonObject.put("fromUserId", fromUserId);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
-					}else{
-						//好友不在线，邀请消息将转为离线消息，待该好友上线后推送话题邀请通知
-						NotificationManagerImpl notificationManagerImpl = new NotificationManagerImpl();
-						notificationManagerImpl.addNotificationMsg(new Notification(topic_Id, "4", user_name, topic_name, time_str, invite_Id));
 					}
+						
+						notificationManagerImpl.addTopicNotificationMsg(new TopicInviteNotification(topic_Id, "4", from_user_name, topic_name, time_str, toUserId, fromUserId, toUserName));
 				break;
 			case 5:
 				System.out.println("5  " + messageJsonObject.toString());
@@ -155,13 +158,16 @@ public class WSMessageControl {
 				break;
 			case 6:
 				int user_id6 = Integer.parseInt(messageJsonObject.get("userId").toString());
-				String feedbackMsg = messageJsonObject.get("feedbackMsg").toString();
-				System.out.println("推送给客户端Id : "+user_id6+"  邀请反馈消息");
-				JSONObject jsonObject6 = new JSONObject();
-				jsonObject6.put("status", "6");
-				jsonObject6.put("userId", user_id6);
-				jsonObject6.put("feedbackMsg", feedbackMsg);
-				puth(user_id6, CharBuffer.wrap(jsonObject6.toString()));
+				String message6 = messageJsonObject.get("message").toString();
+				if(!(WSSessionConnectControl.getWindowConnect(user_id6) == null)){
+					System.out.println("推送给客户端Id : "+user_id6+"  邀请反馈消息");
+					JSONObject jsonObject6 = new JSONObject();
+					jsonObject6.put("status", "6");
+					jsonObject6.put("userId", user_id6);
+					jsonObject6.put("message", message6);
+					puth(user_id6, CharBuffer.wrap(jsonObject6.toString()));
+				}
+				notificationManagerImpl.addSystemNotificationMsg(new SystemMessageNotification("6", user_id6+"", message6));
 				break;
 		}
 	}

@@ -129,12 +129,15 @@ function websocketEvent(userId) {
 		} else if (status == "4") {
 			// 好友邀请
 			console.log("4444444444444");
-			console.log("userName : "+json.userName);
+			console.log("topicId : "+json.topicId);
 			console.log("topicName : "+json.topicName);
 			console.log("time : "+json.time);
-			console.log("topicId : "+json.topicId);
-			console.log("userId : "+json.userId);
-			topicMsgInform(json.userName, json.topicName, json.time, json.topicId, json.userId);
+			console.log("toUserId : "+json.toUserId);
+			console.log("to_user_name : "+json.to_user_name);
+			console.log("fromUserId : "+json.fromUserId);
+			console.log("from_user_name : "+json.from_user_name);
+			
+			topicMsgInform(json.from_user_name, json.topicName, json.time, json.topicId, json.toUserId, json.fromUserId, json.to_user_name);
 		} else if (status == "5") {
 			// 消息未读数//有消息就是{topicId:num,topicId2:num2...},没有消息就是{"status":"none"}
 			if (window.unreadMessagesNum) {
@@ -149,7 +152,7 @@ function websocketEvent(userId) {
 			var minutes = date.getMinutes();
 			var seconds = date.getSeconds();
 			var time = hours + ':' + minutes + ':' + seconds;
-			topicInformMsgFeedback(time, json.feedbackMsg);
+			topicInformMsgFeedback(time, json.message);
 		}
 	}
 }
@@ -211,21 +214,21 @@ function broadcast(user_id, topic_id) {
 }
 
 //邀请用户
-function inviteUser(inviteId, topicId, userId) {
+function inviteUser(toUserId, topicId, fromUserId) {
 	// inviteIds is jsonArray
 	console.log("测试  -----    发送邀请好友消息时 ws的状态如下");
 	console.log(ws.readyState);
-	ws.send('{"status" : "4","inviteId" : "' + inviteId + '","userId" : "' + userId + '","topicId" : "'+ topicId + '"}');
+	ws.send('{"status" : "4","toUserId" : "' + toUserId + '","fromUserId" : "' + fromUserId + '","topicId" : "'+ topicId + '"}');
 }
 
 //邀请用户消息反馈
-function inviteUserMsgFeedback(userId,feedbackMsg) {
+function inviteUserMsgFeedback(userId,message) {
 	// inviteIds is jsonArray
 	console.log("测试  -----    发送邀请好友消息反馈时 ws的状态如下");
 	console.log("测试  -----    "+userId);
-	console.log("测试  -----    "+feedbackMsg);
+	console.log("测试  -----    "+message);
 	console.log(ws.readyState);
-	ws.send('{"status" : "6","feedbackMsg" : "' + feedbackMsg + '","userId" : "' + userId + '"}');
+	ws.send('{"status" : "6","message" : "' + message + '","userId" : "' + userId + '"}');
 }
 
 // 未读消息
