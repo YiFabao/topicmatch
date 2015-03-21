@@ -49,7 +49,7 @@
 				</ul>
 			</nav>
 			<div class="user">
-				<a href="#" class="admin" disabled>未登录，请登录</a>
+				<a href="#" class="admin" disabled>未登录</a>
 			<!-- 	<a href="#">注册</a> -->
 				<a class="news" href="#" style="line-height:48px;">
 					<i class="iconfont">&#xe603;</i>

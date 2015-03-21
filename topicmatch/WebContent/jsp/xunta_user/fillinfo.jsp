@@ -37,7 +37,7 @@
 				</ul>
 			</nav>
 			<div class="user">
-				<a href="#" class="admin" disabled>未登录，请登录</a>
+				<a href="#" class="admin" disabled>未登录</a>
 			<!-- 	<a href="#">注册</a> -->
 				<a class="news" href="#" style="line-height:48px;">
 					<i class="iconfont">&#xe603;</i>
@@ -104,8 +104,9 @@
 		<div class="page out" id="FillInfo" data-params="root=$&amp;callback=fillinfo&amp;fallback=fillinOut">
 			<div class="dialog-box d2">
 				<div class="login-3 l form">
-					<h3　align="center">基本资料填写<span class="f14"></span></h3>
+					<h3 style="position:relative;left:50%;">基本资料填写<span class="f14"></span></h3>
 					<div class="item">
+						<p style="margin-bottom:25px;font-size:17px;font-weight:normal;text-shadow:0 0;">一.以标签表达个人兴趣,匹配同趣之人:</p>
 						<span class="dt">个人兴趣</span>
 						<div class="dd">
 							<div class="interests">
@@ -144,7 +145,8 @@
 		<div class="page out" id="Reg" data-params="root=$&amp;callback=reg&amp;fallback=regOut">
 			<div class="dialog-box d2">
 				<div class="login-4 form">
-					<h3>二.创建本地账号</h3>
+					<h3 style="position:relative;left:40%;">基本资料填写<span class="f14"></span></h3>
+					<p style="margin-bottom:25px;font-size:17px;font-weight:normal;text-shadow:0 0;">二.创建本地账号</p>
 					<form  class="l" data-preventDefault="validate_false" >
 						<div class="item">
 							<label class="dt" for="UserNameR">用&ensp;户&ensp;名</label>
@@ -177,7 +179,7 @@
 					</form>
 					
 					<div class="r">
-						<p class="tip">本地帐号将关联您的第三方登，<br>录帐号. 在第三方登录失效时,<br>可直接用本地帐号登录.<br>如果”毅然跳过”, 以后可在”昵<br>称->个人资料”中设置.</p>
+						<p class="tip" style="margin-bottom:100px;">本地帐号将关联您的第三方登，<br>录帐号. 在第三方登录失效时,<br>可直接用本地帐号登录.<br>如果”毅然跳过”, 以后可在”昵<br>称->个人资料”中设置.</p>
 						<button class="btn-b wtb" data-url="#ComReg">毅然跳过</button>
 					</div>
 				</div>
@@ -187,20 +189,21 @@
 		<div class="page out" id="ComReg" data-params="root=$&amp;callback=comreg&amp;fallback=comregoOut">
 			<div class="dialog-box d2">
 				<div class="login-4 form">
-					<h3>继续完善 or 完成注册？</h3>
+					<h3 style="position:relative;left:40%;">基本资料填写<span class="f14"></span></h3>
+					<p style="margin-bottom:25px;font-size:17px;font-weight:normal;text-shadow:0 0;">三.继续完善 or 完成注册？</p>
 					<form  id="ComRegForm" data-preventDefault="validate_false" >
 						<div class="l">
 							<div class="item">
 								<label class="dt dtt">头&emsp;&emsp;像</label>
 								<div class="dd">
 									<span class="pic-area">
-										<div id="imgdiv"><img id="imgShow" width="100%" height="100%" style="margin-top:-1px;margin-left:-1px"/></div>
+										<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;"/></div>
 									</span>
 									
 									<a href="javascript:up_img.click();"  class="f14 a1">
-										本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/><br>
-										<small>(头像文件必须不大于1M)</small>
+										本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
 									</a>
+									<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
 								</div>
 							</div>
 							<div class="item">
@@ -246,7 +249,7 @@
 								</div>
 							</div>
 							<div class="opear">
-								<button class="btn-e wtb" type="button">上一步</button>
+								<button class="btn-e wtb" type="button" onclick="backforward()">上一步</button>
 							</div>
 						</div>
 						<div class="r-2">
@@ -256,7 +259,7 @@
 									<input type="text" id="NC" class="text-c wtb" data-min="1" name="address">
 								</div>
 							</div>
-							<div class="item">
+							<div class="item"  style="margin-bottom:29px;">
 								<label for="NC" class="dt">邮&emsp;&emsp;箱</label>
 								<div class="dd">
 									<input type="text" id="NC" class="text-c wtb" data-min="1" name="email">
@@ -344,9 +347,27 @@ $('.interests .tag .del').live('click',function(){
 })
 $('#AddTagBtn').click(function(){
 	var c = $(this).prev();
-	$('.login-3 .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del"></i></a>')
+	if(c.val()==null||""==c.val()){
+		return;
+	}
+	$('.login-3 .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del"></i></a>&nbsp;&nbsp;')
 	c.val("");
-})
+});
+
+$("div.mb10 .text-c").keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+    	var c = $(this);
+    	if(c.val()==null||""==c.val()){
+    		return;
+    	}
+    	$('.login-3 .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del"></i></a>&nbsp;&nbsp;')
+    	c.val("");
+    }
+});
+
+
+
 $.extend({
 	//登录
 	login:function(){
@@ -499,7 +520,10 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 
 //上传图片预览
  new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
-
+//续续完善或注册 上一步
+function backforward(){
+	window.location="#&Reg";
+}
 
 </script>
 </body>
