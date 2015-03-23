@@ -141,6 +141,29 @@ public class TopicService extends HttpServlet {
 		case "topicMemory"://fang
 			getTopicMemory(request,response);
 			break;
+		case "findUserByUserId":
+			findUserByUserId(request,response);
+			break;
+		}
+	}
+
+	private void findUserByUserId(HttpServletRequest request, HttpServletResponse response) {
+		String userId =  request.getParameter("userId");
+		if(userId==null){
+			return;
+		}
+		User u = userManager.findUserById(Integer.parseInt(userId));
+		JSONObject json = new JSONObject();
+		json.put("userId",u.id);
+		json.put("userName", u.xunta_username);
+		json.put("imageUrl",u.imageUrl);
+		response.setContentType("text/json");
+		response.setCharacterEncoding("utf-8");
+		try {
+			response.getWriter().write(json.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

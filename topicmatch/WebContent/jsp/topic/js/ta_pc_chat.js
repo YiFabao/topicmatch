@@ -50,6 +50,7 @@ var topicItemArray = new Array();//用来保存已经加载过的话题列表对
 var chat_box_center={};//保存的是 topiId ==> 聊天框的 html
 var chat_box_fold={};
 var chat_box_right={};//保存的是 topicId ==> 聊天框的 html
+var topicId_memberArray={};//保存新参与进来的成员,在切换话题时加载上去
 
 /**
  * 用户参与话题
@@ -620,9 +621,10 @@ function changeTopicChatBox(topicId){
 		console.log("加载全局变量中存储的未读消息到聊天框……");
 		var unreadMsgArray = topicId_unreadMsgArray[topicId];
 		console.log(unreadMsgArray);
-		for(var i=0;i<unreadMsgArray.length;i++){
+		//因为第一次加载的历史消息中已经包含了刚发的消息，所以不用再显示未读消息了，否则最后一条会重复
+	/*	for(var i=0;i<unreadMsgArray.length;i++){
 			createMessage(1,unreadMsgArray[i]);//显示未读消息
-		}
+		}*/
 		//删除未读消息
 		delete topicId_unreadMsgArray[topicId];
 		//将未读消息提醒元素删除
@@ -685,6 +687,40 @@ window.receiveBroadcast = function(json)
 {
 	console.log("收到广播消息...");
 	console.log("用户上线"+json.userId+"   "+json.topicId);
+	//判断当前的话题窗的topicId是否与json.topicId相等
+	var cur_topicId = $(".topic-box .center").attr("topicid");
+	console.log("当前窗口的topicId:"+cur_topicId);
+	if (cur_topicId == json.topicId) {// 是当前窗口
+		//在参与人列表　添加一个用户
+		console.log("当前窗口");
+		var member;
+		var parameters = {
+				cmd:"findUserByUserId",
+				userId: json.userId
+			};
+		$.ajax({  
+		     type : "post",  
+		     url : contextPath+"/servlet/topic_service",
+		     data : parameters,  
+		     async : false,  //同步
+		     datatype:"json",
+		     success : function(res){
+		    	 console.log("请求成功:"+res);
+		    	member=res;
+		     } ,
+		     error:function(){
+		    	console.log("请求出错");
+		     }
+		});		
+		var li_node = create_one_topicMember_item(member);
+		$("div.right ul.user-list").append(li_node);
+		
+	}
+/*	//判断当前topicId的话题项是否加载
+	if (topicItemArray.in_array(topicId)) {
+		topicId_memberArray
+	}*/
+	
 	/*//查询当前对应的话题窗口有没有打开
 	if(!getDialogueByBoxId(json.topicId)){
 		console.log("接收广播消息==>查询当查询当前对应的话题窗口是否已经加载==>未加载");
@@ -826,7 +862,7 @@ window.webimHandle = function(json) {
 		console.log("不是当前窗口");
 		//初始化显示的历史消息记录数为0
 		topicId_count_map[topicId]=0;
-		//初始化历史消息数
+		//初始化未读消息数
 		if (topicId_unreadMsgArray[topicId]) {
 			topicId_unreadMsgArray[topicId].push(json);
 		} else {
@@ -962,6 +998,7 @@ window.receiveBroadcast = function(json)
 		console.log("联系人在列表中已经存在");
 	} */
 }
+
 
 //获取联系人id数组
 function getContactsArray(){
