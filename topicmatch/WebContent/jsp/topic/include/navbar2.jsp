@@ -17,8 +17,8 @@
 		<div class="head">
 			<h1 class="logo"><a href="/">寻TA网</a></h1>
 			<div class="form search">
-				<input type="text" class="text">
-				<input type="submit" class="iconfont submit" value="&#xe602;">
+				<input type="text" class="text" id="search_word">
+				<input type="button" class="iconfont submit" id="search_btn" value="&#xe602;">
 			</div>
 			<nav class="nav">
 				<ul class="fix">
