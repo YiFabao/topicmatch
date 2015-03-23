@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -144,6 +143,7 @@ public class TopicService extends HttpServlet {
 		}
 	}
 
+
 	private void getTopicAndTopicMembersByTopicId(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		//参与话题
@@ -151,7 +151,7 @@ public class TopicService extends HttpServlet {
 		//查询出　Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
-		User p_user = userManager.findUserById(Integer.parseInt(topic.userId));
+		User p_user = userManager.findUserById(topic.id);
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
@@ -349,11 +349,11 @@ public class TopicService extends HttpServlet {
 /*		cmd:"receiveInvite",
 		toUserId:currentUserId,
 		topicId:topicId*/
-		String toUserId = request.getParameter("userId");//接受邀请的用户id
+		String toUserId = request.getParameter("toUserId");
 		String topicId = request.getParameter("topicId");
-	/*	System.out.println("接受邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
+		System.out.println("接受邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
 		msgManager.updateTopicRequestMsgHandledState(toUserId, topicId,"1");//更改邀请信息的状态
-*/		
+		
 		//参与话题
 		//查询出参与人
 		UserManager userManager = new UserManagerImpl();
@@ -604,9 +604,31 @@ public class TopicService extends HttpServlet {
 			//搜索话题
 			List<so.xunta.topic.entity.Topic> searchedtopicList=topicManager.matchMyTopic(searchWord);
 			request.setAttribute("searchWord",searchWord);
-			request.setAttribute("topicList",searchedtopicList);
+			//request.setAttribute("topicList",searchedtopicList);
+			
+			//按<用户名,TopicList>将topic列表按用户归类，方便前端显示
+			Map<String,List<so.xunta.topic.entity.Topic>> usergroupedTopicList = new HashMap<String,List<so.xunta.topic.entity.Topic>>();
+			request.setAttribute("topicsHashMap",null);
+			if(searchedtopicList!=null)
+			{
+				for(so.xunta.topic.entity.Topic t: searchedtopicList){
+					String userName = t.getUserName();
+					if(usergroupedTopicList.containsKey(userName))
+					{
+						usergroupedTopicList.get(userName).add(t);
+					}
+					else
+					{
+						List<so.xunta.topic.entity.Topic> userTopicsList = new ArrayList<so.xunta.topic.entity.Topic>();
+						userTopicsList.add(t);
+						usergroupedTopicList.put(userName, userTopicsList);
+					}
+				}
+				request.setAttribute("topicsHashMap",usergroupedTopicList);
+			}
+			
 			try {
-				request.getRequestDispatcher("/jsp/topic/search_result.jsp").forward(request, response);
+				request.getRequestDispatcher("/jsp/topic/include/search_results.jsp").forward(request, response);
 			} catch (ServletException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -847,18 +869,19 @@ public class TopicService extends HttpServlet {
 			}
 		}else{
 			//topic history message  string : topicId
-			LinkedHashMap<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
+			Map<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
+			Iterator<?> iter = topicHistoryMessageMap.entrySet().iterator();
 			JSONArray arrayJson = new JSONArray();
 			JSONObject objectJson = new JSONObject();
-			for (String key : topicHistoryMessageMap.keySet()) {
-				String topicId = key;
-				System.out.println("排序Id   :  "+topicId);
+			while (iter.hasNext()) {
+				Map.Entry entry = (Map.Entry) iter.next();
+				String topicId = (String) entry.getKey();
 				String acceppterIds="[\"1\"]";
 				String content="";
 				String lastTime="";
-				if(topicHistoryMessageMap.get(key) != null){
+				if(entry.getValue() != null){
 					//如果该用户只发布了话题，但是没有说话， 会导致获取不到最后回复内容及最后回复时间及话题参与人数，用默认值代替
-					HistoryMessage val = topicHistoryMessageMap.get(key);
+					HistoryMessage val = (HistoryMessage) entry.getValue();
 					content = URLDecoder.decode(val.getContent());
 					acceppterIds = val.getAccepterId();
 					lastTime = val.getDateAndTime();

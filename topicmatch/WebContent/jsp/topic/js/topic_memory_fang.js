@@ -2,12 +2,11 @@ $(function() {
 	// 文档加载完执行
 });
 
-var load = 0;
 /**
  * 我发起的话题 p
  */
 function topic_p(request) {
-	console.log("时间排序  : "+request.createTime);
+	
 	var exist = $(".fix #"+request.topicId);
 	console.log("exist.length : "+exist.length);
 	if(exist.length == 1){
@@ -49,11 +48,11 @@ function topic_p(request) {
 		p_txt.append(request.content + "  ");
 		p_txt.append(i_ago)
 		div_bd_node.append(p_txt);
- 
-		if (ul_l_node.height() <= ul_r_node.height()) {
-			ul_l_node.append(li_node.append(div_hd_node).append(div_bd_node));
-		} else {
+
+		if (ul_l_node.height() >= ul_r_node.height()) {
 			ul_r_node.append(li_node.append(div_hd_node).append(div_bd_node));
+		} else {
+			ul_l_node.append(li_node.append(div_hd_node).append(div_bd_node));
 		}
 }
 
@@ -61,12 +60,13 @@ function topic_p(request) {
  * 我参与的话题 j
  */
 function topic_j(request) {
-	console.log("时间排序  : "+request.createTime);
+	
 	var exist = $(".fix #"+request.topicId);
 	console.log("exist.length : "+exist.length);
 	if(exist.length == 1){
 		return;
 	}
+	
 	
 	// 定义父节点
 	var ul_pateUl = $("#pateUl");
@@ -79,10 +79,12 @@ function topic_j(request) {
 		} else {
 			li_node = $("<li></li>").attr("class", "column tp even").attr("topicId",request.topicId);
 		}
+		// 定义元素父节点
 
 		// 定义元素节点
 		var div_hd = $("<div></div>").attr("class", "hd");
-		var a_user_pic = $("<a></a>").attr("class", "user-pic").attr("href","#");
+		var a_user_pic = $("<a></a>").attr("class", "user-pic").attr("href",
+				"#");
 		var img_node = $("<img></img>").attr("alt", request.nickname).attr(
 				"src", request.userImgUrl);
 		a_user_pic.append(img_node);
@@ -95,7 +97,7 @@ function topic_j(request) {
 		var time_node = $("<time></time>").append(request.yyyyMMdd + "  ");
 		var b_hour = $("<b></b>").attr("class", "hour").append(request.HHmm);
 		time_node.append(b_hour);
-		var a_enter = $("<a onclick=create_one_topic_item_jy_j(this,null)></a>").attr("class", "enter").attr("href", "#");
+		var a_enter = $("<a></a>").attr("class", "enter").attr("href", "#");
 		a_enter.append("进入");
 
 		div_hd.append(a_user_pic).append(span_area).append(p_name).append(
@@ -112,61 +114,14 @@ function topic_j(request) {
 		li_node.append(div_hd).append(div_bd).append(div_date);
 		ul_pateUl.append(li_node);
 }
-
-function closePateUlAll(){
-	$("#pateUl li").remove();//每次点击"我参与的话题"时,先清空在从新获取，否则因为页面无刷新，保留着历史数据会导致重复
-	load =0;
-}
-function closeLaunchAll(){
-	$(".column.l li").remove();//每次点击"我参与的话题"时,先清空在从新获取，否则因为页面无刷新，保留着历史数据会导致重复
-	$(".column.r li").remove();//每次点击"我参与的话题"时,先清空在从新获取，否则因为页面无刷新，保留着历史数据会导致重复
-	load =0;
-}
 /**
  * 请求话题记忆 topic_type : p 发起 topic_type ： j 参与
  */
 function getTopicMemory(user_id, topic_type, topic_num) {
-	closePateUlAll();
-	closeLaunchAll();
 	var parameters = {
 		"cmd" : "topicMemory",
 		"topicType" : topic_type,
 		"topicNum" : topic_num,
-		"userId" : user_id
-	};
-	$.post("http://" + document.domain
-			+ ":8080/topicmatch/servlet/topic_service", parameters, function(
-			res, status) {
-		console.log("请求话题记忆时      status   :    " + status);
-		console.log("执行获取话题记忆post请求 ");
-		if(res.notTopic == "yes"){
-			console.log("没有历史话题");
-			return;
-		}
-		var arrayJson = res.msg;
-		console.log(arrayJson);
-		for (var i = 0; i < arrayJson.length; i++) {
-			console.log(res.notTopic);
-				if (topic_type == "p") {
-					console.log("p");
-					topic_p(arrayJson[i]);
-				} else {
-					console.log("j");
-					topic_j(arrayJson[i]);
-				}
-		}
-	});
-};
-
-/**
- * 加载更多
- */
-function loadTopicMemory(user_id, topic_type, topic_num) {
-	load = topic_num+10;
-	var parameters = {
-		"cmd" : "topicMemory",
-		"topicType" : topic_type,
-		"topicNum" : load,
 		"userId" : user_id
 	};
 	$.post("http://" + document.domain
