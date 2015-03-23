@@ -1,9 +1,7 @@
 package so.xunta.topic.model;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import so.xunta.entity.User;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.RecommendedPeople;
@@ -89,7 +87,7 @@ public interface TopicManager {
 	//根据authorId 和  publish_or_join 获取对应的topicId   fang
 	public List<TopicHistory> findAuthorIdAndPublish_or_joinByTopicId(String authorId, String publish_or_join, int titleNum);
 	//根据topicId 获取 topicHistoryMessage   fang
-	public LinkedHashMap<String,HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list);
+	public Map<String,HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list);
 	//根据topicId 获取 topic   fang
 	public Topic findTopicIdByTopic(String topicId);
 	//根据topicId 获取 TopicHistory   fang
