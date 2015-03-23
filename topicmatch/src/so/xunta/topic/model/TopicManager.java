@@ -17,6 +17,8 @@ public interface TopicManager {
 	public void createTopicIndex(Topic topic);
 	//获取匹配的话题,从索引里查询
 	public List<Topic> matchMyTopic(String mytopic);
+	//与前面一个相同，从索引里查询，不过只返回toplic的id列表，因为直接从索引返回Topic对象缺少参加人数，所以还是需要从数据库查
+	public List<String> matchMyTopicIds(String mytopic);
 	public List<Topic> matchMyTopic(String topicName,String mytopic);
 	//与前面一个相同，从索引里查询，不过只返回toplic的id列表,以方便后面直接使用findTopicHistoryByTopicId查询
 	public List<String> matchMyTopicIds(String topicName, String topicContent);

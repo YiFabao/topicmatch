@@ -57,8 +57,8 @@
 						</div>
 						</c:if> --%>
 						
-						<c:if test="${requestScope.matchedTopicList!=null}">
 						<h3 class="title">最匹配的"话题人"</h3>
+						<c:if test="${requestScope.matchedTopicList!=null}">
 						<ul class="talk-list">
 							<c:forEach var="matched_topic" items="${requestScope.matchedTopicList}" varStatus="status">
 							<c:if test="${matched_topic.userId!=sessionScope.user.id}">

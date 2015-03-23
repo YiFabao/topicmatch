@@ -602,7 +602,12 @@ public class TopicService extends HttpServlet {
 			System.out.println("话题搜索");
 			System.out.println(searchWord);
 			//搜索话题
-			List<so.xunta.topic.entity.Topic> searchedtopicList=topicManager.matchMyTopic(searchWord);
+			//不直接从索引返回搜索的话题列表，只返回id列表
+			//List<so.xunta.topic.entity.Topic> searchedtopicList=topicManager.matchMyTopic(searchWord);
+			//从索引里查询topic，不过只返回toplic的id列表，因为直接从索引返回Topic对象缺少参加人数，所以还是需要从数据库查
+			List<String> searchedtopicIdList=topicManager.matchMyTopicIds(searchWord);
+			List<so.xunta.topic.entity.Topic> searchedtopicList=topicManager.getTopicListByTopicIdList(searchedtopicIdList);
+			
 			request.setAttribute("searchWord",searchWord);
 			//request.setAttribute("topicList",searchedtopicList);
 			
