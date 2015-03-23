@@ -16,6 +16,7 @@
     <property name="nickname" not-null="false" />
     <property name="date" not-null="false" />
     <property name="time" not-null="false" />
+    <property name="longTime" not-null="false" />
   </class>
 </hibernate-mapping>
 

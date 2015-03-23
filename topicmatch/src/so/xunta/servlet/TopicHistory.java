@@ -35,7 +35,7 @@ public class TopicHistory extends HttpServlet {
 			JSONArray jsonArray = new JSONArray();
 			
 			Session session = HibernateUtils.openSession();
-			String hql = "from HistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.dateAndTime desc";
+			String hql = "from HistoryMessage as hisMsg where hisMsg.topicId=? order by hisMsg.longTime desc";
 			System.out.println("获取话题历史消息的HQL语句 ：  "+hql);
 			Query query = session.createQuery(hql).setString(0, topic_Id).setFirstResult(Integer.parseInt(biginIndex)).setMaxResults(Integer.parseInt(maxNum));
 			List<HistoryMessage> topicHistoryMessageList = query.list();

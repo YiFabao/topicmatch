@@ -16,6 +16,10 @@ public class Time {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format.format(date);
 	}
+	public static String getTimeLong(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(date);
+	}
 	public static String getDate_ta_pc(Date date){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.format(date);
