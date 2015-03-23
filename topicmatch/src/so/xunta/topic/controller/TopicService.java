@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -846,19 +847,18 @@ public class TopicService extends HttpServlet {
 			}
 		}else{
 			//topic history message  string : topicId
-			Map<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
-			Iterator<?> iter = topicHistoryMessageMap.entrySet().iterator();
+			LinkedHashMap<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
 			JSONArray arrayJson = new JSONArray();
 			JSONObject objectJson = new JSONObject();
-			while (iter.hasNext()) {
-				Map.Entry entry = (Map.Entry) iter.next();
-				String topicId = (String) entry.getKey();
+			for (String key : topicHistoryMessageMap.keySet()) {
+				String topicId = key;
+				System.out.println("排序Id   :  "+topicId);
 				String acceppterIds="[\"1\"]";
 				String content="";
 				String lastTime="";
-				if(entry.getValue() != null){
+				if(topicHistoryMessageMap.get(key) != null){
 					//如果该用户只发布了话题，但是没有说话， 会导致获取不到最后回复内容及最后回复时间及话题参与人数，用默认值代替
-					HistoryMessage val = (HistoryMessage) entry.getValue();
+					HistoryMessage val = topicHistoryMessageMap.get(key);
 					content = URLDecoder.decode(val.getContent());
 					acceppterIds = val.getAccepterId();
 					lastTime = val.getDateAndTime();
