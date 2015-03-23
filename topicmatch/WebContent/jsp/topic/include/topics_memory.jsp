@@ -15,14 +15,14 @@
 						</ul>
 						<ul class="column r">
 						</ul>
-						<button class="load"><img src="images/loading.gif" alt="">加载中...</button>
+						<button class="load" onclick="loadTopicMemory(myselfId,'p',load);"><img src="images/loading.gif" alt="">加载中...</button>
 					</li>
 					<li id="participate" class="dn item pate">
 						<ul class="fix" id="pateUl">
 							
 						</ul>
 						<div class="bt">
-							<button class="load" id="loadMoreBtn"><img src="images/loading.gif" alt="">加载中...</button>
+							<button class="load" id="loadMoreBtn" onclick="loadTopicMemory(myselfId,'j',load);"><img src="images/loading.gif" alt="">加载中...</button>
 						</div>
 					</li>
 				</ul>

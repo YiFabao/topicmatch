@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -993,8 +994,11 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	// fang
-	public Map<String, HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list) {
-		Map<String, HistoryMessage> historyMessageMap = new HashMap<String, HistoryMessage>();
+	public LinkedHashMap<String, HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list) {
+//		for (TopicHistory topicHistory : list) {
+//			System.out.println("排序顺序  :  "+topicHistory.getDatetime());
+//		}
+		LinkedHashMap<String, HistoryMessage> historyMessageMap = new LinkedHashMap<String, HistoryMessage>();
 		for (TopicHistory topicHistory : list) {
 			Session session = HibernateUtils.openSession();
 			String topicId = topicHistory.getTopicId();
