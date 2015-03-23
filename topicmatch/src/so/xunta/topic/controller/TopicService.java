@@ -606,7 +606,7 @@ public class TopicService extends HttpServlet {
 			request.setAttribute("searchWord",searchWord);
 			request.setAttribute("topicList",searchedtopicList);
 			try {
-				request.getRequestDispatcher("/jsp/topic/htss.jsp").forward(request, response);
+				request.getRequestDispatcher("/jsp/topic/search_result.jsp").forward(request, response);
 			} catch (ServletException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

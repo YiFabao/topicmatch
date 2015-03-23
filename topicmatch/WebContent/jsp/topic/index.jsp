@@ -154,10 +154,11 @@
 
 	$("#fqht").click(function(){
 		console.log("发起话题");
-		$.post("<%=request.getContextPath()%>/jsp/topic/include/sponsored_topic.jsp",null,function(res,status){
+
+		 $.post("<%=request.getContextPath()%>/jsp/topic/include/sponsored_topic.jsp",null,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
-		});
+		}); 
 		
 	});
 	$("#htjy").click(function(){
@@ -166,6 +167,22 @@
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		});
+	});
+	
+	$("#search_btn").click(function(){
+		console.log("搜索……");
+		var search_word=$("#search_word").val();//用户填写的搜索词
+		//涉及到分页,自行设计
+		$.post("${pageContext.request.contextPath}/servlet/topic_service?cmd=htss",parameters,function(res,status){
+			$("#container_all").empty();
+			$("#container_all").append(res);
+		}); 
+		
+		console.log(search_word);
+<%-- 		$.post("<%=request.getContextPath()%>/jsp/topic/include/search_results.jsp",null,function(res,status){
+			$("#container_all").empty();
+			$("#container_all").append(res);
+		}); --%>
 	});
 	
 	//发送消息按钮添加点击或按回车键发送消息
