@@ -50,7 +50,7 @@ function topic_p(request) {
 		p_txt.append(i_ago)
 		div_bd_node.append(p_txt);
 
-		if (ul_l_node.height() < ul_r_node.height()) {
+		if (ul_l_node.height() <= ul_r_node.height()) {
 			ul_l_node.append(li_node.append(div_hd_node).append(div_bd_node));
 		} else {
 			ul_r_node.append(li_node.append(div_hd_node).append(div_bd_node));
