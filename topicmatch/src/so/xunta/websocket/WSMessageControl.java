@@ -1,6 +1,7 @@
 package so.xunta.websocket;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Date;

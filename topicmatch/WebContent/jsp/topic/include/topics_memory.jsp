@@ -41,13 +41,19 @@
 	$(window).height()//浏览器窗口的高度
 	$(window).scrollTop() + $(window).height()  >= $(document).height()
 	$(function(){
-	  $(window).scroll(function() {
+		$(".main").scroll(function() {
+			  console.log("滑动加载事件");
+
+			  console.log("$(this).scrollTop()  :  "+$(this).scrollTop());
+			  
+			  console.log("$.main.height()  :  "+$(".main").height());
+			  
+			  console.log("$(document).height()  :  "+$(document).height());
+			
 		  //当内容滚动到底部时加载新的内容
-		  if ($(this).scrollTop() + $(window).height() + 20 >= $(document).height() && $(this).scrollTop() > 20) {
+		  //if ($(this).scrollTop() >= $(document).height()) {
 			  //ajax 加载
-			  LoadPage();
-			  alert("滑动加载事件");
-		  }
+		 // }
 	  });
 	});
 	
