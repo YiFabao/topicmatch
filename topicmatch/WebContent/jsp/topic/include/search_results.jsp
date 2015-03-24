@@ -37,53 +37,48 @@
 				</c:forEach>
 			</c:if> --%>
 			<c:if test="${requestScope.topicsHashMap!=null}">
-				<c:forEach var="searched_topicsHashMap" items="${requestScope.topicsHashMap}"
-					varStatus="status">
-					 <%-- key值： ${searched_topicsHashMap.key}<br>
+				<c:forEach var="searched_topicsHashMap"
+					items="${requestScope.topicsHashMap}" varStatus="status">
+					<%-- key值： ${searched_topicsHashMap.key}<br>
      				value大小：${searched_topicsHashMap.value.size()}<br> --%>
-     				<c:forEach var="searched_userTopic" items="${searched_topicsHashMap.value}"
-					varStatus="innerstatus">
+					<c:forEach var="searched_userTopic"
+						items="${searched_topicsHashMap.value}" varStatus="innerstatus">
 						<tbody>
 							<tr>
-								<%-- <c:if test="${innerstatus.first}">
-									<td class="border" rowspan="${searched_topicsHashMap.value.size()}">
-										<img src="${searched_userTopic.logo_url}"
-										alt="" class="user-pic"> <a href="#" class="nc">${searched_userTopic.userName}</a>
-									</td>
-								</c:if>  --%>
-								<c:choose>  
-								   <c:when test="${innerstatus.first}">
-								   		<td class="border">
-								   		<!-- <img src="images/delete/user-pic2.jpg" -->
-											<img src="${searched_userTopic.logo_url}"
-											alt="" class="user-pic"> <a href="#" class="nc">${searched_userTopic.userName}</a>
-										</td>
-								   </c:when>  
-								   <c:otherwise>
-								   		<td class="border">
-										</td>
-								   </c:otherwise>  
-								</c:choose>  
-								<td class="border"><span class="dt">标题：</span>
+								<c:choose>
+									<c:when test="${innerstatus.first}">
+										<td class="border"
+											rowspan="${searched_topicsHashMap.value.size()}"><img
+											src="${searched_userTopic.logo_url}" alt="" class="user-pic">
+											<a href="#" class="nc">${searched_userTopic.userName}</a></td>
+									</c:when>
+									<c:otherwise>
+										<td class="border"></td>
+									</c:otherwise>
+								</c:choose>
+
+								<td class="border bb"><span class="dt">标题：</span>
 									<div class="dd">
 										<p class="name">
 											<a href="#">${searched_userTopic.topicName}</a>
 										</p>
 										<p class="txt">${searched_userTopic.topicContent}</p>
 									</div></td>
-								<td class="tc">${searched_userTopic.join_people_num}人</td>
-								<td class="tc">${searched_userTopic.createTime}</td>
+								<td class="tc bb border">${searched_userTopic.join_people_num}人</td>
+								<td class="tc bb border">${searched_userTopic.createTime}</td>
 							</tr>
-							<tr class="bt">
-								<td colspan="4"></td>
-							</tr>
+							<c:if test="${innerstatus.last}">
+								<tr class="bt">
+									<td colspan="4"></td>
+								</tr>
+							</c:if>
 						</tbody>
-					
+
 					</c:forEach>
 				</c:forEach>
 			</c:if>
-			
-				<!-- <tbody>
+
+			<!-- <tbody>
 					<tr>
 						<td class="border" rowspan="2">
 							<img src="images/delete/user-pic2.jpg" alt="" class="user-pic">
@@ -98,8 +93,8 @@
 								<p class="txt">关于最新的互联网咨询，支持在线学习并且跟大家讨论“PC和移动端双屏互动”,</p>
 							</div>
 						</td>
-						<td class="tc" rowspan="2">500人</td>
-						<td class="tc" rowspan="2">2天前</td>
+						<td class="tc bb">500人</td>
+						<td class="tc bb">2天前</td>
 					</tr>
 					<tr>
 						<td class="border">
@@ -111,6 +106,8 @@
 								<p class="txt">关于最新的互联网咨询，支持在线学习并且跟大家讨论“PC和移动端双屏互动”,</p>
 							</div>
 						</td>
+						<td class="tc bb">500人</td>
+						<td class="tc bb">2天前</td>
 					</tr>
 					<tr class="bt"><td colspan="4"></td></tr>
 				</tbody> -->
