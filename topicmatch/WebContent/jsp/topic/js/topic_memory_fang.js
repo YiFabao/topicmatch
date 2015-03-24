@@ -95,7 +95,7 @@ function topic_j(request) {
 		var time_node = $("<time></time>").append(request.yyyyMMdd + "  ");
 		var b_hour = $("<b></b>").attr("class", "hour").append(request.HHmm);
 		time_node.append(b_hour);
-		var a_enter = $("<a></a>").attr("class", "enter").attr("href", "#");
+		var a_enter = $("<a onclick=create_one_topic_item_jy_j(this,null)></a>").attr("class", "enter").attr("href", "#");
 		a_enter.append("进入");
 
 		div_hd.append(a_user_pic).append(span_area).append(p_name).append(

@@ -141,9 +141,31 @@ public class TopicService extends HttpServlet {
 		case "topicMemory"://fang
 			getTopicMemory(request,response);
 			break;
+		case "findUserByUserId":
+			findUserByUserId(request,response);
+			break;
 		}
 	}
 
+	private void findUserByUserId(HttpServletRequest request, HttpServletResponse response) {
+		String userId =  request.getParameter("userId");
+		if(userId==null){
+			return;
+		}
+		User u = userManager.findUserById(Integer.parseInt(userId));
+		JSONObject json = new JSONObject();
+		json.put("userId",u.id);
+		json.put("userName", u.xunta_username);
+		json.put("imageUrl",u.imageUrl);
+		response.setContentType("text/json");
+		response.setCharacterEncoding("utf-8");
+		try {
+			response.getWriter().write(json.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void getTopicAndTopicMembersByTopicId(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
@@ -152,7 +174,7 @@ public class TopicService extends HttpServlet {
 		//查询出　Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
-		User p_user = userManager.findUserById(topic.id);
+		User p_user = userManager.findUserById(Integer.parseInt(topic.userId));
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
@@ -350,11 +372,11 @@ public class TopicService extends HttpServlet {
 /*		cmd:"receiveInvite",
 		toUserId:currentUserId,
 		topicId:topicId*/
-		String toUserId = request.getParameter("toUserId");
+		String toUserId = request.getParameter("userId");//接受邀请的用户id
 		String topicId = request.getParameter("topicId");
-		System.out.println("接受邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
+	/*	System.out.println("接受邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
 		msgManager.updateTopicRequestMsgHandledState(toUserId, topicId,"1");//更改邀请信息的状态
-		
+*/		
 		//参与话题
 		//查询出参与人
 		UserManager userManager = new UserManagerImpl();

@@ -154,12 +154,10 @@
 
 	$("#fqht").click(function(){
 		console.log("发起话题");
-
 		 $.post("<%=request.getContextPath()%>/jsp/topic/include/sponsored_topic.jsp",null,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		}); 
-		
 	});
 	$("#htjy").click(function(){
 		console.log("话题记忆");
@@ -177,14 +175,12 @@
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		}); 
-		
 		console.log(search_word);
 <%-- 		$.post("<%=request.getContextPath()%>/jsp/topic/include/search_results.jsp",null,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		}); --%>
 	});
-	
 	//发送消息按钮添加点击或按回车键发送消息
 	 $(document).keydown(function(event){
 		    if(event.keyCode==13){
