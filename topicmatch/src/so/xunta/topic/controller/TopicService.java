@@ -151,7 +151,7 @@ public class TopicService extends HttpServlet {
 		//查询出　Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
-		User p_user = userManager.findUserById(topic.id);
+		User p_user = userManager.findUserById(Integer.parseInt(topic.userId));
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
