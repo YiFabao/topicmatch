@@ -863,15 +863,25 @@ window.webimHandle = function(json) {
 		console.log("不是当前窗口");
 		//初始化显示的历史消息记录数为0
 		topicId_count_map[topicId]=0;
-		//初始化未读消息数
-		if (topicId_unreadMsgArray[topicId]) {
-			topicId_unreadMsgArray[topicId].push(json);
-		} else {
-			var arr = new Array();
-			arr.push(json);
-			topicId_unreadMsgArray[topicId] = arr;
+		//初始化未读消息数,需判断话题项是否存在,如果存在就添加，否则就不添加，因为第一次加载话题项时有历史消息，历史消息包含最近发的消息
+		if(topicItemArray.in_array(topicId)){
+			if (topicId_unreadMsgArray[topicId]) {
+				topicId_unreadMsgArray[topicId].push(json);
+			} else {
+				var arr = new Array();
+				arr.push(json);
+				topicId_unreadMsgArray[topicId] = arr;
+			}
+			$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
 		}
-		$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
+		else{
+			if (topicId_unreadMsgArray[topicId]) {
+				
+			} else {
+				var arr = new Array();
+				topicId_unreadMsgArray[topicId] = arr;
+			}
+		}
 		// 判断话题列表项是否存在
 		if (topicItemArray.in_array(topicId)) {// 存在话题列表项,更新显示未读消息数
 			console.log("列表项存在");
