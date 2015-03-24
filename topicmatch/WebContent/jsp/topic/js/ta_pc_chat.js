@@ -449,7 +449,6 @@ function createChatBox_center(topicObj,userObj){
 	    	//更改已加载历史消息记录数
 	    	console.log("获取的历史消息数为："+res.length);
 	    	topicId_count_map[topicObj.topicId]=parseInt(topicId_count_map[topicObj.topicId])+res.length;
-	    	console.log("异步");
 	    	console.log(ret_msgs);
 	    	if(topicId_historyMsgArray[topicObj.topicId]){//存在该话题的历史消息数组
 	    		for(var i=0;i<ret_msgs.length;i++){
@@ -643,9 +642,9 @@ function changeTopicChatBox(topicId){
 		var unreadMsgArray = topicId_unreadMsgArray[topicId];
 		console.log(unreadMsgArray);
 		//因为第一次加载的历史消息中已经包含了刚发的消息，所以不用再显示未读消息了，否则最后一条会重复
-	/*	for(var i=0;i<unreadMsgArray.length;i++){
+		for(var i=0;i<unreadMsgArray.length;i++){
 			createMessage(1,unreadMsgArray[i]);//显示未读消息
-		}*/
+		}
 		//删除未读消息
 		delete topicId_unreadMsgArray[topicId];
 		//将未读消息提醒元素删除
