@@ -85,7 +85,7 @@
 											<li>&emsp;&emsp;参与相关话题数<span class="num">${matched_topic.j_num}</span></li>
 										</ul>
 									</div>
-									<a href="#" class="enter" userId="${matched_topic.userId }" userName="${matched_topic.name }" onclick="topicInvite(mytopicId,myselfId);">邀请</a>
+									<a href="#" class="enter" id="${matched_topic.userId }" userId="${matched_topic.userId }" userName="${matched_topic.name }" onclick="topicInvite(mytopicId,myselfId,this);">邀请</a>
 								</div>
 							</li>
 							</c:if>
@@ -166,11 +166,12 @@
 		//$("#form1").submit();
 	});
 	 
-	function topicInvite(topic_id,user_id){
-		$(".enter").text("已发出邀请");
+	function topicInvite(topic_id,user_id,node){
 		var invite_user_id = $(".enter").attr("userId");
 		var invite_user_name = $(".enter").attr("userName");
+		console.log(invite_user_id);
 		//console.log(topic_id+"  "+user_id+"  "+invite_user_id+"  "+invite_user_name);
+		$(node).text("已发出邀请");
 		var parameters={
 				"topicId":topic_id,
 				"fromUserId":user_id,
