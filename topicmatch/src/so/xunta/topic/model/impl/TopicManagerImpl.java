@@ -844,6 +844,9 @@ public class TopicManagerImpl implements TopicManager {
 	@Override
 	public List<Topic> getTopicListByTopicIdList(List<String> topicIdList) {
 		Session session = HibernateUtils.openSession();
+		if(topicIdList==null||topicIdList.size()==0){
+			return null;
+		}
 		String hql = "from Topic as t where t.topicId in (:topicIdList)";
 		org.hibernate.Query query = session.createQuery(hql);
 		query.setParameterList("topicIdList", topicIdList);
