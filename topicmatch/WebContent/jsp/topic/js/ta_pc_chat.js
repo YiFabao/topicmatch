@@ -9,6 +9,15 @@ var topicId_count_map={};//{话题ID：已经显示的历史消息数,在创建�
 var topicId_unreadMsgArray={};//话题topicId：未读消息数组,在聊天框隐藏状态下,保存到该数组中，显示后清空该数组
 var topicId_historyMsgArray={};//话题　topicId:获取的历史消息
 var notifiction_count=0;
+
+//全局变量
+var topicItemArray = new Array();//用来保存已经加载过的话题列表对应的topicId
+
+//全局变量
+var chat_box_center={};//保存的是 topiId ==> 聊天框的 html
+var chat_box_fold={};
+var chat_box_right={};//保存的是 topicId ==> 聊天框的 html
+var topicId_memberArray={};//保存新参与进来的成员,在切换话题时加载上去
 /**
  * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
  */
@@ -43,14 +52,7 @@ Array.prototype.remove = function(val) {
 	}
 };
 
-//全局变量
-var topicItemArray = new Array();//用来保存已经加载过的话题列表对应的topicId
 
-//全局变量
-var chat_box_center={};//保存的是 topiId ==> 聊天框的 html
-var chat_box_fold={};
-var chat_box_right={};//保存的是 topicId ==> 聊天框的 html
-var topicId_memberArray={};//保存新参与进来的成员,在切换话题时加载上去
 
 /**
  * 用户参与话题
@@ -58,7 +60,9 @@ var topicId_memberArray={};//保存新参与进来的成员,在切换话题时�
  * History :
  * 		2015/3/10 fabao.yi　first release
  */
-function func_joinTopic(topicId){
+function func_joinTopic(e){
+	var li_node = $(e.target).parentsUntil("li.topic-item.right").parent();
+	console.log(li_node[0]);
 	alert("用户点击喜欢的话题……");
 }
 
@@ -257,8 +261,8 @@ function getHistoryMessagesByTopicId(topicId,count){
  * 当用户进入某话题聊天框后在聊天记录框插入一条提示消息  ”-某某加入该对话组
  * fang
  * */
-function userEnterTopic(userName){
-	var div_node = $("<div></div>").attr("class","system").text("-"+userName+"加入该对话组")
+function userEnterTopic(member){
+	var div_node = $("<div></div>").attr("class","system").text("-"+member.userName+"加入该对话组")
 	$(".center .chat-box").append(div_node);
 }
 /**
@@ -578,6 +582,24 @@ function changeTopicChatBox(topicId){
 	$(".topic-box").append(_center);
 	$(".topic-box").append(_toggle);
 	$(".topic-box").append(_right);
+	//加载新参与的人
+	if(topicId_memberArray[topicId]){
+		var memberArray = topicId_memberArray[topicId];
+		for(var i=0;i<memberArray.length;i++){
+			var li_node = create_one_topicMember_item(memberArray[i]);
+			//查询用户列表是否存在member
+			if($("div.right ul.user-list").find("li[userid="+memberArray[i].userId+"]")[0]){
+				console.log("用户存在参与人列表中");
+			}else{
+				console.log("用户不存在参与人列表中");
+				$("div.right ul.user-list").append(li_node);
+			}
+			//在消息窗口添加xxx加入
+			userEnterTopic(memberArray[i]);
+		}
+		delete topicId_memberArray[topicId];
+		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
+	}
 	//加载全局变量中的历史消息
 	if(topicId_historyMsgArray[topicId]){
 		var msgArray = topicId_historyMsgArray[topicId];
@@ -612,6 +634,7 @@ function changeTopicChatBox(topicId){
 		}
 		//从全局变量中删除历史消息记录
 		delete topicId_historyMsgArray[topicId];
+		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 	}
 		
 	//加载全局变量中存储的未读消息到聊天框
@@ -688,10 +711,8 @@ window.receiveBroadcast = function(json)
 	//判断当前的话题窗的topicId是否与json.topicId相等
 	var cur_topicId = $(".topic-box .center").attr("topicid");
 	console.log("当前窗口的topicId:"+cur_topicId);
-	if (cur_topicId == json.topicId) {// 是当前窗口
-		//在参与人列表　添加一个用户
-		console.log("当前窗口");
-		var member;
+	var member;
+	if (cur_topicId == json.topicId||topicItemArray.in_array(json.topicId)) {// 是当前窗口
 		var parameters = {
 				cmd:"findUserByUserId",
 				userId: json.userId
@@ -710,48 +731,31 @@ window.receiveBroadcast = function(json)
 		    	console.log("请求出错");
 		     }
 		});		
+	}
+	
+	if(cur_topicId==json.topicId){
+		//在参与人列表　添加一个用户
+		console.log("当前窗口");
+		if(member==null){
+			console.log("714行:查询member为空");
+			return;
+		}
 		var li_node = create_one_topicMember_item(member);
 		$("div.right ul.user-list").append(li_node);
-		
+		//在消息窗口添加xxx加入
+		userEnterTopic(member);
+		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 	}
-/*	//判断当前topicId的话题项是否加载
-	if (topicItemArray.in_array(topicId)) {
-		topicId_memberArray
-	}*/
-	
-	/*//查询当前对应的话题窗口有没有打开
-	if(!getDialogueByBoxId(json.topicId)){
-		console.log("接收广播消息==>查询当查询当前对应的话题窗口是否已经加载==>未加载");
-		return;
+	else if(topicItemArray.in_array(json.topicId)){
+		console.log("非当前窗口");		
+		if(topicId_memberArray[json.topicId]){
+			topicId_memberArray[json.topicId].push(member);
+		}else{
+			var memberArray = new Array();
+			memberArray.push(member);
+			topicId_memberArray[json.topicId] = memberArray;
+		}
 	}
-	//如果窗口对应的话题聊天窗口存在,那么查询在该聊天窗口下有没有该联系人
-	var flag=checkUserIdExistInTopicGroupList(json.userId,json.topicId);
-	console.log("flag:"+flag);
-	if(!flag){
-		//var nickname = searchUser(json.userId);
-		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
-			cmd:"searchnicknameByUserId",
-			userId:json.userId
-		},function(res,status){
-			var nickname = res.nickname;
-			console.log(json.userId+"对应的昵称："+nickname);
-			var contact={
-					topic_id:json.topicId,
-					topic_memberId:json.userId,
-					topic_member_name:nickname
-			};
-			console.log("添加联系人");
-			addContactor(contact);
-			//在消息框显示新用户进群
-			var dialogueBox = getDialogueByBoxId(json.topicId);
-			var dateTime = new Date().format("yyyy-MM-dd hh:mm:ss");
-			addMsgContetntIntoDialogueBoxAboutNewUserComeIn(dialogueBox,nickname,dateTime);
-			
-		})
-	}
-	else{
-		console.log("联系人在列表中已经存在");
-	} */
 }
 /**
  * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
@@ -935,6 +939,10 @@ window.webimHandle = function(json) {
 				a_node.attr("href", "#");
 				a_node.attr("class", "iconfont close");
 				a_node.click(function() {
+					//检查是否是最后一个，如果是最后一个就不许移除
+					if(topicItemArray.length==1){
+						return;
+					}
 					$(this).parent().remove();// 移除
 					topicItemArray.remove(topicId);
 					if (chat_box_center.topicId != null) {
@@ -946,6 +954,7 @@ window.webimHandle = function(json) {
 					if (chat_box_right.topicId != null) {
 						chat_box_right[topicId] = undefined;
 					}
+					//
 				});
 
 				li_node.append(p_node).append(a_node);
@@ -961,42 +970,6 @@ window.webimHandle = function(json) {
 		}
 	}
 };
-
-//测试var json ={userId:4,topicId:"DEC38294FCADEDFFA835C1D04D2DA2E1"};
-//接收广播消息
-window.receiveBroadcast = function(json)
-{
-	console.log("收到广播消息...");
-	console.log("用户上线"+json.userId+"   "+json.topicId);
-	/*//查询当前对应的话题窗口有没有打开
-	if(!getDialogueByBoxId(json.topicId)){
-		console.log("接收广播消息==>查询当查询当前对应的话题窗口是否已经加载==>未加载");
-		return;
-	}
-	//如果窗口对应的话题聊天窗口存在,那么查询在该聊天窗口下有没有该联系人
-	var flag=checkUserIdExistInTopicGroupList(json.userId,json.topicId);
-	console.log("flag:"+flag);
-	if(!flag){
-		//var nickname = searchUser(json.userId);
-		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
-			cmd:"searchnicknameByUserId",
-			userId:json.userId
-		},function(res,status){
-			var nickname = res.nickname;
-			console.log(json.userId+"对应的昵称："+nickname);
-			var contact={
-					topic_id:json.topicId,
-					topic_memberId:json.userId,
-					topic_member_name:nickname
-			};
-			console.log("添加联系人");
-		});
-	}
-	else{
-		console.log("联系人在列表中已经存在");
-	} */
-}
-
 
 //获取联系人id数组
 function getContactsArray(){

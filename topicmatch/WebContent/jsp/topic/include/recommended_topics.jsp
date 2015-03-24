@@ -122,12 +122,14 @@
 	 * @return li
 	 */
 	function createItemRight(top,left,topicId,address,xunta_username,sex,topicname,picUrl){
-		var li=$("<li></li>");
+		var li=$("<li onclick=create_one_topic_item(this,null)></li>");
 		li.css({
 			top:top+"px",
 			left:left+"px"
 		});
-		li.click(func_joinTopic);
+		li.attr("topicId",topicId);
+		
+		//li.click(func_joinTopic);
 
 		var img = $("<img>");
 		if(!picUrl){
@@ -138,7 +140,6 @@
 			img.attr("src",document.domain+"/"+picUrl)
 			.attr("alt","");
 		}
-
 
 		var pic_div=$("<div></div>")
 				.attr("class","pic");
