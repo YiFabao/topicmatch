@@ -11,11 +11,12 @@
     <property name="messageId" not-null="false"/>
     <property name="senderId" not-null="false" />
     <property name="accepterId" not-null="false" />
-    <property name="content" not-null="false" />
+    <property name="content" not-null="false" type="text"/>
     <property name="dateAndTime" not-null="false" />
     <property name="nickname" not-null="false" />
     <property name="date" not-null="false" />
     <property name="time" not-null="false" />
+    <property name="longTime" not-null="false" />
   </class>
 </hibernate-mapping>
 

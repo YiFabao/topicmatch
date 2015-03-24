@@ -1,9 +1,7 @@
 package so.xunta.topic.model;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import so.xunta.entity.User;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.RecommendedPeople;
@@ -19,6 +17,8 @@ public interface TopicManager {
 	public void createTopicIndex(Topic topic);
 	//获取匹配的话题,从索引里查询
 	public List<Topic> matchMyTopic(String mytopic);
+	//与前面一个相同，从索引里查询，不过只返回toplic的id列表，因为直接从索引返回Topic对象缺少参加人数，所以还是需要从数据库查
+	public List<String> matchMyTopicIds(String mytopic);
 	public List<Topic> matchMyTopic(String topicName,String mytopic);
 	//与前面一个相同，从索引里查询，不过只返回toplic的id列表,以方便后面直接使用findTopicHistoryByTopicId查询
 	public List<String> matchMyTopicIds(String topicName, String topicContent);
@@ -89,7 +89,7 @@ public interface TopicManager {
 	//根据authorId 和  publish_or_join 获取对应的topicId   fang
 	public List<TopicHistory> findAuthorIdAndPublish_or_joinByTopicId(String authorId, String publish_or_join, int titleNum);
 	//根据topicId 获取 topicHistoryMessage   fang
-	public LinkedHashMap<String,HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list);
+	public Map<String,HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list);
 	//根据topicId 获取 topic   fang
 	public Topic findTopicIdByTopic(String topicId);
 	//根据topicId 获取 TopicHistory   fang
