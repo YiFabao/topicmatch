@@ -3,10 +3,14 @@ $(function() {
 });
 
 var load = 0;
+var loadType;
 /**
  * 我发起的话题 p
  */
 function topic_p(request) {
+	
+	loadType = 'p';
+	
 	console.log("时间排序  : "+request.createTime);
 	var exist = $(".fix #"+request.topicId);
 	console.log("exist.length : "+exist.length);
@@ -61,6 +65,8 @@ function topic_p(request) {
  * 我参与的话题 j
  */
 function topic_j(request) {
+	
+	loadType = 'j';
 	console.log("时间排序  : "+request.createTime);
 	var exist = $(".fix #"+request.topicId);
 	console.log("exist.length : "+exist.length);
@@ -139,8 +145,14 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 			res, status) {
 		console.log("请求话题记忆时      status   :    " + status);
 		console.log("执行获取话题记忆post请求 ");
+		
 		if(res.notTopic == "yes"){
 			console.log("没有历史话题");
+			if(topic_type == "p"){
+				$("#launch .load").text("没有更多话题");
+			}else{
+				$("#loadMoreBtn").text("没有更多话题");
+			}
 			return;
 		}
 		var arrayJson = res.msg;
@@ -176,6 +188,11 @@ function loadTopicMemory(user_id, topic_type, topic_num) {
 		console.log("执行获取话题记忆post请求 ");
 		if(res.notTopic == "yes"){
 			console.log("没有历史话题");
+			if(topic_type == "p"){
+				$("#launch .load").text("没有更多话题");
+			}else{
+				$("#loadMoreBtn").text("没有更多话题");
+			}
 			return;
 		}
 		var arrayJson = res.msg;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -858,6 +859,7 @@ public class TopicService extends HttpServlet {
 		String topicNum = request.getParameter("topicNum");
 		System.out.println("TopicService  ==> getTopicMemory from Fang  ==>   userId : "+userId+", topicType : "+topicType+", topicNum : "+topicNum);
 		List<TopicHistory> topicIdList = topicManager.findAuthorIdAndPublish_or_joinByTopicId(userId, topicType,Integer.parseInt(topicNum));
+		
 		if(topicIdList.size() == 0){
 			//该用户在topicHistory里面没有符合topicType的记录
 			System.out.println("TopicService  ==> getTopicMemory from Fang  ==>  当前用户ID ： "+userId+",  没有符合 titleType : "+topicType+", 的记录");
@@ -874,7 +876,7 @@ public class TopicService extends HttpServlet {
 			}
 		}else{
 			//topic history message  string : topicId
-			Map<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
+			LinkedHashMap<String,HistoryMessage> topicHistoryMessageMap = topicManager.findTopicIdByHistoryMessage(topicIdList);
 			Iterator<?> iter = topicHistoryMessageMap.entrySet().iterator();
 			JSONArray arrayJson = new JSONArray();
 			JSONObject objectJson = new JSONObject();

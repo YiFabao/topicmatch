@@ -15,14 +15,14 @@
 						</ul>
 						<ul class="column r">
 						</ul>
-						<button class="load" onclick="loadTopicMemory(myselfId,'p',load);"><img src="images/loading.gif" alt="">加载中...</button>
+						<button class="load"><img src="images/loading.gif" alt="">加载中...</button>
 					</li>
 					<li id="participate" class="dn item pate">
 						<ul class="fix" id="pateUl">
 							
 						</ul>
 						<div class="bt">
-							<button class="load" id="loadMoreBtn" onclick="loadTopicMemory(myselfId,'j',load);"><img src="images/loading.gif" alt="">加载中...</button>
+							<button class="load" id="loadMoreBtn"><img src="images/loading.gif" alt="">加载中...</button>
 						</div>
 					</li>
 				</ul>
@@ -42,18 +42,14 @@
 	$(window).scrollTop() + $(window).height()  >= $(document).height()
 	$(function(){
 		$(".main").scroll(function() {
-			  console.log("滑动加载事件");
-
 			  console.log("$(this).scrollTop()  :  "+$(this).scrollTop());
-			  
 			  console.log("$.main.height()  :  "+$(".main").height());
-			  
-			  console.log("$(document).height()  :  "+$(document).height());
-			
+			  console.log("$(document).height()  :  "+$(".main")[0].scrollHeight);
 		  //当内容滚动到底部时加载新的内容
-		  //if ($(this).scrollTop() >= $(document).height()) {
-			  //ajax 加载
-		 // }
+		  if(($(this).scrollTop() + $(".main").height() + 50) >= $(".main")[0].scrollHeight){
+			  console.log("加载更多   :  "+loadType);
+			  loadTopicMemory(myselfId, loadType, load);
+		  }
 	  });
 	});
 	

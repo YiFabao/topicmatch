@@ -168,8 +168,9 @@ public class WSMessageControl {
 					jsonObject6.put("userId", user_id6);
 					jsonObject6.put("message", message6);
 					puth(user_id6, CharBuffer.wrap(jsonObject6.toString()));
+				}else{
+					notificationManagerImpl.addSystemNotificationMsg(new SystemMessageNotification("6", user_id6+"", message6));
 				}
-				notificationManagerImpl.addSystemNotificationMsg(new SystemMessageNotification("6", user_id6+"", message6));
 				break;
 		}
 	}
