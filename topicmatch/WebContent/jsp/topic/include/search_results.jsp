@@ -54,8 +54,8 @@
 								<c:choose>  
 								   <c:when test="${innerstatus.first}">
 								   		<td class="border">
-											<%-- <img src="${searched_userTopic.logo_url}" --%>
-											<img src="images/delete/user-pic2.jpg"
+								   		<!-- <img src="images/delete/user-pic2.jpg" -->
+											<img src="${searched_userTopic.logo_url}"
 											alt="" class="user-pic"> <a href="#" class="nc">${searched_userTopic.userName}</a>
 										</td>
 								   </c:when>  
