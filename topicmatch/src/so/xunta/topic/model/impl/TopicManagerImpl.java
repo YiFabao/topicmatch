@@ -6,7 +6,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,6 +104,55 @@ public class TopicManagerImpl implements TopicManager {
 		Collections.sort(topicList);
 		return topicList;
 	}
+	
+	@Override
+	public List<String> matchMyTopicIds(String mytopic) {
+		List<String> topicList = new ArrayList<>();
+		try {
+			List<String> q = showTerms(mytopic, analyzer);
+			BooleanQuery query = new BooleanQuery();
+			for (String t : q) {
+				// 没有同义词
+				TermQuery tq1 = new TermQuery(new Term("topicContent", t));
+				TermQuery tq2 = new TermQuery(new Term("topicName", t));
+				query.add(tq1, Occur.SHOULD);
+				query.add(tq2, Occur.SHOULD);
+
+			}
+			if (directory == null) {
+				directory = FSDirectory.open(new File(LocalContext.getIndexFilePath()));
+			}
+			DirectoryReader ireader = DirectoryReader.open(directory);
+			IndexSearcher searcher = new IndexSearcher(ireader);
+			ScoreDoc[] hits = searcher.search(query, Integer.MAX_VALUE).scoreDocs;
+
+			for (int i = 0; i < hits.length; i++) {
+				int docID = hits[i].doc;
+				// 话题唯一id
+				String topicId = searcher.doc(docID).get("topicId");
+//				// 匹配的话题
+//				String topicContent = searcher.doc(docID).get("topicContent");
+//				// 话题名
+//				String topicName = searcher.doc(docID).get("topicName");
+//				// 用户id
+//				String userId = searcher.doc(docID).get("userId");
+//				// 用户名
+//				String userName = searcher.doc(docID).get("userName");
+//				// 日期
+//				String createTime = searcher.doc(docID).get("createTime");
+//				// 匹配的话题高亮
+//				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
+//
+//				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent, "", createTime, "");
+				topicList.add(topicId);
+			}
+			ireader.close();// 关闭ireader
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Collections.sort(topicList);
+		return topicList;
+	};
 
 	@Override
 	public List<Topic> matchMyTopic(String _topicName, String mytopic) {
@@ -967,20 +1015,20 @@ public class TopicManagerImpl implements TopicManager {
 				int docID = hits[i].doc;
 				//话题唯一id
 				String topicId=searcher.doc(docID).get("topicId");
-				//匹配的话题
-				String topicContent = searcher.doc(docID).get("topicContent");
-				//话题名
-				String topicName = searcher.doc(docID).get("topicName");
-				//用户id
-				String userId = searcher.doc(docID).get("userId");
-				//用户名
-				String userName = searcher.doc(docID).get("userName");
-				//日期
-				String createTime = searcher.doc(docID).get("createTime");
-				//匹配的话题高亮
-				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
-				
-				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent,"", createTime,"");
+//				//匹配的话题
+//				String topicContent = searcher.doc(docID).get("topicContent");
+//				//话题名
+//				String topicName = searcher.doc(docID).get("topicName");
+//				//用户id
+//				String userId = searcher.doc(docID).get("userId");
+//				//用户名
+//				String userName = searcher.doc(docID).get("userName");
+//				//日期
+//				String createTime = searcher.doc(docID).get("createTime");
+//				//匹配的话题高亮
+//				String hightLightTopic = highLighter(topicContent, query, analyzer, 10, 10);
+//				
+//				Topic topic = new Topic(topicId, userId, userName, topicName, topicContent,"", createTime,"");
 				topicList.add(topicId);
 			}
 			ireader.close();//关闭ireader
@@ -994,11 +1042,8 @@ public class TopicManagerImpl implements TopicManager {
 
 	@Override
 	// fang
-	public LinkedHashMap<String, HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list) {
-//		for (TopicHistory topicHistory : list) {
-//			System.out.println("排序顺序  :  "+topicHistory.getDatetime());
-//		}
-		LinkedHashMap<String, HistoryMessage> historyMessageMap = new LinkedHashMap<String, HistoryMessage>();
+	public Map<String, HistoryMessage> findTopicIdByHistoryMessage(List<TopicHistory> list) {
+		Map<String, HistoryMessage> historyMessageMap = new HashMap<String, HistoryMessage>();
 		for (TopicHistory topicHistory : list) {
 			Session session = HibernateUtils.openSession();
 			String topicId = topicHistory.getTopicId();
@@ -1041,5 +1086,5 @@ public class TopicManagerImpl implements TopicManager {
 		} finally {
 			session.close();
 		}
-	};
+	}
 }
