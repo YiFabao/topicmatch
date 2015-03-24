@@ -529,7 +529,7 @@ public class TopicService extends HttpServlet {
 		String to_userName = request.getParameter("to_userName");
 		String topicId = request.getParameter("topicId");
 		
-		
+		System.out.println("服务端收到了客户端的话题邀请请求");
 		System.out.println("用户发出邀请参与话题请求：");
 		System.out.println("fromUserId:"+fromUserId);
 		System.out.println("fromUserName:"+fromUserName);

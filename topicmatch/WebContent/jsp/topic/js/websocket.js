@@ -219,6 +219,7 @@ function inviteUser(toUserId, topicId, fromUserId) {
 	console.log("测试  -----    发送邀请好友消息时 ws的状态如下");
 	console.log(ws.readyState);
 	ws.send('{"status" : "4","toUserId" : "' + toUserId + '","fromUserId" : "' + fromUserId + '","topicId" : "'+ topicId + '"}');
+	console.log("发送ws话题邀请请求");
 }
 
 //邀请用户消息反馈

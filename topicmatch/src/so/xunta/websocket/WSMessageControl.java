@@ -113,6 +113,7 @@ public class WSMessageControl {
 				break;
 			case 4:
 				//好友邀请
+				System.out.println("服务器收到了客户端的话题邀请");
 				System.out.println("好友邀请  :  "+messageJsonObject.get("toUserId").toString());
 				String toUserId = messageJsonObject.get("toUserId").toString();
 				String fromUserId = messageJsonObject.get("fromUserId").toString();
@@ -135,8 +136,7 @@ public class WSMessageControl {
 						jsonObject.put("fromUserId", fromUserId);
 						puth(userId6 , CharBuffer.wrap(jsonObject.toString()));
 					}
-						
-						notificationManagerImpl.addTopicNotificationMsg(new TopicInviteNotification(topic_Id, "4", from_user_name, topic_name, time_str, toUserId, fromUserId, toUserName));
+					notificationManagerImpl.addTopicNotificationMsg(new TopicInviteNotification(topic_Id, "4", from_user_name, topic_name, time_str, toUserId, fromUserId, toUserName));
 				break;
 			case 5:
 				System.out.println("5  " + messageJsonObject.toString());
