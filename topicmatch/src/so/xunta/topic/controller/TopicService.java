@@ -350,7 +350,7 @@ public class TopicService extends HttpServlet {
 /*		cmd:"receiveInvite",
 		toUserId:currentUserId,
 		topicId:topicId*/
-		String toUserId = request.getParameter("toUserId");
+		String toUserId = request.getParameter("userId");
 		String topicId = request.getParameter("topicId");
 		System.out.println("接受邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
 		msgManager.updateTopicRequestMsgHandledState(toUserId, topicId,"1");//更改邀请信息的状态
