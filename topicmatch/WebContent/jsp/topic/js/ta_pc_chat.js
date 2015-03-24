@@ -396,8 +396,6 @@ function topicMsgInformStatusChange(node,btnType){
 	}
 }
 
-
-
 /**
  * 创建话题聊天框中间部分
  * @returns dom
