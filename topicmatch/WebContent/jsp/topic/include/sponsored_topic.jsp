@@ -172,6 +172,7 @@
 		console.log(invite_user_id);
 		//console.log(topic_id+"  "+user_id+"  "+invite_user_id+"  "+invite_user_name);
 		$(node).text("已发出邀请");
+		console.log("客户端发送话题邀请");
 		var parameters={
 				"topicId":topic_id,
 				"fromUserId":user_id,
@@ -182,7 +183,7 @@
  			console.log(res);
  			if(res == "ok"){
  				//请求成功
- 				console.log("话题邀请请求成功")
+ 				console.log("客户端话题邀请请求成功")
  				inviteUser(invite_user_id, topic_id,user_id);
  			}else{
  				//请求失败。。。
