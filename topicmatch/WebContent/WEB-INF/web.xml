@@ -46,6 +46,16 @@
     <servlet-name>weiboLogin</servlet-name>
     <url-pattern>/servlet/weiboLogin</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+      <servlet-name>weixinLogin</servlet-name>
+      <servlet-class>so.xunta.servlet.WeixinLoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>weixinLogin</servlet-name>
+      <url-pattern>/servlet/weixinLogin</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>local_login</servlet-name>
     <servlet-class>so.xunta.servlet.Login</servlet-class>

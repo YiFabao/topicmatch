@@ -14,7 +14,7 @@
 	}else if(code!=null&&!"".equals(code)){
 		response.sendRedirect(request.getContextPath()+"/servlet/weiboLogin?code="+code);
 	}else if(weixin_code!=null&&!"".equals(weixin_code)){
-		
+		response.sendRedirect(request.getContextPath()+"/servlet/weixinLogin?weixin_code="+weixin_code);
 	}
 
 %>
