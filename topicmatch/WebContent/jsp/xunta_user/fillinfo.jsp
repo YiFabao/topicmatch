@@ -224,6 +224,7 @@
 								<div class="dd pt5">
 									<div class="d-select">
 										<div class="ter">
+											<label></label>
 											<select name=year onchange="yy(this.value)">
 											<option value=""></option>
 											</select>
@@ -232,6 +233,7 @@
 									年
 									<div class="d-select">
 										<div class="ter">
+											<label></label>
 											<select name=month onchange="mm(this.value)">
 												<option value=""></option>
 											</select>
@@ -240,6 +242,7 @@
 									月
 									<div class="d-select">
 										<div class="ter">
+											<label></label>
 											<select name=day>
 												<option value=""></option>
 											</select>
