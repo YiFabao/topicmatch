@@ -80,7 +80,7 @@ public class UserLoginService extends HttpServlet {
 			return ;
 		}
 		boolean flag = tagManager.checkUserTagIsEmpty(Long.parseLong(userIdStr));
-		if(flag){
+		if(!flag){
 			try {
 				System.out.println("用户存在标签");
 				response.getWriter().write("exist");//用户存在标签
