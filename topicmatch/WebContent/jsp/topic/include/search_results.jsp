@@ -60,7 +60,7 @@
 								<td class="border bb"><span class="dt">标题：</span>
 									<div class="dd">
 										<p class="name">
-											<a href="#">${searched_userTopic.topicName}</a>
+											<a href="#" topicId="${searched_userTopic.topicId}">${searched_userTopic.topicName}</a>
 										</p>
 										<p class="txt">${searched_userTopic.topicContent}</p>
 									</div></td>
