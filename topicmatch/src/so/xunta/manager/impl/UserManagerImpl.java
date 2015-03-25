@@ -248,6 +248,24 @@ public class UserManagerImpl implements UserManager {
 		}
 	}
 	
+	@Override
+	public User findUserByWeixinUid(String weiXinUid) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String query = "from User as u where u.weixin_uid=?";
+			User user = (User) session.createQuery(query).setParameter(0,
+					weiXinUid).uniqueResult();
+			session.getTransaction().commit();
+			return user;
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
 
 	@Override
 	public List<User> findUserListByUserIdList(List<Long> userIdList) {

@@ -51,6 +51,11 @@ public interface UserManager {
 	  * 查询数据库中weibo_uid是否存在
 	  */
 	 public User findUserByWeiboUid(String weibo_uid);
+	 
+	 /**
+	  * 查询数据库中weixin_uid是否存在
+	  */
+	 public User findUserByWeixinUid(String weibo_uid);
 	
 	//根据List<userID> 查询出List<User>
 	public List<User> findUserListByUserIdList(List<Long> userIdList);
