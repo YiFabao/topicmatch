@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 
 import so.xunta.entity.Tag;
 import so.xunta.entity.User;
+import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
@@ -38,6 +39,7 @@ import so.xunta.utils.HtmlRegexpUtil;
 public class UserLoginService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserManager userManager=new UserManagerImpl();
+	TagsManager tagManager = new TagsManagerImpl();
     public UserLoginService() {
         super();
     }
@@ -60,11 +62,44 @@ public class UserLoginService extends HttpServlet {
 			break;
 		case "complete_reg":
 			method_complete_reg(request,response);
+			break;
+		case "checkHasTag":
+			checkHasTag(request,response);
+			break;
 		default:
 			break;
 		}
 	}
 
+
+	private void checkHasTag(HttpServletRequest request, HttpServletResponse response) {
+		String userIdStr = request.getParameter("userId");
+		if(userIdStr==null||"".equals(userIdStr))
+		{
+			System.out.println("userId为空:"+userIdStr);
+			return ;
+		}
+		boolean flag = tagManager.checkUserTagIsEmpty(Long.parseLong(userIdStr));
+		if(flag){
+			try {
+				System.out.println("用户存在标签");
+				response.getWriter().write("exist");//用户存在标签
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else{
+			try {
+				System.out.println("用户不存在标签");
+				response.getWriter().write("none");//用户没有标签
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 
 	private void method_complete_reg(HttpServletRequest request, HttpServletResponse response) {
 		uploadImage(request,response);

@@ -426,6 +426,12 @@ $("#reg_tag").click(function(){
  	$.post("<%=basePath%>servlet/userLoginService",parameters,function(res,status){
  		if(res=="ok")
  		{
+ 			//检查是否有xunta_username和password
+ 			var xunta_username="${sessionScope.user.xunta_username}";
+ 			var password = "${sessionScope.user.password}";
+ 			if(xunta_username&&password){//存在用户名和密码直接跳到主页
+ 				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
+ 			}
  			window.location.href="#Reg";
  		}
  		else{

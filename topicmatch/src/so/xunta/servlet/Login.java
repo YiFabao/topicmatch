@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
 		User user_to_check=(User) request.getSession().getAttribute("user");
 		if(user_to_check!=null&&user_to_check.xunta_username.equals(username)){
 			System.out.println("已经登录过，不必重复验证登录");
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			response.getWriter().write("success");
 		}
 		else{
 			User user=userManager.checkRegisterUserExist(username, password);
@@ -51,10 +51,6 @@ public class Login extends HttpServlet {
 				System.out.println("用户名或密码错误");
 				request.setAttribute("xunta_username",username);
 				request.setAttribute("errorMsg","用户名或密码错误");
-				//request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
-				//request.getRequestDispatcher("/jsp/xunta_user/login.jsp").forward(request, response);
-				//response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp#&Login");
-				//request.getRequestDispatcher("/jsp/topic_ta_pc/login.jsp#&Login").forward(request, response);
 				response.getWriter().write("failure");
 			}
 			else
@@ -81,21 +77,7 @@ public class Login extends HttpServlet {
 					cookie.setPath("/");
 					response.addCookie(cookie);
 				}
-/*				//添加记录登录状态的　cookie
-				Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode(user.xunta_username,"utf-8"));
-				cookie.setMaxAge(30*24*3600);
-				cookie.setPath("/");
-				
-				//记录该次的登录时间
-				Cookie date_cookie=new Cookie("aigine_login_lastdatetime",DateTimeUtils.getCurrentTimeStr());
-				date_cookie.setMaxAge(30*24*3600);
-				date_cookie.setPath("/");
-				
-				response.addCookie(cookie);
-				response.addCookie(date_cookie);*/
-				//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 				response.getWriter().write("success");
-				//response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/topics_memory.jsp");
 			}
 		}
 		

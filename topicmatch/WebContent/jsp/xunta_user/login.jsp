@@ -7,12 +7,14 @@
 			+ path + "/"; 
 	String access_token = request.getParameter("access_token");
 	String code = request.getParameter("code");
-
+	String weixin_code = request.getParameter("weixin_code");
 	if(access_token!=null&&!"".equals(access_token))
 	{
 		response.sendRedirect(request.getContextPath()+"/servlet/qq_login?access_token="+access_token);
 	}else if(code!=null&&!"".equals(code)){
 		response.sendRedirect(request.getContextPath()+"/servlet/weiboLogin?code="+code);
+	}else if(weixin_code!=null&&!"".equals(weixin_code)){
+		
 	}
 
 %>
@@ -426,48 +428,63 @@ $(".weibo_login").click(function(){
 });
 //直接登录
 $("#btn_login").click(function(){
+	login();
+});
+$(document).keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+    	login();
+    }
+});
+
+function login(){
 	var userName=$("#UserName").val();
 	var password=$("#PassWord").val();
 	console.log(userName+"|"+password);
-	$(this).attr("disabled",false);
+	$("#btn_login").attr("disabled",false);
 	$.post("<%=basePath %>servlet/login",{xunta_username:userName,password:password},function(res,state){
-		//console.log(res);
+		console.log(res);
 		if(res=="failure"){
 			console.log("用户名或密码错误");
+			console.log(res);
 			$("#errorMsg").css("display","block");
 			$("#btn_login").removeAttr("disabled");
 		}
 		else if(res=="success")
 		{
 			console.log("登录成功");
-			window.location.replace("<%=basePath %>jsp/topic/index.jsp");
+			alert("登录成功");
+			//1.检查是否填写过标签
+			var parameters = {
+				cmd:"checkHasTag",
+				userId:"${sessionScope.user.id}"
+			};
+			var ret_msg;
+			$.ajax({  
+			     type : "post",  
+			     url :"<%=basePath %>/servlet/userLoginService",
+			     data : parameters,  
+			     async : false,  //同步
+			     datatype:"json",
+			     success : function(res){  
+			    	if(res=="ok"){
+			    		ret_msg="exist";
+			    	}else{
+			    		console.log("用户不存在标签");
+			    	}
+			     } ,
+			     error:function(){
+			    	console.log("检查用户是否存在标签,请求出错");
+			     }
+			});
+			if(ret_msg=="exist"){
+				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
+			}else{
+				window.location.replace("<%=basePath %>jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			}
 		}
-	});
-});
-
-
-$(document).keypress(function(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-    	var userName=$("#UserName").val();
-    	var password=$("#PassWord").val();
-    	console.log(userName+"|"+password);
-    	$("#btn_login").attr("disabled",false);
-    	$.post("<%=basePath %>servlet/login",{xunta_username:userName,password:password},function(res,state){
-    		console.log(res);
-    		if(res=="failure"){
-    			console.log("用户名或密码错误");
-    			$("#errorMsg").css("display","block");
-    			$("#btn_login").removeAttr("disabled");
-    		}
-    		else if(res=="success")
-    		{
-    			console.log("登录成功");
-    			window.location.replace("<%=basePath %>jsp/topic/index.jsp");
-    		}
-    	});  
-    }
-});
+	});  
+}
 
 
 //用户修改错语密码时去除登录用户名或密码出错消息提示
