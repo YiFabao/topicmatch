@@ -6,6 +6,16 @@
   <listener>
     <listener-class>so.xunta.user.listener.MyUserloginStateListener</listener-class>
   </listener>
+  
+  <servlet>
+      <servlet-name>imageServlet</servlet-name>
+      <servlet-class>so.xunta.servlet.ImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>imageServlet</servlet-name>
+      <url-pattern>/image</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>Notification</servlet-name>
     <servlet-class>so.xunta.servlet.Notification</servlet-class>
@@ -46,16 +56,14 @@
     <servlet-name>weiboLogin</servlet-name>
     <url-pattern>/servlet/weiboLogin</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-      <servlet-name>weixinLogin</servlet-name>
-      <servlet-class>so.xunta.servlet.WeixinLoginServlet</servlet-class>
+    <servlet-name>weixinLogin</servlet-name>
+    <servlet-class>so.xunta.servlet.WeixinLoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-      <servlet-name>weixinLogin</servlet-name>
-      <url-pattern>/servlet/weixinLogin</url-pattern>
+    <servlet-name>weixinLogin</servlet-name>
+    <url-pattern>/servlet/weixinLogin</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>local_login</servlet-name>
     <servlet-class>so.xunta.servlet.Login</servlet-class>

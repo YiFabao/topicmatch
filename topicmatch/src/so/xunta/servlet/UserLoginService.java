@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 
 import so.xunta.entity.Tag;
 import so.xunta.entity.User;
+import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
@@ -111,13 +112,13 @@ public class UserLoginService extends HttpServlet {
 		System.out.println("图片上传");
 		if (isMultipart == true) {
 			DiskFileItemFactory f = new DiskFileItemFactory();// 磁盘对象
-			f.setRepository(new File("/root/temp"));// 设置临时目录
+			f.setRepository(new File(LocalContext.getTempFilePath()));// 设置临时目录
 			f.setSizeThreshold(1024 * 8);// 8k的缓冲区,文件大于8K则保存到临时目录
 			ServletFileUpload upload = new ServletFileUpload(f);// 声明解析request的对象
 			upload.setHeaderEncoding("UTF-8");// 处理文件名中文
-			upload.setFileSizeMax(1024 * 1024 * 5);// 设置每个文件最大为5M
-			upload.setSizeMax(1024 * 1024 * 10);// 一共最多能上传10M
-			String path = this.getServletContext().getRealPath("/imgs");// 获取文件要保存的目录
+			upload.setFileSizeMax(1024 * 1024 * 1);// 设置每个文件最大为1M
+			upload.setSizeMax(1024 * 1024 * 1);// 一共最多能上传1M
+			String path =LocalContext.getPicPath();
 			try {
 				List<FileItem> list = upload.parseRequest(request);// 解析
 				String nickname="";
@@ -194,18 +195,14 @@ public class UserLoginService extends HttpServlet {
 						System.out.println("图片后缀为："+extension);
 						System.out.println("图片名称为："+imgname);
 						//重新构造文件名 　　　实际文件名_用户id_时间戳
-						String newImageName=imgname+"_"+user.id+"_"+(new Date().getTime())+extension;
+						String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
 						System.out.println("文件类型为："+contentType);
 						System.out.println("保存的路径为："+new File(path + "/" + newImageName).getAbsolutePath());
 						if(contentType.equals("image/jpeg")){
 							System.out.println("上传的是图片格式");
 						}
-						String path2 = request.getContextPath();
-						String basePath = request.getScheme() + "://"
-								+ request.getServerName() + ":" + request.getServerPort()
-								+ path2 + "/"; 
-		
-						user.setImageUrl(basePath+"imgs/"+newImageName);
+	
+						user.setImageUrl(newImageName);
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 					

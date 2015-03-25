@@ -219,7 +219,7 @@ function create_one_topicMember_item(member){
 	var div_node = $("<div></div>");
 	div_node.attr("class","user-pic");
 	
-	var img_node = $("<img>").attr("alt","").attr("src",member.imageUrl);
+	var img_node = $("<img>").attr("alt","").attr("src",contextPath+"/image?picId="+member.imageUrl);
 
 	var p_node = $("<p></p>");
 	p_node.addClass("name");
@@ -412,7 +412,7 @@ function createChatBox_center(topicObj,userObj){
 	
 	var div_title = $("<div></div>").attr("class","title");
 	var div_pic = $("<div></div>").attr("class","pic");
-	var img = $("<img></img>").attr("src",userObj.imageUrl).attr("alt","用户图像").attr("title",userObj.userName);
+	var img = $("<img></img>").attr("src",contextPath+"/image?picId="+userObj.imageUrl).attr("alt","用户图像").attr("title",userObj.userName);
 	div_pic.append(img);
 	
 	var h3 = $("<h3></h3>").attr("title","话题："+topicObj.topicTitle).html("话题:"+topicObj.topicTitle);
@@ -606,7 +606,7 @@ function changeTopicChatBox(topicId){
 			var msg = msgArray[i];
 			if(msg.sender==myselfId){
 				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
-				var img_url = $("<img alt>").attr("src",userImageUrl);
+				var img_url = $("<img alt>").attr("src",contextPath+"/image?picId="+userImageUrl);
 				var div_node = $("<div></div>").attr("class","user-pic");
 				div_node.append(img_url);
 				//等于0表示自己的发言
@@ -771,7 +771,7 @@ function createMessage(contentType,obj_json){
 		}
 		var chatBox = $(".chat-box");
 		var p_node = $("<p></p>").attr("class","detail").html(msg);
-		var img_url = $("<img alt>").attr("src",userImageUrl);
+		var img_url = $("<img alt>").attr("src",contextPath+"/image?picId="+userImageUrl);
 		var div_node = $("<div></div>").attr("class","user-pic");
 		div_node.append(img_url);
 		//等于0表示自己的发言

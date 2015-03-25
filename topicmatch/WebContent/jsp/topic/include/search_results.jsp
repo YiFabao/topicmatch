@@ -49,7 +49,7 @@
 									<c:when test="${innerstatus.first}">
 										<td class="border"
 											rowspan="${searched_topicsHashMap.value.size()}"><img
-											src="${searched_userTopic.logo_url}" alt="" class="user-pic">
+											src="<%=request.getContextPath() %>/image?picId=${searched_userTopic.logo_url}" alt="" class="user-pic">
 											<a href="#" class="nc">${searched_userTopic.userName}</a></td>
 									</c:when>
 									<c:otherwise>

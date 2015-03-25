@@ -25,8 +25,6 @@
         <delete dir="${build.dir}" />  
         <delete dir="${dist.dir}" />  
         <delete file="${catalina.home}/webapps/${webapp.name}.war" />  
-        <echo message="保留用户上传的图片资源"></echo>
-       <!--  <copy file="${dist.dir}/${webapp.name}/imgs" todir="/mnt/upload/imgs" />   -->
         <delete dir="${catalina.home}/webapps/${webapp.name}" />  
 	</target>
 	
