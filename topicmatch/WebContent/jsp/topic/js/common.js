@@ -38,10 +38,11 @@ $(function(){
 	})
 	//单选按钮模拟
 	$(".form .radio").click(function(){
-		$(this).addClass("checked-r").siblings().removeClass("checked-r");
+		$(this).addClass("checked-r").siblings().removeClass("checked-r")
 		var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
 		return false;
 	})
+	var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
 	//下拉框的模拟
 	$(".CRselectBox").hover(function(){
 		$(this).addClass("CRselectBoxHover");
@@ -150,17 +151,25 @@ function optionClear(ab){
 function  IsRunYear(year){ 
    return(0==year%4&&(year%100!=0 || year%400==0));
 }
-//聊天框
-/*$('.topic-box .toggle').click(function(){
+$(".form .d-select .ter").live("change", function() {
+var o;
+var opt = $(this).find('option');
+opt.each(function(i) {
+if (opt[i].selected == true) {
+o = opt[i].innerHTML;
+}
+})
+$(this).find('label').html(o);
+}).trigger('change');
+/*//聊天框
+$('.topic-box .toggle').click(function(){
 	var title =$(this).attr("title");
 	if(title=="展开"){
-		console.log("展开");
 		$(this).attr("title","收缩");
 		$(this).find("i").html("&#xe605;");
 		$('.topic-box').animate({"right":0},'slow')
 	}
 	else{
-		console.log("收缩");
 		$(this).attr("title","展开");
 		$(this).find("i").html("&#xe606;");
 		$('.topic-box').animate({"right":-82},'slow')
