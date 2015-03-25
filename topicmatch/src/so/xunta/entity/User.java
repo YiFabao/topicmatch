@@ -15,6 +15,8 @@ public class User {
 	public String qq_accessToken;
 	public String weibo_uid;
 	public String weibo_accessToken;
+	public String weixin_uid;
+	public String weixin_accessToken;
 	public Date createTime; //寻他账号创建时间
 	public String latestLoginTime;//最后一次登录时间
 	public String imageUrl;
@@ -112,6 +114,18 @@ public class User {
 	public String getBirthday() {
 		return birthday;
 	}
+	public String getWeixin_uid() {
+		return weixin_uid;
+	}
+	public void setWeixin_uid(String weixin_uid) {
+		this.weixin_uid = weixin_uid;
+	}
+	public String getWeixin_accessToken() {
+		return weixin_accessToken;
+	}
+	public void setWeixin_accessToken(String weixin_accessToken) {
+		this.weixin_accessToken = weixin_accessToken;
+	}
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
@@ -119,7 +133,7 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(String xunta_username, String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
+	public User(String xunta_username, String password, String email, String weixin_openId,String weixin_accessToken, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
 			String latestLoginTime,String imageUrl) {
 		super();
 		this.xunta_username = xunta_username;
@@ -127,6 +141,8 @@ public class User {
 		this.email = email;
 		this.qq_openId = qq_openId;
 		this.qq_accessToken = qq_accessToken;
+		this.weixin_uid = weixin_openId;
+		this.weixin_accessToken = weixin_accessToken;
 		this.weibo_uid = weibo_uid;
 		this.weibo_accessToken = weibo_accessToken;
 		this.createTime = createTime;
@@ -134,15 +150,13 @@ public class User {
 		this.imageUrl = imageUrl;
 	}
 	
-	public User(String xunta_username,String nickname,String address,String birthday ,String password, String email, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
+	public User(String xunta_username,String nickname,String address,String birthday ,String password, String email, String weixin_openId, String weixin_accessToken, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
 			String latestLoginTime,String imageUrl) {
 		super();
-		new User(xunta_username, password, email, qq_openId, qq_accessToken, weibo_uid, weibo_accessToken, createTime, latestLoginTime, imageUrl);
+		new User(xunta_username, password, email, weixin_openId, weixin_accessToken, qq_openId, qq_accessToken, weibo_uid, weibo_accessToken, createTime, latestLoginTime, imageUrl);
 		this.setNickname(nickname);
 		this.setAddress(address);
 		this.setBirthday(birthday);
 		
 	}
-	
-	
 }
