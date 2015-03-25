@@ -183,7 +183,7 @@ function create_one_topic_item(obj,topicUnreadNum){
 };
 
 /**
- * 话题记忆页面　onclick调用的函数
+ * 话题记忆页面　发起onclick调用的函数
  */
 function create_on_topic_item_jy_p(obj,topicUnreadNum){
 	chat_box_unfold();
@@ -194,12 +194,30 @@ function create_on_topic_item_jy_p(obj,topicUnreadNum){
 		create_topic_item(topicId,topicContent,topicUnreadNum);
 	}
 }
+/**
+ * 话题记忆　参与
+ * @param obj
+ * @param topicUnreadNum
+ */
 
 function create_one_topic_item_jy_j(obj,topicUnreadNum){
 	chat_box_unfold();
 	var topicId = $(obj).parentsUntil("li.tp").parent().attr("topicId");
 	var topicContent = $(obj).parentsUntil("li.tp").find("p.name").find("a").attr("title");
 	console.log(topicId+":"+topicContent);
+	if(topicId&&topicContent){
+		create_topic_item(topicId,topicContent,topicUnreadNum);
+	}
+}
+
+/**
+ * 搜搜页面
+ */
+function create_one_topic_item_search(obj,topicUnreadNum){
+	chat_box_unfold();
+	var topicId = $(obj).attr("topicId");
+	console.log(obj);
+	var topicContent =$(obj).text();
 	if(topicId&&topicContent){
 		create_topic_item(topicId,topicContent,topicUnreadNum);
 	}
