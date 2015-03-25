@@ -167,9 +167,9 @@
 	});
 	 
 	function topicInvite(topic_id,user_id,node){
-		var invite_user_id = $(".enter").attr("userId");
-		var invite_user_name = $(".enter").attr("userName");
-		console.log(invite_user_id);
+		var invite_user_id = $(node).attr("userId");
+		var invite_user_name = $(node).attr("userName");
+		console.log("invite_user_id  :  "+invite_user_id);
 		//console.log(topic_id+"  "+user_id+"  "+invite_user_id+"  "+invite_user_name);
 		$(node).text("已发出邀请");
 		console.log("客户端发送话题邀请");

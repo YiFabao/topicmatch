@@ -215,6 +215,7 @@ function broadcast(user_id, topic_id) {
 
 //邀请用户
 function inviteUser(toUserId, topicId, fromUserId) {
+	console.log(toUserId);
 	// inviteIds is jsonArray
 	console.log("测试  -----    发送邀请好友消息时 ws的状态如下");
 	console.log(ws.readyState);
