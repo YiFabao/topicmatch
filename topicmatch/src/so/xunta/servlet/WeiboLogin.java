@@ -13,8 +13,10 @@ import net.sf.json.JSONArray;
 import so.xunta.entity.User;
 import so.xunta.entity.WeiboDynamicInfoContent;
 import so.xunta.entity.WeiboUserInfo;
+import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.WeiboUserInfoManager;
+import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
 import so.xunta.utils.DateTimeUtils;
@@ -28,6 +30,7 @@ import weibo4j.org.json.JSONObject;
 
 public class WeiboLogin extends HttpServlet {
 	UserManager userManager=new UserManagerImpl();
+	TagsManager tagsManager = new TagsManagerImpl();
 	/**
 	 * Constructor of the object.
 	 */
@@ -129,9 +132,21 @@ public class WeiboLogin extends HttpServlet {
 			
 			//将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
-			
-			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			//TODO 判断是否有标签
+			if(tagsManager.checkUserTagIsEmpty(user.id)){//有标签
+				System.out.println("有标签");
+				//判断是否绑定本地账号
+				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
+					System.out.println("绑定过本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//跳转到首页
+				}else{
+					System.out.println("没有绑定本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&Reg");
+				}
+			}else{//没有标签
+				System.out.println("没有标签");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			}
 			
 		}else{
 			System.out.println("数据库中存在该微博uid");
@@ -141,13 +156,21 @@ public class WeiboLogin extends HttpServlet {
 			
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
-			//TODO判断是否填写有标签
-			
-			//TODO判断是否绑定账号
-			
-			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
-			//response.sendRedirect(request.getContextPath()+"/jsp/topic_ta_pc/login.jsp?#&FillInfo");
+			//TODO 判断是否有标签
+			if(tagsManager.checkUserTagIsEmpty(user.id)){//有标签
+				System.out.println("有标签");
+				//判断是否绑定本地账号
+				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
+					System.out.println("绑定过本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//跳转到首页
+				}else{
+					System.out.println("没有绑定本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&Reg");
+				}
+			}else{//没有标签
+				System.out.println("没有标签");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			}
 		}
 
 		/*response.setContentType("text/html");

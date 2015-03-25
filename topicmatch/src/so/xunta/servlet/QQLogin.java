@@ -13,8 +13,10 @@ import so.xunta.entity.QQDynamicInfoContent;
 import so.xunta.entity.QQUserInfo;
 import so.xunta.entity.User;
 import so.xunta.manager.QQUserInfoManager;
+import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.QQUserInfoManagerImpl;
+import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.utils.IpUtils;
 import so.xunta.user.info.tencentUserInfo;
@@ -26,7 +28,7 @@ import com.qq.connect.utils.json.JSONObject;
 public class QQLogin extends HttpServlet {
 	UserManager userManager=new UserManagerImpl();
 	QQUserInfoManager qquerinfomanager = new QQUserInfoManagerImpl();
-	
+	TagsManager tagsManager = new TagsManagerImpl();
 	/**
 	 * Constructor of the object.
 	 */
@@ -105,20 +107,42 @@ public class QQLogin extends HttpServlet {
 			qquerinfomanager.addDynamicQQInfoContent(qqdynamicContent);
 			//将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
-			//跳转到首页
-			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
-			//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			//TODO 判断是否有标签
+			if(tagsManager.checkUserTagIsEmpty(user.id)){//有标签
+				System.out.println("有标签");
+				//判断是否绑定本地账号
+				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
+					System.out.println("绑定过本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//跳转到首页
+				}else{
+					System.out.println("没有绑定本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&Reg");
+				}
+			}else{//没有标签
+				System.out.println("没有标签");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			}
 		}
 		else//用户基本信息存在
 		{
 			//登录成功
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
-			
 			//TODO 判断是否有标签
-			
-			//TODO 判断是否绑定账号
-			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			if(tagsManager.checkUserTagIsEmpty(user.id)){//有标签
+				System.out.println("有标签");
+				//判断是否绑定本地账号
+				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
+					System.out.println("绑定过本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+				}else{
+					System.out.println("没有绑定本地账号");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&Reg");
+				}
+			}else{//没有标签
+				System.out.println("没有标签");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+			}
 		}
 	}
 

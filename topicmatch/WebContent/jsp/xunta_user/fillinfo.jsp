@@ -431,8 +431,9 @@ $("#reg_tag").click(function(){
  			var password = "${sessionScope.user.password}";
  			if(xunta_username&&password){//存在用户名和密码直接跳到主页
  				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
+ 			}else{
+ 				window.location.href="#Reg";
  			}
- 			window.location.href="#Reg";
  		}
  		else{
  			console.log(res);
