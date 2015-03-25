@@ -25,8 +25,7 @@ function topic_p(request) {
 	// 话题标题及相关参数 如 发起人 时间 等
 	var div_hd_node = $("<div></div>").attr("class", "hd");
 	var user_pic = $("<a></a>").attr("class", "user-pic").attr("href", "#");
-	var img_node = $("<img></img>").attr("alt", request.nickname).attr("src",
-			request.userImgUrl);
+	var img_node = $("<img></img>").attr("alt", request.nickname).attr("src",contextPath+"/image?picId="+request.userImgUrl);
 	user_pic.append(img_node);
 	var p_nc = $("<p></p>").attr("class", "nc").text(request.nickname);
 	var p_name = $("<p></p>").attr("class", "name");
@@ -93,8 +92,7 @@ function topic_j(request) {
 	// 定义元素节点
 	var div_hd = $("<div></div>").attr("class", "hd");
 	var a_user_pic = $("<a></a>").attr("class", "user-pic").attr("href", "#");
-	var img_node = $("<img></img>").attr("alt", request.nickname).attr("src",
-			request.userImgUrl);
+	var img_node = $("<img></img>").attr("alt", request.nickname).attr("src",contextPath+"/image?picId="+request.userImgUrl);
 	a_user_pic.append(img_node);
 	var span_area = $("<span></span>").attr("class", "area").text(
 			request.nickname);
