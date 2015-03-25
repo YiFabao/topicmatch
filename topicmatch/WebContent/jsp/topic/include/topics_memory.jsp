@@ -44,7 +44,7 @@
 		$(".main").scroll(function() {
 			  console.log("$(this).scrollTop()  :  "+$(this).scrollTop());
 			  console.log("$.main.height()  :  "+$(".main").height());
-			  console.log("$(document).height()  :  "+$(".main")[0].scrollHeight);
+			  console.log("$main.[0].scrollHeight  :  "+$(".main")[0].scrollHeight);
 		  //当内容滚动到底部时加载新的内容
 		  if(($(this).scrollTop() + $(".main").height() + 50) >= $(".main")[0].scrollHeight){
 			  console.log("加载更多   :  "+loadType);
