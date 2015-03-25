@@ -66,7 +66,7 @@
 			<div class="dialog-box login-1">
 				<h3>第三方登录</h3>
 				<ul class="quick-login">
-					<li><a href="#" title="微信" class="weixin_login"><img src="<%=basePath %>jsp/topic/images/wx.png">微信</a></li>
+					<li><a href="#" title="微信" class="weixin_login" ><img src="<%=basePath %>jsp/topic/images/wx.png">微信</a></li>
 					<li><a href="#" title="腾讯QQ" class="qq_login" ><img src="<%=basePath %>jsp/topic/images/qq.png">QQ</a></li>
 					<li><a href="#" title="新浪微博" class="weibo_login"><img src="<%=basePath %>jsp/topic/images/sina.png">新浪</a></li>
 					<li class="justify-fix">&nbsp;</li>
