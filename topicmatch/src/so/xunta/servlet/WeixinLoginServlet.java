@@ -54,14 +54,14 @@ public class WeixinLoginServlet extends HttpServlet {
 		System.out.println("country  ：  " + country);
 		System.out.println("headImgUrl  :  " + headImgUrl);
 		response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().write( "accessToken" + accessToken +
-									"</br>openid" + openid +
-									"</br>nickname" + nickname +
-									"</br>sex" + sex +
-									"</br>province" + province +
-									"</br>city" + city +
-									"</br>country" + country +
-									"</br>headImgUrl" + headImgUrl);
+		response.getWriter().write( "accessToken ==>  " + accessToken +
+									"</br>openid ==>  " + openid +
+									"</br>nickname ==>  " + nickname +
+									"</br>sex ==>  " + sex +
+									"</br>province ==>  " + province +
+									"</br>city ==>  " + city +
+									"</br>country ==>  " + country +
+									"</br>headImgUrl ==>  " + headImgUrl);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
