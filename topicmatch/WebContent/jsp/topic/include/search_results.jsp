@@ -11,7 +11,6 @@
 					<col width="415">
 					<col width="150">
 				</colgroup>
-				
 			<%-- <c:if test="${requestScope.topicList!=null}">
 				<c:forEach var="searched_topic" items="${requestScope.topicList}"
 					varStatus="status">

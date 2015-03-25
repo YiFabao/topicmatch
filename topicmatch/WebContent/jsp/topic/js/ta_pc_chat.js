@@ -18,6 +18,8 @@ var chat_box_center={};//保存的是 topiId ==> 聊天框的 html
 var chat_box_fold={};
 var chat_box_right={};//保存的是 topicId ==> 聊天框的 html
 var topicId_memberArray={};//保存新参与进来的成员,在切换话题时加载上去
+
+var unreadMsgnotShow_topicIdArray=new Array();//记录不显示未读消息的topicId
 /**
  * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
  */
@@ -637,21 +639,35 @@ function changeTopicChatBox(topicId){
 	}
 		
 	//加载全局变量中存储的未读消息到聊天框
-	if(topicId_unreadMsgArray[topicId]){
-		console.log("加载全局变量中存储的未读消息到聊天框……");
-		var unreadMsgArray = topicId_unreadMsgArray[topicId];
-		console.log(unreadMsgArray);
-		//因为第一次加载的历史消息中已经包含了刚发的消息，所以不用再显示未读消息了，否则最后一条会重复
-		for(var i=0;i<unreadMsgArray.length;i++){
-			createMessage(1,unreadMsgArray[i]);//显示未读消息
-		}
+	//此时要判断一下，topicId是否存在于unreadMsgnotShow_topicIdArray中
+	if(unreadMsgnotShow_topicIdArray.in_array(topicId)){//存在,则不显示
+		unreadMsgnotShow_topicIdArray.remove(topicId);
 		//删除未读消息
-		delete topicId_unreadMsgArray[topicId];
+		if(topicId_unreadMsgArray[topicId]){
+			delete topicId_unreadMsgArray[topicId];
+		}
 		//将未读消息提醒元素删除
 		var num_node = $(".rec-topic-list").find("li[topicId="+topicId+"]").find("span.num");
 		num_node.remove();
 		$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
+	}else{
+		if(topicId_unreadMsgArray[topicId]){
+			console.log("加载全局变量中存储的未读消息到聊天框……");
+			var unreadMsgArray = topicId_unreadMsgArray[topicId];
+			console.log(unreadMsgArray);
+			//因为第一次加载的历史消息中已经包含了刚发的消息，所以不用再显示未读消息了，否则最后一条会重复
+			for(var i=0;i<unreadMsgArray.length;i++){
+				createMessage(1,unreadMsgArray[i]);//显示未读消息
+			}
+			//删除未读消息
+			delete topicId_unreadMsgArray[topicId];
+			//将未读消息提醒元素删除
+			var num_node = $(".rec-topic-list").find("li[topicId="+topicId+"]").find("span.num");
+			num_node.remove();
+			$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
+		}
 	}
+	
 }
 
 function chat_box_close(){
@@ -898,6 +914,8 @@ window.webimHandle = function(json) {
 			}
 		} else {
 			console.log("列表项不存在");
+			//对方发消息过来，自已这边又不存在聊天窗口的情况下
+			unreadMsgnotShow_topicIdArray.push(topicId);
 			// 创建话题列表项及创建话题对话框
 			// 发送请求获取对应topicId：Topic,List<User>
 			$.post(contextPath + "/servlet/topic_service", {
