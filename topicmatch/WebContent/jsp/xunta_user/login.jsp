@@ -66,7 +66,7 @@
 			<div class="dialog-box login-1">
 				<h3>第三方登录</h3>
 				<ul class="quick-login">
-					<li><a href="#" title="微信"><img src="<%=basePath %>jsp/topic/images/wx.png">微信</a></li>
+					<li><a href="#" title="微信" class="weixin_login"><img src="<%=basePath %>jsp/topic/images/wx.png">微信</a></li>
 					<li><a href="#" title="腾讯QQ" class="qq_login"><img src="<%=basePath %>jsp/topic/images/qq.png">QQ</a></li>
 					<li><a href="#" title="新浪微博" class="weibo_login"><img src="<%=basePath %>jsp/topic/images/sina.png">新浪</a></li>
 					<li class="justify-fix">&nbsp;</li>
@@ -424,6 +424,11 @@ $(".qq_login").click(function(){
 $(".weibo_login").click(function(){
 	var redirect_uri = "http://xunta.so/jsp/xunta_user/jsp_token.jsp";
 	var  url = "https://api.weibo.com/oauth2/authorize?client_id=3793162942&response_type=code&redirect_uri="+redirect_uri;
+	window.location=url;
+});
+//微信登录
+$(".weixin_login").click(function(){
+	var  url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx0ad98a24caca02ca&redirect_uri=http://xunta.so/jsp/xunta_user/weixin_code.jsp&response_type=code&scope=snsapi_login&state=d967dc101ad34ff81062309e2be96b46#wechat_redirect";
 	window.location=url;
 });
 //直接登录
