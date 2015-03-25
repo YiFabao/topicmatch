@@ -59,19 +59,19 @@ public class WeixinLoginServlet extends HttpServlet {
 		} else {
 			sex = "女";
 		}
-		// System.out.println("accessToken  :  " + accessToken);
-		// System.out.println("openid  : " + openid);
-		// System.out.println("nickname  :  " + nickname);
-		// System.out.println("sex  : " + sex);
-		// System.out.println("province : " + province);
-		// System.out.println("city : " + city);
-		// System.out.println("country  ：  " + country);
-		// System.out.println("headImgUrl  :  " + headImgUrl);
-		response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().write(
-				"accessToken ==>  " + accessToken + "</br>openid ==>  " + openid + "</br>nickname ==>  " + nickname
-						+ "</br>sex ==>  " + sex + "</br>province ==>  " + province + "</br>city ==>  " + city
-						+ "</br>country ==>  " + country + "</br>headImgUrl ==>  " + headImgUrl);
+		 System.out.println("accessToken  :  " + accessToken);
+		 System.out.println("openid  : " + openid);
+		 System.out.println("nickname  :  " + nickname);
+		 System.out.println("sex  : " + sex);
+		 System.out.println("province : " + province);
+		 System.out.println("city : " + city);
+		 System.out.println("country  ：  " + country);
+		 System.out.println("headImgUrl  :  " + headImgUrl);
+//		response.setContentType("text/html;charset=UTF-8");
+//		response.getWriter().write(
+//				"accessToken ==>  " + accessToken + "</br>openid ==>  " + openid + "</br>nickname ==>  " + nickname
+//						+ "</br>sex ==>  " + sex + "</br>province ==>  " + province + "</br>city ==>  " + city
+//						+ "</br>country ==>  " + country + "</br>headImgUrl ==>  " + headImgUrl);
 
 		// 判断uid是否为空
 		if (openid.equals("")) {
