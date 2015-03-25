@@ -108,7 +108,7 @@ public class QQLogin extends HttpServlet {
 			//将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
 			//TODO 判断是否有标签
-			if(tagsManager.checkUserTagIsEmpty(user.id)){//有标签
+			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");
 				//判断是否绑定本地账号
 				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
@@ -129,7 +129,7 @@ public class QQLogin extends HttpServlet {
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
 			//TODO 判断是否有标签
-			if(tagsManager.checkUserTagIsEmpty(user.id)){//有标签
+			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");
 				//判断是否绑定本地账号
 				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
