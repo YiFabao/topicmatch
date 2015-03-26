@@ -50,20 +50,6 @@
 
 
 <script>
-
-	$(".tab-menu a").powerSwitch({
-	    classAdd: "selected"
-	}).eq(0).trigger("click");
-	function eachTackList(){
-		$("#participate li:odd").addClass("even")
-		$("#participate li:even").addClass("odd")
-		$("#participate li").eq(-1).addClass("last-1")
-		$("#participate li").eq(-2).addClass("last-2")
-		$("#participate li").eq(-3).addClass("last-3")
-		$("#participate li").eq(-4).addClass("last-4")
-		$("#participate li").eq(-5).addClass("last-5")
-	}
-
 	/**
 	 * 生成一个匹配的话题发起人
 	 * @author fabao.yi
@@ -331,6 +317,7 @@
 		},function(res,status){
 			if(res=="没有匹配的话题"){
 				console.log("无推荐话题，请完善标签！");
+				$(".topic-list").html("<h3 align='center'>悲摧了,没有与你相关的推荐,尝试多加一些与你个人爱好相关的标签吧！</h3>");
 				console.log(res);
 			}else{
 				console.log("数组的大小:"+res.length);
