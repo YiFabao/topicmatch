@@ -442,6 +442,7 @@ function createChatBox_center(topicObj,userObj){
 	div_title.append(a_node);
 	
 	var div_dec = $("<div></div>").attr("class","dec");
+	div_dec.css("overflow","auto");
 	var p_txt = $("<p></p>").addClass("txt");
 	var span =$("<span></span>").addClass("dt").html("话题描述：");
 	p_txt.append(span).append(topicObj.topicContent);
