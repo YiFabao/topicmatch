@@ -9,17 +9,17 @@
 				<form>
 					<div class="item">
 						<label for="topic" class="dt-b">话题:</label>
-						<div class="dd-b"><input type="text" id="topic" class="text-d" data-max="30" required></div>
-						<span class="tip">30个字</span>
+						<div class="dd-b"><input type="text" id="topic" class="text-d" data-max="40" maxlength="40" required onKeyUp="showLen(this,40);"></div>
+						<span class="tip" id="TopicwordNum">40/40个字</span>
 					</div>
 					<div class="item detail">
 						<label for="detail" class="dt-b">话题描述:</label>
 						<div class="dd-b">
 							<div class="cont">
-								<textarea name="" id="detail" cols="100%" rows="6" class="tarea" required data-max="5000"></textarea>
+								<textarea name="" id="detail" cols="100%" rows="6" class="tarea" required data-max="5000" maxlength="5000" onKeyUp="showLen(this,5000);"></textarea>
 							</div>
 						</div>
-						<span class="tip">3250/5000个字</span>
+						<span class="tip" id="DetailwordNum">5000/5000个字</span>
 					</div>
 					<div class="opear"><input type="button" class="btn-f" value="发布" id="btn_publish"></div>
 				</form>
@@ -64,7 +64,7 @@
 							<c:if test="${matched_topic.userId!=sessionScope.user.id}">
 							<li class="tp" userId="${matched_topic.userId }">
 								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
+									<a href="#" class="user-pic"><img src="<%=request.getContextPath() %>/image?picId=${matched_topic.imgUrl}" alt=""></a>
 									<div class="info">
 										<p class="nc">${matched_topic.name}</p>
 										<p class="signature">${matched_topic.signature}</p>
@@ -189,6 +189,34 @@
  				//请求失败。。。
  			}
 		}); 
+	}
+	
+	function showLen(obj,num){
+		_this = $(obj);
+		var id=_this.attr('id');
+		console.log(id);
+		if(id=='topic')
+		{
+	    	document.getElementById('TopicwordNum').innerHTML = num-(obj.value.length) +'/'+num+'个字';
+	    	if(num-(obj.value.length)<=0)
+	    	{
+	    		document.getElementById('TopicwordNum').innerHTML = '已达字数上限';
+	    		document.getElementById('TopicwordNum').style.color = "red";
+	    	}
+	    	if(num-(obj.value.length)>0)
+	    		document.getElementById('TopicwordNum').style.color ="#7a7a7a";
+		}
+		else
+		{
+			document.getElementById('DetailwordNum').innerHTML = num-(obj.value.length) +'/'+num+'个字';
+			if(num-(obj.value.length)<=0)
+			{
+				document.getElementById('DetailwordNum').innerHTML = '已达字数上限';
+	    		document.getElementById('DetailwordNum').style.color = "red"; 
+			}
+			if(num-(obj.value.length)>0)
+	    		document.getElementById('DetailwordNum').style.color ="#7a7a7a";
+		}
 	}
 </script>
 </html>

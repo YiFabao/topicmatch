@@ -29,6 +29,7 @@ import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.HtmlRegexpUtil;
+import so.xunta.utils.ImageUtil;
 
 /**
  * @author fabao.yi
@@ -204,9 +205,12 @@ public class UserLoginService extends HttpServlet {
 	
 						user.setImageUrl(newImageName);
 						//IO
+						
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
-					
-						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+						//压缩图片
+						 File originalImage =new File(path + "/" + newImageName);
+						 ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+						 response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			
 					}
 				}

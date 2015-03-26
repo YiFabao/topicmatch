@@ -141,9 +141,43 @@ public class TopicService extends HttpServlet {
 		case "topicMemory"://fang
 			getTopicMemory(request,response);
 			break;
+		case "findUserByUserId":
+			findUserByUserId(request,response);
+			break;
 		}
 	}
 
+
+	private void findUserByUserId(HttpServletRequest request, HttpServletResponse response) {
+		String userId = request.getParameter("userId");
+		if(userId==null){
+			try {
+				response.getWriter().write("");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		
+		User user = userManager.findUserById(Integer.parseInt(userId));
+		if(user==null){
+			System.out.println("查询用户为空");
+			return;
+		}
+		JSONObject json = new JSONObject();
+		json.put("userId",user.id);
+		json.put("userName", user.xunta_username);
+		json.put("imageUrl",user.imageUrl);
+		response.setContentType("text/json");
+		try {
+			response.getWriter().write(json.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	private void getTopicAndTopicMembersByTopicId(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub

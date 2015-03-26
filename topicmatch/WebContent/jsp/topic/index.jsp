@@ -25,7 +25,7 @@
 <!-- 导航栏动态引用 -->
 <jsp:include page="include/navbar2.jsp"></jsp:include>
 
-<div id="container_all">
+<div id="container_all" width="100%">
 	<%--页面切换都放这里 --%>
 </div>
 
@@ -47,18 +47,18 @@
 	</div>
 	<div class="center" topicId="1">
 		<div class="title">
-			<div class="pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-			<h3 title="话题：心底总会有声音不停提醒“不快乐”。">话题：心底总会有声音不停提醒“不快乐”。</h3>
+			<div class="pic"><!-- <img src="images/delete/user-pic2.jpg" alt=""> --></div>
+			<h3 title="话题：心底总会有声音不停提醒“不快乐”。"><!-- 话题：心底总会有声音不停提醒“不快乐”。 --></h3>
 			<a href="javascript:chat_box_close()" class="iconfont close">&#xe607;</a>
 		</div>
 		<div class="dec">
 			<p class="txt">
-				<span class="dt">话题描述：</span>
-				论你怎样拥抱你想要的生活，心底总会有声音不停提醒“不快乐”你的内心似乎有个黑洞，不停向外索取，让你不停奔忙却忽略了你真正需要的东西.
+				<!-- <span class="dt">话题描述：</span>
+				论你怎样拥抱你想要的生活，心底总会有声音不停提醒“不快乐”你的内心似乎有个黑洞，不停向外索取，让你不停奔忙却忽略了你真正需要的东西. -->
 			</p>
 		</div>
 		<div class="chat-box">
-			<div class="user my">
+			<!-- <div class="user my">
 				<p class="detail">今天用了迪素牛奶瓶男香，橙汁味道</p><div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
 			</div>
 			<div class="user other">
@@ -66,7 +66,7 @@
 			</div>
 			<div class="system">
 				-某某加入该对话组-
-			</div>
+			</div> -->
 		</div>
 		<div class="send-box">
 			<textarea name="" id=""></textarea>
@@ -79,7 +79,7 @@
 	<div class="right" topicId="999">
 		<h4>参与人</h4>
 		<ul class="user-list">
-			<li　userId="111">
+			<!-- <li　userId="111">
 				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
 				<p class="name" title="张三">张三</p>
 			</li>
@@ -90,7 +90,7 @@
 			<li userId="333">
 				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
 				<p class="name" title="王二麻子">王二麻子</p>
-			</li>
+			</li> -->
 		</ul>
 	</div>
 </div>
@@ -178,6 +178,7 @@
 		$.post("${pageContext.request.contextPath}/servlet/topic_service?cmd=htss",parameters,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
+			$("#search_word").val("");
 		});
 <%-- 		$.post("<%=request.getContextPath()%>/jsp/topic/include/search_results.jsp",null,function(res,status){
 			$("#container_all").empty();

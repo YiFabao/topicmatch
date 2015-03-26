@@ -11,7 +11,6 @@
 					<col width="415">
 					<col width="150">
 				</colgroup>
-				
 			<%-- <c:if test="${requestScope.topicList!=null}">
 				<c:forEach var="searched_topic" items="${requestScope.topicList}"
 					varStatus="status">
@@ -60,7 +59,7 @@
 								<td class="border bb"><span class="dt">标题：</span>
 									<div class="dd">
 										<p class="name">
-											<a href="#">${searched_userTopic.topicName}</a>
+											<a href="#" onclick="create_one_topic_item_search(this,null)" topicId="${searched_userTopic.topicId}">${searched_userTopic.topicName}</a>
 										</p>
 										<p class="txt">${searched_userTopic.topicContent}</p>
 									</div></td>

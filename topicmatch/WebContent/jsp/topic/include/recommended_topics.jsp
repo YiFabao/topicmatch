@@ -17,7 +17,7 @@
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
-				<li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
+				<!-- <li class="topic-item right" style="top:30px;left:200px" topicId="E1D4D92E96D74CCC80151B98AC5537D7" onclick="create_one_topic_item(this,null)">
 					<div class="pic"><img src="images/2.jpg" alt="" ></div>
 					<div class="info">
 						<i class="iconfont man">&#xe60f;</i>fabaoyi
@@ -38,7 +38,7 @@
 						我是candy,来到寻Ta网,想找到一个能聊得来的小伙伴
 					</div>
 					<i class="tri"></i>
-				</li>
+				</li> -->
 			</ul>
 			<div class="page-topic">
 				<a href="#" class="iconfont prev">&#xe609;</a>
@@ -50,70 +50,6 @@
 
 
 <script>
-
-	$(".tab-menu a").powerSwitch({
-	    classAdd: "selected"
-	}).eq(0).trigger("click");
-	function eachTackList(){
-		$("#participate li:odd").addClass("even")
-		$("#participate li:even").addClass("odd")
-		$("#participate li").eq(-1).addClass("last-1")
-		$("#participate li").eq(-2).addClass("last-2")
-		$("#participate li").eq(-3).addClass("last-3")
-		$("#participate li").eq(-4).addClass("last-4")
-		$("#participate li").eq(-5).addClass("last-5")
-	}
-	eachTackList()
-	//滑动加载
-	$(document).scrollTop() //获取垂直滚动条到顶部的距离
-	$(document).height()//整个网页的高度
-	$(window).height()//浏览器窗口的高度
-	$(window).scrollTop() + $(window).height()  >= $(document).height()
-	$(function(){
-	  $(window).scroll(function() {
-		  //当内容滚动到底部时加载新的内容
-		  if ($(this).scrollTop() + $(window).height() + 20 >= $(document).height() && $(this).scrollTop() > 20) {
-			  //ajax 加载
-			  LoadPage();
-		  }
-	  });
-	});
-	var html ='<li class="tp"><div class="hd"><p class="name"><a href="#" title="最近在用的香水-still">最近在用的香水-still</a></p></div><div class="bd"><a href="#" class="user-pic"><img src="images/delete/pic1.jpg" alt="齐天大圣"></a><p class="txt">很少用香水，偶尔用下。最近在用still，很喜欢它的星钻造型和知性味道挺不错的。</p><div class="last-time">最后回复：3天前 <time>16:24:35</time></div></div><div class="operating">发起时间：<time>2015-02-02  09:12</time><a href="#" class="enter">进入</a></div></li>';
-	var htmlB = '<li class="column tp"><div class="hd"><a href="#" class="user-pic"><img src="images/delete/pic1.jpg" alt="齐天大圣"></a><p class="name"><a href="#" title="最近在用的香水-still">最近在用的香水-still</a></p><a href="#" class="enter">进入</a></div><div class="bd">来自: <span class="area">希达</span><time>2015-02-16  <b class="hour">16:24:35</b></time><p class="txt">很少用香水，偶尔用下。最近在用still，很喜欢它的星钻造型和知性味道挺不错的。<br>ps：我在搜集各种香水瓶子。</p></div><div class="date"><time>2月10日-2015年</time><p class="man">234人参与</p></div></li>'
-	var i=0;
-	var j=0;
-	function LoadPage(){
-		var who;
-		var loadBtn=$(".load");
-		//测试加载3条
-		if(i==3){
-			loadBtn = $('#launch .load')
-			loadBtn.addClass("disabled").attr("disabled")
-			loadBtn.html("暂无更多话题内容")
-			return false;
-		}if(j==3){
-			loadBtn = $('#participate .load')
-			loadBtn.addClass("disabled").attr("disabled")
-			loadBtn.html("暂无更多话题内容")
-			return false;
-		}else if(loadBtn.hasClass("disabled")){
-			return false;
-		}else{
-			//我发起的话题动态加载
-			var loadBtn = $('#launch .load')
-			if($('#launch').is(":visible")){
-				i=i+1;
-				$('#launch .l,#launch .r').append(html)
-			}
-			//我参与的话题动态加载
-			if($('#participate').is(":visible")){
-				j=j+1;
-				$('#participate>ul').append(htmlB)
-				eachTackList()
-			}
-		}
-	}
-
 	/**
 	 * 生成一个匹配的话题发起人
 	 * @author fabao.yi
@@ -257,7 +193,6 @@
 			return {top:0,left:0};
 		}
 	}
-
 	//生成一个合适的坐标
 	function createSuitableCoordinates(){
 		var left;
@@ -382,6 +317,7 @@
 		},function(res,status){
 			if(res=="没有匹配的话题"){
 				console.log("无推荐话题，请完善标签！");
+				$(".topic-list").html("<h3 align='center'>悲摧了,没有与你相关的推荐,尝试多加一些与你个人爱好相关的标签吧！</h3>");
 				console.log(res);
 			}else{
 				console.log("数组的大小:"+res.length);
