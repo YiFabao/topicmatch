@@ -10,7 +10,7 @@
     <property name="userId" not-null="false" />
     <property name="userName" not-null="false"/>
     <property name="topicName" not-null="false" />
-    <property name="topicContent" not-null="false" />
+    <property name="topicContent" not-null="false" type="text"/>
     <property name="join_people_num" not-null="false" />
     <property name="logo_url" not-null="false" />
     <property name="createTime" not-null="false" />
