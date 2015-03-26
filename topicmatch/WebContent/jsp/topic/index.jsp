@@ -178,6 +178,7 @@
 		$.post("${pageContext.request.contextPath}/servlet/topic_service?cmd=htss",parameters,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
+			$("#search_word").val("");
 		});
 <%-- 		$.post("<%=request.getContextPath()%>/jsp/topic/include/search_results.jsp",null,function(res,status){
 			$("#container_all").empty();
