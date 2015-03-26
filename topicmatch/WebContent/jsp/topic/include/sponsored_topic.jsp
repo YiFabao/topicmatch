@@ -64,7 +64,7 @@
 							<c:if test="${matched_topic.userId!=sessionScope.user.id}">
 							<li class="tp" userId="${matched_topic.userId }">
 								<div class="hd">
-									<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
+									<a href="#" class="user-pic"><img src="${matched_topic.imgUrl}" alt="头像"></a>
 									<div class="info">
 										<p class="nc">${matched_topic.name}</p>
 										<p class="signature">${matched_topic.signature}</p>
