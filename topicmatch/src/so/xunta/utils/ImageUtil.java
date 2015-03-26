@@ -16,10 +16,8 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
-@SuppressWarnings("restriction")
 public class ImageUtil {
 
-	@SuppressWarnings("restriction")
 	public static void resize(File originalFile, File resizedFile,
 			int newWidth, float quality) throws IOException {
 
