@@ -449,20 +449,20 @@ function login(){
 	$("#btn_login").attr("disabled",false);
 	$.post("<%=basePath %>servlet/login",{xunta_username:userName,password:password},function(res,state){
 		console.log(res);
-		if(res=="failure"){
+		if(res.state=="failure"){
 			console.log("用户名或密码错误");
 			console.log(res);
 			$("#errorMsg").css("display","block");
 			$("#btn_login").removeAttr("disabled");
 		}
-		else if(res=="success")
+		else if(res.state=="success")
 		{
 			console.log("登录成功");
 			alert("登录成功");
 			//1.检查是否填写过标签
 			var parameters = {
 				cmd:"checkHasTag",
-				userId:"${sessionScope.user.id}"
+				userId:res.userId
 			};
 			var ret_msg;
 			$.ajax({  
@@ -472,7 +472,7 @@ function login(){
 			     async : false,  //同步
 			     datatype:"json",
 			     success : function(res){  
-			    	if(res=="ok"){
+			    	if(res=="exist"){
 			    		ret_msg="exist";
 			    	}else{
 			    		console.log("用户不存在标签");

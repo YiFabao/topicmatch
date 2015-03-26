@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.UserManagerImpl;
@@ -42,7 +43,11 @@ public class Login extends HttpServlet {
 		User user_to_check=(User) request.getSession().getAttribute("user");
 		if(user_to_check!=null&&user_to_check.xunta_username.equals(username)){
 			System.out.println("已经登录过，不必重复验证登录");
-			response.getWriter().write("success");
+			JSONObject ret=new JSONObject();
+			ret.put("state","success");
+			ret.put("userId",user_to_check.id);
+			response.setContentType("text/json");
+			response.getWriter().write(ret.toString());
 		}
 		else{
 			User user=userManager.checkRegisterUserExist(username, password);
@@ -51,7 +56,10 @@ public class Login extends HttpServlet {
 				System.out.println("用户名或密码错误");
 				request.setAttribute("xunta_username",username);
 				request.setAttribute("errorMsg","用户名或密码错误");
-				response.getWriter().write("failure");
+				JSONObject ret = new JSONObject();
+				ret.put("state","failure");
+				response.setContentType("text/json");
+				response.getWriter().write(ret.toString());
 			}
 			else
 			{
@@ -77,7 +85,11 @@ public class Login extends HttpServlet {
 					cookie.setPath("/");
 					response.addCookie(cookie);
 				}
-				response.getWriter().write("success");
+				JSONObject ret=new JSONObject();
+				ret.put("state","success");
+				ret.put("userId",user.id);
+				response.setContentType("text/json");
+				response.getWriter().write(ret.toString());
 			}
 		}
 		
