@@ -64,7 +64,7 @@
 							<c:if test="${matched_topic.userId!=sessionScope.user.id}">
 							<li class="tp" userId="${matched_topic.userId }">
 								<div class="hd">
-									<a href="#" class="user-pic"><img src="<%=request.getContextPath() %>/image?picId=${sessionScope.user.imageUrl}" alt=""></a>
+									<a href="#" class="user-pic"><img src="<%=request.getContextPath() %>/image?picId=${matched_topic.imgUrl}" alt=""></a>
 									<div class="info">
 										<p class="nc">${matched_topic.name}</p>
 										<p class="signature">${matched_topic.signature}</p>
