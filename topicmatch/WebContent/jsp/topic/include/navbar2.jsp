@@ -1,16 +1,6 @@
 <%@page import="so.xunta.entity.User"%>
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-	User user = (User)session.getAttribute("user");
-	if(user==null){
-		user = new User();
-		user.setId(1L);
-		user.setXunta_username("测试账号");
-		user.setImageUrl(request.getContextPath()+"/jsp/topic/images/1.jpg");
-		session.setAttribute("user", user);
-	} 
-%>
 <!DOCTYPE html>
 <html lang="zh">
 	<header class="header">
@@ -39,8 +29,7 @@
 						<i class="link"></i>
 						<div class="t">
 							<p class="name">${sessionScope.user.xunta_username }</p>
-							<ul class="menu-list">
-								<li><a href="#"><i class="iconfont">&#xe60a;</i>个人信息</a></li>
+							<ul class="menu-list">a href="#"><i class="iconfont">&#xe60a;</i>个人信息</a></li>
 								<li><a href="#"><i class="iconfont">&#xe60c;</i>账号设置</a></li>
 								<li><a href="#"><i class="iconfont">&#xe60b;</i>退出</a></li>
 							</ul>
