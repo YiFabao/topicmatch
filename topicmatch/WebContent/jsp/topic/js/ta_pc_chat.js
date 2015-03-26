@@ -758,6 +758,9 @@ window.receiveBroadcast = function(json)
 		     async : false,  //同步
 		     datatype:"json",
 		     success : function(res){
+		    	 if(res==null||""==res){
+		    		 console.log("findUserByUserId返回数据为空");
+		    	 }
 		    	 console.log("请求成功:"+res);
 		    	member=res;
 		     } ,
@@ -770,7 +773,7 @@ window.receiveBroadcast = function(json)
 	if(cur_topicId==json.topicId){
 		//在参与人列表　添加一个用户
 		console.log("当前窗口");
-		if(member==null){
+		if(member==null||member==""){
 			console.log("714行:查询member为空");
 			return;
 		}
