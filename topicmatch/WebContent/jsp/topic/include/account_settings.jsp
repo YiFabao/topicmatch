@@ -62,8 +62,14 @@
 				<div class="item">
 					<label class="dt-c dtt">头像</label>
 					<div class="dd-c">
-						<span class="pic-area"><img src="images/delete/user-pic2.jpg" alt=""></span>
-						<a href="#" class="f14 a1">本地上传</a>
+						<span class="pic-area">
+							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="images/delete/user-pic2.jpg"/></div>
+						</span>
+						<a href="javascript:up_img.click();"  class="f14 a1">
+							本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
+						</a>
+						<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
+						
 					</div>
 				</div>
 				<div class="item">
@@ -151,6 +157,8 @@
 	 checkPwd("#Reg form")
 	 $(function(){
 		 YearMonthDay();// 加载日期选择组件
+		//上传图片预览
+		 new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
 	 })
 </script>
 </html>
