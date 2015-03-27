@@ -435,7 +435,7 @@ $("#reg_tag").click(function(){
  			}else{
  				console.log("准备跳到下一步");
  				window.location.replace("http://"+document.domain+":8080/topicmatch/jsp/xunta_user/fillinfo.jsp?#&Reg");
- 				window.reload();
+ 				window.location.reload();
  			}
  		}
  		else{
