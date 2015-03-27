@@ -350,7 +350,7 @@ $('.interests .tag .del').live('click',function(){
 })
 $('#AddTagBtn').click(function(){
 	var c = $(this).prev();
-	if(c.val()==null||""==c.val()){
+	if(c.val()==null||""==c.val().trim()){
 		return;
 	}
 	$('.login-3 .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del"></i></a>&nbsp;&nbsp;')
