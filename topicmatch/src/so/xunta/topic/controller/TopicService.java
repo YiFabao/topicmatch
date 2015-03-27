@@ -716,7 +716,7 @@ public class TopicService extends HttpServlet {
 			//话题ID+Xunta+用户id作为key，P_Or_J作为value
 			Map<String,String> userPJ_EachTopic = new HashMap<String,String>();
 			
-			for(TopicHistory outerth : matchedTopicFromDB)
+			/*for(TopicHistory outerth : matchedTopicFromDB)
 			{
 				String tid = outerth.getTopicId();
 				List<Long> userIds = new ArrayList<Long>();
@@ -729,7 +729,26 @@ public class TopicService extends HttpServlet {
 					}
 				}
 				userIdsOfEachTopic.put(tid, userIds);
+			}*/
+			for(TopicHistory th : matchedTopicFromDB)
+			{
+				String tid = th.getTopicId();
+				if(userIdsOfEachTopic.containsKey(tid))
+				{
+					List<Long> userIds = userIdsOfEachTopic.get(tid);
+					userPJ_EachTopic.put(tid+"=xunta="+th.getAuthorId(), String.valueOf(th.getPublish_or_join()));
+					userIds.add(Long.parseLong(th.getAuthorId()));
+				}
+				else
+				{
+					List<Long> userIds = new ArrayList<Long>();
+					userPJ_EachTopic.put(tid+"=xunta="+th.getAuthorId(), String.valueOf(th.getPublish_or_join()));
+					userIds.add(Long.parseLong(th.getAuthorId()));
+				
+					userIdsOfEachTopic.put(tid, userIds);
+				}
 			}
+			
 			Iterator<String> iter = userIdsOfEachTopic.keySet().iterator();
 			while (iter.hasNext()) {
 			    String key = iter.next();
