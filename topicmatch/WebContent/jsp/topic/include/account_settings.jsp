@@ -21,7 +21,7 @@
 				<div class="item">
 					<label for="PassWordRC" class="dt-c">确认密码</label>
 					<div class="dd-c">
-						<input name="rePassword" type="password" id="PassWordRC" class="text-c wtb pwdcheck" data-min="6" required disabled>
+						<input name="rePassword" type="password" id="PassWordRC" class="text-c wtb pwdcheck" data-min="6" value="${user.password}" required disabled>
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
