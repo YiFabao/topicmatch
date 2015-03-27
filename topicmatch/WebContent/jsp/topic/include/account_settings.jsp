@@ -4,23 +4,24 @@
 <html lang="zh">
 <section class="content" >
 	<div class="main">
-		<div class="form login-4 acc-set">
+		<c:if test="${requestScope.user!=null}">
+		<div class="form login-4 acc-set">	
 			<form id="ComRegForm">
 				<div class="item">
 					<label class="dt-c" for="UserNameR">用户名&nbsp;:</label>
-					<div class="dd-c lh36">&emsp;小明明</div>
+					<div class="dd-c lh36">&emsp;${user.xunta_username}</div>
 				</div>
 				<div class="item">
 					<label for="PassWordR" class="dt-c">密&emsp;&emsp;码</label>
 					<div class="dd-c">
-						<input type="password" id="PassWordR" class="text-c wtb pwd" data-min="6" value="1234567890" required disabled>
+						<input name="password" type="password" id="PassWordR" class="text-c wtb pwd" data-min="6" value="${user.password}" required disabled>
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
 				<div class="item">
 					<label for="PassWordRC" class="dt-c">确认密码</label>
 					<div class="dd-c">
-						<input type="password" id="PassWordRC" class="text-c wtb pwdcheck" data-min="6" required disabled>
+						<input name="rePassword" type="password" id="PassWordRC" class="text-c wtb pwdcheck" data-min="6" required disabled>
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
@@ -28,16 +29,13 @@
 					<span class="dt-c">标签</span>
 					<div class="dd-c">
 						<div class="interests">
-							<div class="cont mb10">
-								<a href="javascript:;" class="tag">文学<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">地理<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">整治<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">语文<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">数学<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">文学<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">地理<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">整治<i class="iconfont del">&#xe601;</i></a>
-								<a href="javascript:;" class="tag">语文<i class="iconfont del">&#xe601;</i></a>
+							<div class="cont mb10" id="user_input_tags">
+								<c:if test="${requestScope.tags!=null}">
+									<c:forEach var="tag" items="${requestScope.tags}" varStatus="status">
+										<a href="javascript:;" class="tag" tagId="${tag.id}">${tag.tagname}<i class="iconfont del">&#xe601;</i></a>
+									</c:forEach>
+								</c:if>
+								<input name="newTags" id="newTags" type="hidden"/>
 							</div>
 							<lable class="placeholder" style="display:none">填写或选择感兴趣的标签,以，隔开</lable>
 							<div class="mb10">
@@ -63,7 +61,7 @@
 					<label class="dt-c dtt">头像</label>
 					<div class="dd-c">
 						<span class="pic-area">
-							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="images/delete/user-pic2.jpg"/></div>
+							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${user.imageUrl}" alt=""/></div>
 						</span>
 						<a href="javascript:up_img.click();"  class="f14 a1">
 							本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
@@ -75,7 +73,7 @@
 				<div class="item">
 					<label for="NC" class="dt-c">昵称</label>
 					<div class="dd-c">
-						<input type="text" id="NC" class="text-c wtb" data-min="1">
+						<input name="nickname" type="text" id="NC" class="text-c wtb" data-min="1" value="${user.nickname}">
 					</div>
 				</div>
 				<div class="item pt14">
@@ -83,7 +81,7 @@
 					<div class="dd-c pt5">
 						<div class="d-select">
 							<div class="ter">
-								<label></label>
+								<label id="yearLabel"></label>
 								<select name=year onchange="yy(this.value)">
 								<option value=""></option>
 								</select>
@@ -92,7 +90,7 @@
 						年
 						<div class="d-select">
 							<div class="ter">
-								<label></label>
+								<label id="monthLabel"></label>
 								<select name=month onchange="mm(this.value)">
 									<option value=""></option>
 								</select>
@@ -101,7 +99,7 @@
 						月
 						<div class="d-select">
 							<div class="ter">
-								<label></label>
+								<label id="dayLabel"></label>
 								<select name=day>
 									<option value=""></option>
 								</select>
@@ -113,14 +111,14 @@
 				<div class="item">
 					<label for="city" class="dt-c">常驻城市</label>
 					<div class="dd-c">
-						<input type="text" id="city" class="text-c wtb" data-min="1" value="上海市" disabled>
+						<input name="address" type="text" id="city" class="text-c wtb" data-min="1" value="${user.address}" disabled>
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
 				<div class="item">
 					<label for="email" class="dt-c">电子邮箱</label>
 					<div class="dd-c">
-						<input type="email" id="email" class="text-c wtb" data-min="1">
+						<input name="email" type="email" id="email" class="text-c wtb" data-min="1" value="${user.email}" disabled>
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
@@ -141,10 +139,11 @@
 					</ul>
 				</div> -->
 				<div class="dd-c">
-					<button class="btn-d wta">确 定</button>
+					<button class="btn-d wta" id="submitModify">确 定</button>
 				</div>
 			</form>
 		</div>
+		</c:if>
 	</div>
 </section>
 <!-- <script src="js/jquery-1.4.4.min.js"></script>
@@ -159,6 +158,99 @@
 		 YearMonthDay();// 加载日期选择组件
 		//上传图片预览
 		 new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
-	 })
+		 autoSelected();
+	 });
+	 
+	 //下拉列表自动选中
+	 function autoSelected()
+	 {
+		 var fo=document.getElementById("ComRegForm");
+		 var year = fo.year;
+		 var month = fo.month;
+		 var day = fo.day;
+		 
+		 var year_data = "${requestScope.year}";
+		 var month_data = "${requestScope.month}";
+		 var day_data = "${requestScope.day}";
+		 if(year_data!=null)
+		 {
+			 for (var i = 0; i < year.options.length; i++) {
+	             if (year.options[i].value == year_data) {
+	                 year.options[i].selected = true;
+	                 document.getElementById("yearLabel").innerHTML=year_data;
+	                 break;
+	             }
+	         }
+			 for (var i = 0; i < month.options.length; i++) {
+	             if (month.options[i].value == month_data) {
+	                 month.options[i].selected = true;
+	                 document.getElementById("monthLabel").innerHTML=month_data;
+	                 break;
+	             }
+	         }
+			 for (var i = 0; i < day.options.length; i++) {
+	             if (day.options[i].value == day_data) {
+	                 day.options[i].selected = true;
+	                 document.getElementById("dayLabel").innerHTML=day_data;
+	                 break;
+	             }
+	         }
+		 }
+	 }
+	 
+	 //提交表单
+	 $("#submitModify").click(function(){
+		 //获取标签
+		 var tags_array=new Array();
+		 var atags=$("#user_input_tags a");
+		 atags.each(function(index,element){
+		 	//console.log("element   :  " + element.innerHTML.toString());
+		 	tags_array.push(element.innerHTML.toString());
+		 });
+		 if(tags_array.length<=0)
+		 {
+			 alert("请至少填入一个标签!");
+			 return;
+		 }
+		 var pwd=$("#PassWordR").val();
+		 var repwd=$("#PassWordRC").val();
+		 if(pwd!=repwd)
+		 {
+			 alert("两次输入的密码不一致!");
+			 return;
+		 }
+		 var newTags = $("#newTags");
+		 newTags.val(tags_array.toString());
+		 
+		 $("#ComRegForm").html5Validate(function() {
+				var self = this;
+			
+				$(this).attr("method","post");
+				$(this).attr("enctype","multipart/form-data");
+				$(this).attr("action","${pageContext.request.contextPath}/servlet/userLoginService?cmd=complete_reg");
+				console.log("完成修改");
+				self.submit(); 
+			});
+	 });
+	 
+	 //添加标签
+	 $('#AddTagBtn').click(function(){
+			var c = $(this).prev();
+			if(c.val()==null||""==c.val()){
+				return;
+			}
+			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i>')
+			c.val("");
+			
+	});
+	
+	 //点击编辑按钮
+	$('.edit').click(function(){
+		var c = $(this).prev();
+		console.log(c);
+		//c.removeAttribute("disabled");
+		c.attr('disabled', '');
+	})
+
 </script>
 </html>

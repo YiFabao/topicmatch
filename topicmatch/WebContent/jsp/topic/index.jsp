@@ -170,7 +170,14 @@
 	
 	$("#p_info").click(function(){
 		console.log("个人信息设置");
-		$.post("<%=request.getContextPath()%>/jsp/topic/include/account_settings.jsp",null,function(res,status){
+		<%-- $.post("<%=request.getContextPath()%>/jsp/topic/include/account_settings.jsp",null,function(res,status){
+			$("#container_all").empty();
+			$("#container_all").append(res);
+		}); --%>
+		var parameters={
+				userId:myselfId
+		};
+		$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=getUserInfo",parameters,function(res,status){
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		});

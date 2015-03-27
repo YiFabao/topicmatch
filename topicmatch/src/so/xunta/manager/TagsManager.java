@@ -27,6 +27,9 @@ public interface TagsManager {
 	//根据userId查询该用户的所有标签
 	public List<Tag> findAllTagsByUserId(long userId);
 	
+	//根据userId删除用户的所有标签
+	public void deleteTagsByUserId(long userId);
+	
 	//查询用户对应的标签是否为空
 	public boolean checkUserTagIsEmpty(long userId);
 	

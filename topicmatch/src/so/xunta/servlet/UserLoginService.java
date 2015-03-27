@@ -55,6 +55,9 @@ public class UserLoginService extends HttpServlet {
 			return;
 		}
 		switch(cmd){
+		case "getUserInfo":
+			method_getUserInfo(request,response);
+			break;
 		case "tag":
 			System.out.println("获取tag标签,保存到数据库");
 			method_tags(request,response);
@@ -73,6 +76,46 @@ public class UserLoginService extends HttpServlet {
 		}
 	}
 
+
+	private void method_getUserInfo(HttpServletRequest request,
+			HttpServletResponse response) {
+		String userId = request.getParameter("userId").trim();//用户id
+		User user = userManager.findUserById(Integer.parseInt(userId));
+		List<Tag> tagList = tagManager.findAllTagsByUserId(Long.parseLong(userId));
+		if(user==null)
+		{
+			request.setAttribute("user",null);
+		}
+		else
+		{
+			request.setAttribute("user",user);
+			String birthday = user.getBirthday();
+			String year = null;
+			String month = null;
+			String day = null;
+			if(birthday!=null&&!"".equals(birthday))
+			{
+				String[] birth = birthday.split("-");
+				year = birth[0];
+				month = birth[1];
+				day = birth[2];
+			}
+			request.setAttribute("year", year);	
+			request.setAttribute("month", month);	
+			request.setAttribute("day", day);	
+			if(tagList!=null)
+				request.setAttribute("tags", tagList);
+			else
+				request.setAttribute("tags", null);
+		}
+		try {
+			request.getRequestDispatcher("/jsp/topic/include/account_settings.jsp").forward(request, response);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void checkHasTag(HttpServletRequest request, HttpServletResponse response) {
 		String userIdStr = request.getParameter("userId");
@@ -104,7 +147,8 @@ public class UserLoginService extends HttpServlet {
 	}
 
 	private void method_complete_reg(HttpServletRequest request, HttpServletResponse response) {
-		uploadImage(request,response);
+		//uploadImage(request,response);
+		userInfoModify(request,response);
 	}
 	
 	//上传图片
@@ -230,6 +274,152 @@ public class UserLoginService extends HttpServlet {
 			}
 		}
 	}
+	
+	
+	/**
+	 * @author Yanyu Li
+	 * @date 2015年3月27日
+	 * @param request
+	 * @param response 
+	 * @return void
+	 * 提交用户信息修改
+	 */
+	private void userInfoModify(HttpServletRequest request, HttpServletResponse response) {
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);//检查输入请求是否为multipart表单数据。
+		System.out.println("图片上传");
+		if (isMultipart == true) {
+			DiskFileItemFactory f = new DiskFileItemFactory();// 磁盘对象
+			f.setRepository(new File(LocalContext.getTempFilePath()));// 设置临时目录
+			f.setSizeThreshold(1024 * 8);// 8k的缓冲区,文件大于8K则保存到临时目录
+			ServletFileUpload upload = new ServletFileUpload(f);// 声明解析request的对象
+			upload.setHeaderEncoding("UTF-8");// 处理文件名中文
+			upload.setFileSizeMax(1024 * 1024 * 1);// 设置每个文件最大为1M
+			upload.setSizeMax(1024 * 1024 * 1);// 一共最多能上传1M
+			String path =LocalContext.getPicPath();
+			try {
+				List<FileItem> list = upload.parseRequest(request);// 解析
+				String nickname="";
+				String password="";
+				String newTags="";
+				String year="";
+				String month="";
+				String day="";
+				String address="";
+				String email="";
+				char sex;
+				System.out.println(list.size());
+
+				//完善用户资料
+				User user= (User) request.getSession().getAttribute("user");
+				if(user==null)
+				{
+					response.getWriter().write("illegal login,user in session is null...");
+					return ;
+				}
+
+				for (FileItem ff : list) {
+					if (ff.isFormField()) {//如果为真，则为表单输入域
+						String ds = ff.getString("UTF-8");// 处理中文
+						//System.err.println(ff.getFieldName()+":" + ds);
+						String filedname = ff.getFieldName().trim();
+						System.out.println(filedname);
+						switch(filedname){
+						case "nickname":
+							nickname=ds;
+							if(nickname!=null&&!"".equals(nickname)){
+								user.setNickname(nickname);
+							}
+							System.out.println("nickname:"+nickname);
+							break;
+						case "sex":
+							System.out.println("sex:"+ds);
+							if(ds!=null&&!"".equals(ds)){
+								user.setSex(ds);
+							}						
+							break;
+						case "newTags":
+							newTags = ds;
+							System.out.println("newTags:"+newTags);
+							method_Modifytags(user.getId(),newTags);
+							break;
+						case "year":
+							year=ds;
+							break;
+						case "month":
+							month=ds;
+							break;
+						case "day":
+							day=ds;
+							break;
+						case "address":
+							address=ds;
+							if(address!=null&&!"".equals(address)){
+								user.setAddress(address);
+							}
+							break;
+						case "email":
+							email=ds;
+							if(email!=null&&!"".equals(email)){
+								user.setEmail(email);
+							}
+							break;
+						case "password":
+							password=ds;
+							if(password!=null&&!"".equals(password)){
+								user.setPassword(password);
+							}
+							break;
+						default:
+							break;
+						}
+					} else {//否则为文件上传域
+						String filename = ff.getName();
+						if(filename==null||"".equals(filename)){
+							continue;
+						}
+						String contentType=ff.getContentType();
+						filename = filename.substring(filename.lastIndexOf("\\") + 1);// 解析文件名
+						System.out.println("上传文件名为："+filename);
+						String extension=filename.substring(filename.lastIndexOf("."));
+						String imgname=filename.substring(0,filename.lastIndexOf("."));
+						//重新构造文件名 　　　实际文件名_用户id_时间戳
+						String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
+
+						user.setImageUrl(newImageName);
+						//IO
+						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
+						//压缩图片
+						File originalImage =new File(path + "/" + newImageName);
+						ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+						//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+
+					}
+				}
+				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
+				{
+					Calendar c =Calendar.getInstance();
+					c.clear();
+					System.out.println("year:"+ year+" month:"+(month)+" day:"+day);
+					user.setBirthday(year+"-"+month+"-"+day);
+					System.out.println("nickname:"+nickname+"  "+"address:"+user.address+"  birthday:"+(year+"-"+month+"-"+day));
+				}
+				userManager.updateUser(user);
+				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+
+
+			}
+		}else{
+			try {
+				response.getWriter().write("the enctype must be multipart/form-data");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	private void methoc_bindlocalaccount(HttpServletRequest request, HttpServletResponse response) {
 		try{
@@ -305,6 +495,23 @@ public class UserLoginService extends HttpServlet {
 		}
 	}
 
+	private void method_Modifytags(Long userId, String newTags) {
+		TagsManager tagsManager = new TagsManagerImpl();
+		try{
+			//先删除原有tags
+			tagsManager.deleteTagsByUserId(userId);
+			String tagArray[] = HtmlRegexpUtil.filterHtml(newTags).replaceAll("", "").split(",");
+			List<Tag> list = new ArrayList<Tag>();
+			for (int i = 0; i < tagArray.length; i++) {
+				String tag = tagArray[i];
+				System.out.println("将标签存入数据库  ==>   userId : "+userId+"  --   tag : "+tag);
+				list.add(new Tag(userId, tag, SecurityUtil.strToMD5(userId+tag)));
+			}
+			tagsManager.addTags(list);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

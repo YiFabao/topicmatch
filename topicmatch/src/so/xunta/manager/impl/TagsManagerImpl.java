@@ -76,8 +76,8 @@ public class TagsManagerImpl implements TagsManager {
 		try {
 			session.beginTransaction();
 			int count = 0;
-			for (Long userId : tagIdList) {
-				Query query = session.createQuery("from Tag where id=?").setLong(0, userId);
+			for (Long Id : tagIdList) {
+				Query query = session.createQuery("from Tag where id=?").setLong(0, Id);
 				Tag tag = (Tag) query.uniqueResult();
 				session.delete(tag);
 				if (++count % 20 == 0) {
@@ -105,6 +105,24 @@ public class TagsManagerImpl implements TagsManager {
 			query = session.createQuery("from Tag where userId=?").setLong(0, userId);
 			session.getTransaction().commit();
 			return query.list();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
+	@Override
+	public void deleteTagsByUserId(long userId) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "delete Tag as t where t.userId = ?";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setLong(0, userId);
+			query.executeUpdate();
+			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
 			throw e;
@@ -180,4 +198,5 @@ public class TagsManagerImpl implements TagsManager {
 
 		// System.out.println(tagManager.checkUserTagIsEmpty(101));
 	}
+
 }
