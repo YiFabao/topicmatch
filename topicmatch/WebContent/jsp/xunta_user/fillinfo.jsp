@@ -434,7 +434,7 @@ $("#reg_tag").click(function(){
  				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
  			}else{
  				console.log("准备跳到下一步");
- 				window.location="#&Reg";
+ 				window.location="http://"+document.domain+":8080/topicmatch/jsp/xunta_user/fillinfo.jsp?#&Reg";
  			}
  		}
  		else{
