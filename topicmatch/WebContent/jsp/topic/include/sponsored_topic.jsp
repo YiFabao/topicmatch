@@ -91,9 +91,13 @@
 							</c:if>
 							</c:forEach>
 						</ul>
-						</div>
 						</c:if>
-						
+						<c:if test="${requestScope.matchedTopicList==null && requestScope.my_topicId!=null}">
+							<h3 class="title">最匹配的"话题人"</h3>
+							<button class="resultEmpty">暂无匹配话题人</button>
+							<br/>
+						</c:if>
+						</div>
 						<!-- <li class="tp">
 							<div class="hd">
 								<a href="#" class="user-pic"><img src="images/user-default-pic.png" alt="齐天大圣"></a>
@@ -152,6 +156,7 @@
 			alert("话题　及　话题描述不能为空");
 			return;
 		}
+		
 		var parameters={
 				userId:userId,
 				userName:userName,
@@ -163,6 +168,7 @@
 			$("#container_all").empty();
 			$("#container_all").append(res);
 		}); 
+ 		
 		//$("#form1").submit();
 	});
 	 

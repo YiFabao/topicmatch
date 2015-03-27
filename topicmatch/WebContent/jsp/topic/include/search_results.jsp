@@ -36,6 +36,7 @@
 				</c:forEach>
 			</c:if> --%>
 			<c:if test="${requestScope.topicsHashMap!=null}">
+				
 				<c:forEach var="searched_topicsHashMap"
 					items="${requestScope.topicsHashMap}" varStatus="status">
 					<%-- key值： ${searched_topicsHashMap.key}<br>
@@ -76,7 +77,7 @@
 					</c:forEach>
 				</c:forEach>
 			</c:if>
-
+			
 			<!-- <tbody>
 					<tr>
 						<td class="border" rowspan="2">
@@ -117,6 +118,9 @@
 				<span class="cur">1/1</span>
 				<a href="#" class="iconfont next">&#xe608;</a>
 			</div> -->
+			<c:if test="${requestScope.topicsHashMap==null}">
+				<button class="resultEmpty">暂无相关话题</button>
+			</c:if>
 		</div>
 	</section>
 	<script>
