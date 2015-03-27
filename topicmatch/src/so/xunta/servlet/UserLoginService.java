@@ -193,19 +193,11 @@ public class UserLoginService extends HttpServlet {
 						System.out.println("上传文件名为："+filename);
 						String extension=filename.substring(filename.lastIndexOf("."));
 						String imgname=filename.substring(0,filename.lastIndexOf("."));
-						System.out.println("图片后缀为："+extension);
-						System.out.println("图片名称为："+imgname);
 						//重新构造文件名 　　　实际文件名_用户id_时间戳
 						String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
-						System.out.println("文件类型为："+contentType);
-						System.out.println("保存的路径为："+new File(path + "/" + newImageName).getAbsolutePath());
-						if(contentType.equals("image/jpeg")){
-							System.out.println("上传的是图片格式");
-						}
 	
 						user.setImageUrl(newImageName);
 						//IO
-						
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 						//压缩图片
 						 File originalImage =new File(path + "/" + newImageName);
