@@ -167,6 +167,14 @@
 		});
 	});
 	
+	$("#p_info").click(function(){
+		console.log("个人信息设置");
+		$.post("<%=request.getContextPath()%>/jsp/topic/include/account_settings.jsp",null,function(res,status){
+			$("#container_all").empty();
+			$("#container_all").append(res);
+		});
+	});
+	
 	$("#search_btn").click(function(){
 		console.log("搜索……");
 		var search_word=$("#search_word").val();//用户填写的搜索词
