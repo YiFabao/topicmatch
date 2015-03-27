@@ -69,7 +69,7 @@
 			</div> -->
 		</div>
 		<div class="send-box">
-			<textarea name="" id=""></textarea>
+			<textarea name="" id="msg_input_box"></textarea>
 			<button class="iconfont send-btn" onclick="createMessage(0,null)">&#xe604;</button>
 		</div>
 	</div>
@@ -183,7 +183,7 @@
 		});
 	});
 	
-	$("#search_btn").click(function(){
+	function searchTopic(){
 		console.log("搜索……");
 		var search_word=$("#search_word").val();//用户填写的搜索词
 		console.log(search_word);
@@ -196,18 +196,38 @@
 			$("#container_all").append(res);
 			$("#search_word").val("");
 		});
-<%-- 		$.post("<%=request.getContextPath()%>/jsp/topic/include/search_results.jsp",null,function(res,status){
-			$("#container_all").empty();
-			$("#container_all").append(res);
-		}); --%>
+	}
+	$("#search_btn").click(function(){
+		searchTopic()
 	});
-	//发送消息按钮添加点击或按回车键发送消息
-	 $(document).keydown(function(event){
+	$("#search_word").keypress(function(event){
+		//console.log(event.keyCode?event.keyCode:event.which);
+	    var keycode = (event.keyCode ? event.keyCode : event.which);
+	    if(keycode == '13'){
+	    	console.log("话题搜索");
+	    	var c = $("#search_word");
+	    	if(c.val()==null||""==c.val()){
+	    		return;
+	    	}
+	    	searchTopic();
+	    }
+	});
+	
+	function keypress(obj,event){
+		console.log(obj);
+		var keyCode = (event.keyCode ? event.keyCode : event.which);
+		if(keyCode=='13'){
+	    	createMessage(0,null);
+	    	return false;
+	    }
+	}
+/* 	//发送消息按钮添加点击或按回车键发送消息
+	 $("#msg_input_box").keypress(function(event){
 		    if(event.keyCode==13){
 		    	createMessage(0,null);
 		    	return false;
 		    }
-	 });
+	 }); */
 	
 	//创建websocket
 	createWebsocketConnect(myselfId);

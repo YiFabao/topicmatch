@@ -350,7 +350,7 @@ $('.interests .tag .del').live('click',function(){
 })
 $('#AddTagBtn').click(function(){
 	var c = $(this).prev();
-	if(c.val()==null||""==c.val()){
+	if(c.val()==null||""==c.val().trim()){
 		return;
 	}
 	$('.login-3 .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del"></i></a>&nbsp;&nbsp;')
@@ -429,10 +429,13 @@ $("#reg_tag").click(function(){
  			//检查是否有xunta_username和password
  			var xunta_username="${sessionScope.user.xunta_username}";
  			var password = "${sessionScope.user.password}";
+ 			console.log("存在该用户");
  			if(xunta_username&&password){//存在用户名和密码直接跳到主页
  				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
  			}else{
- 				window.location.href="#Reg";
+ 				console.log("准备跳到下一步");
+ 				window.location.replace("http://"+document.domain+":8080/topicmatch/jsp/xunta_user/fillinfo.jsp?#&Reg");
+ 				window.location.reload();
  			}
  		}
  		else{
