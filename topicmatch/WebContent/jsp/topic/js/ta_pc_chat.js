@@ -517,9 +517,9 @@ function createChatBox_center(topicObj,userObj){
 		}
 	}*/
 	////////////////////////////////////////////////////
-	var div_send_box = $("<div></div>").attr("class","send-box");
-	var textarea_node = $("<textarea></textarea>").attr("name","").attr("id","");
-	var button = $("<button></button>").attr("class","iconfont send-btn").html("&#xe604;");
+	var div_send_box = $("<div ></div>").attr("class","send-box");
+	var textarea_node = $("<textarea  onkeypress='keypress(this,event)'></textarea>").attr("name","").attr("id","msg_input_box");
+	var button = $("<button onclick='createMessage(0,null);'></button>").attr("class","iconfont send-btn").html("&#xe604;");
 	div_send_box.append(textarea_node);
 	div_send_box.append(button);
 	
