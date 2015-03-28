@@ -9,17 +9,17 @@
 				<form>
 					<div class="item">
 						<label for="topic" class="dt-b">话题:</label>
-						<div class="dd-b"><input type="text" id="topic" class="text-d" data-max="40" maxlength="40" required onKeyUp="showLen(this,40);"></div>
-						<span class="tip" id="TopicwordNum">40/40个字</span>
+						<div class="dd-b"><input type="text" id="topic" class="text-d" data-max="25" required onKeyUp="showLen(this,25);"></div>
+						<span class="tip" id="TopicwordNum">还可以输入25字</span>
 					</div>
 					<div class="item detail">
 						<label for="detail" class="dt-b">话题描述:</label>
 						<div class="dd-b">
 							<div class="cont">
-								<textarea name="" id="detail" cols="100%" rows="6" class="tarea" required data-max="5000" maxlength="5000" onKeyUp="showLen(this,5000);"></textarea>
+								<textarea name="" id="detail" cols="100%" rows="6" class="tarea" required data-max="5000" onKeyUp="showLen(this,5000);"></textarea>
 							</div>
 						</div>
-						<span class="tip" id="DetailwordNum">5000/5000个字</span>
+						<span class="tip" id="DetailwordNum">还可以输入5000字</span>
 					</div>
 					<div class="opear"><input type="button" class="btn-f" value="发布" id="btn_publish"></div>
 				</form>
@@ -126,6 +126,9 @@
 	</section>
 	
 <script>
+	
+	var topicContent = "";
+	var detailContent = "";
 	var mytopicId = "${requestScope.my_topicId}";
 	console.log("我刚发起topicId:"+mytopicId);
 	 $("form").html5Validate(function() {
@@ -156,6 +159,8 @@
 			alert("话题　及　话题描述不能为空");
 			return;
 		}
+		topicContent = "";
+ 		detailContent = "";
 		
 		var parameters={
 				userId:userId,
@@ -197,30 +202,66 @@
 		}); 
 	}
 	
+	//计算当前输入的字符数，仿照新浪微博，中文占一个字符，英文和数字占半个
+	 function getCharLength(obj,num)
+     {
+         var iLength = 0;
+         for(var i = 0;i<obj.value.length;i++)  //遍历字符串中的每个字符
+         {
+             if(obj.value.charCodeAt(i) >255)   //如果当前字符的编码大于255
+             {
+                 iLength += 1;    //所占字符数加1
+             }
+             else
+             {
+                 iLength += 0.5;   //否则所占字节数加1
+             }
+             
+         }
+         if(Math.ceil(iLength)<=(num+0.5))
+         {
+        	 if(num==25)
+        	 {
+        		topicContent = obj.value;
+        		console.log(topicContent);
+        	 }
+        	 else
+        	 {
+        		detailContent = obj.value;
+        	 }
+         }
+         return Math.ceil(iLength);//返回字符所占字节数
+     }
+	 
 	function showLen(obj,num){
 		_this = $(obj);
 		var id=_this.attr('id');
-		console.log(id);
+		
+		var charLength = getCharLength(obj,num);
 		if(id=='topic')
 		{
-	    	document.getElementById('TopicwordNum').innerHTML = num-(obj.value.length) +'/'+num+'个字';
-	    	if(num-(obj.value.length)<=0)
+	    	document.getElementById('TopicwordNum').innerHTML = '还可以输入'+(num-charLength) +'字';
+	    	if(num-charLength<0)
 	    	{
-	    		document.getElementById('TopicwordNum').innerHTML = '已达字数上限';
+	    		document.getElementById('TopicwordNum').innerHTML = '还可以输入0字';
 	    		document.getElementById('TopicwordNum').style.color = "red";
+	    		obj.value = "";
+	    		obj.value = topicContent;
 	    	}
-	    	if(num-(obj.value.length)>0)
+	    	if(num-charLength>0)
 	    		document.getElementById('TopicwordNum').style.color ="#7a7a7a";
 		}
 		else
 		{
-			document.getElementById('DetailwordNum').innerHTML = num-(obj.value.length) +'/'+num+'个字';
-			if(num-(obj.value.length)<=0)
+			document.getElementById('DetailwordNum').innerHTML = '还可以输入'+(num-charLength) +'字';
+			if(num-charLength<0)
 			{
-				document.getElementById('DetailwordNum').innerHTML = '已达字数上限';
+				document.getElementById('DetailwordNum').innerHTML = '还可以输入0字';
 	    		document.getElementById('DetailwordNum').style.color = "red"; 
+	    		obj.value = "";
+	    		obj.value = detailContent;
 			}
-			if(num-(obj.value.length)>0)
+			if(num-charLength>0)
 	    		document.getElementById('DetailwordNum').style.color ="#7a7a7a";
 		}
 	}
