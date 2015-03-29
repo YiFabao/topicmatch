@@ -247,10 +247,29 @@
 	 //点击编辑按钮
 	$('.edit').click(function(){
 		var c = $(this).prev();
-		console.log(c);
 		//c.removeAttribute("disabled");
 		c.attr('disabled', '');
 	})
+	
+	/* var isIE = /msie/i.test(navigator.userAgent) && !window.opera;         
+  	function fileSize() {     
+      	var target = document.getElementById("up_img");
+	    var fileSize = 0;          
+	    if (isIE && !target.files) {      
+	      var filePath = target.value;      
+	      var fileSystem = new ActiveXObject("Scripting.FileSystemObject");         
+	      var file = fileSystem.GetFile (filePath);      
+	      fileSize = file.Size;     
+	    } else {     
+	     fileSize = target.files[0].size;      
+	     }    
+	     var size = fileSize / 1024;     
+	     alert(size);
+	     console.log(size);
+	     if(size>10000){   
+	      alert("附件不能大于10M");   
+	     }       
+	} */
 
 </script>
 </html>
