@@ -106,12 +106,12 @@ var uploadPreview = function(setting) {
                     this.value = "";
                     return false;
                 }
-//                var filesize = this.files[0].size;
-//                if(filesize>1048576)
-//                {
-//                	alert("头像文件不能大于1M");
-//                	return false;
-//                }
+                var filesize = this.files[0].size;
+                if(filesize>1048576)
+                {
+                	alert("头像文件不能大于1M");
+                	return false;
+                }
                 if (navigator.userAgent.indexOf("MSIE") > -1) {
                     try {
                         document.getElementById(_self.Setting.ImgShow).src = _self.getObjectURL(this.files[0]);
