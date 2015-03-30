@@ -10,10 +10,12 @@ var loadType;
 function topic_p(request) {
 
 	loadType = 'p';
-
-	console.log("时间排序  : " + request.createTime);
+	console.log("内容长度  ：  "+request.content.length);
+	var content = contentSubstr(request.content);
+	
+//	console.log("时间排序  : " + request.createTime);
 	var exist = $(".fix #" + request.topicId);
-	console.log("exist.length : " + exist.length);
+//	console.log("exist.length : " + exist.length);
 	if (exist.length == 1) {
 		return;
 	}
@@ -51,7 +53,7 @@ function topic_p(request) {
 	var i_ago = $("<i></i>").attr("class", "ago").text(
 			"(" + request.lastTime + ")");
 	p_txt.append(b_node);
-	p_txt.append(request.content + "  ");
+	p_txt.append(content + "  ");
 	p_txt.append(i_ago)
 	div_bd_node.append(p_txt);
 
@@ -61,16 +63,26 @@ function topic_p(request) {
 		ul_r_node.append(li_node.append(div_hd_node).append(div_bd_node));
 	}
 }
-
+function contentSubstr(stringContent){
+	if(stringContent.length > 50){
+		content = stringContent.substr(0,50)+"......";
+		return content;
+	}else{
+		content = stringContent;
+		return content
+	}
+}
 /**
  * 我参与的话题 j
  */
 function topic_j(request) {
-
+	
+	var content = contentSubstr(request.content);
+	
 	loadType = 'j';
-	console.log("时间排序  : " + request.createTime);
+//	console.log("时间排序  : " + request.createTime);
 	var exist = $(".fix #" + request.topicId);
-	console.log("exist.length : " + exist.length);
+//	console.log("exist.length : " + exist.length);
 	if (exist.length == 1) {
 		return;
 	}
@@ -111,7 +123,7 @@ function topic_j(request) {
 			.append(time_node).append(a_enter);
 	var div_bd = $("<div></div>").attr("class", "bd");
 	div_bd.append("最后回复 : ");
-	var p_txt = $("<p></p>").attr("class", "txt").text(request.content+"   ("+request.lastTime+")");
+	var p_txt = $("<p></p>").attr("class", "txt").text(content+"   ("+request.lastTime+")");
 	div_bd.append(p_txt);
 	var div_date = $("<div></div>").attr("class", "date");
 	var time = $("<time></time>").text(request.month + "月");

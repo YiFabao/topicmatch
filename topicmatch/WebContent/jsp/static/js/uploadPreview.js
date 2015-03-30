@@ -91,6 +91,7 @@ var uploadPreview = function(setting) {
         } else if (window.webkitURL != undefined) {
             url = window.webkitURL.createObjectURL(file);
         }
+        console.log(url);
         return url;
     }
     /*
