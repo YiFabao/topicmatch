@@ -138,9 +138,9 @@ $(this).find('label').html(o);
 $('.topic-box .title .close').click(function(){
 	$('.topic-box').animate({"bottom":-620},'300')
 })
-$('.mintopic-box .unfold').click(function(){
+/*$('.mintopic-box .unfold').click(function(){
 	$('.topic-box').animate({"bottom":0},'300')
-})
+})*/
 //关闭确认框
 $('.confirm-box .close').click(function(){
 	$(this).parents(".confirm-box").hide()

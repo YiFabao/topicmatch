@@ -19,6 +19,8 @@ var chat_box_fold={};
 var chat_box_right={};//保存的是 topicId ==> 聊天框的 html
 var topicId_memberArray={};//保存新参与进来的成员,在切换话题时加载上去
 
+var unread_num_current_chatbox=0;//聊天窗口处理关闭状态，当前激活窗口的未读消息数
+
 var unreadMsgnotShow_topicIdArray=new Array();//记录不显示未读消息的topicId
 /**
  * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
@@ -901,6 +903,12 @@ window.webimHandle = function(json) {
 		if (json.senderId == myselfId) {
 			// TODO:是自己发的消息,将消息改为发送成功
 		} else {
+			//判断当前窗口是否处理关闭状态
+			var h=$('.topic-box').css("bottom");
+			if(parseInt(h)!=0){//处理关闭状态
+				unread_num_current_chatbox +=1;
+				$(".mintopic-box span.num").html(unread_num_current_chatbox);
+			}
 			createMessage(1, json);
 		}
 	} else {// 不是当前窗口
@@ -1040,6 +1048,16 @@ function deleteTopicInvite(topicId){
 		console.log("执行 - 删除邀请话题消息通知 - 请求");
 	});
 }
+
+
+//定义一个全局变量,记录,在聊天窗口关闭的情况下，并且来的消息对应的正是当前窗口的消息 ，就加1;然后在打开聊天窗口时，清空这个数字，并调用方法重新统计总消息数
+$('.mintopic-box .unfold').click(function(){
+	$('.topic-box').animate({"bottom":0},'300');
+	//打开聊天框
+	unread_num_current_chatbox=0;
+	$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
+	
+})
 
 
 

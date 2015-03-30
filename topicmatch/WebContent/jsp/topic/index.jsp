@@ -279,6 +279,7 @@
 				chat_box_close();//关闭聊天窗
 			}
 		}
+	
 	});
 </script>
 
