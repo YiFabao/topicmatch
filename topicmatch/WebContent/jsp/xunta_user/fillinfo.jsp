@@ -434,7 +434,7 @@ $("#reg_tag").click(function(){
  				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
  			}else{
  				console.log("准备跳到下一步");
- 				window.location.replace("http://"+document.domain+":8080/topicmatch/jsp/xunta_user/fillinfo.jsp?#&Reg");
+ 				window.location="#Reg";
  				window.location.reload();
  			}
  		}
@@ -535,7 +535,7 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
  new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
 //续续完善或注册 上一步
 function backforward(){
-	window.location="#&Reg";
+	window.location="#Reg";
 }
 
 </script>
