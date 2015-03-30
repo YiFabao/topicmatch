@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
@@ -405,7 +407,11 @@ public class UserLoginService extends HttpServlet {
 				}
 				userManager.updateUser(user);
 				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-			} catch (Exception e) {
+			} catch(FileUploadException e1){
+				System.out.println("SizeLimitExceededException捕捉");
+				e1.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally{
 
@@ -480,6 +486,8 @@ public class UserLoginService extends HttpServlet {
 			String tagArray[] = HtmlRegexpUtil.filterHtml(request.getParameter("tags")).replaceAll("", "").split(",");
 			List<Tag> list = new ArrayList<Tag>();
 			for (int i = 0; i < tagArray.length; i++) {
+				if(tagArray[i]==null||"".equals(tagArray[i].trim()))
+					continue;
 				String tag = tagArray[i];
 				System.out.println("将标签存入数据库  ==>   userId : "+userId+"  --   tag : "+tag);
 				list.add(new Tag(userId, tag, SecurityUtil.strToMD5(userId+tag)));
@@ -503,6 +511,8 @@ public class UserLoginService extends HttpServlet {
 			String tagArray[] = HtmlRegexpUtil.filterHtml(newTags).replaceAll("", "").split(",");
 			List<Tag> list = new ArrayList<Tag>();
 			for (int i = 0; i < tagArray.length; i++) {
+				if(tagArray[i]==null||"".equals(tagArray[i].trim()))
+					continue;
 				String tag = tagArray[i];
 				System.out.println("将标签存入数据库  ==>   userId : "+userId+"  --   tag : "+tag);
 				list.add(new Tag(userId, tag, SecurityUtil.strToMD5(userId+tag)));

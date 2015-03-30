@@ -236,7 +236,7 @@
 	 //添加标签
 	 $('#AddTagBtn').click(function(){
 			var c = $(this).prev();
-			if(c.val()==null||""==c.val()){
+			if(c.val()==null||""==c.val().trim()){
 				return;
 			}
 			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i>')

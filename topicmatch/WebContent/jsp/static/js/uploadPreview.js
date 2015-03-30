@@ -108,6 +108,7 @@ var uploadPreview = function(setting) {
                     return false;
                 }
                 var filesize = this.files[0].size;
+                console.log(Object.prototype.toString.call(this.files[0]));
                 if(filesize>1048576)
                 {
                 	alert("头像文件不能大于1M");
