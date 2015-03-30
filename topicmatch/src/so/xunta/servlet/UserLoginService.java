@@ -73,6 +73,9 @@ public class UserLoginService extends HttpServlet {
 		case "checkHasTag":
 			checkHasTag(request,response);
 			break;
+		case "imgCheck":
+			imgCheck(request, response);
+			break;
 		default:
 			break;
 		}
@@ -308,6 +311,7 @@ public class UserLoginService extends HttpServlet {
 				String day="";
 				String address="";
 				String email="";
+				String imgName="";
 				char sex;
 				System.out.println(list.size());
 
@@ -328,7 +332,7 @@ public class UserLoginService extends HttpServlet {
 						switch(filedname){
 						case "nickname":
 							nickname=ds;
-							if(nickname!=null&&!"".equals(nickname)){
+							if(nickname!=null&&!"".equals(nickname.trim())){
 								user.setNickname(nickname);
 							}
 							System.out.println("nickname:"+nickname);
@@ -355,27 +359,34 @@ public class UserLoginService extends HttpServlet {
 							break;
 						case "address":
 							address=ds;
-							if(address!=null&&!"".equals(address)){
+							if(address!=null&&!"".equals(address.trim())){
 								user.setAddress(address);
 							}
 							break;
 						case "email":
 							email=ds;
-							if(email!=null&&!"".equals(email)){
+							if(email!=null&&!"".equals(email.trim())){
 								user.setEmail(email);
 							}
 							break;
 						case "password":
 							password=ds;
-							if(password!=null&&!"".equals(password)){
+							if(password!=null&&!"".equals(password.trim())){
 								user.setPassword(password);
+							}
+							break;
+						case "imgName":
+							imgName=ds;
+							if(imgName!=null&&!"".equals(imgName.trim()))
+							{
+								user.setImageUrl(imgName);
 							}
 							break;
 						default:
 							break;
 						}
 					} else {//否则为文件上传域
-						String filename = ff.getName();
+						/*String filename = ff.getName();
 						if(filename==null||"".equals(filename)){
 							continue;
 						}
@@ -394,7 +405,7 @@ public class UserLoginService extends HttpServlet {
 						File originalImage =new File(path + "/" + newImageName);
 						ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
 						//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-
+*/
 					}
 				}
 				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))
@@ -427,6 +438,85 @@ public class UserLoginService extends HttpServlet {
 		}
 	}
 
+	private void imgCheck(HttpServletRequest request, HttpServletResponse response) {
+
+			System.out.println("收到请求");
+			
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);//检查输入请求是否为multipart表单数据。
+		System.out.println("图片上传");
+		if (isMultipart == true) {
+			DiskFileItemFactory f = new DiskFileItemFactory();// 磁盘对象
+			f.setRepository(new File(LocalContext.getTempFilePath()));// 设置临时目录
+			f.setSizeThreshold(1024 * 8);// 8k的缓冲区,文件大于8K则保存到临时目录
+			ServletFileUpload upload = new ServletFileUpload(f);// 声明解析request的对象
+			upload.setHeaderEncoding("UTF-8");// 处理文件名中文
+			upload.setFileSizeMax(1024 * 1024 * 1);// 设置每个文件最大为1M
+			upload.setSizeMax(1024 * 1024 * 1);// 一共最多能上传1M
+			String path =LocalContext.getPicPath();
+			try {
+				List<FileItem> list = upload.parseRequest(request);// 解析
+				
+				System.out.println(list.size());
+
+				//完善用户资料
+				User user= (User) request.getSession().getAttribute("user");
+				if(user==null)
+				{
+					response.getWriter().write("illegal login");
+					return ;
+				}
+
+				for (FileItem ff : list) {
+					if (ff.isFormField()) {//如果为真，则为表单输入域
+						String ds = ff.getString("UTF-8");// 处理中文
+						//System.err.println(ff.getFieldName()+":" + ds);
+						String filedname = ff.getFieldName().trim();
+						System.out.println(filedname);
+						
+					} else {//否则为文件上传域
+						String filename = ff.getName();
+						if(filename==null||"".equals(filename)){
+							continue;
+						}
+						String contentType=ff.getContentType();
+						filename = filename.substring(filename.lastIndexOf("\\") + 1);// 解析文件名
+						System.out.println("上传文件名为："+filename);
+						String extension=filename.substring(filename.lastIndexOf("."));
+						String imgname=filename.substring(0,filename.lastIndexOf("."));
+						//重新构造文件名 　　　实际文件名_用户id_时间戳
+						String tempImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
+
+						//user.setImageUrl(newImageName);
+						//IO
+						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + tempImageName));// 直接使用commons.io.FileUtils
+						
+						//压缩图片
+						File originalImage =new File(path + "/" + tempImageName);
+						ImageUtil.resize(originalImage,new File(path + "/" + tempImageName),100, 0.7f);
+						response.getWriter().write(tempImageName);
+						//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+					}
+				}
+				//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+				
+			} catch(FileUploadException e1){
+				try {
+					response.getWriter().write("exceed");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+			}
+		}else{
+			try {
+				response.getWriter().write("not multipart");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	private void methoc_bindlocalaccount(HttpServletRequest request, HttpServletResponse response) {
 		try{
 			System.out.println("绑定用户账号操作");
