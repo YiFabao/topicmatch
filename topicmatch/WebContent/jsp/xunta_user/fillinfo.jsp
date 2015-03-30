@@ -435,7 +435,7 @@ $("#reg_tag").click(function(){
  			}else{
  				console.log("准备跳到下一步");
  				window.location="#Reg";
- 				window.location.reload();
+ 				//window.location.reload();
  			}
  		}
  		else{
