@@ -49,9 +49,17 @@ function topic_p(request) {
 
 	var div_bd_node = $("<div></div>").attr("class", "bd");
 	var p_txt = $("<p></p>").attr("class", "txt");
-	var b_node = $("<b></b>").text("最后回复 : ");
-	var i_ago = $("<i></i>").attr("class", "ago").text(
-			"(" + request.lastTime + ")");
+	
+	var b_node;
+	var i_ago;
+	if(content == ""){
+		b_node = $("<b></b>").text("该话题小组成员很懒,没有聊天记录");
+		i_ago = $("<i></i>").attr("class", "ago");
+	}else{
+		b_node = $("<b></b>").text("最后回复 : ");
+		i_ago = $("<i></i>").attr("class", "ago").text(
+				"(" + request.lastTime + ")");
+	}
 	p_txt.append(b_node);
 	p_txt.append(content + "  ");
 	p_txt.append(i_ago)
@@ -122,9 +130,14 @@ function topic_j(request) {
 	div_hd.append(a_user_pic).append(span_area).append(p_name)
 			.append(time_node).append(a_enter);
 	var div_bd = $("<div></div>").attr("class", "bd");
-	div_bd.append("最后回复 : ");
-	var p_txt = $("<p></p>").attr("class", "txt").text(content+"   ("+request.lastTime+")");
-	div_bd.append(p_txt);
+	
+	if(content == ""){
+		div_bd.append("该话题小组成员很懒,没有聊天记录");
+	}else{
+		div_bd.append("最后回复 : ");
+		var p_txt = $("<p></p>").attr("class", "txt").text(content+"   ("+request.lastTime+")");
+		div_bd.append(p_txt);
+	}
 	var div_date = $("<div></div>").attr("class", "date");
 	var time = $("<time></time>").text(request.month + "月");
 	var p_man = $("<p></p>").attr("class", "man").append(
