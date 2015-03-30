@@ -5,6 +5,7 @@
 <%-- 这就是一个顶级容器，唯一不变的就是聊天框，其他任何元素都通过js获取更换--%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="renderer" content="webkit">
 <%-- =======start 余. 定义的css文件搬到此 --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/jsp/topic/css/base.css">
 	<!--[if lte IE 8]>
@@ -14,11 +15,11 @@
 		</style>
 		<script src="js/html5.js"></script>
 	<![endif]-->	
-	<style>
+<!-- 	<style>
 		.content,.main{position: absolute;bottom: 0;left:0;right:0;}
 		.content{top:120px;}
 		.main{top:0;overflow-y:auto;}
-	</style>
+	</style> -->
 </head>
 
 <body>
