@@ -601,6 +601,13 @@ function changeTopicChatBox(topicId){
 	var _right = chat_box_right[topicId];
 	$(".topic-box").append(_center);
 	$(".topic-box").append(_toggle);
+	
+	//聊天框右侧的展开收缩按钮,都设为展开
+	$(_toggle).find("i").html("&#xe606;");
+	$('.topic-box').animate({"right":0},'slow')
+	$(_toggle).attr("title","收缩");
+	//topic_member_toggle(_toggle)
+	
 	$(".topic-box").append(_right);
 	//加载新参与的人
 	if(topicId_memberArray[topicId]){
@@ -700,13 +707,13 @@ function topic_member_toggle(obj){
 	if(title=="展开"){
 		console.log("展开");
 		$(obj).attr("title","收缩");
-		$(obj).find("i").html("&#xe605;");
+		$(obj).find("i").html("&#xe606;");
 		$('.topic-box').animate({"right":0},'slow')
 	}
 	else{
 		console.log("收缩");
 		$(obj).attr("title","展开");
-		$(obj).find("i").html("&#xe606;");
+		$(obj).find("i").html("&#xe605;");
 		$('.topic-box').animate({"right":-82},'slow')
 	}
 }

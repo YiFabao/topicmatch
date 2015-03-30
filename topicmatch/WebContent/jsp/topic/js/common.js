@@ -122,19 +122,19 @@ o = opt[i].innerHTML;
 $(this).find('label').html(o);
 }).trigger('change');
 //聊天框
-$('.topic-box .toggle').click(function(){
+/*$('.topic-box .toggle').click(function(){
 	var title =$(this).attr("title");
 	if(title=="展开"){
 		$(this).attr("title","收缩");
-		$(this).find("i").html("&#xe605;");
+		$(this).find("i").html("&#xe606;");
 		$('.topic-box').animate({"right":0},'slow')
 	}
 	else{
 		$(this).attr("title","展开");
-		$(this).find("i").html("&#xe606;");
+		$(this).find("i").html("&#xe605;");
 		$('.topic-box').animate({"right":-82},'slow')
 	}
-})
+})*/
 $('.topic-box .title .close').click(function(){
 	$('.topic-box').animate({"bottom":-620},'300')
 })

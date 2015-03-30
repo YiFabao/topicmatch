@@ -73,8 +73,8 @@
 			<button class="iconfont send-btn" onclick="createMessage(0,null)">&#xe604;</button>
 		</div>
 	</div>
-	<div class="toggle" title="收缩" topicId="1" onclick="topic_member_toggle(this)">
-		<i class="iconfont">&#xe605;</i>
+	<div class="toggle" title="收缩"  onclick="topic_member_toggle(this)">
+		<i class="iconfont">&#xe606;</i>
 	</div>
 	<div class="right" topicId="999">
 		<h4>参与人</h4>
