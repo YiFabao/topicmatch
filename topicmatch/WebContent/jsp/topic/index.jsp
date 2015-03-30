@@ -265,6 +265,21 @@
 		//createWebsocketConnect("${sessionScope.user.id}");
 		window.location.reload();
 	}
+	
+	//点击别的地方关闭聊天框
+	$(document).click(function(event){
+		var pointX = event.pageX;
+		var pointY = event.pageY;
+		var left = $(".topic-box").position().left;
+		var top = $(".topic-box").position().top;
+		console.log(pointX+"  "+pointY);
+		console.log("left:"+left+"  top:"+top);
+		if(!(pointX>=left&&pointY>=top)){
+			if((event.target.tagName)!="A"&&(event.target.tagName)!="IMG"){
+				chat_box_close();//关闭聊天窗
+			}
+		}
+	});
 </script>
 
 
