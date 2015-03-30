@@ -10,6 +10,7 @@
 <html lang="zh">
 <head>
 	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
 	<title>登录-寻TA网</title>
 	<link rel="stylesheet" href="<%=basePath %>jsp/topic/css/base.css">
 	<link rel="stylesheet" href="<%=basePath %>jsp/topic/css/mobilebone-min.css">
