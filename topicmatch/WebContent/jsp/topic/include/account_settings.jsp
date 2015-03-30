@@ -61,7 +61,7 @@
 					<label class="dt-c dtt">头像</label>
 					<div class="dd-c">
 						<span class="pic-area">
-							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${user.imageUrl}" alt=""/></div>
+							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${sessionScope.user.imageUrl}" alt=""/></div>
 						</span>
 						<!-- <a href="javascript:up_img.click();"  class="f14 a1"> -->
 						<a href="#" class="f14 a1" onclick="upload()">
