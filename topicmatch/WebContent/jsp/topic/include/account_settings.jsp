@@ -290,7 +290,7 @@
                       document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
                       //清空上传域
                       $("#imgName").val("");
-                      document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+                      //document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
                       return;
                  }
                  if(data=="illegal login")
