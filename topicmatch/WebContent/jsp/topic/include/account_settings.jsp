@@ -61,10 +61,11 @@
 					<label class="dt-c dtt">头像</label>
 					<div class="dd-c">
 						<span class="pic-area">
-							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${user.imageUrl}" alt=""/></div>
+							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${sessionScope.user.imageUrl}" alt=""/></div>
 						</span>
-						<a href="javascript:up_img.click();"  class="f14 a1">
-							本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
+						<!-- <a href="javascript:up_img.click();"  class="f14 a1"> -->
+						<a href="#" class="f14 a1" onclick="upload()">
+							本地上传<input type="hidden" id="imgName" name="imgName"/>
 						</a>
 						<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
 						
@@ -142,6 +143,12 @@
 					<button class="btn-d wta" id="submitModify">确 定</button>
 				</div>
 			</form>
+			<form id="picForm" enctype="multipart/form-data">
+				<span id="fileSpan">
+					<input type="file" id="up_img" name="myfile" style="display:none" required/>
+				</span>
+			</form>
+			<input type="hidden" id="picExceed" value="false"></input>
 		</div>
 		</c:if>
 	</div>
@@ -152,6 +159,7 @@
 <script src="js/jquery-html5Validate-min.js"></script>
 <script src="js/jquery-powerSwitch-min.js"></script>
 <script src="js/common.js"></script> -->
+<script src="js/jquery.form.js"></script>
 <script>
 	 checkPwd("#Reg form")
 	 $(function(){
@@ -159,6 +167,8 @@
 		//上传图片预览
 		 new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
 		 autoSelected();
+		// $("#picExceed").val("false");
+		 $("#imgName").val("");
 	 });
 	 
 	 //下拉列表自动选中
@@ -198,6 +208,11 @@
 		 }
 	 }
 	 
+	 function upload()
+	 {
+		 document.getElementById("up_img").click();
+	 }
+	 
 	 //提交表单
 	 $("#submitModify").click(function(){
 		 //获取标签
@@ -211,6 +226,7 @@
 		 {
 			 alert("请至少填入一个标签!");
 			 return;
+			 return false;
 		 }
 		 var pwd=$("#PassWordR").val();
 		 var repwd=$("#PassWordRC").val();
@@ -218,7 +234,14 @@
 		 {
 			 alert("两次输入的密码不一致!");
 			 return;
+			 return false;
 		 }
+		/*  if($("#picExceed").val().trim()=="true")
+		 {
+			 alert("头像文件不能大于1M");
+			 return;
+			 return false;
+		 } */
 		 var newTags = $("#newTags");
 		 newTags.val(tags_array.toString());
 		 
@@ -251,6 +274,45 @@
 		c.attr('disabled', '');
 	})
 	
+	$('#up_img').live('change',function(){
+		//$("#picExceed").val("false");
+		//$("#picForm").submit();
+		$('#picForm').ajaxSubmit({  
+             type: 'post', 
+             data: $('#picForm').serialize(),
+             url: "${pageContext.request.contextPath}/servlet/userLoginService?cmd=imgCheck",
+             success: function(data){  
+                 
+                 if(data=="exceed")
+                 {
+                      alert("头像文件不能大于1M");
+                      //$("#picExceed").val("true");
+                      document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+                      //清空上传域
+                      $("#imgName").val("");
+                      //document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+                      return;
+                 }
+                 if(data=="illegal login")
+                 {
+                	 alert("非法登录");
+                	 return;
+                 }
+                 if(data=="not multipart")
+                 {
+                	 alert("非multipart请求");
+                	 return;
+                 }
+                 else
+                 {
+                	 $("#imgName").val(data);
+                 }
+             },  
+             error: function(XmlHttpRequest, textStatus, errorThrown){  
+                 alert( "error");  
+             }  
+         });
+	});
 	/* var isIE = /msie/i.test(navigator.userAgent) && !window.opera;         
   	function fileSize() {     
       	var target = document.getElementById("up_img");
