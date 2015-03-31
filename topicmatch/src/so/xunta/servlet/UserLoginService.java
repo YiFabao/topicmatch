@@ -250,9 +250,11 @@ public class UserLoginService extends HttpServlet {
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));// 直接使用commons.io.FileUtils
 						//压缩图片
 						 File originalImage =new File(path + "/" + newImageName);
-						 ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+						 if(originalImage.exists()){
+							 System.out.println("压缩图片时 上传图片失败");
+							 ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+						 }
 						 response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-			
 					}
 				}
 				if(!"".equals(year)&&!"".equals(month)&&!"".equals(day))

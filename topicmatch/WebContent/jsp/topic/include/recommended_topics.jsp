@@ -73,8 +73,8 @@
 			.attr("alt","");
 		}
 		else{
-			img.attr("src",document.domain+"/"+picUrl)
-			.attr("alt","");
+			img.attr("src","<%=request.getContextPath() %>/image?picId="+picUrl)
+			.attr("alt","").css("width","100%").css("height","100%");
 		}
 
 		var pic_div=$("<div></div>")
@@ -404,7 +404,7 @@
 				console.log(res[i]);
 				var d=res[i];
 				//将数据显示出来
-				addOneLiNode(d.topicId,d.address,d.xunta_username,d.sex,d.topicName,d.picUrl);
+				addOneLiNode(d.topicId,d.address,d.xunta_username,d.sex,d.topicName,d.userImgUrl);
 			}
 			if(topic_li_node_array.length==1)
 			{
