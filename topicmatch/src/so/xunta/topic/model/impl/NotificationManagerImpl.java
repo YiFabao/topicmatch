@@ -37,13 +37,14 @@ public class NotificationManagerImpl implements NotificationManager{
 	}
 
 	@Override
-	public void deleteTopicInviteNotification(String topicId) {
+	public void deleteTopicInviteNotification(String topicId,String toUserId) {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			String hql = "delete TopicInviteNotification where topicId = ?";
+			String hql = "delete TopicInviteNotification where topicId = ? and toUserId = ?";
 			org.hibernate.Query query = session.createQuery(hql);
 			query.setString(0, topicId);
+			query.setString(0, toUserId);
 			query.executeUpdate();
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {

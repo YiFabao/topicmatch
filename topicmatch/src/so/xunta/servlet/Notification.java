@@ -29,7 +29,8 @@ public class Notification extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("删除 话题邀请消息通知   话题ID  :  " + request.getParameter("topicId"));
-		notificationManagerImpl.deleteTopicInviteNotification(request.getParameter("topicId"));
+		System.out.println("删除 话题邀请消息通知   话题ID  :  " + request.getParameter("toUserId"));
+		notificationManagerImpl.deleteTopicInviteNotification(request.getParameter("topicId"),request.getParameter("toUserId"));
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

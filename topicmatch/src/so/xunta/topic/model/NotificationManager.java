@@ -16,7 +16,7 @@ public interface NotificationManager {
 	//获取系统通知消息
 	public List<SystemMessageNotification> findUserIdBySystemNotification(String userId);
 	//删除离线通知消息
-	public void deleteTopicInviteNotification(String userId);
+	public void deleteTopicInviteNotification(String topicId,String toUserId);
 	//删除离线通知消息
 	public void deleteSystemMessageNotification(String userId);
 }
