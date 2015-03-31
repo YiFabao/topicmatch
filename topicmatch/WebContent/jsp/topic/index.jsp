@@ -1,11 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+response.setHeader("Cache-Control","no-cache");
+response.setHeader("Pragma","no-cache");
+response.setDateHeader ("Expires", 0);
+%>
 <!DOCTYPE html>
 <html>
 <%-- 这就是一个顶级容器，唯一不变的就是聊天框，其他任何元素都通过js获取更换--%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="renderer" content="webkit">
+<meta http-equiv="pragma" content="no-cache">  
+<meta http-equiv="cache-control" content="no-cache">  
+<meta http-equiv="expires" content="0">     
+
 <%-- =======start 余. 定义的css文件搬到此 --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/jsp/topic/css/base.css">
 	<!--[if lte IE 8]>
@@ -282,6 +291,7 @@
 		}
 	
 	});
+	window.history.forward(1);
 </script>
 
 

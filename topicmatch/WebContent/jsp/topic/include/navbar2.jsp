@@ -32,7 +32,7 @@
 							<ul class="menu-list">
 								<!-- <a href="#" ><i class="iconfont">&#xe60a;</i>个人信息</a> -->
 								<li><a href="#"  id="p_info"><i class="iconfont">&#xe60c;</i>账号设置</a></li>
-								<li><a href="#"><i class="iconfont">&#xe60b;</i>退出</a></li>
+								<li><a href="${pageContext.request.contextPath}/servlet/topic_service?cmd=exit"><i class="iconfont">&#xe60b;</i>退出</a></li>
 							</ul>
 						</div>
 					</div>

@@ -484,6 +484,7 @@ function login(){
 			     }
 			});
 			if(ret_msg=="exist"){
+				
 				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
 			}else{
 				window.location.replace("<%=basePath %>jsp/xunta_user/fillinfo.jsp?#&FillInfo");

@@ -593,7 +593,12 @@ public class TopicService extends HttpServlet {
 		System.out.println("退出登录");
 		
 		try {
+			response.setHeader("Cache-Control","no-cache"); 
+			response.setHeader("Pragma","no-cache"); 
+			response.setDateHeader ("Expires", -1); 
 			response.getWriter().write("ok");
+			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login.jsp");
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
