@@ -371,7 +371,7 @@ function topicMsgInformStatusChange(node,btnType){
 		
 		notifiction_count--;
 		$(".news .dunk").text(notifiction_count);
-		deleteTopicInvite(topic_id);
+		deleteTopicInvite(topic_id,to_user_id);
 		//用户点击同意后 在这里 通过topicId来打开聊天框
 		//fabao.yi 同意后，
 		//	1.将用户添加到话题组
@@ -417,7 +417,7 @@ function topicMsgInformStatusChange(node,btnType){
 		inviteUserMsgFeedback(from_user_id,feedbackMsg);//推送给邀请人被邀请人的选择项
 		notifiction_count--;
 		$(".news .dunk").text(notifiction_count);
-		deleteTopicInvite(topic_id);
+		deleteTopicInvite(topic_id,to_user_id);
 		//用户点击拒绝后 在这里最相对应的事情
 	}
 }
@@ -1038,9 +1038,10 @@ function getContactsArray(){
 }
 
 //删除邀请话题消息通知
-function deleteTopicInvite(topicId){
+function deleteTopicInvite(topicId,toUserId){
 	var parameters={
-			"topicId":topicId
+			"topicId":topicId,
+			"toUserId":toUserId
 	};
 	
 	$.post("http://"+document.domain+":8080/topicmatch/Notification", parameters, function(res, status) {
