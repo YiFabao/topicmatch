@@ -170,6 +170,7 @@ public class TopicService extends HttpServlet {
 		json.put("userName", user.xunta_username);
 		json.put("imageUrl",user.imageUrl);
 		response.setContentType("text/json");
+		response.setCharacterEncoding("utf-8");
 		try {
 			response.getWriter().write(json.toString());
 		} catch (IOException e) {
