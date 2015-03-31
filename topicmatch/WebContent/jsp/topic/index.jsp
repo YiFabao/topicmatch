@@ -15,11 +15,11 @@
 		</style>
 		<script src="js/html5.js"></script>
 	<![endif]-->	
-<!-- 	<style>
+ 	<style>
 		.content,.main{position: absolute;bottom: 0;left:0;right:0;}
 		.content{top:120px;}
 		.main{top:0;overflow-y:auto;}
-	</style> -->
+	</style>
 </head>
 
 <body>

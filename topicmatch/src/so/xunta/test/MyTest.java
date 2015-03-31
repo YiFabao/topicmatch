@@ -1,20 +1,13 @@
 package so.xunta.test;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import so.xunta.utils.HibernateUtils;
 
 public class MyTest {
 	public static void main(String[] args) {
-		String osname = System.getProperty("os.name");
-		if(osname==null)
-		{
-			System.out.println("os name is null");
-			return;
-		}
-		if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
-		{
-			System.out.println("windows系统");
-		}
+
 	
 	}
 }
