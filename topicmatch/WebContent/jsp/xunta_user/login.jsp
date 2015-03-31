@@ -459,7 +459,6 @@ function login(){
 		else if(res.state=="success")
 		{
 			console.log("登录成功");
-			alert("登录成功");
 			//1.检查是否填写过标签
 			var parameters = {
 				cmd:"checkHasTag",
