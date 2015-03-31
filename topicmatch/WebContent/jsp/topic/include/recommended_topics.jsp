@@ -259,13 +259,6 @@
 		}
 
 	}
-	//test();
-	function test2(){
-		for(var i=0;i<10;i++){
-			addOneLiNode();
-		}
-	}
-	//test2();//　生成10个人
 
 	function test3(){
 		setTimeout(show_and_hide,9);
@@ -327,7 +320,7 @@
 					return;
 				}
 				console.log(res.length);
-				pageSum =Math.floor(pageSum/pageNum)+1;//初始化总页数
+				pageSum =pageSum%pageNum==0?pageSum/pageNum:Math.floor(pageSum/pageNum)+1;//初始化总页数
 				console.log("总页数："+pageSum);
 				for(var i=0;i<res.length;i++)
 				{

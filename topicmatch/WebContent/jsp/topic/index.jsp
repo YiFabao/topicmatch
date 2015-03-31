@@ -285,7 +285,7 @@ response.setDateHeader ("Expires", 0);
 		console.log(pointX+"  "+pointY);
 		console.log("left:"+left+"  top:"+top);
 		if(!(pointX>=left&&pointY>=top)){
-			if((event.target.tagName)!="A"&&(event.target.tagName)!="IMG"){
+			if((event.target.tagName)!="A"&&(event.target.tagName)!="BUTTON"&&(event.target.tagName)!="IMG"&&($(event.target).attr("class")!="btn")){
 				chat_box_close();//关闭聊天窗
 			}
 		}
