@@ -120,6 +120,24 @@ $("form").html5Validate(function() {
 $("#UserName,#PassWord").focus(function(){
 	$("#errorMsg").css("display","none");
 });
+
+$(function(){
+	//qq登录
+	$(".qq_login").click(function(){
+		window.location="<%=basePath %>servlet/authorization";
+	});
+	//微博登录
+	$(".weibo_login").click(function(){
+		var redirect_uri = "http://xunta.so/jsp/xunta_user/jsp_token.jsp";
+		var  url = "https://api.weibo.com/oauth2/authorize?client_id=3793162942&response_type=code&redirect_uri="+redirect_uri;
+		window.location=url;
+	});
+	//微信登录
+	$(".weixin_login").click(function(){
+		var  url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx0ad98a24caca02ca&redirect_uri=http://xunta.so/jsp/xunta_user/weixin_code.jsp&response_type=code&scope=snsapi_login&state=d967dc101ad34ff81062309e2be96b46#wechat_redirect";
+		window.location=url;
+	});
+});
 </script>
 </body>
 </html>
