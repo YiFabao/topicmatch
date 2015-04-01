@@ -7,7 +7,7 @@
 			+ path + "/"; 
 	String url = request.getParameter("url");
 	if(url=="login5"){
-		request.getRequestDispatcher("/jsp/xunta_user/login5.jsp");
+		request.getRequestDispatcher("/jsp/xunta_user/login5.jsp").forward(request,response);
 	}
 %>
 <!DOCTYPE html>
@@ -136,7 +136,7 @@ $("#bind_local_account").click(function(){
 		},function(res,state){
 			if(res=="ok")
 			{
-				window.location.href="#ComReg";
+				window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp";
 			}else{
 				console.log(res);
 				alert(res);
