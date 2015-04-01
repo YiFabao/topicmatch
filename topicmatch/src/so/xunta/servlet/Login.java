@@ -43,31 +43,37 @@ public class Login extends HttpServlet {
 		User user_to_check=(User) request.getSession().getAttribute("user");
 		if(user_to_check!=null&&user_to_check.xunta_username.equals(username)){
 			System.out.println("已经登录过，不必重复验证登录");
-			JSONObject ret=new JSONObject();
+/*			JSONObject ret=new JSONObject();
 			ret.put("state","success");
 			ret.put("userId",user_to_check.id);
 			response.setContentType("text/json");
-			response.getWriter().write(ret.toString());
+			response.getWriter().write(ret.toString());*/
+			String url ="/servlet/userLoginService?cmd=checkHasTag&userId="+user_to_check.id;
+			request.getRequestDispatcher(url).forward(request, response);
+			//response.sendRedirect(request.getContextPath()+"jsp/topic/index.jsp");
 		}
 		else{
 			User user=userManager.checkRegisterUserExist(username, password);
 			if(user==null)
 			{
 				System.out.println("用户名或密码错误");
-				request.setAttribute("xunta_username",username);
 				request.setAttribute("errorMsg","用户名或密码错误");
-				JSONObject ret = new JSONObject();
-				ret.put("state","failure");
-				response.setContentType("text/json");
-				response.getWriter().write(ret.toString());
+				request.getRequestDispatcher(request.getParameter("from")).forward(request, response);
 			}
 			else
 			{
 				System.out.println(user.getXunta_username()+"登录成功");
 				//将user保存到session中
 				request.getSession().setAttribute("user",user);
+				//跳转到://servlet/userLoginService
+/*				var parameters = {
+					cmd:"checkHasTag",
+					userId:res.userId
+				};*/
+				String url ="/servlet/userLoginService?cmd=checkHasTag&userId="+user.id;
+				request.getRequestDispatcher(url).forward(request, response);
 	
-				Cookie[] xunta_cookies=request.getCookies();
+			/*	Cookie[] xunta_cookies=request.getCookies();
 				boolean hasAigine_login_state=true;
 				for(Cookie cookie:xunta_cookies)
 				{
@@ -89,7 +95,7 @@ public class Login extends HttpServlet {
 				ret.put("state","success");
 				ret.put("userId",user.id);
 				response.setContentType("text/json");
-				response.getWriter().write(ret.toString());
+				response.getWriter().write(ret.toString());*/
 			}
 		}
 		

@@ -2,11 +2,16 @@ package so.xunta.servlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -29,7 +33,6 @@ import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.utils.SecurityUtil;
-import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.HtmlRegexpUtil;
 import so.xunta.utils.ImageUtil;
 
@@ -76,11 +79,166 @@ public class UserLoginService extends HttpServlet {
 		case "imgCheck":
 			imgCheck(request, response);
 			break;
+		case "uploadImageTest":
+			uploadImageTest(request,response);
+			break;
+		case "comReg":
+			comReg(request,response);
+			break;
 		default:
 			break;
 		}
 	}
 
+
+	private void comReg(HttpServletRequest request, HttpServletResponse response) {
+		String nickname=request.getParameter("nickname");
+		String year=request.getParameter("year");
+		String month=request.getParameter("month");
+		String day=request.getParameter("day");
+		String address=request.getParameter("address");
+		String email=request.getParameter("email");
+		String sex=request.getParameter("sex");
+		System.out.println(nickname);
+		System.out.println(year+"-"+month+":"+day);
+		System.out.println(address);
+		System.out.println(email);
+		System.out.println(sex);
+		User user= (User) request.getSession().getAttribute("user");
+		if(user==null)
+		{
+			try {
+				response.getWriter().write("illegal login,user in session is null...");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return ;
+		}
+		if(nickname!=null&&!"".equals(nickname)){
+			user.setNickname(nickname);
+		}
+		if(address!=null&&!"".equals(address)){
+			user.setAddress(address);
+		}
+		if(email!=null&&!"".equals(email)){
+			user.setEmail(email);
+		}
+		if(sex!=null&&!"".equals(sex)){
+			user.setSex(sex);
+		}
+		if(year!=null&&month!=null&&day!=null){
+			user.setBirthday(year+"-"+month+"-"+day);
+		}
+		userManager.updateUser(user);
+		request.getSession().setAttribute("user",user);
+		try {
+			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void uploadImageTest(HttpServletRequest request, HttpServletResponse response) {
+		boolean isMultipart = ServletFileUpload.isMultipartContent(request);//检查输入请求是否为multipart表单数据。
+		System.out.println("图片上传");
+		User user=(User) request.getSession().getAttribute("user");
+		if(user==null){
+			try {
+				response.getWriter().write("illegal login");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		if (isMultipart == true) {
+			DiskFileItemFactory f = new DiskFileItemFactory();// 磁盘对象
+			f.setRepository(new File(LocalContext.getTempFilePath()));// 设置临时目录
+			f.setSizeThreshold(1024 * 8);// 8k的缓冲区,文件大于8K则保存到临时目录
+			ServletFileUpload upload = new ServletFileUpload(f);// 声明解析request的对象
+			upload.setHeaderEncoding("UTF-8");// 处理文件名中文
+			upload.setFileSizeMax(1024 * 1024 * 1);// 设置每个文件最大为1M
+			upload.setSizeMax(1024 * 1024 * 1);// 一共最多能上传1M
+			String path =LocalContext.getPicPath();
+			List<FileItem> list = null;
+			try {
+				list = upload.parseRequest(request);
+			} catch (FileUploadException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}// 解析
+			
+			Map<String,String> fieldMap= new HashMap<String, String>();//普通表单
+			for (FileItem ff : list) {
+				if (!ff.isFormField()) {//文件
+					String filename = ff.getName();
+					String contentType=ff.getContentType();//文件类型
+					System.out.println(contentType);
+					//判断是否是图片对象
+					System.out.println(contentType.indexOf("image"));
+					if(contentType!=null&&(contentType.indexOf("image")==-1))
+					{
+						System.out.println("非图片");
+					}else{
+						
+						filename = filename.substring(filename.lastIndexOf("\\") + 1);// 解析文件名
+						System.out.println("上传文件名为："+filename);
+						String extension=filename.substring(filename.lastIndexOf("."));
+						String imgname=filename.substring(0,filename.lastIndexOf("."));
+						//重新构造文件名 　　　实际文件名_用户id_时间戳
+						String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
+						try {
+							FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}// 直接使用commons.io.FileUtils
+						//压缩图片
+						 File originalImage =new File(path + "/" + newImageName);
+						 request.setAttribute("picUrl",newImageName);
+						 if(originalImage.exists()){
+							 System.out.println("压缩图片时 上传图片失败");
+							 try {
+								ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						 }
+					}
+				}else{//普通表单
+					try {
+						String key = ff.getFieldName().trim();//键
+						String value = ff.getString("UTF-8");
+						System.out.println(key+":"+value);
+						fieldMap.put(key,value);
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			//遍历普通表单
+			Set<Entry<String, String>> fieldEntrySet = fieldMap.entrySet();
+			Iterator<Entry<String, String>> it = fieldEntrySet.iterator();
+			while(it.hasNext())
+			{
+				Entry<String, String> entry = it.next();
+				request.setAttribute(entry.getKey(), entry.getValue());
+			}
+			try {
+				request.getRequestDispatcher("/jsp/xunta_user/login5.jsp").forward(request,response);
+			} catch (ServletException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+				
+						
+	}
 
 	private void method_getUserInfo(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -124,6 +282,7 @@ public class UserLoginService extends HttpServlet {
 
 	private void checkHasTag(HttpServletRequest request, HttpServletResponse response) {
 		String userIdStr = request.getParameter("userId");
+		System.out.println(userIdStr);
 		if(userIdStr==null||"".equals(userIdStr))
 		{
 			System.out.println("userId为空:"+userIdStr);
@@ -131,20 +290,30 @@ public class UserLoginService extends HttpServlet {
 		}
 		boolean flag = tagManager.checkUserTagIsEmpty(Long.parseLong(userIdStr));
 		if(!flag){
-			try {
-				System.out.println("用户存在标签");
-				response.getWriter().write("exist");//用户存在标签
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			System.out.println("用户存在标签");
+			//String _fromUrl=request.getParameter("from");
+			String _toUrl =request.getParameter("to");
+			//继续下一步,判断已经绑定过用户账户
+			User user = (User)request.getSession().getAttribute("user");
+			if(user!=null&&user.xunta_username!=null&&user.password!=null){
+				//已经绑定过用户账号,跳转到首页
+				try {
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		else{
+		
+			System.out.println("用户不存在标签");
+			//跳到标签填写页
 			try {
-				System.out.println("用户不存在标签");
-				response.getWriter().write("none");//用户没有标签
+				request.getRequestDispatcher("/jsp/xunta_user/login3.jsp").forward(request, response);
+			} catch (ServletException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

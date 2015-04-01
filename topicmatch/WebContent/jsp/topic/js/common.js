@@ -39,10 +39,11 @@ $(function(){
 	//单选按钮模拟
 	$(".form .radio").click(function(){
 		$(this).addClass("checked-r").siblings().removeClass("checked-r");
-		var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
+		var radio = $(this).find("input[type='radio']");
+		radio.attr("checked","true").siblings().removeAttr("checked");
 		return false;
 	})
-	var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
+	//var radio = $(this).find(".dn[type='radio']").attr("checked","checked");
 });
 //年月日联动菜单
 function YearMonthDay(){
@@ -166,7 +167,7 @@ $('.interests .tag .del').live('click',function(){
 	if(i.find(".cont").html() == " ")
 		i.find(".placeholder").show()
 })
-$('#AddTagBtn').live('click',function(){
+/*$('#AddTagBtn').live('click',function(){
 	var c = $(this).prev().find("input");
 	if(c.val().replace(/(^\s*)|(\s*$)/g,"")!=""){
 		$('.login-3 .cont>div').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe604;</i></a>')
@@ -177,7 +178,7 @@ $('#AddTagBtn').live('click',function(){
 		Tip("不能为空！")
 		c.attr("value","")
 	}
-})
+})*/
 //二次密码验证
 function checkPwd(even){
 	var pwd = $(even+" .pwd"), pwdCheck = $(even+" .pwdcheck");

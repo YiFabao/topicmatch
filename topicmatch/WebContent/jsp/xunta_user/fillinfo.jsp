@@ -192,7 +192,7 @@
 				<div class="login-4 form">
 					<h3 style="position:relative;left:40%;">基本资料填写<span class="f14"></span></h3>
 					<p style="margin-bottom:25px;font-size:17px;font-weight:normal;text-shadow:0 0;">三.继续完善 or 完成注册？</p>
-					<form  id="ComRegForm" data-preventDefault="validate_false" >
+					<form  id="ComRegForm" >
 						<div class="l">
 							<div class="item">
 								<label class="dt dtt">头&emsp;&emsp;像</label>
@@ -202,7 +202,7 @@
 									</span>
 									
 									<a href="javascript:up_img.click();"  class="f14 a1">
-										本地上传<input type="file" id="up_img" name="myfile" style="display:none" required/>
+										本地上传<input type="file" id="up_img" name="myfile" onchange="upLoadImage()" style="display:none" required/>
 									</a>
 									<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
 								</div>
