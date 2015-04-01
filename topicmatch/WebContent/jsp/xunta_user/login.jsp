@@ -34,6 +34,7 @@
 	<![endif]-->
 </head>
 <body>
+
 <header class="header">
 		<div class="head">
 			<h1 class="logo"><a href="/">寻TA网</a></h1>
@@ -99,6 +100,61 @@ $(function(){
 		window.location=url;
 	});
 });
+
+//判断用户是否注册或登录过
+function getCookie(c_name)
+{
+    if (document.cookie.length>0)
+    {
+        c_start=document.cookie.indexOf(c_name + "=")
+        if (c_start!=-1)
+        {
+            c_start=c_start + c_name.length+1
+            c_end=document.cookie.indexOf(";",c_start)
+            if (c_end==-1) c_end=document.cookie.length
+            return unescape(document.cookie.substring(c_start,c_end))
+        }
+    }
+    return ""
+}
+
+function setCookie(c_name,value,expiredays)
+{
+    var exdate=new Date()
+    exdate.setDate(exdate.getDate()+expiredays)
+    document.cookie=c_name+ "=" +escape(value)+ ((expiredays==null) ? "" : "; expires="+exdate.toGMTString())
+}
+
+function checkCookie()
+{
+    aigine_login_state=getCookie('aigine_login_state')
+    if (aigine_login_state!=null && aigine_login_state!="")
+    {
+        //有cookie记录
+        //alert('Welcome again '+aigine_login_state+'!')
+        console.log("有cookie记录");
+        window.location.href="${pageContext.request.contextPath}/jsp/xunta_user/login2.jsp";
+    }
+    else
+    {
+   	 console.log("没有cookie记录");
+   	 console.log("第三方登录");
+/*       aigine_login_state=prompt('Please enter your aigine_login_sate:',"");//获取cookie
+
+        if (aigine_login_state!=null && aigine_login_state!="")
+        {
+            console.log("add cookie");
+            setCookie('aigine_login_state',aigine_login_state,365);
+        } */
+    }
+}
+
+function deleteCookie(){
+    console.log("delete cookie");
+    document.cookie = "aigine_login_state=; expires="+new Date();
+}
+
+checkCookie();
 
 </script>
 </body>

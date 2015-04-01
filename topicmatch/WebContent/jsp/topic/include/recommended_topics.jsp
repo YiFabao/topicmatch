@@ -455,5 +455,10 @@
 	function getRandom(min,max){
 		return Math.floor(Math.random()*(max-min+1)+min)
 	}
+	 
+ $(function(){
+	 	var wheight = $(window).height()
+	 	$(".topic-list").height(wheight-120-90)
+})
 </script>
 </html>
