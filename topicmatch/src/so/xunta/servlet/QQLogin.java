@@ -116,11 +116,11 @@ public class QQLogin extends HttpServlet {
 					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//跳转到首页
 				}else{
 					System.out.println("没有绑定本地账号");
-					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&Reg");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
 				}
 			}else{//没有标签
 				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
 			}
 		}
 		else//用户基本信息存在
@@ -134,14 +134,14 @@ public class QQLogin extends HttpServlet {
 				//判断是否绑定本地账号
 				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
 					System.out.println("绑定过本地账号");
-					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//跳转到首页
 				}else{
 					System.out.println("没有绑定本地账号");
-					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&Reg");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
 				}
 			}else{//没有标签
 				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
 			}
 		}
 	}
