@@ -2,6 +2,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh">
+	<head>
+		<style>
+			.resultEmpty{font-size: 18px;height: 48px;text-align: center;border-radius: 10px;width: 494px;border:none;cursor: pointer;clear: both;background-color: #f3f3f3;display: block;margin-left: auto;margin-right: auto;}
+			.resultEmpty:hover{background-color: #fff}
+		</style>
+	</head>
 	<section class="content">
 		<div class="main">
 			<div class="form spons-topic">
@@ -19,7 +25,7 @@
 								<textarea name="" id="detail" cols="100%" rows="6" class="tarea" required data-max="5000" onKeyUp="showLen(this,5000);"></textarea>
 							</div>
 						</div>
-						<span class="tip" id="DetailwordNum">还可以输入5000字</span>
+						<span class="tip" id="DetailwordNum" style="bottom:-25px;right:80px">还可以输入5000字</span>
 					</div>
 					<div class="opear"><input type="button" class="btn-f" value="发布" id="btn_publish"></div>
 				</form>

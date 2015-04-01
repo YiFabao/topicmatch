@@ -3,6 +3,12 @@
 
 <!DOCTYPE html>
 <html lang="zh">
+	<head>
+		<style type="text/css">
+			.resultEmpty{font-size: 18px;height: 48px;text-align: center;border-radius: 10px;width: 494px;border:none;cursor: pointer;clear: both;background-color: #f3f3f3;display: block;margin-left: auto;margin-right: auto;}
+			.resultEmpty:hover{background-color: #fff}
+		</style>
+	</head>
 	<section class="content">
 		<div class="main">
 			<table class="table-r" >
