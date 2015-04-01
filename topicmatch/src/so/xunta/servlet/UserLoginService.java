@@ -495,6 +495,7 @@ public class UserLoginService extends HttpServlet {
 						//压缩图片
 						File originalImage =new File(path + "/" + tempImageName);
 						ImageUtil.resize(originalImage,new File(path + "/" + tempImageName),100, 0.7f);
+						//返回头像的名称，在前台提交时插入数据库
 						response.getWriter().write(tempImageName);
 						//response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 					}

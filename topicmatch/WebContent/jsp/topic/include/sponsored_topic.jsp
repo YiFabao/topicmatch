@@ -19,7 +19,7 @@
 								<textarea name="" id="detail" cols="100%" rows="6" class="tarea" required data-max="5000" onKeyUp="showLen(this,5000);"></textarea>
 							</div>
 						</div>
-						<span class="tip" id="DetailwordNum">还可以输入5000字</span>
+						<span class="tip" id="DetailwordNum" style="bottom:-25px;right:80px">还可以输入5000字</span>
 					</div>
 					<div class="opear"><input type="button" class="btn-f" value="发布" id="btn_publish"></div>
 				</form>
