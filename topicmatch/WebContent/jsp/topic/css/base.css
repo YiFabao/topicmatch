@@ -406,9 +406,6 @@ border-radius: 8px;display: inline-block;margin-top: 8px;}
 .page-t .p{display: inline-block;color: #fff;line-height: 50px;background-color: #37383d;padding-left: 24px;padding-right: 24px;vertical-align: middle;border-radius: 2px}
 .page-t .disabled{background-color: #ccc;cursor: default;color: #fff !important;}
 .page-t .p:hover{color: #ff9600;}
-.resultEmpty{font-size: 18px;height: 48px;text-align: center;border-radius: 10px;width: 494px;border:none;cursor: pointer;clear: both;background-color: #f3f3f3}
-.resultEmpty:hover{background-color: #fff}
-.resultEmpty{display: block;margin-left: auto;margin-right: auto;}
 /*账户设置*/
 .acc-set{padding: 70px 20px 150px 266px}
 .acc-set .item .dt{font-size: 18px;margin-top: 3px;}
