@@ -5,10 +5,6 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
-	String url = request.getParameter("url");
-	if(url=="login5"){
-		request.getRequestDispatcher("/jsp/xunta_user/login5.jsp").forward(request,response);
-	}
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -185,7 +181,7 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 };
 
 $("#ComReg").click(function(){
-	window.location="${pageContext.request.contextPath}/jsp/xunta_user/login4.jsp?url=login5";
+	window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp";
 });
 </script>
 </body>
