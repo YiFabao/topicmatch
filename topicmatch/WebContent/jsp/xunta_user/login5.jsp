@@ -65,7 +65,7 @@
 									<span class="pic-area">
 										<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${requestScope.picUrl }"/></div>
 									</span>
-									<a href="javascript:$('#up_img').click();"  class="f14 a1">
+									<a href="#"  class="f14 a1" onclick="$('#up_img').click()">
 										本地上传<input type="file" id="up_img" name="myfile" style="display:none" onclick="changeState()" onchange="upLoadImage()"/>
 									</a>
 									<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
