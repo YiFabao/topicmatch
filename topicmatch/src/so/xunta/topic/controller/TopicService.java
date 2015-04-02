@@ -295,10 +295,10 @@ public class TopicService extends HttpServlet {
 				response.getWriter().write("没有匹配的话题");
 				return;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		System.out.println("将推荐列表封装json数据:");
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
@@ -310,8 +310,8 @@ public class TopicService extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		try {
 			response.getWriter().write(jsonArray.toString());
+			response.flushBuffer();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
