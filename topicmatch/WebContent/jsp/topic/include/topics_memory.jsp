@@ -19,7 +19,6 @@
 					</li>
 					<li id="participate" class="dn item pate">
 						<ul class="fix" id="pateUl">
-							
 						</ul>
 						<div class="bt">
 							<button class="load" id="loadMoreBtn"><img src="images/loading.gif" alt="">加载中...</button>
@@ -33,8 +32,6 @@
 	$(".tab-menu a").powerSwitch({
 	    classAdd: "selected"
 	}).eq(0).trigger("click");
-	
-	
 	//滑动加载
 	$(document).scrollTop() //获取垂直滚动条到顶部的距离
 	$(document).height()//整个网页的高度
@@ -53,7 +50,4 @@
 		  }
 	  });
 	});
-	
-	
-	
 </script>

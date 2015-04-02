@@ -192,9 +192,13 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 				console.log(res.notTopic);
 				topic_p(arrayJson[i]);
 			}
-			console.log('arrayJson.length  :  '+arrayJson.length);
 			if(arrayJson.length < 10){
 				$("#launch .load").text("没有更多话题");
+			}else{
+				console.log('arrayJson.length  :  '+arrayJson.length);
+				var img = $("<img>").attr("src","images/loading.gif").attr("alt","");
+				img.text("加载中...");
+				$("#launch .load").html(img);
 			}
 		} else {
 			console.log("j");
@@ -204,6 +208,11 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 			}
 			if(arrayJson.length < 10){
 				$("#loadMoreBtn").text("没有更多话题");
+			}else{
+				console.log('arrayJson.length  :  '+arrayJson.length);
+				var img = $("<img>").attr("src","images/loading.gif").attr("alt","");
+				img.text("加载中...");
+				$("#participate .load").html(img);
 			}
 		}
 	});
