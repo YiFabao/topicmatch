@@ -192,6 +192,7 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 				console.log(res.notTopic);
 				topic_p(arrayJson[i]);
 			}
+			console.log('arrayJson.length  :  '+arrayJson.length);
 			if(arrayJson.length < 10){
 				$("#launch .load").text("没有更多话题");
 			}

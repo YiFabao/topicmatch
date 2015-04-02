@@ -41,12 +41,13 @@
 	$(window).height()//浏览器窗口的高度
 	$(window).scrollTop() + $(window).height()  >= $(document).height()
 	$(function(){
-		$(".main").scroll(function() {
-			  console.log("$(this).scrollTop()  :  "+$(this).scrollTop());
-			  console.log("$.main.height()  :  "+$(".main").height());
-			  console.log("$main.[0].scrollHeight  :  "+$(".main")[0].scrollHeight);
+		$(document).scroll(function() {
+			  console.log("导航栏高度:  "+$(".header").height());
+			  console.log("浏览器高度:  "+$(window).height());
+			  console.log("当前滚动条高度  :  "+$(this).scrollTop());
+			  console.log("内容高度:  "+$(".content")[0].scrollHeight);
 		  //当内容滚动到底部时加载新的内容
-		  if(($(this).scrollTop() + $(".main").height() + 50) >= $(".main")[0].scrollHeight){
+		  if(($(window).height() - $(".header").height() + $(this).scrollTop())+50 >= $(".content")[0].scrollHeight){
 			  console.log("加载更多   :  "+loadType);
 			  loadTopicMemory(myselfId, loadType, load);
 		  }
