@@ -289,10 +289,7 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
 		System.out.println("推荐 列表："+recommendedTopicPUblisherList);
-		for(RecommendedTopicPublisher r:recommendedTopicPUblisherList)
-		{
-			System.out.println(r.userId+"===="+r.topicId);
-		}
+
 		if(recommendedTopicPUblisherList==null){
 			try {
 				response.setCharacterEncoding("utf-8");
@@ -305,9 +302,12 @@ public class TopicService extends HttpServlet {
 		System.out.println("将推荐列表封装json数据:");
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
+			if(rtp==null||rtp.userId==null||rtp.topicId==null||"".equals(rtp.userId)||"".equals(rtp.topicId)){
+				continue;
+			}
 			JSONObject obj=new JSONObject();
 			System.out.println("userId:"+rtp.getUserId()+"  ====>topicId:"+rtp.getUserId());
-			obj.put(rtp.getUserId(),rtp.getTopicId());
+			obj.put(rtp.userId,rtp.topicId);
 			jsonArray.add(obj.toString());
 		}
 		response.setContentType("text/json");
