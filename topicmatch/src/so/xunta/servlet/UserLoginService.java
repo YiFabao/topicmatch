@@ -127,7 +127,7 @@ public class UserLoginService extends HttpServlet {
 		if(sex!=null&&!"".equals(sex)){
 			user.setSex(sex);
 		}
-		if(year!=null&&month!=null&&day!=null){
+		if(day!=null&&!"".equals(day.trim())){
 			user.setBirthday(year+"-"+month+"-"+day);
 		}
 		userManager.updateUser(user);
@@ -207,6 +207,8 @@ public class UserLoginService extends HttpServlet {
 							String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
 							try {
 								FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));
+								user.setImageUrl(newImageName);
+								userManager.updateUser(user);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
