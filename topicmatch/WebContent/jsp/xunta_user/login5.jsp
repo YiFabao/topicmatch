@@ -5,10 +5,6 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
-	String url = request.getParameter("url");
-	if(url=="login4"){
-		request.getRequestDispatcher("/jsp/xunta_user/login4.jsp");
-	}
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -63,10 +59,10 @@
 								<label class="dt dtt">头&emsp;&emsp;像</label>
 								<div class="dd">
 									<span class="pic-area">
-										<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${requestScope.picUrl }"/></div>
+										<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" /></div>
 									</span>
-									<a href="#"  class="f14 a1" onclick="up_img.click()">
-										本地上传<input type="file" id="up_img" name="myfile" style="display:none" onclick="changeState()" onchange="upLoadImage()"/>
+									<a href="#"  class="f14 a1" onclick="selectImage()">
+										本地上传<input type="file" id="up_img" name="myfile" style="display:none"  onchange="upLoadImage()"/>
 									</a>
 									<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
 								</div>
@@ -151,7 +147,6 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.lavalamp.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-html5Validate-min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/common.js"></script>
-<script src="<%=basePath %>jsp/static/js/uploadPreview.js"></script>
 <script>
 /* $("form").html5Validate(function() {
 	var self = this;
@@ -164,7 +159,7 @@
 
 function backforward(){
 	console.log("上一步");
-	window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp?url=login4";
+	window.location="${pageContext.request.contextPath}/jsp/xunta_user/login4.jsp";
 }
 function upLoadImage(){
 	
@@ -174,6 +169,13 @@ function upLoadImage(){
 	console.log("上传图片");
 	$("form").submit();
 }
+
+function selectImage(){
+	document.getElementById("up_img").click();
+}
+
+
+
 //完成注册
 $("#completeReg").click(function(){
 	$("form").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg")
@@ -183,6 +185,20 @@ $("#completeReg").click(function(){
 });
 
 $(function(){
+	
+	//判断图像是否选择
+	if("${requestScope.picUrl }"==""){
+		//判断是否选择的图片大于1M
+		if("${requestScope.errorImage}"=="1M"){
+			console.log("图片过大");
+			alert("选择的图片超过1M,请重新选择");
+		}
+		
+	}else{
+		console.log("用户选择图片");
+		$("#imgShow").attr("src",src="<%=request.getContextPath() %>/image?picId=${requestScope.picUrl }");
+	}
+	
 	 YearMonthDay();// 加载日期选择组件
 	 autoSelected();
 	 $("#imgName").val("");

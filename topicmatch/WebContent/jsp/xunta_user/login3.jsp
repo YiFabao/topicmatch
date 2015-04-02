@@ -51,9 +51,10 @@
 		<!-- 基本资料填写 -->
 		<div class="dialog-box d2">
 			<div class="login-3 l form">
-				<h3>基本资料填写<span class="f14">（提交个人兴趣, 找到同趣之人）</span></h3>
-				<div class="item">
-					<span class="dt">个人兴趣</span>
+				<h3 style="position:relative;left:50%;">基本资料填写<span class="f14"></span></h3>
+					<div class="item">
+						<p style="margin-bottom:25px;font-size:17px;font-weight:normal;text-shadow:0 0;">一.以标签表达个人兴趣,匹配同趣之人:</p>
+						<span class="dt">个人兴趣</span>
 					<div class="dd">
 						<div class="interests">
 							<div class="cont mb10" disabled style="overflow-y:auto" id="tags_box">

@@ -80,13 +80,13 @@
 								<img src="<%=basePath%>servlet/validateCodeServlet" width=80 height=30 style="margin-top:10px;" class="validateImage" onclick="changeValiCode(this)"/><small><i>点击图片换验证码</i></small><br />
 							</div>
 						</div>
-						<div class="opear">
-							<button class="btn-d wtb" id="bind_local_account">下一步</button>
-						</div>
 					</form>
+					<div class="opear" style="position:absolute;bottom:40px;left:25px;">
+						<button class="btn-d wtb" id="bind_local_account">下一步</button>
+					</div>
 					
 					<div class="r">
-						<p class="tip" style="margin-bottom:100px;">本地帐号将关联您的第三方登，<br>录帐号. 在第三方登录失效时,<br>可直接用本地帐号登录.<br>如果”毅然跳过”, 以后可在”昵<br>称->个人资料”中设置.</p>
+						<p class="tip" style="margin-bottom:130px;">本地帐号将关联您的第三方登，<br>录帐号. 在第三方登录失效时,<br>可直接用本地帐号登录.<br>如果”毅然跳过”, 以后可在”昵<br>称->个人资料”中设置.</p>
 						<button class="btn-b wtb" id="ComReg">毅然跳过</button>
 					</div>
 				</div>

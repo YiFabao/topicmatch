@@ -160,54 +160,70 @@ public class UserLoginService extends HttpServlet {
 			f.setSizeThreshold(1024 * 8);// 8k的缓冲区,文件大于8K则保存到临时目录
 			ServletFileUpload upload = new ServletFileUpload(f);// 声明解析request的对象
 			upload.setHeaderEncoding("UTF-8");// 处理文件名中文
-			upload.setFileSizeMax(1024 * 1024 * 1);// 设置每个文件最大为1M
-			upload.setSizeMax(1024 * 1024 * 1);// 一共最多能上传1M
+			upload.setFileSizeMax(Integer.MAX_VALUE);
+			upload.setSizeMax(Integer.MAX_VALUE);// 一共最多能上传10M
 			String path =LocalContext.getPicPath();
 			List<FileItem> list = null;
 			try {
 				list = upload.parseRequest(request);
 			} catch (FileUploadException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				//e1.printStackTrace();
+				try {
+					response.getWriter().write("上传的图片太大");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
 			}// 解析
 			
 			Map<String,String> fieldMap= new HashMap<String, String>();//普通表单
 			for (FileItem ff : list) {
 				if (!ff.isFormField()) {//文件
-					String filename = ff.getName();
-					String contentType=ff.getContentType();//文件类型
-					System.out.println(contentType);
-					//判断是否是图片对象
-					System.out.println(contentType.indexOf("image"));
-					if(contentType!=null&&(contentType.indexOf("image")==-1))
-					{
-						System.out.println("非图片");
+					//判断是否超过1M
+					float length = request.getContentLength();
+					length =length/1024;
+					System.out.println("上传文件的大小为："+length+"K");
+					if(length>1024){
+						request.setAttribute("errorImage","1M");
+						continue;
 					}else{
-						
-						filename = filename.substring(filename.lastIndexOf("\\") + 1);// 解析文件名
-						System.out.println("上传文件名为："+filename);
-						String extension=filename.substring(filename.lastIndexOf("."));
-						String imgname=filename.substring(0,filename.lastIndexOf("."));
-						//重新构造文件名 　　　实际文件名_用户id_时间戳
-						String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
-						try {
-							FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}// 直接使用commons.io.FileUtils
-						//压缩图片
-						 File originalImage =new File(path + "/" + newImageName);
-						 request.setAttribute("picUrl",newImageName);
-						 if(originalImage.exists()){
-							 System.out.println("压缩图片时 上传图片失败");
-							 try {
-								ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+						String filename = ff.getName();
+						String contentType=ff.getContentType();//文件类型
+						System.out.println(contentType);
+						//判断是否是图片对象
+						System.out.println(contentType.indexOf("image"));
+						if(contentType!=null&&(contentType.indexOf("image")==-1))
+						{
+							System.out.println("非图片");
+						}else{
+							
+							filename = filename.substring(filename.lastIndexOf("\\") + 1);// 解析文件名
+							System.out.println("上传文件名为："+filename);
+							String extension=filename.substring(filename.lastIndexOf("."));
+							String imgname=filename.substring(0,filename.lastIndexOf("."));
+							//重新构造文件名 　　　实际文件名_用户id_时间戳
+							String newImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
+							try {
+								FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + newImageName));
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}
-						 }
+							}// 直接使用commons.io.FileUtils
+							//压缩图片
+							 File originalImage =new File(path + "/" + newImageName);
+							 request.setAttribute("picUrl",newImageName);
+							 if(originalImage.exists()){
+								 System.out.println("压缩图片时 上传图片失败");
+								 try {
+									ImageUtil.resize(originalImage,new File(path + "/" + newImageName),100, 0.7f);
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							 }
+						}
 					}
 				}else{//普通表单
 					try {
