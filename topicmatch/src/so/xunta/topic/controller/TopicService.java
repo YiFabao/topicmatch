@@ -288,6 +288,7 @@ public class TopicService extends HttpServlet {
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+		System.out.println("推荐 列表："+recommendedTopicPUblisherList);
 		if(recommendedTopicPUblisherList==null){
 			try {
 				response.setCharacterEncoding("utf-8");
