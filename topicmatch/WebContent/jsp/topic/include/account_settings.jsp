@@ -284,7 +284,6 @@
              data: $('#picForm').serialize(),
              url: "${pageContext.request.contextPath}/servlet/userLoginService?cmd=imgCheck",
              success: function(data){  
-                 console.log("success触发");
                  if(data=="exceed")
                  {
                 	 alert("头像文件不能大于1M");
