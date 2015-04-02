@@ -631,8 +631,6 @@ public class UserLoginService extends HttpServlet {
 
 	private void imgCheck(HttpServletRequest request, HttpServletResponse response) {
 
-			System.out.println("收到请求");
-			
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);//检查输入请求是否为multipart表单数据。
 		System.out.println("图片上传");
 		if (isMultipart == true) {

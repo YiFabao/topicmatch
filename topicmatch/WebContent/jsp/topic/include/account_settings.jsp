@@ -160,12 +160,13 @@
 <script src="js/jquery-powerSwitch-min.js"></script>
 <script src="js/common.js"></script> -->
 <script src="js/jquery.form.js"></script>
+
 <script>
 	 checkPwd("#Reg form")
 	 $(function(){
 		 YearMonthDay();// 加载日期选择组件
-		//上传图片预览
-		/*  new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" }); */
+		//前端上传图片预览被注释掉了，这里只用它的判断是否是图片类型的文件功能
+		new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
 		 autoSelected();
 		// $("#picExceed").val("false");
 		 $("#imgName").val("");
@@ -274,46 +275,59 @@
 		c.attr('disabled', '');
 	})
 	
-	$('#up_img').live('change',function(){
-		//$("#picExceed").val("false");
-		//$("#picForm").submit();
-		$('#picForm').ajaxSubmit({  
+
+	//$(document).delegate("#up_img","change",function(){
+	$('#up_img').die().live('change',function(){
+	//$('#up_img').change(function(){
+		 $('#picForm').ajaxSubmit({  
              type: 'post', 
              data: $('#picForm').serialize(),
              url: "${pageContext.request.contextPath}/servlet/userLoginService?cmd=imgCheck",
              success: function(data){  
-                 
+                 console.log("success触发");
                  if(data=="exceed")
                  {
-                      alert("头像文件不能大于1M");
+                	 alert("头像文件不能大于1M");
                       //$("#picExceed").val("true");
                       document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
                       //清空上传域
                       $("#imgName").val("");
+                      document.getElementById("fileSpan").innerHTML="";
                       document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                      return;
+                      //$('#up_img').replaceWith('<input type="file" id="up_img" name="myfile" style="display:none" required/>');
+                      $('#picForm').resetForm();
+                      return false;
                  }
                  if(data=="illegal login")
                  {
                 	 alert("非法登录");
-                	 return;
+                	 return false;
                  }
                  if(data=="not multipart")
                  {
                 	 alert("非multipart请求");
-                	 return;
+                	 return false;
                  }
                  else
                  {
                 	 $("#imgName").val(data);
                 	 document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId="+data;
+                	 //清空上传域
+                	 document.getElementById("fileSpan").innerHTML="";
+                	 document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+                	  //$('#up_img').replaceWith('<input type="file" id="up_img" name="myfile" style="display:none" required/>');
+                	 $('#picForm').resetForm();
+           
                  }
+                 return false;
              },  
              error: function(XmlHttpRequest, textStatus, errorThrown){  
                  alert( "error");  
              }  
-         });
+         }); 
+
 	});
+	
 	/* var isIE = /msie/i.test(navigator.userAgent) && !window.opera;         
   	function fileSize() {     
       	var target = document.getElementById("up_img");
@@ -335,4 +349,5 @@
 	} */
 
 </script>
+
 </html>
