@@ -164,6 +164,7 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 		console.log("打印topicId======>"+topicId);
 		changeTopicChatBox(topicId);
 	});
+	broadcast(myselfId,topicId);//用户参与聊天，发送广播
 }
 
 /**
@@ -789,11 +790,17 @@ window.receiveBroadcast = function(json)
 		var li_node = create_one_topicMember_item(member);
 		$("div.right ul.user-list").append(li_node);
 		//在消息窗口添加xxx加入
+		if(member.userId==myselfId){
+			return;
+		};
 		userEnterTopic(member);
 		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 	}
 	else if(topicItemArray.in_array(json.topicId)){
-		console.log("非当前窗口");		
+		console.log("非当前窗口");	
+		if(member.userId==myselfId){
+			return;
+		}
 		if(topicId_memberArray[json.topicId]){
 			topicId_memberArray[json.topicId].push(member);
 		}else{
