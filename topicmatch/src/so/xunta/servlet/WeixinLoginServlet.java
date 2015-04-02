@@ -91,20 +91,19 @@ public class WeixinLoginServlet extends HttpServlet {
 			// 将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
 			// TODO 判断是否有标签
-			if (!tagsManager.checkUserTagIsEmpty(user.id)) {// 有标签
+			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");
-				// 判断是否绑定本地账号
-				if (user.xunta_username != null && user.password != null && !"".equals(user.xunta_username)
-						&& !"".equals(user.password)) {
+				//判断是否绑定本地账号
+				if(user.xunta_username!=null&&user.password!=null&&!"".equals(user.xunta_username)&&!"".equals(user.password)){
 					System.out.println("绑定过本地账号");
-					response.sendRedirect(request.getContextPath() + "/jsp/topic/index.jsp");// 跳转到首页
-				} else {
+					response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//跳转到首页
+				}else{
 					System.out.println("没有绑定本地账号");
-					response.sendRedirect(request.getContextPath() + "/jsp/xunta_user/fillinfo.jsp?#&Reg");
+					response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
 				}
-			} else {// 没有标签
+			}else{//没有标签
 				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath() + "/jsp/xunta_user/fillinfo.jsp?#&FillInfo");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
 			}
 		} else {
 			System.out.println("数据库中存在该微博uid");
