@@ -299,7 +299,7 @@ public class TopicService extends HttpServlet {
 			}
 		}
 		System.out.println("将推荐列表封装json数据:");
-/*		JSONArray jsonArray = new JSONArray();
+		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
 			System.out.println("userId:"+rtp.getUserId()+"  ====>topicId:"+rtp.getUserId());
@@ -313,7 +313,7 @@ public class TopicService extends HttpServlet {
 			response.flushBuffer();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 	}
 
 	private void clearNavBarMsgNum(HttpServletRequest request, HttpServletResponse response) {
