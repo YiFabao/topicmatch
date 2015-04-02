@@ -289,6 +289,10 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
 		System.out.println("推荐 列表："+recommendedTopicPUblisherList);
+		for(RecommendedTopicPublisher r:recommendedTopicPUblisherList)
+		{
+			System.out.println(r.userId+"===="+r.topicId);
+		}
 		if(recommendedTopicPUblisherList==null){
 			try {
 				response.setCharacterEncoding("utf-8");
@@ -310,7 +314,6 @@ public class TopicService extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		try {
 			response.getWriter().write(jsonArray.toString());
-			response.flushBuffer();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
