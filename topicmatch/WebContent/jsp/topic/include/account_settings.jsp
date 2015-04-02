@@ -140,7 +140,7 @@
 					</ul>
 				</div> -->
 				<div class="dd-c">
-					<button class="btn-d wta" id="submitModify">确 定</button>
+					<button class="btn-d wta" id="submitModify" onclick="return checkInput();">确 定</button>
 				</div>
 			</form>
 			<form id="picForm" enctype="multipart/form-data">
@@ -214,9 +214,9 @@
 		 document.getElementById("up_img").click();
 	 }
 	 
-	 //提交表单
-	 $("#submitModify").click(function(){
-		 //获取标签
+	 function checkInput()
+	 {
+		//获取标签
 		 var tags_array=new Array();
 		 var atags=$("#user_input_tags a");
 		 atags.each(function(index,element){
@@ -226,7 +226,6 @@
 		 if(tags_array.length<=0)
 		 {
 			 alert("请至少填入一个标签!");
-			 return;
 			 return false;
 		 }
 		 var pwd=$("#PassWordR").val();
@@ -234,15 +233,19 @@
 		 if(pwd!=repwd)
 		 {
 			 alert("两次输入的密码不一致!");
-			 return;
 			 return false;
 		 }
-		/*  if($("#picExceed").val().trim()=="true")
-		 {
-			 alert("头像文件不能大于1M");
-			 return;
-			 return false;
-		 } */
+		 return true;
+	 }
+	 //提交表单
+	 $("#submitModify").click(function(){
+		 //获取标签
+		 var tags_array=new Array();
+		 var atags=$("#user_input_tags a");
+		 atags.each(function(index,element){
+		 	tags_array.push(element.innerHTML.toString());
+		 });
+
 		 var newTags = $("#newTags");
 		 newTags.val(tags_array.toString());
 		 
