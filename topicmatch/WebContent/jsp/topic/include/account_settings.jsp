@@ -322,7 +322,16 @@
                  return false;
              },  
              error: function(XmlHttpRequest, textStatus, errorThrown){  
-                 alert( "error");  
+            	 alert("头像文件不能大于1M");
+                 //$("#picExceed").val("true");
+                 document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+                 //清空上传域
+                 $("#imgName").val("");
+                 document.getElementById("fileSpan").innerHTML="";
+                 document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+                 //$('#up_img').replaceWith('<input type="file" id="up_img" name="myfile" style="display:none" required/>');
+                 $('#picForm').resetForm();
+                 return false;
              }  
          }); 
 
