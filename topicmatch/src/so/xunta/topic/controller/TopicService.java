@@ -302,6 +302,7 @@ public class TopicService extends HttpServlet {
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			JSONObject obj=new JSONObject();
+			System.out.println("userId:"+rtp.getUserId()+"  ====>topicId:"+rtp.getUserId());
 			obj.put(rtp.getUserId(),rtp.getTopicId());
 			jsonArray.add(obj.toString());
 		}
