@@ -166,7 +166,7 @@
 	 $(function(){
 		 YearMonthDay();// 加载日期选择组件
 		//前端上传图片预览被注释掉了，这里只用它的判断是否是图片类型的文件功能
-		new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
+		/* new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" }); */
 		 autoSelected();
 		// $("#picExceed").val("false");
 		 $("#imgName").val("");
@@ -282,6 +282,27 @@
 	//$(document).delegate("#up_img","change",function(){
 	$('#up_img').die().live('change',function(){
 	//$('#up_img').change(function(){
+		photoExt=this.value.substr(this.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
+		if(!photoExt)
+		{
+			alert("请上传正确的图片!");
+			//清空上传域
+            $("#imgName").val("");
+            document.getElementById("fileSpan").innerHTML="";
+            document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+            $('#picForm').resetForm();
+        	return false;
+		}
+		console.log(photoExt);
+    	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
+        	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+        	//清空上传域
+            $("#imgName").val("");
+            document.getElementById("fileSpan").innerHTML="";
+            document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+            $('#picForm').resetForm();
+        	return false;
+    	}
 		 $('#picForm').ajaxSubmit({  
              type: 'post', 
              data: $('#picForm').serialize(),
@@ -303,6 +324,11 @@
                  if(data=="illegal login")
                  {
                 	 alert("非法登录");
+                	//清空上传域
+                     $("#imgName").val("");
+                     document.getElementById("fileSpan").innerHTML="";
+                     document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+                     $('#picForm').resetForm();
                 	 return false;
                  }
                  if(data=="not multipart")
@@ -317,7 +343,6 @@
                 	 //清空上传域
                 	 document.getElementById("fileSpan").innerHTML="";
                 	 document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                	  //$('#up_img').replaceWith('<input type="file" id="up_img" name="myfile" style="display:none" required/>');
                 	 $('#picForm').resetForm();
            
                  }
@@ -331,7 +356,6 @@
                  $("#imgName").val("");
                  document.getElementById("fileSpan").innerHTML="";
                  document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                 //$('#up_img').replaceWith('<input type="file" id="up_img" name="myfile" style="display:none" required/>');
                  $('#picForm').resetForm();
                  return false;
              }  
