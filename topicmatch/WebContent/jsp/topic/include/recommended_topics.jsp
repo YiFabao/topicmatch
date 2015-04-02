@@ -40,7 +40,7 @@
 					<i class="tri"></i>
 				</li> -->
 			</ul>
-			<div class="page-topic">
+			<div class="page-topic" align="center">
 				<a href="#" class="iconfont prev">&#xe609;</a>
 				<span class="cur">1/1</span>
 				<a href="#" class="iconfont next">&#xe608;</a>

@@ -20,14 +20,14 @@ response.setDateHeader ("Expires", 0);
 	<!--[if lte IE 8]>
 		<style>
 			/*ie8支持css3
-			.header .search,.top-memory .tab-menu,.talk-list .tp,.talk-list .enter,.form .load{behavior:url(js/ie-css3.htc);}*/
+			.header .search,.top-memory .tab-menu,.talk-list .tp,.talk-list .enter,.form .load{behavior:url("${pageContext.request.contextPath }/jsp/topic/js/ie-css3.htc");}*/
 		</style>
-		<script src="js/html5.js"></script>
-	<![endif]-->	
+		<script src="${pageContext.request.contextPath }/jsp/topic/js/html5.js"></script>
+	<![endif]-->
  	<style>
-		.content,.main{position: absolute;bottom: 0;left:0;right:0;}
+/* 		.content,.main{position: absolute;bottom: 0;left:0;right:0;}
 		.content{top:120px;}
-		.main{top:0;overflow-y:auto;}
+		.main{top:0;overflow-y:auto;} */
 	</style>
 </head>
 
@@ -35,12 +35,12 @@ response.setDateHeader ("Expires", 0);
 <!-- 导航栏动态引用 -->
 <jsp:include page="include/navbar2.jsp"></jsp:include>
 
-<div id="container_all" width="100%">
+<div id="container_all" ">
 	<%--页面切换都放这里 --%>
 </div>
 
 <!--话题聊天框-->
-<div class="topic-box">
+<div class="topic-box"  style="bottom: -620px;">
 	<div class="left">
 		<ul class="rec-topic-list">
 <!-- 			<li class="cur">

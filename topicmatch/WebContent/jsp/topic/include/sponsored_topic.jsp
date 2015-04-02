@@ -9,7 +9,7 @@
 		</style>
 	</head>
 	<section class="content">
-		<div class="main">
+		<div class="main" id="sponsored">
 			<div class="form spons-topic">
 				<h2>发起话题</h2>
 				<form>
@@ -132,7 +132,7 @@
 	</section>
 	
 <script>
-	
+
 	var topicContent = "";
 	var detailContent = "";
 	var mytopicId = "${requestScope.my_topicId}";
@@ -144,6 +144,8 @@
 	 
 	 $(function(){
 	 	$('.most-man  .talk-list .tp:even').addClass("even-b")
+		console.log($("#sponsored")[0]);
+		$("#sponsored").css("height",$(document).height()+"px");
 	 })
 	 
 	 //发起话题
@@ -271,5 +273,7 @@
 	    		document.getElementById('DetailwordNum').style.color ="#7a7a7a";
 		}
 	}
+	
+	
 </script>
 </html>
