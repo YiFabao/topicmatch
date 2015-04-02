@@ -277,9 +277,11 @@ public class UserLoginService extends HttpServlet {
 			if(birthday!=null&&!"".equals(birthday))
 			{
 				String[] birth = birthday.split("-");
-				year = birth[0];
-				month = birth[1];
-				day = birth[2];
+				if(birth.length==3){ 
+					year = birth[0];
+					month = birth[1];
+					day = birth[2];
+				}
 			}
 			request.setAttribute("year", year);	
 			request.setAttribute("month", month);	
