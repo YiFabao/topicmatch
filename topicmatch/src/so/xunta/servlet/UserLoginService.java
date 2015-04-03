@@ -346,10 +346,19 @@ public class UserLoginService extends HttpServlet {
 						
 	}
 
+	/**
+	 * @author Yanyu Li
+	 * @date 2015年3月27日
+	 * @param request
+	 * @param response 
+	 * @return void
+	 * 进入账户设置页面前获取用户信息
+	 */
 	private void method_getUserInfo(HttpServletRequest request,
 			HttpServletResponse response) {
 		String userId = request.getParameter("userId").trim();//用户id
 		User user = userManager.findUserById(Integer.parseInt(userId));
+		
 		List<Tag> tagList = tagManager.findAllTagsByUserId(Long.parseLong(userId));
 		if(user==null)
 		{
@@ -357,6 +366,10 @@ public class UserLoginService extends HttpServlet {
 		}
 		else
 		{
+			if("IP地址库文件错误".equals(user.getAddress()))
+			{
+				user.setAddress("");
+			}
 			request.setAttribute("user",user);
 			String birthday = user.getBirthday();
 			String year = null;
