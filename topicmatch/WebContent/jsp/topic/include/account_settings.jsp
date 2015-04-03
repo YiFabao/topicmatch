@@ -278,31 +278,37 @@
 		c.attr('disabled', '');
 	})
 	
+	//清空上传域
+	function clearUploadItems()
+	 {
+		$("#imgName").val("");
+        document.getElementById("fileSpan").innerHTML="";
+        document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+        $('#picForm').resetForm();
+        document.getElementById("submitModify").disabled=false;
+        document.getElementById("submitModify").style.color="black";
+	 }
 
 	//$(document).delegate("#up_img","change",function(){
 	$('#up_img').die().live('change',function(){
 	//$('#up_img').change(function(){
+		document.getElementById("submitModify").disabled=true;
+		document.getElementById("submitModify").style.color="#d0d0d0";
 		photoExt=this.value.substr(this.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
 		if(!photoExt)
 		{
 			alert("请上传正确的图片!");
 			document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
 			//清空上传域
-            $("#imgName").val("");
-            document.getElementById("fileSpan").innerHTML="";
-            document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-            $('#picForm').resetForm();
+            clearUploadItems();
         	return false;
 		}
-		console.log(photoExt);
+
     	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
         	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
         	document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
         	//清空上传域
-            $("#imgName").val("");
-            document.getElementById("fileSpan").innerHTML="";
-            document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-            $('#picForm').resetForm();
+            clearUploadItems();
         	return false;
     	}
 		 $('#picForm').ajaxSubmit({  
@@ -316,26 +322,21 @@
                       //$("#picExceed").val("true");
                       document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
                       //清空上传域
-                      $("#imgName").val("");
-                      document.getElementById("fileSpan").innerHTML="";
-                      document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                      //$('#up_img').replaceWith('<input type="file" id="up_img" name="myfile" style="display:none" required/>');
-                      $('#picForm').resetForm();
+                      clearUploadItems();
                       return false;
                  }
                  if(data=="illegal login")
                  {
                 	 alert("非法登录");
                 	//清空上传域
-                     $("#imgName").val("");
-                     document.getElementById("fileSpan").innerHTML="";
-                     document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                     $('#picForm').resetForm();
+                     clearUploadItems();
                 	 return false;
                  }
                  if(data=="not multipart")
                  {
                 	 alert("非multipart请求");
+                	//清空上传域
+                     clearUploadItems();
                 	 return false;
                  }
                  else
@@ -346,7 +347,8 @@
                 	 document.getElementById("fileSpan").innerHTML="";
                 	 document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
                 	 $('#picForm').resetForm();
-           
+                	 document.getElementById("submitModify").disabled=false;
+                	 document.getElementById("submitModify").style.color="black";
                  }
                  return false;
              },  
@@ -355,10 +357,7 @@
                  //$("#picExceed").val("true");
                  document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
                  //清空上传域
-                 $("#imgName").val("");
-                 document.getElementById("fileSpan").innerHTML="";
-                 document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                 $('#picForm').resetForm();
+                 clearUploadItems();
                  return false;
              }  
          }); 
