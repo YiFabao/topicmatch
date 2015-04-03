@@ -12,8 +12,15 @@
 	} 
 
 %>
+
 <!DOCTYPE html>
 <html lang="zh">
+<head>
+<style type="text/css">
+/* 1秒消失提示框 */
+#disppear_alert{position:absolute;top:240px;left:380px;font-size: 18px;height: 48px;text-align: center;border-radius: 10px;width: 494px;border:none;cursor: pointer;clear: both;background-color: #f3f3f3;display: block;margin-left: auto;margin-right: auto;}
+</style>
+</head>
 	<section class="content">
 		<div class="main">
 			<ul class="topic-list">
@@ -458,7 +465,30 @@
 	 
  $(function(){
 	 	var wheight = $(window).height()
-	 	$(".topic-list").height(wheight-120-90)
+	 	$(".topic-list").height(wheight-120-90);
+	 	
+	 	//如果是从修改资料页面跳过来的，显示修改成功提示框
+	 	var modifiedSuccess = "${sessionScope.modifiedSuccess}";
+	 	if(modifiedSuccess&&modifiedSuccess=="true")
+	 	{
+	 		showSuccess('资料修改成功');
+	    	$('#disppear_alert').fadeOut(1000);
+	    	<%
+	    	String modifiedSuccess = (String)session.getAttribute("modifiedSuccess");
+	    	if(modifiedSuccess!=null&&!"".equals(modifiedSuccess.trim()))
+	    		session.setAttribute("modifiedSuccess", null);
+	    	%>
+	 	} 
 })
+
+	//显示1秒消失提示框
+	function showSuccess(text){
+	        if($('#disppear_alert span').text().length>0){
+	        $('#disppear_alert').empty().append('<span>'+text+'</span>');
+	        $('#disppear_alert').css('display','block');
+	        }else{
+	        $('.main').prepend('<div id="disppear_alert"><span>'+text+'</span></div>');
+	        }
+	    }
 </script>
 </html>
