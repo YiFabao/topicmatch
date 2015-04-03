@@ -107,31 +107,31 @@ var uploadPreview = function(setting) {
                     this.value = "";
                     return false;
                 }
-//                var filesize = this.files[0].size;
-//                console.log(Object.prototype.toString.call(this.files[0]));
-//                if(filesize>1048576)
-//                {
-//                	alert("头像文件不能大于1M");
-//                	return false;
-//                }
-                if (navigator.userAgent.indexOf("MSIE") > -1) {
-                    try {
-                        document.getElementById(_self.Setting.ImgShow).src = _self.getObjectURL(this.files[0]);
-                    } catch (e) {
-                        var div = document.getElementById(_self.Setting.DivShow);
-                        this.select();
-                        top.parent.document.body.focus();
-                        var src = document.selection.createRange().text;
-                        document.selection.empty();
-                        document.getElementById(_self.Setting.ImgShow).style.display = "none";
-                        div.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
-                        div.style.width = _self.Setting.Width + "px";
-                        div.style.height = _self.Setting.Height + "px";
-                        div.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = src;
-                    }
-                } else {
-                    document.getElementById(_self.Setting.ImgShow).src = _self.getObjectURL(this.files[0]);
-                }
+				
+                /*var filesize = this.files[0].size;
+				console.log(Object.prototype.toString.call(this.files[0]));
+				if (filesize > 1048576) {
+					alert("头像文件不能大于1M");
+					return false;
+				}*/
+               /*
+				 * if (navigator.userAgent.indexOf("MSIE") > -1) { try {
+				 * document.getElementById(_self.Setting.ImgShow).src =
+				 * _self.getObjectURL(this.files[0]); } catch (e) { var div =
+				 * document.getElementById(_self.Setting.DivShow);
+				 * this.select(); top.parent.document.body.focus(); var src =
+				 * document.selection.createRange().text;
+				 * document.selection.empty();
+				 * document.getElementById(_self.Setting.ImgShow).style.display =
+				 * "none"; div.style.filter =
+				 * "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+				 * div.style.width = _self.Setting.Width + "px";
+				 * div.style.height = _self.Setting.Height + "px";
+				 * div.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src =
+				 * src; } } else {
+				 * document.getElementById(_self.Setting.ImgShow).src =
+				 * _self.getObjectURL(this.files[0]); }
+				 */
                 _self.Setting.callback();
             }
         }

@@ -655,7 +655,11 @@ public class UserLoginService extends HttpServlet {
 							imgName=ds;
 							if(imgName!=null&&!"".equals(imgName.trim()))
 							{
-								user.setImageUrl(imgName);
+								String newimgName = imgName.substring(imgName.indexOf("_")+1);
+								user.setImageUrl(newimgName);
+								File tempImg = new File(path + "/" + imgName);
+								FileUtils.copyFile(tempImg, new File(path + "/" + newimgName));
+								tempImg.delete();
 							}
 							break;
 						default:
@@ -714,10 +718,16 @@ public class UserLoginService extends HttpServlet {
 		}
 	}
 
+	/**
+	 * @author Yanyu Li
+	 * @date 2015年3月30日
+	 * @param request
+	 * @param response 
+	 * @return void
+	 * 用户上传头像时ajax检查是否超过1M
+	 */
 	private void imgCheck(HttpServletRequest request, HttpServletResponse response) {
 
-			System.out.println("收到请求");
-			
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);//检查输入请求是否为multipart表单数据。
 		System.out.println("图片上传");
 		if (isMultipart == true) {
@@ -760,12 +770,11 @@ public class UserLoginService extends HttpServlet {
 						String extension=filename.substring(filename.lastIndexOf("."));
 						String imgname=filename.substring(0,filename.lastIndexOf("."));
 						//重新构造文件名 　　　实际文件名_用户id_时间戳
-						String tempImageName="user_"+user.id+"_"+(new Date().getTime())+extension;
+						String tempImageName="temp_"+"user_"+user.id+"_"+(new Date().getTime())+extension;
 
 						//user.setImageUrl(newImageName);
 						//IO
 						FileUtils.copyInputStreamToFile(ff.getInputStream(), new File(path + "/" + tempImageName));// 直接使用commons.io.FileUtils
-						
 						//压缩图片
 						File originalImage =new File(path + "/" + tempImageName);
 						ImageUtil.resize(originalImage,new File(path + "/" + tempImageName),100, 0.7f);

@@ -140,7 +140,7 @@
 					</ul>
 				</div> -->
 				<div class="dd-c">
-					<button class="btn-d wta" id="submitModify">确 定</button>
+					<button class="btn-d wta" id="submitModify" onclick="return checkInput();">确 定</button>
 				</div>
 			</form>
 			<form id="picForm" enctype="multipart/form-data">
@@ -160,12 +160,13 @@
 <script src="js/jquery-powerSwitch-min.js"></script>
 <script src="js/common.js"></script> -->
 <script src="js/jquery.form.js"></script>
+
 <script>
 	 checkPwd("#Reg form")
 	 $(function(){
 		 YearMonthDay();// 加载日期选择组件
-		//上传图片预览
-		/*  new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" }); */
+		//前端上传图片预览被注释掉了，这里只用它的判断是否是图片类型的文件功能
+		/* new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" }); */
 		 autoSelected();
 		// $("#picExceed").val("false");
 		 $("#imgName").val("");
@@ -213,9 +214,9 @@
 		 document.getElementById("up_img").click();
 	 }
 	 
-	 //提交表单
-	 $("#submitModify").click(function(){
-		 //获取标签
+	 function checkInput()
+	 {
+		//获取标签
 		 var tags_array=new Array();
 		 var atags=$("#user_input_tags a");
 		 atags.each(function(index,element){
@@ -225,7 +226,6 @@
 		 if(tags_array.length<=0)
 		 {
 			 alert("请至少填入一个标签!");
-			 return;
 			 return false;
 		 }
 		 var pwd=$("#PassWordR").val();
@@ -233,15 +233,19 @@
 		 if(pwd!=repwd)
 		 {
 			 alert("两次输入的密码不一致!");
-			 return;
 			 return false;
 		 }
-		/*  if($("#picExceed").val().trim()=="true")
-		 {
-			 alert("头像文件不能大于1M");
-			 return;
-			 return false;
-		 } */
+		 return true;
+	 }
+	 //提交表单
+	 $("#submitModify").click(function(){
+		 //获取标签
+		 var tags_array=new Array();
+		 var atags=$("#user_input_tags a");
+		 atags.each(function(index,element){
+		 	tags_array.push(element.innerHTML.toString());
+		 });
+
 		 var newTags = $("#newTags");
 		 newTags.val(tags_array.toString());
 		 
@@ -274,46 +278,92 @@
 		c.attr('disabled', '');
 	})
 	
-	$('#up_img').live('change',function(){
-		//$("#picExceed").val("false");
-		//$("#picForm").submit();
-		$('#picForm').ajaxSubmit({  
+	//清空上传域
+	function clearUploadItems()
+	 {
+		$("#imgName").val("");
+        document.getElementById("fileSpan").innerHTML="";
+        document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+        $('#picForm').resetForm();
+        document.getElementById("submitModify").disabled=false;
+        document.getElementById("submitModify").style.color="black";
+	 }
+
+	//$(document).delegate("#up_img","change",function(){
+	$('#up_img').die().live('change',function(){
+	//$('#up_img').change(function(){
+		document.getElementById("submitModify").disabled=true;
+		document.getElementById("submitModify").style.color="#d0d0d0";
+		photoExt=this.value.substr(this.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
+		if(!photoExt)
+		{
+			alert("请上传正确的图片!");
+			document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+			//清空上传域
+            clearUploadItems();
+        	return false;
+		}
+
+    	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
+        	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+        	document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+        	//清空上传域
+            clearUploadItems();
+        	return false;
+    	}
+		 $('#picForm').ajaxSubmit({  
              type: 'post', 
              data: $('#picForm').serialize(),
              url: "${pageContext.request.contextPath}/servlet/userLoginService?cmd=imgCheck",
              success: function(data){  
-                 
                  if(data=="exceed")
                  {
-                      alert("头像文件不能大于1M");
+                	 alert("头像文件不能大于1M");
                       //$("#picExceed").val("true");
                       document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
                       //清空上传域
-                      $("#imgName").val("");
-                      document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
-                      return;
+                      clearUploadItems();
+                      return false;
                  }
                  if(data=="illegal login")
                  {
                 	 alert("非法登录");
-                	 return;
+                	//清空上传域
+                     clearUploadItems();
+                	 return false;
                  }
                  if(data=="not multipart")
                  {
                 	 alert("非multipart请求");
-                	 return;
+                	//清空上传域
+                     clearUploadItems();
+                	 return false;
                  }
                  else
                  {
                 	 $("#imgName").val(data);
                 	 document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId="+data;
+                	 //清空上传域
+                	 document.getElementById("fileSpan").innerHTML="";
+                	 document.getElementById("fileSpan").innerHTML='<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+                	 $('#picForm').resetForm();
+                	 document.getElementById("submitModify").disabled=false;
+                	 document.getElementById("submitModify").style.color="black";
                  }
+                 return false;
              },  
              error: function(XmlHttpRequest, textStatus, errorThrown){  
-                 alert( "error");  
+            	 alert("头像文件不能大于1M");
+                 //$("#picExceed").val("true");
+                 document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+                 //清空上传域
+                 clearUploadItems();
+                 return false;
              }  
-         });
+         }); 
+
 	});
+	
 	/* var isIE = /msie/i.test(navigator.userAgent) && !window.opera;         
   	function fileSize() {     
       	var target = document.getElementById("up_img");
@@ -335,4 +385,5 @@
 	} */
 
 </script>
+
 </html>
