@@ -195,7 +195,12 @@ response.setDateHeader ("Expires", 0);
 	
 	function searchTopic(){
 		console.log("搜索……");
-		var search_word=$("#search_word").val();//用户填写的搜索词
+		var search_word=$("#search_word").val().trim();//用户填写的搜索词
+		if(!search_word)
+		{
+			alert("请输入要搜索的关键字");
+			return;
+		}
 		console.log(search_word);
 		var parameters={
 				search_word:search_word

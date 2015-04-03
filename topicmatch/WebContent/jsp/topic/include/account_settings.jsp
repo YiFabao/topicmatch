@@ -1,5 +1,10 @@
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	String modifiedSuccess = (String)session.getAttribute("modifiedSuccess");
+	if(modifiedSuccess!=null&&!"".equals(modifiedSuccess.trim()))
+		session.setAttribute("modifiedSuccess", null);
+%>
 <!DOCTYPE html>
 <html lang="zh">
 <section class="content" >
