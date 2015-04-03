@@ -20,6 +20,7 @@
 		<property name="hibernate.c3p0.acquire_increment">2</property>
 		
 		<mapping resource="so/xunta/entity/User.hbm.xml" />
+		<mapping resource="so/xunta/entity/LoginLog.hbm.xml" />
 		<mapping resource="so/xunta/topic/entity/Topic.hbm.xml" />
 		<mapping resource="so/xunta/topic/entity/TopicGroup.hbm.xml" />
 		<mapping resource="so/xunta/topic/entity/TopicHistory.hbm.xml" />

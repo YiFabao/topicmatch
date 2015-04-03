@@ -188,22 +188,14 @@ $(function(){
 	 		userId : "${sessionScope.user.id}",
 	 		cmd : 'tag'
 	 	};
+	 	
 	 	$.post("<%=basePath%>servlet/userLoginService",parameters,function(res,status){
 	 		if(res=="ok")
 	 		{
-	 			//检查是否有xunta_username和password
-	 			var xunta_username="${sessionScope.user.xunta_username}";
-	 			var password = "${sessionScope.user.password}";
-	 			console.log("存在该用户");
-	 			if(xunta_username&&password){//存在用户名和密码直接跳到主页
-	 				window.location.replace("<%=basePath %>jsp/topic/index.jsp");
-	 			}else{
-	 				console.log("准备跳到下一步");
-	 				window.location="<%=basePath%>jsp/xunta_user/login4.jsp";
-	 			}
-	 		}
-	 		else{
+	 			window.location="<%=basePath%>servlet/userLoginService?cmd=checkAccountBindOrJump";
+	 		}else{
 	 			console.log(res);
+	 			alert("提交表单出错");
 	 		}
 	 	});
 	});

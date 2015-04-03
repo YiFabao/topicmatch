@@ -163,11 +163,11 @@ function backforward(){
 }
 function upLoadImage(){
 	
-	$("form").attr("action","<%=basePath %>servlet/userLoginService?cmd=uploadImageTest")
+	$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=uploadImageTest")
 			.attr("method","post")
 			.attr("enctype","multipart/form-data")
 	console.log("上传图片");
-	$("form").submit();
+	$("#ComRegForm").submit();
 }
 
 function selectImage(){
@@ -178,10 +178,11 @@ function selectImage(){
 
 //完成注册
 $("#completeReg").click(function(){
-	$("form").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg")
-			.attr("method","post")
-			.removeAttr("enctype")
-	$("form").submit();
+	alert("完成注册");
+	//console.log($("#ComRegForm")[0]);
+	$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg")
+			.attr("method","post");
+	$("#ComRegForm").submit();
 });
 
 $(function(){

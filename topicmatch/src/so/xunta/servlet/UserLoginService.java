@@ -25,12 +25,15 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 
+import so.xunta.entity.LoginLog;
 import so.xunta.entity.Tag;
 import so.xunta.entity.User;
 import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
+import so.xunta.manager.UserInfoManager;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
+import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.HtmlRegexpUtil;
@@ -47,6 +50,7 @@ public class UserLoginService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserManager userManager=new UserManagerImpl();
 	TagsManager tagManager = new TagsManagerImpl();
+	UserInfoManager userInfoManager = new UserInfoManagerImpl();
     public UserLoginService() {
         super();
     }
@@ -85,11 +89,92 @@ public class UserLoginService extends HttpServlet {
 		case "comReg":
 			comReg(request,response);
 			break;
+		case "jumpBindAccountStep":
+			jumpBindAccountStep(request,response);
+			break;
+		case "checkAccountBindOrJump":
+			checkAccountBindOrJump(request,response);
+			break;
+			
 		default:
 			break;
 		}
 	}
 
+
+	private void checkAccountBindOrJump(HttpServletRequest request, HttpServletResponse response) {
+		//检查用户名是否存在或是否跳过
+		//是 跳到login5.jsp
+		User user =(User) request.getSession().getAttribute("user");
+		if(user==null){
+			try {
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		boolean bindAccount = false;
+		LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
+		if(ll==null)
+		{
+			System.out.println("没有跳过");
+			bindAccount = true;
+		}else{
+			if(ll.getBind_account_step()==0)
+			{
+				System.out.println("跳过");
+				bindAccount = false;
+			}else{
+				System.out.println("没有跳过");
+				bindAccount = true;
+			}
+		}
+	
+		if(bindAccount&&(user.xunta_username==null||"".equals(user.xunta_username.trim())||user.password==null||"".equals(user.password))){
+			try {
+				System.out.println("用户名没有绑定并且没有绑定账号");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				System.out.println("用户跳或绑定了账号");
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login5.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+		
+		
+	}
+
+	private void jumpBindAccountStep(HttpServletRequest request, HttpServletResponse response) {
+		User user =(User) request.getSession().getAttribute("user");
+		if(user==null){
+			try {
+				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login.jsp");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		//保存用户跳过基本资料填写记录
+		userInfoManager.addLoginLog(new LoginLog(String.valueOf(user.id),0));
+		//跳转到window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp";
+		try {
+			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login5.jsp");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void comReg(HttpServletRequest request, HttpServletResponse response) {
 		String nickname=request.getParameter("nickname");
