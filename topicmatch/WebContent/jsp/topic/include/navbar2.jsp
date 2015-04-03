@@ -28,7 +28,7 @@
 					<div class="pop">
 						<i class="link"></i>
 						<div class="t">
-							<p class="name">${sessionScope.user.xunta_username }</p>
+							<p class="name">${sessionScope.user.nickname==null?sessionScope.user.xunta_username:sessionScope.user.nickname}</p>
 							<ul class="menu-list">
 								<!-- <a href="#" ><i class="iconfont">&#xe60a;</i>个人信息</a> -->
 								<li><a href="#"  id="p_info"><i class="iconfont">&#xe60c;</i>账号设置</a></li>

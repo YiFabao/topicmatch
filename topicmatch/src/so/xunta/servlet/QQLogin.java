@@ -74,7 +74,8 @@ public class QQLogin extends HttpServlet {
 			String description = (String) json.get("description");
 			String verified_reason = (String) json.get("verified_reason");
 			String tags = (String) json.get("tags");
-			imageUrl = (String) json.get("image");
+			//imageUrl = (String) json.get("image");
+			imageUrl = "user-pic2.jpg";
 			openId=(String)json.get("userId");
 			System.out.println("openId:"+openId);
 			qquserInfo=new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);

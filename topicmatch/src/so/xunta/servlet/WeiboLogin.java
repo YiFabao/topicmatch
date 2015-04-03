@@ -95,7 +95,8 @@ public class WeiboLogin extends HttpServlet {
 			verified_reason=(String)json.get("verified_reason");
 			tags=(String)json.get("tags");
 			token=(String)json.get("token");
-			image=(String)json.get("image");
+			//image=(String)json.get("image");
+			image="user-pic2.jpg";
 			uid=(String) json.get("userId");
 			
 			List<String> contentList = sinaUserInfo.getContent(token);

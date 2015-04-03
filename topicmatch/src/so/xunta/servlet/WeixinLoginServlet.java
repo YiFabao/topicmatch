@@ -57,7 +57,8 @@ public class WeixinLoginServlet extends HttpServlet {
 		String province = userInfoJson.get("province").toString();
 		String city = userInfoJson.get("city").toString();
 		String country = userInfoJson.get("country").toString();
-		String headImgUrl = userInfoJson.get("headimgurl").toString();
+		//String headImgUrl = userInfoJson.get("headimgurl").toString();
+		String headImgUrl = "user-pic2.jpg";
 		if (sex.equals("1")) {
 			sex = "男";
 		} else {
