@@ -143,7 +143,7 @@ public class UserLoginService extends HttpServlet {
 		}else{
 			try {
 				System.out.println("用户跳或绑定了账号");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login5.jsp");
+				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -22,26 +22,26 @@
 	<![endif]-->
 </head>
 <body>
-	<header class="header">
+<header class="header">
 		<div class="head">
 			<h1 class="logo"><a href="/">寻TA网</a></h1>
 			<div class="form search">
-				<input type="text" class="text">
-				<input type="submit" class="iconfont submit" value="&#xe602;">
+				<input type="text" class="text" disabled>
+				<input type="submit" class="iconfont submit" value="&#xe602;" disabled>
 			</div>
 			<nav class="nav">
 				<ul class="fix">
-					<li><a href="#">话题推荐</a></li>
-					<li><a href="#">话题记忆</a></li>
-					<li><a href="#">发起话题</a></li>
+					<li><a href="#" >话题推荐</a></li>
+					<li><a href="#" >话题记忆</a></li>
+					<li><a href="#" >发起话题</a></li>
 				</ul>
 			</nav>
 			<div class="user">
-				<a href="#" class="admin">登录</a>
-				<a href="#">注册</a>
-				<a class="news" href="#">
+				<a href="#" class="admin" disabled>未登录</a>
+			<!-- 	<a href="#">注册</a> -->
+				<a class="news" href="#" style="line-height:48px;">
 					<i class="iconfont">&#xe603;</i>
-					<span class="dunk">15</span>
+			<!-- 		<span class="dunk"></span> -->
 				</a>
 			</div>
 		</div>
