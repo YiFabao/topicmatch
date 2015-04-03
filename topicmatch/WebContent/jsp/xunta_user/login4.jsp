@@ -181,7 +181,8 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 };
 
 $("#ComReg").click(function(){
-	window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp";
+	//跳到servlet再跳到login5.jsp
+	window.location="${pageContext.request.contextPath}/servlet/userLoginService?cmd=jumpBindAccountStep";
 });
 </script>
 </body>
