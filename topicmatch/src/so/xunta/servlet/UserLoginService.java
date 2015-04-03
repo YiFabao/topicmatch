@@ -35,6 +35,9 @@ import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.topic.entity.Topic;
+import so.xunta.topic.model.TopicManager;
+import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.HtmlRegexpUtil;
 import so.xunta.utils.ImageUtil;
@@ -660,6 +663,11 @@ public class UserLoginService extends HttpServlet {
 								File tempImg = new File(path + "/" + imgName);
 								FileUtils.copyFile(tempImg, new File(path + "/" + newimgName));
 								tempImg.delete();
+								
+								//更新Topic表里的发起人头像
+								TopicManager topicManager = new TopicManagerImpl();
+								List<String> userCreatedTopicIds = topicManager.findTopicIdListByCreaterId(user.getId()+"");
+								topicManager.updateCreaterImg(userCreatedTopicIds,newimgName);
 							}
 							break;
 						default:

@@ -1091,4 +1091,43 @@ public class TopicManagerImpl implements TopicManager {
 			session.close();
 		}
 	}
+
+	@Override
+	//Yanyu Li
+	public List<String> findTopicIdListByCreaterId(String userId) {
+		Session session = HibernateUtils.openSession();
+		if(userId==null||"".equals(userId.trim())){
+			return null;
+		}
+		String hql = "select topicId from Topic as t where t.userId = ?";
+		org.hibernate.Query query = session.createQuery(hql);
+		query.setString(0, userId.trim());
+		List<String> topicIdList = query.list();
+		session.close();
+		return topicIdList;
+	}
+
+	@Override
+	//Yanyu Li
+	public void updateCreaterImg(List<String> userCreatedTopicIds,
+			String newimgName) {
+		if(userCreatedTopicIds.size()==0)
+			return;
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "update Topic as t set t.logo_url=? where t.topicId in (:topicIdList)";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, newimgName);
+			query.setParameterList("topicIdList", userCreatedTopicIds);
+			
+			query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
 }
