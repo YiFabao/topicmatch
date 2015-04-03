@@ -286,6 +286,7 @@
 		if(!photoExt)
 		{
 			alert("请上传正确的图片!");
+			document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
 			//清空上传域
             $("#imgName").val("");
             document.getElementById("fileSpan").innerHTML="";
@@ -296,6 +297,7 @@
 		console.log(photoExt);
     	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
         	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+        	document.getElementById("imgShow").src="${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
         	//清空上传域
             $("#imgName").val("");
             document.getElementById("fileSpan").innerHTML="";
