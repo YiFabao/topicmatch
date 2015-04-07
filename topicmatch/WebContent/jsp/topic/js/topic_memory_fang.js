@@ -120,15 +120,15 @@ function topic_j(request) {
 	var a_node = $("<a></a>").attr("title", request.topicName)
 			.attr("href", "#").text(request.topicName);
 	p_name.append(a_node);
-	var time_node = $("<time></time>").append(request.yyyyMMdd + "  ");
-	var b_hour = $("<b></b>").attr("class", "hour").append(request.HHmm);
-	time_node.append(b_hour);
+//	var time_node = $("<time></time>").append(request.yyyyMMdd + "  ");
+//	var b_hour = $("<b></b>").attr("class", "hour").append(request.HHmm);
+//	time_node.append(b_hour);
 	var a_enter = $("<a onclick=create_one_topic_item_jy_j(this,null)></a>")
 			.attr("class", "enter").attr("href", "#");
 	a_enter.append("进入");
 
 	div_hd.append(a_user_pic).append(span_area).append(p_name)
-			.append(time_node).append(a_enter);
+			/*.append(time_node)*/.append(a_enter);
 	var div_bd = $("<div></div>").attr("class", "bd");
 	
 	if(content == ""){
@@ -139,9 +139,8 @@ function topic_j(request) {
 		div_bd.append(p_txt);
 	}
 	var div_date = $("<div></div>").attr("class", "date");
-	var time = $("<time></time>").text(request.month + "月");
-	var p_man = $("<p></p>").attr("class", "man").append(
-			request.accepters + "人参与");
+	var time = $("<time></time>").text(request.yyyyMMdd+"  "+request.HHmm);
+	var p_man = $("<p></p>").attr("class", "man").append(request.accepters + "人参与");
 	div_date.append(time).append(p_man);
 	li_node.append(div_hd).append(div_bd).append(div_date);
 	ul_pateUl.append(li_node);
