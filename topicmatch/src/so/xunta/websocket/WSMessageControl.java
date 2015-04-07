@@ -123,7 +123,7 @@ public class WSMessageControl {
 				String from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getXunta_username();
 				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
 					int userId6 = Integer.parseInt(toUserId);
-					if(from_user_name == null && from_user_name .equals("")){
+					if(from_user_name == null && from_user_name.equals("") && topic_name == null && topic_name.equals("")){
 						return;
 					}
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
