@@ -10,8 +10,8 @@
 		</style>
 	</head>
 	<section class="content">
-		<div class="main">
-			<table class="table-r" id="table">
+		<div class="main" id="table">
+			<table class="table-r">
 				<colgroup>
 					<col width="230">
 					<col width="415">
@@ -220,11 +220,6 @@
 		}); */
 		
 		 $(function(){
-			 	var wheight = $(window).height()
-			 	$(".topic-list").height(wheight-120-90)
-			 	$('.send-box').live('click',function(){
-			 		$('.send-box textarea').focus();
-			 	});
 			 	$("#table").css("height",($(document).height()-120)+"px");
 			});
 	</script>
