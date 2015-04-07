@@ -281,6 +281,8 @@
 		var c = $(this).prev();
 		//c.removeAttribute("disabled");
 		c.attr('disabled', '');
+		c.focus();
+		c.select();
 	})
 	
 	//清空上传域
