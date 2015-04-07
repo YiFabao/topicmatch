@@ -158,6 +158,7 @@
 		</c:if>
 	</div>
 </section>
+<div id="Tip"><span class="txt"></span></div>
 <!-- <script src="js/jquery-1.4.4.min.js"></script>
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/jquery.lavalamp.min.js"></script>
@@ -177,13 +178,13 @@
 		 $("#imgName").val("");
 		 
 		 //禁用表单的回车提交，因为有的文本框绑定了回车事件
-		 $("#ComRegForm").keypress(function(event){
+		$("#ComRegForm").keypress(function(event){
 				//console.log(event.keyCode?event.keyCode:event.which);
 			    var keycode = (event.keyCode ? event.keyCode : event.which);
 			    if(keycode == '13'){
 			    	return false;
 			    }
-			});
+			}); 
 	 });
 	 
 	 //下拉列表自动选中
@@ -239,14 +240,17 @@
 		 });
 		 if(tags_array.length<=0)
 		 {
-			 alert("请至少填入一个标签!");
+			 //alert("请至少填入一个标签!");
+			 Tip("请至少填入一个标签!");
 			 return false;
 		 }
 		 var pwd=$("#PassWordR").val();
 		 var repwd=$("#PassWordRC").val();
 		 if(pwd!=repwd)
 		 {
-			 alert("两次输入的密码不一致!");
+			 $("#PassWordRC").testRemind("两次输入的密码不一致!").get(0).select();
+			 //alert("两次输入的密码不一致!");
+			 Tip("两次输入的密码不一致!");
 			 return false;
 		 }
 		 return true;
@@ -293,6 +297,8 @@
 		c.attr('disabled', '');
 		c.focus();
 		c.select();
+		c.attr("readonly",false);
+		c.css("background-color","white");
 
 		$(this).css("color", "#d0d0d0");
 		$(this).css("cursor", "text");
@@ -304,6 +310,10 @@
 	//编辑完成后，编辑按钮恢复可用
 	function restoreStatus(obj) {
 		var _this = $(obj);
+		_this.attr("readonly",true);
+		_this.css("background-color","#F0F0F0");
+		//注意：disable后的文本框无法在提交后的表单中获取其字段值
+		//_this.attr("disabled",true);
 		var editbutton = _this.next();
 		editbutton.css("color", "#ff9900");
 		editbutton.css("cursor", "pointer");
@@ -346,7 +356,8 @@
 						photoExt = this.value.substr(
 								this.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
 						if (!photoExt) {
-							alert("请上传正确的图片!");
+							//alert("请上传正确的图片!");
+							Tip("请上传正确的图片!");
 							document.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
 							//清空上传域
 							clearUploadItems();
@@ -356,7 +367,8 @@
 						if (photoExt != '.jpg' && photoExt != '.jpeg'
 								&& photoExt != '.bmp' && photoExt != '.png'
 								&& photoExt != '.gif') {
-							alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+							//alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+							Tip("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
 							document.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
 							//清空上传域
 							clearUploadItems();
@@ -370,49 +382,46 @@
 											url : "${pageContext.request.contextPath}/servlet/userLoginService?cmd=imgCheck",
 											success : function(data) {
 												if (data == "exceed") {
-													alert("头像文件不能大于1M");
+													Tip("头像文件不能大于1M");
+													//alert("头像文件不能大于1M");
 													//$("#picExceed").val("true");
-													document
-															.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+													document.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
 													//清空上传域
 													clearUploadItems();
 													return false;
 												}
 												if (data == "illegal login") {
-													alert("非法登录");
+													//alert("非法登录");
+													Tip("非法登录");
 													//清空上传域
 													clearUploadItems();
 													return false;
 												}
 												if (data == "not multipart") {
-													alert("非multipart请求");
+													//alert("非multipart请求");
+													Tip("非multipart请求");
 													//清空上传域
 													clearUploadItems();
 													return false;
 												} else {
 													$("#imgName").val(data);
-													document
-															.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId="
+													document.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId="
 															+ data;
 													//清空上传域
-													document
-															.getElementById("fileSpan").innerHTML = "";
-													document
-															.getElementById("fileSpan").innerHTML = '<input type="file" id="up_img" name="myfile" style="display:none" required/>';
+													document.getElementById("fileSpan").innerHTML = "";
+													document.getElementById("fileSpan").innerHTML = '<input type="file" id="up_img" name="myfile" style="display:none" required/>';
 													$('#picForm').resetForm();
-													document
-															.getElementById("submitModify").disabled = false;
-													document
-															.getElementById("submitModify").style.color = "black";
+													document.getElementById("submitModify").disabled = false;
+													document.getElementById("submitModify").style.color = "black";
 												}
 												return false;
 											},
 											error : function(XmlHttpRequest,
 													textStatus, errorThrown) {
-												alert("头像文件不能大于1M");
+												//alert("头像文件不能大于1M");
+												Tip("头像文件不能大于1M");
 												//$("#picExceed").val("true");
-												document
-														.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
+												document.getElementById("imgShow").src = "${pageContext.request.contextPath}/image?picId=${sessionScope.user.imageUrl}";
 												//清空上传域
 												clearUploadItems();
 												return false;

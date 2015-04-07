@@ -102,7 +102,7 @@
 			</div>
 		</div>
 	</div>
-
+<div id="Tip"><span class="txt"></span></div>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.placeholder-1.0.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-powerSwitch-min.js"></script>
@@ -122,7 +122,8 @@ function checkPwdNull()
 	console.log("checkPwd");
 	if(!pwd||pwd=="")
 	{
-		alert("密码不能全为空字符");
+		//alert("密码不能全为空字符");
+		Tip("密码不能全为空字符");
 		return false;
 	}
 	return true;
