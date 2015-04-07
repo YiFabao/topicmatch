@@ -490,5 +490,12 @@
 	        $('.main').prepend('<div id="disppear_alert"><span>'+text+'</span></div>');
 	        }
 	    }
+ $(function(){
+	 	var wheight = $(window).height()
+	 	$(".topic-list").height(wheight-120-90)
+	 	$('.send-box').live('click',function(){
+	 		$('.send-box textarea').focus();
+	 	})
+	 })
 </script>
 </html>

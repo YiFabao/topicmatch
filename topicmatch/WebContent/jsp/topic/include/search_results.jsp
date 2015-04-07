@@ -11,7 +11,7 @@
 	</head>
 	<section class="content">
 		<div class="main">
-			<table class="table-r" >
+			<table class="table-r" id="table">
 				<colgroup>
 					<col width="230">
 					<col width="415">
@@ -53,10 +53,12 @@
 							<tr>
 								<c:choose>
 									<c:when test="${innerstatus.first}">
-										<td class="border"
-											rowspan="${searched_topicsHashMap.value.size()}"><img
-											src="<%=request.getContextPath() %>/image?picId=${searched_userTopic.logo_url}" alt="" class="user-pic">
-											<a href="#" class="nc">${searched_userTopic.userName}</a></td>
+										<td class="border" rowspan="${searched_topicsHashMap.value.size()}">
+											<img src="<%=request.getContextPath() %>/image?picId=${searched_userTopic.logo_url}" alt="" class="user-pic">
+											<a href="#" class="nc">${searched_userTopic.userName}</a>
+											<span class="sex woman">♀</span>
+											<p class="area" style="margin-left: 10px;">地区：上海市</p>
+										</td>
 									</c:when>
 									<c:otherwise>
 										<td class="border"></td>
@@ -216,5 +218,14 @@
 			do_postForTopicData(param);
 			$(".page-topic .cur").text(currentPage + "/" + pageSum);
 		}); */
+		
+		 $(function(){
+			 	var wheight = $(window).height()
+			 	$(".topic-list").height(wheight-120-90)
+			 	$('.send-box').live('click',function(){
+			 		$('.send-box textarea').focus();
+			 	});
+			 	$("#table").css("height",($(document).height()-120)+"px");
+			});
 	</script>
 </html>

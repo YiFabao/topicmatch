@@ -22,7 +22,7 @@ table{border-collapse:collapse;border-spacing:0}
 /* 滚动槽 */
 ::-webkit-scrollbar-track {margin:2px}
 /* 滚动条滑块 */
-::-webkit-scrollbar-thumb {border-radius:2px; background:#37383d;-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.5)}
+::-webkit-scrollbar-thumb {border-radius:6px; background:#D5D5D5;-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.5)}
 ::-webkit-scrollbar-thumb:window-inactive {background:rgba(255,0,0,0.4)}
 /*public*/
 .tri{height:0;width:0;display:inline-block;cursor:pointer;overflow:hidden;font-size:0;margin-left:1px;-webkit-transition:-webkit-transform .2s ease-in;-webkit-backface-visibility:hidden;border-style:solid;border-color:transparent;border-width:5px}
@@ -168,8 +168,9 @@ padding-right:3px;
 text-align:center}
 .header .news .dunk{top:10px;left:36px;font-style:normal}
 .content{background:url(../images/page_bg.png) #ecebe7 no-repeat top center fixed}
-.main,.header .head{width:1254px;margin-left:auto;margin-right:auto}
+.main,.header .head{width:1254px;margin-left:auto;margin-right:auto;}
 .main,.pannel{background-color:rgba(255, 255, 255, 0.6);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1edece8', endColorstr='#d1edece8',GradientType=0 )}
+.main{height:inherit;}
 /*我发起的话题*/
 .top-memory .tab-menu{line-height:50px;background-color:#f5f5f5;font-size:20px;border-radius:10px;width:500px;margin-left:auto;margin-right:auto;overflow:hidden;margin-bottom:60px}
 .top-memory .tab-menu li{float:left;width:50%;text-align:center}
@@ -296,7 +297,7 @@ left:-3px}
 .topic-list .left .cont{right:74px;border-bottom-right-radius:inherit}
 .topic-list .left .cont:after{background-image:url(../images/topic-item_tri_left.png);top:40px;
 right:-4px}
-.page-topic{font-size:26px;}
+.page-topic{font-size:26px;text-align: center;}
 .page-topic .iconfont{font-size:60px;vertical-align:middle}
 .page-topic a:hover{color:#fe9a0c}
 .page-topic .cur{display:inline-block;width:635px;text-align:center;vertical-align:middle}
@@ -334,12 +335,15 @@ border-radius:8px;display:inline-block;margin-top:8px}
 .chat-box .my{text-align:right}
 .chat-box .my .detail{margin-right:52px;background-color:#f1e1ff}
 .chat-box .other .user-pic{top:0}
-.chat-box .other .detail{margin-left:52px;background-color:#f5fbff}
+.chat-box .other .detail{margin-left:52px;background-color:#EAF0F4}
 .chat-box .other .user-pic{left:0}
-.chat-box .system{color:#868686;text-align:center}
-.send-box {height:120px;border-top:1px solid #eee;background-color:#f6f6f6;padding:0 15px;position:relative}
+.chat-box .system{text-align:center}
+.chat-box .system .txt{display: inline-block;font-size: 13px;color: #000;border-radius:15px;  background-color: rgba(0, 0, 0, 0.06);padding:3px 15px;}
+.chat-box .send-time{display: block;text-align: center;color: #999;font-size: 12px;margin-bottom:10px;}
+.chat-box .nc{padding-left:52px;padding-right: 52px;font-size:12px;color: #999;}
+.send-box {height:93px;border-top:1px solid #eee;background-color:#f6f6f6;padding:0 15px;position:relative;cursor:text;}
 .send-box textarea{border:none;width:100%;resize:none;font-size:14px;outline:none;background-color:#f6f6f6}
-.send-box .send-btn{background-color:#9d9d9d;color:#fff;border:none;border-radius:5px; font-size:30px;height:30px;width:60px;position:absolute;right:15px}
+.send-box .send-btn{background-color:#9d9d9d;color:#fff;border:none;border-radius:5px; font-size:26px;height:26px;width:50px;position:absolute;right:15px;bottom: 10px}
 .topic-box .toggle{width:25px;background-color:#3c3d43;height:100%;float:left;position:relative}
 .topic-box .toggle i{position:absolute;color:#fff;font-size:30px;left:0;right:0;top:0;bottom:0;margin:auto;height:40px;cursor:default}
 .topic-box .right{width:82px;height:100%;float:left;background-color:#37383d;color:#ecebe7;text-align:center;position:relative;overflow-y:auto}
@@ -391,8 +395,13 @@ border-radius:8px;display:inline-block;margin-top:8px}
 .table-r tr{background-color:#efefef}
 .table-r td{padding-top:15px;padding-bottom:15px}
 .table-r .border{border-right:2px solid #e2e2e2}
-.table-r .user-pic{width:70px;height:70px;border-radius:5px;vertical-align:top;margin-right:18px;margin-right:15px}
+.table-r .user-pic{width:70px;height:70px;border-radius:5px;vertical-align:top;margin-right:5px;  margin-left: 10px;}
 .table-r .nc{line-height:34px}
+.table-r .info{display: inline-block;}
+.table-r .sex{font-size: 14px;  vertical-align: 2px;}
+.table-r .area{font-size: 14px;color: #999}
+.table-r .man{color: #00A7FF}
+.table-r .woman{color:#f0968c}
 .table-r .dt{position:absolute;margin-left:5px}
 .table-r .dd{margin-left:60px}
 .table-r .name{text-shadow:0 1px #6A6A6A;margin-bottom:5px}
@@ -413,3 +422,6 @@ border-radius:8px;display:inline-block;margin-top:8px}
 .acc-set .login-1 h3{font-size:18px;font-weight:normal;  margin-left:-63px}
 .acc-set .mb60{margin-bottom:60px}
 .acc-set .btn-d{border-width:2px}
+#Tip{color: #fff;position: fixed;top:50%;border-radius: 2px;left: 0;right:0;text-align: center;opacity: 0;-webkit-transition:all 1s;transition:all 1s;z-index:-1}
+#Tip .txt{background-color: #37383D;padding: 0 30px;box-shadow:0 0 5px #000;height:40px;display: inline-block; line-height: 40px;
+  font-size: 14px;}

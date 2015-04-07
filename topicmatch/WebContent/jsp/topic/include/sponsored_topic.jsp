@@ -145,7 +145,7 @@
 	 $(function(){
 	 	$('.most-man  .talk-list .tp:even').addClass("even-b")
 		console.log($("#sponsored")[0]);
-		$("#sponsored").css("height",$(document).height()+"px");
+		$("#sponsored").css("height",($(document).height()-120)+"px");
 	 })
 	 
 	 //发起话题

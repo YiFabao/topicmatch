@@ -119,27 +119,30 @@
 						</div>
 						<div class="r-2">
 							<div class="item">
-								<label for="NC" class="dt">常&ensp;住&ensp;地</label>
+								<label for="address" class="dt">常&ensp;住&ensp;地</label>
 								<div class="dd">
-									<input type="text" id="NC" class="text-c wtb" data-min="1" name="address" value="${requestScope.address }">
+									<input type="text" id="address" class="text-c wtb" data-min="1" name="address" value="${requestScope.address }">
 								</div>
 							</div>
 							<div class="item"  style="margin-bottom:29px;">
-								<label for="NC" class="dt">邮&emsp;&emsp;箱</label>
+								<label for="email" class="dt">邮&emsp;&emsp;箱</label>
 								<div class="dd">
-									<input type="text" id="NC" class="text-c wtb" data-min="1" name="email" value="${requestScope.email }">
+									<input type="text" id="email" class="text-c wtb" data-min="1" name="email" value="${requestScope.email }">
 								</div>
 							</div>
 						</div>
 					</form>
 					<div class="carry-out">
 						<p class="red f18">以后仍可在个人中心进行修改。</p>
-						<button class="btn-b wtb" id="completeReg">完成注册</button>
+						<button class="btn-b wtb" id="completeReg">完成注册</button><br><br>
+						<button class="btn-b wtb" id="ignore">跳过</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+		<!-- 提示 -->
+	<div id="Tip"><span class="txt"></span></div>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.placeholder-1.0.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-powerSwitch-min.js"></script>
@@ -176,13 +179,39 @@ function selectImage(){
 
 
 
+var imageTooBig = true;
 //完成注册
 $("#completeReg").click(function(){
-	alert("完成注册");
+	//验证图片的大小
+	if(!imageTooBig){
+		Tip("图片大小不能超过1M,请重新选择一下图片啊");
+		return;
+	}
+	//验证昵称是否完整
+	var nickname = $("#NC").val();
+	//性别　
+	var sex = $("").val();
+	//出生日期
+	var year=$("#year_data").text();
+	var month = $("#monthLabel").text();
+	var day = $("#dayLabel");
+	//常住地
+	var address = $("#address").text();
+	//邮箱
+	var email = $("#email").val();
+	
+	console.log("性别:"+sex);
+	console.log("年："+year);
+	console.log("月:"+month);
+	console.log("日:"+day);
+	console.log();
+	
+	
+
+	//alert("完成注册");
 	//console.log($("#ComRegForm")[0]);
-	$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg")
-			.attr("method","post");
-	$("#ComRegForm").submit();
+	//$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg").attr("method","post");
+	//$("#ComRegForm").submit();
 });
 
 $(function(){
@@ -192,7 +221,8 @@ $(function(){
 		//判断是否选择的图片大于1M
 		if("${requestScope.errorImage}"=="1M"){
 			console.log("图片过大");
-			alert("选择的图片超过1M,请重新选择");
+			imageTooBig=false;
+			Tip("选择的图片超过1M,请重新选择");
 		}
 		
 	}else{

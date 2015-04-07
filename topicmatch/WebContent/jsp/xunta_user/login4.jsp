@@ -67,6 +67,7 @@
 						</div>
 						<div class="item">
 							<label for="PassWordRC" class="dt">确认密码</label>
+							
 							<div class="dd">
 								<input type="password" id="PassWordRC" class="text-c wtb pwdcheck" data-min="6" required disabled>
 							</div>
@@ -80,11 +81,10 @@
 								<img src="<%=basePath%>servlet/validateCodeServlet" width=80 height=30 style="margin-top:10px;" class="validateImage" onclick="changeValiCode(this)"/><small><i>点击图片换验证码</i></small><br />
 							</div>
 						</div>
+						<div class="opear" style="position:absolute;bottom:40px;left:25px;">
+							<button class="btn-d wtb" type="button" id="bind_local_account">下一步</button>
+						</div>
 					</form>
-					<div class="opear" style="position:absolute;bottom:40px;left:25px;">
-						<button class="btn-d wtb" id="bind_local_account">下一步</button>
-					</div>
-					
 					<div class="r">
 						<p class="tip" style="margin-bottom:130px;">本地帐号将关联您的第三方登，<br>录帐号. 在第三方登录失效时,<br>可直接用本地帐号登录.<br>如果”毅然跳过”, 以后可在”昵<br>称->个人资料”中设置.</p>
 						<button class="btn-b wtb" id="ComReg">毅然跳过</button>
@@ -135,12 +135,14 @@ $("#bind_local_account").click(function(){
 				window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp";
 			}else{
 				console.log(res);
-				alert(res);
+				//alert(res);
+				$('#Code').testRemind("验证码输入错误").get(0).select();  
+				$(".validateImage").attr("src","<%=basePath%>servlet/validateCodeServlet?"+Math.random());
 			}
 		});
 	}else{
 		console.log("验证不通过...");
-		$(".validateImage").attr("src","<%=basePath%>servlet/validateCodeServlet?"+Math.random());
+		//$(".validateImage").attr("src","<%=basePath%>servlet/validateCodeServlet?"+Math.random());
 	}
 });
 
@@ -151,20 +153,22 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 	if(isNull(userNameR)||userNameR=="手机号/邮箱/用户名")
 	{
 		console.log("用户名为空");
-		flag = false;
+		$('#UserNameR').testRemind("用户名不能为空").get(0).select();  
 	}
 	if(!isEqual(passwordR,passWordRC))
 	{
 		console.log("两次密码输入不相同");
+		$('#PassWordRC').testRemind("两次密码输入不相同").get(0).select(); 
 		flag = false;
 	}
 	if(passwordR.length<6){
 		console.log("密码长度小于6位");
+		$('#PassWordR').testRemind("密码长度小于6位").get(0).select();  
 		flag=false;
 	}
 	if(isNull(validateCodeR))
 	{
-		console.log("验证码为空");
+		$('#Code').testRemind("验证码为空").get(0).select();  
 		flag=false;
 	}
 	return flag;
@@ -184,6 +188,8 @@ $("#ComReg").click(function(){
 	//跳到servlet再跳到login5.jsp
 	window.location="${pageContext.request.contextPath}/servlet/userLoginService?cmd=jumpBindAccountStep";
 });
+
+
 </script>
 </body>
 </html>

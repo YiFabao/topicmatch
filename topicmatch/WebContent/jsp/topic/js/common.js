@@ -199,3 +199,13 @@ function checkPwd(even){
 		}
 	});
 }
+
+//提示函数
+function Tip(even){
+	var tip = $('#Tip')
+	tip.find(".txt").text(even)
+	tip.css({"z-index":999,"opacity":100})
+	setTimeout(function(){
+		tip.removeAttr("style")
+	}, 2000);
+}

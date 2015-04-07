@@ -220,7 +220,7 @@ public class TopicService extends HttpServlet {
 			for(User u:userList){
 				JSONObject json = new JSONObject();
 				json.put("userId",u.id);
-				json.put("userName", u.xunta_username);
+				json.put("userName", u.nickname==null||"".equals(u.nickname.trim())?u.xunta_username:u.nickname);
 				json.put("imageUrl",u.imageUrl);
 				memberList.add(json.toString());
 			}
