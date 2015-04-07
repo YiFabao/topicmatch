@@ -96,4 +96,9 @@ public interface TopicManager {
 	public Topic findTopicIdByTopic(String topicId);
 	//根据topicId 获取 TopicHistory   fang
 	public String findTopicIdByTopicHistory(String topicId,String userId);
+	
+	//根据发起人userId查询他发起的所有话题
+	public List<String> findTopicIdListByCreaterId(String userId);
+	//更新话题集的发起者头像
+	public void updateCreaterImg(List<String> userCreatedTopicIds,String newimgName);
 }

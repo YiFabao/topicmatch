@@ -87,7 +87,7 @@
 							</label> 
 							<a href="#" class="a1">忘记密码？</a>
 						</li>
-						<li><input type="submit" class="btn-a wta" value="登&emsp;录"></li>
+						<li><input type="submit" class="btn-a wta" value="登&emsp;录" onclick="return checkPwdNull();"></li>
 					</ul>
 				</form>
 			</div>
@@ -115,7 +115,18 @@ $("form").html5Validate(function() {
 	var self = this;
 		self.submit(); 
 });
-
+//密码全为空字符是不准提交
+function checkPwdNull()
+{
+	var pwd = $('#PassWord').val().trim();
+	console.log("checkPwd");
+	if(!pwd||pwd=="")
+	{
+		alert("密码不能全为空字符");
+		return false;
+	}
+	return true;
+}
 //用户修改错语密码时去除登录用户名或密码出错消息提示
 $("#UserName,#PassWord").focus(function(){
 	$("#errorMsg").css("display","none");

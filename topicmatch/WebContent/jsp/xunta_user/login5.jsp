@@ -62,7 +62,7 @@
 										<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" /></div>
 									</span>
 									<a href="#"  class="f14 a1" onclick="selectImage()">
-										本地上传<input type="file" id="up_img" name="myfile" style="display:none"  onchange="upLoadImage()"/>
+										本地上传<input type="file" id="up_img" name="myfile" style="display:none"  onchange="upLoadImage(this)"/>
 									</a>
 									<br><small style="position:relative;left:100px;top:-20px">(头像文件不大于1M)</small>
 								</div>
@@ -165,6 +165,23 @@ function backforward(){
 	window.location="${pageContext.request.contextPath}/jsp/xunta_user/login4.jsp";
 }
 function upLoadImage(){
+	var headImg = document.getElementById("up_img");
+	
+	photoExt=headImg.value.substr(headImg.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
+	if(!photoExt)
+	{
+		alert("请上传正确的图片!");
+		return;
+    	return false;
+	}
+
+	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
+    	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+    	return;
+    	return false;
+	}
+	document.getElementById("completeReg").disabled=true;
+	document.getElementById("completeReg").style.color="#d0d0d0";
 	
 	$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=uploadImageTest")
 			.attr("method","post")

@@ -35,6 +35,9 @@ import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.topic.entity.Topic;
+import so.xunta.topic.model.TopicManager;
+import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.HtmlRegexpUtil;
 import so.xunta.utils.ImageUtil;
@@ -343,10 +346,19 @@ public class UserLoginService extends HttpServlet {
 						
 	}
 
+	/**
+	 * @author Yanyu Li
+	 * @date 2015年3月27日
+	 * @param request
+	 * @param response 
+	 * @return void
+	 * 进入账户设置页面前获取用户信息
+	 */
 	private void method_getUserInfo(HttpServletRequest request,
 			HttpServletResponse response) {
 		String userId = request.getParameter("userId").trim();//用户id
 		User user = userManager.findUserById(Integer.parseInt(userId));
+		
 		List<Tag> tagList = tagManager.findAllTagsByUserId(Long.parseLong(userId));
 		if(user==null)
 		{
@@ -354,6 +366,10 @@ public class UserLoginService extends HttpServlet {
 		}
 		else
 		{
+			if("IP地址库文件错误".equals(user.getAddress()))
+			{
+				user.setAddress("");
+			}
 			request.setAttribute("user",user);
 			String birthday = user.getBirthday();
 			String year = null;
@@ -660,6 +676,11 @@ public class UserLoginService extends HttpServlet {
 								File tempImg = new File(path + "/" + imgName);
 								FileUtils.copyFile(tempImg, new File(path + "/" + newimgName));
 								tempImg.delete();
+								
+								//更新Topic表里的发起人头像
+								TopicManager topicManager = new TopicManagerImpl();
+								List<String> userCreatedTopicIds = topicManager.findTopicIdListByCreaterId(user.getId()+"");
+								topicManager.updateCreaterImg(userCreatedTopicIds,newimgName);
 							}
 							break;
 						default:
