@@ -8,6 +8,7 @@ $(function(){
 var topicId_count_map={};//{话题ID：已经显示的历史消息数,在创建一个话题列表项的时候要在该全局变量中添加初始化记录
 var topicId_unreadMsgArray={};//话题topicId：未读消息数组,在聊天框隐藏状态下,保存到该数组中，显示后清空该数组
 var topicId_historyMsgArray={};//话题　topicId:获取的历史消息
+var topicId_joinMemNum={};//话题的参与人总数
 var notifiction_count=0;
 
 //全局变量
@@ -112,16 +113,56 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 	a_node.attr("class","iconfont close");
 	a_node.click(function(){
 		$(this).parent().remove();//移除
+		
+		//判断是否是最后一个元素
+		//判断topicId 在topicItemArray中下标
+		var _index = topicItemArray.indexOf(topicId);// 获取当前topicId的下标
+		console.log("_index:"+_index);
+		console.log("topicItemArray.length-1:"+(topicItemArray.length-1));
+		var _nextTopicId;
+		if(_index == topicItemArray.length-1){
+			console.log("最后一个元素");
+			//下一个获取焦点topicId
+			//判断是否是第一个元素
+			if(topicItemArray.length==1){
+				//清空所有内容
+				var div_center=$("div.center[topicId="+topicId+"]");
+				console.log(div_center[0]);
+				div_center.find("div.title").html("");
+				div_center.find("p.txt").empty();
+				div_center.find("div.chat-box").empty();
+				var div_right = $("div.right").empty();
+			}else{
+				_nextTopicId=topicItemArray[_index-1];
+				console.log(_nextTopicId);
+			}
+
+		}else{
+			console.log("不是最后一个元素");
+			_nextTopicId=topicItemArray[_index+1];
+		}
+		
+		if(_nextTopicId){
+			changeTopicChatBox(_nextTopicId);
+		}
+
+		//设置焦点
+		$("ul.rec-topic-list li[topicid="+_nextTopicId+"]").addClass("cur").siblings().removeClass("cur");
+		
 		topicItemArray.remove(topicId);
-		if(chat_box_center.topicId!=null){
+
+		if(chat_box_center[topicId]!=null){
+			console.log("删除");
 			delete chat_box_center[topicId];
 		}
-		if(chat_box_fold.topicId!=null){
+		if(chat_box_fold[topicId]!=null){
 			delete chat_box_fold[topicId];
 		}
-		if(chat_box_right.topicId!=null){
+		if(chat_box_right[topicId]!=null){
 			delete chat_box_right[topicId];
 		}
+
+	
 	});
 	
 	li_node.append(p_node).append(a_node);
@@ -555,7 +596,8 @@ function createChatBox_fold(topicId){
 function createChatBox_right(topicId,memberList){
 
 	var div_right = $("<div></div>").attr("class","right").attr("topicId",topicId);
-	var h4_node = $("<h4></h4>").html("参与人");
+	var h4_node = $("<h4 id='joinMemNum'></h4>").html("参与人("+memberList.length+")");
+	topicId_joinMemNum[topicId] = memberList.length;
 	var ul_user_list = $("<ul></ul>").attr("class","user-list");
 	for(var i=0;i<memberList.length;i++){
 		var member = memberList[i];
@@ -612,6 +654,9 @@ function changeTopicChatBox(topicId){
 	//topic_member_toggle(_toggle)
 	
 	$(".topic-box").append(_right);
+	
+	//设置总参与人数
+	$("#joinMemNum").html("参与人("+topicId_joinMemNum[topicId]+")");
 	//加载新参与的人
 	if(topicId_memberArray[topicId]){
 		var memberArray = topicId_memberArray[topicId];
@@ -779,7 +824,7 @@ window.receiveBroadcast = function(json)
 		     }
 		});		
 	}
-	
+	topicId_joinMemNum[json.topicId] +=1;//设置topicId对应的参与人总数
 	if(cur_topicId==json.topicId){
 		//在参与人列表　添加一个用户
 		console.log("当前窗口");
@@ -788,6 +833,7 @@ window.receiveBroadcast = function(json)
 			return;
 		}
 		var li_node = create_one_topicMember_item(member);
+		$("#joinMemNum").html("参与人("+topicId_joinMemNum[json.topicId]+")");
 		$("div.right ul.user-list").append(li_node);
 		//在消息窗口添加xxx加入
 		if(member.userId==myselfId){
@@ -879,7 +925,8 @@ function createMessage(contentType,obj_json){
 		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 	}
 	
-}
+};
+
 //创建消息处理函数
 window.webimHandle = function(json) {
 	/**
@@ -1042,7 +1089,7 @@ function getContactsArray(){
 		contacts.push($(userIds[i]).attr("userid"));
 	}
 	return contacts;
-}
+};
 
 //删除邀请话题消息通知
 function deleteTopicInvite(topicId,toUserId){
@@ -1055,7 +1102,7 @@ function deleteTopicInvite(topicId,toUserId){
 		console.log("status:" + status);
 		console.log("执行 - 删除邀请话题消息通知 - 请求");
 	});
-}
+};
 
 
 //定义一个全局变量,记录,在聊天窗口关闭的情况下，并且来的消息对应的正是当前窗口的消息 ，就加1;然后在打开聊天窗口时，清空这个数字，并调用方法重新统计总消息数
@@ -1065,7 +1112,7 @@ $('.mintopic-box .unfold').click(function(){
 	unread_num_current_chatbox=0;
 	$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
 	
-})
+});
 
 
 
