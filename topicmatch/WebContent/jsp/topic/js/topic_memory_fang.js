@@ -139,7 +139,7 @@ function topic_j(request) {
 		div_bd.append(p_txt);
 	}
 	var div_date = $("<div></div>").attr("class", "date");
-	var time = $("<time></time>").text(request.yyyyMMdd+"  "+request.HHmm);
+	var time = $("<time></time>").text(request.createTime);
 	var p_man = $("<p></p>").attr("class", "man").append(request.accepters + "人参与");
 	div_date.append(time).append(p_man);
 	li_node.append(div_hd).append(div_bd).append(div_date);
