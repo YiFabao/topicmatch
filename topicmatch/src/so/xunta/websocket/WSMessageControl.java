@@ -123,6 +123,9 @@ public class WSMessageControl {
 				String from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getXunta_username();
 				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
 					int userId6 = Integer.parseInt(toUserId);
+					if(from_user_name == null && from_user_name .equals("")){
+						return;
+					}
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
 						System.out.println("将邀请消息推送给用户ID  ：  "+userId6);
 						JSONObject jsonObject = new JSONObject();
