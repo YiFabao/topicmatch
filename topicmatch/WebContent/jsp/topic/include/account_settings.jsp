@@ -44,7 +44,7 @@
 							</div>
 							<lable class="placeholder" style="display:none">填写或选择感兴趣的标签,以，隔开</lable>
 							<div class="mb10">
-								输入标签：<input type="text" class="text-c">
+								输入标签：<input type="text" class="text-c" id="tagInput">
 								<button class="btn-b w80" type="button" id="AddTagBtn">确定</button>
 							</div>
 							<!-- <p class="tag-list">
@@ -287,6 +287,18 @@
 			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i>')
 			c.val("");
 			
+	});
+	//回车添加标签
+	$("#tagInput").keypress(function(event){
+		 var keycode = (event.keyCode ? event.keyCode : event.which);
+		 if(keycode == '13'){
+		    var c = $(this);
+		    if(c.val()==null||""==c.val().trim()){
+				return;
+			}
+			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i>')
+			c.val("");
+		 }
 	});
 	 
 	//要绑定到编辑按钮事件的函数
