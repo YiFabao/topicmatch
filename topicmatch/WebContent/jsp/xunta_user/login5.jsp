@@ -202,10 +202,10 @@ var imageTooBig = true;
 //完成注册
 $("#completeReg").click(function(){
 	//验证图片的大小
-	/* if(!imageTooBig){
+	if(!imageTooBig){
 		Tip("图片大小不能超过1M,请重新选择一下图片啊");
 		return;
-	} */
+	}
 	//验证昵称是否完整
 	var nickname = $("#NC").val();
 	//性别　
