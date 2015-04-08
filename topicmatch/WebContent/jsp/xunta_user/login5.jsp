@@ -170,13 +170,15 @@ function upLoadImage(){
 	photoExt=headImg.value.substr(headImg.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
 	if(!photoExt)
 	{
-		alert("请上传正确的图片!");
+		//alert("请上传正确的图片!");
+		Tip("请上传正确的图片!");
 		return;
     	return false;
 	}
 
 	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
-    	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+    	//alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+    	Tip("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
     	return;
     	return false;
 	}
