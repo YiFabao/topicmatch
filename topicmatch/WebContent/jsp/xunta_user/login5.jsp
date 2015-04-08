@@ -335,6 +335,10 @@ function autoSelected()
         }
 	 }
 }
+
+$("#ignore").click(function(){
+	window.location="${pageContext.request.contextPath}/"+"/jsp/topic/index.jsp";
+});
 </script>
 </body>
 </html>
