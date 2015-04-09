@@ -103,7 +103,12 @@
 checkPwd("form")
 
 var isUnique = false;
-
+function isNull( str ){ 
+	if ( str == "" ) return true; 
+	var regu = "^[ ]+$"; 
+	var re = new RegExp(regu); 
+	return re.test(str); 
+};
 //ajax验证用户名是否存在
 function checkNameUnique()
 {
