@@ -395,7 +395,7 @@ public class UserLoginService extends HttpServlet {
 			
 			request.setAttribute("thirdParty", "微博-昵称");
 			//获取第三方账户名
-			/*String weibo_uid = user.getWeibo_uid();
+			String weibo_uid = user.getWeibo_uid();
 			String qq_openid = user.getQq_openId();
 			String weixin_uid = user.getWeixin_uid();
 			if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
@@ -407,7 +407,9 @@ public class UserLoginService extends HttpServlet {
 			else if(qq_openid!=null&&!"".equals(qq_openid.trim()))
 			{
 				String qq_name = "昵称";
+				System.out.println("============"+qq_name+"============");
 				qq_name = userManager.findQQNameByOpenid(qq_openid.trim());
+				System.out.println("============"+qq_name+"============");
 				request.setAttribute("thirdParty", "QQ-"+qq_name);
 			}
 			else if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
@@ -415,7 +417,7 @@ public class UserLoginService extends HttpServlet {
 				String weixin_name = "昵称";
 				//weixin_name = userManager.findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.setAttribute("thirdParty", "微信-"+weixin_name);
-			}*/
+			}
 		}
 		try {
 			request.getRequestDispatcher("/jsp/topic/include/account_settings.jsp").forward(request, response);
