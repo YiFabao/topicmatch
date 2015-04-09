@@ -409,9 +409,7 @@ public class UserLoginService extends HttpServlet {
 			else if(qq_openid!=null&&!"".equals(qq_openid.trim()))
 			{
 				String qq_name = "昵称";
-				System.out.println("============"+qq_name+"============");
 				qq_name = (new QQUserInfoManagerImpl()).findQQNameByOpenid(qq_openid.trim());
-				System.out.println("============"+qq_name+"============");
 				request.setAttribute("thirdParty", "QQ-"+qq_name);
 			}
 			else if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))

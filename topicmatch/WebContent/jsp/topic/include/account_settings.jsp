@@ -270,15 +270,23 @@ Array.prototype.remove = function(val) {
 		 document.getElementById("up_img").click();
 	 }
 	 
+	 //获取原有的标签
+	 var tags_array = new Array();
+	 var atags=$("#user_input_tags a");
+	 atags.each(function(index,element){
+	 	//console.log("element   :  " + element.innerHTML.toString());
+	 	tags_array.push(element.innerHTML.toString());
+	 });
+	 
 	 function checkInput()
 	 {
 		//获取标签
-		 var tags_array=new Array();
+		/*  var tags_array=new Array();
 		 var atags=$("#user_input_tags a");
 		 atags.each(function(index,element){
 		 	//console.log("element   :  " + element.innerHTML.toString());
 		 	tags_array.push(element.innerHTML.toString());
-		 });
+		 }); */
 		 if(tags_array.length<=0)
 		 {
 			 //alert("请至少填入一个标签!");
@@ -299,11 +307,11 @@ Array.prototype.remove = function(val) {
 	 //提交表单
 	 $("#submitModify").click(function(){
 		 //获取标签
-		 var tags_array=new Array();
+		 /* var tags_array=new Array();
 		 var atags=$("#user_input_tags a");
 		 atags.each(function(index,element){
 		 	tags_array.push(element.innerHTML.toString());
-		 });
+		 }); */
 
 		 var newTags = $("#newTags");
 		 newTags.val(tags_array.toString());
@@ -325,6 +333,13 @@ Array.prototype.remove = function(val) {
 			if(c.val()==null||""==c.val().trim()){
 				return;
 			}
+			if(tags_array.in_array(c.val().trim()+'<i class="iconfont del"></i>')){
+				Tip("已存在该标签");
+				c.val("");
+				return;
+			}
+			tags_array.push(c.val().trim()+'<i class="iconfont del"></i>');
+			console.log(tags_array.toString());
 			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i></a>&nbsp;&nbsp;')
 			c.val("");
 			
@@ -332,7 +347,14 @@ Array.prototype.remove = function(val) {
 	 
 	 //删除标签
 	 $('.interests .tag .del').live('click',function(){
-			var i =  $(this).parents(".interests")
+			var i =  $(this).parents(".interests");
+			
+			console.log($(this).parent('.tag').find("i").empty());
+			var tag_todel = $(this).parent('.tag').text().trim();
+			console.log(tag_todel);
+			tags_array.remove(tag_todel+'<i class="iconfont del"></i>');
+			console.log(tags_array.toString());
+			
 			$(this).parent('.tag').remove();
 			if(i.find(".cont").html() == " ")
 				i.find(".placeholder").show()
@@ -345,6 +367,13 @@ Array.prototype.remove = function(val) {
 		    if(c.val()==null||""==c.val().trim()){
 				return;
 			}
+		    if(tags_array.in_array(c.val().trim()+'<i class="iconfont del"></i>')){
+				Tip("已存在该标签");
+				c.val("");
+				return;
+			}
+		    tags_array.push(c.val().trim()+'<i class="iconfont del"></i>');
+		    console.log(tags_array.toString());
 			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i></a>&nbsp;&nbsp;')
 			c.val("");
 		 }
