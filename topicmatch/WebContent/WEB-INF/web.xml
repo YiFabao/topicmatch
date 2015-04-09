@@ -124,6 +124,24 @@
     <filter-name>RequestFilter</filter-name>
     <url-pattern>/jsp/topic/index.jsp</url-pattern>
   </filter-mapping>
+  <filter-mapping>
+    <filter-name>RequestFilter</filter-name>
+    <url-pattern>/jsp/topic/index.jsp</url-pattern>
+  </filter-mapping>
+  
+  <!-- add by Yanyu Li -->
+  <filter-mapping>
+    <filter-name>RequestFilter</filter-name>
+    <url-pattern>/jsp/xunta_user/login3.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>RequestFilter</filter-name>
+    <url-pattern>/jsp/xunta_user/login4.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>RequestFilter</filter-name>
+    <url-pattern>/jsp/xunta_user/login5.jsp</url-pattern>
+  </filter-mapping>
   <session-config>
     <session-timeout>43200</session-timeout>
   </session-config>

@@ -170,13 +170,15 @@ function upLoadImage(){
 	photoExt=headImg.value.substr(headImg.value.lastIndexOf(".")).toLowerCase();//获得文件后缀名
 	if(!photoExt)
 	{
-		alert("请上传正确的图片!");
+		//alert("请上传正确的图片!");
+		Tip("请上传正确的图片!");
 		return;
     	return false;
 	}
 
 	if(photoExt!='.jpg'&&photoExt!='.jpeg'&&photoExt!='.bmp'&&photoExt!='.png'&&photoExt!='.gif'){
-    	alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+    	//alert("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
+    	Tip("图片类型必须是(gif,jpeg,jpg,bmp,png)中的一种!");
     	return;
     	return false;
 	}
@@ -194,7 +196,10 @@ function selectImage(){
 	document.getElementById("up_img").click();
 }
 
-
+//判断是否为空
+function isNull(data){
+	return (data == "" || data == undefined || data == null) ? true : false; 
+}
 
 var imageTooBig = true;
 //完成注册
@@ -205,30 +210,61 @@ $("#completeReg").click(function(){
 		return;
 	}
 	//验证昵称是否完整
-	var nickname = $("#NC").val();
+	var nickname = $("#NC").val().trim();
 	//性别　
-	var sex = $("").val();
+	var sex = $("input[type='radio']:checked").val().trim();
 	//出生日期
-	var year=$("#year_data").text();
-	var month = $("#monthLabel").text();
-	var day = $("#dayLabel");
+	var year=$("#yearLabel").text().trim();
+	var month = $("#monthLabel").text().trim();
+	var day = $("#dayLabel").text().trim();
 	//常住地
-	var address = $("#address").text();
+	var address = $("#address").val().trim();
 	//邮箱
-	var email = $("#email").val();
+	var email = $("#email").val().trim();
 	
+	console.log("昵称:"+nickname);
 	console.log("性别:"+sex);
 	console.log("年："+year);
 	console.log("月:"+month);
 	console.log("日:"+day);
-	console.log();
+	console.log("常驻地:"+address);
+	console.log("email:"+email);
 	
-	
+	/* if(isNull(nickname)||isNull(sex)||isNull(year)||isNull(month)||isNull(day)||isNull(address)||isNull(email))
+	{
+		Tip("注册信息尚未填写完整!");
+		return;
+	} */
+	if(isNull(nickname))
+	{
+		Tip("昵称尚未填写完整!");
+		return;
+	}
+	if(isNull(sex))
+	{
+		Tip("性别尚未填写完整!");
+		return;
+	}
+	if(isNull(year)||isNull(month)||isNull(day))
+	{
+		Tip("出生日期尚未填写完整!");
+		return;
+	}
+	if(isNull(address))
+	{
+		Tip("常住地尚未填写完整!");
+		return;
+	}
+	if(isNull(email))
+	{
+		Tip("Email尚未填写完整!");
+		return;
+	}
 
 	//alert("完成注册");
 	//console.log($("#ComRegForm")[0]);
-	//$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg").attr("method","post");
-	//$("#ComRegForm").submit();
+	$("#ComRegForm").attr("action","<%=basePath %>servlet/userLoginService?cmd=comReg").attr("method","post");
+	$("#ComRegForm").submit();
 });
 
 $(function(){
@@ -299,6 +335,10 @@ function autoSelected()
         }
 	 }
 }
+
+$("#ignore").click(function(){
+	window.location="${pageContext.request.contextPath}/"+"/jsp/topic/index.jsp";
+});
 </script>
 </body>
 </html>

@@ -130,7 +130,7 @@
 			</div>
 		</div>
 	</section>
-	
+	<div id="Tip"><span class="txt"></span></div>
 <script>
 
 	var topicContent = "";
@@ -164,7 +164,8 @@
 		
 		if(topic_name=="")
 		{
-			alert("话题　及　话题描述不能为空");
+			//alert("话题　及　话题描述不能为空");
+			Tip("话题 及 话题描述不能为空");
 			return;
 		}
 		topicContent = "";
