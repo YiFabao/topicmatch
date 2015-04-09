@@ -102,6 +102,39 @@
 <script>
 checkPwd("form")
 
+/* var isUnique = false;
+
+//ajax验证用户名是否存在
+function checkNameUnique()
+{
+	var username = $('#UserNameR').val().trim();
+	if(isNull(username)||username=="手机号/邮箱/用户名")
+	{
+		$('#UserNameR').testRemind("用户名不能为空").get(0).select();  
+		return;
+		//return false;
+	}
+	$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",username,function(res,status){
+		if(res=="no")
+		{
+			$('#UserNameR').testRemind("用户已存在").get(0).select();
+			isUnique = false;
+		}
+		else
+		{
+			isUnique = true;
+		}
+	});	
+}
+
+$('#UserNameR').focus(function(){
+	isUnique = true;
+});
+
+$('#UserNameR').blur(function(){
+	checkNameUnique();
+}); */
+
 //切换验证码
 function changeValiCode(obj)
 {
@@ -171,6 +204,11 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 		$('#Code').testRemind("验证码为空").get(0).select();  
 		flag=false;
 	}
+	/* if(!isUnique)
+	{
+		$('#UserNameR').testRemind("用户已存在").get(0).select();
+		flag=false;
+	} */
 	return flag;
 	function isNull( str ){ 
 		if ( str == "" ) return true; 
