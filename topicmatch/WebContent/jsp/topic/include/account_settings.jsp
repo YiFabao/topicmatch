@@ -284,7 +284,7 @@
 			if(c.val()==null||""==c.val().trim()){
 				return;
 			}
-			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i>')
+			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i></a>&nbsp;&nbsp;')
 			c.val("");
 			
 	});
@@ -296,7 +296,7 @@
 		    if(c.val()==null||""==c.val().trim()){
 				return;
 			}
-			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i>')
+			$('.interests .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe601;</i></a>&nbsp;&nbsp;')
 			c.val("");
 		 }
 	});
