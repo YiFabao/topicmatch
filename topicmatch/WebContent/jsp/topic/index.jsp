@@ -93,46 +93,6 @@ response.setDateHeader ("Expires", 0);
 				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
 				<p class="name" title="张三">张三</p>
 			</li>
-			<li userId="222">
-				<div class="user-pic"><img src="images/2.jpg" alt=""></div>
-				<p class="name" title="李四">李四</p>
-			</li>
-			<li userId="333">
-				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
-				<p class="name" title="王二麻子">王二麻子</p>
-			</li>
-			 <li　userId="111">
-				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="张三">张三</p>
-			</li>
-			<li userId="222">
-				<div class="user-pic"><img src="images/2.jpg" alt=""></div>
-				<p class="name" title="李四">李四</p>
-			</li>
-			<li userId="333">
-				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
-				<p class="name" title="王二麻子">王二麻子</p>
-			</li>
-			 <li　userId="111">
-				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="张三">张三</p>
-			</li>
-			<li userId="222">
-				<div class="user-pic"><img src="images/2.jpg" alt=""></div>
-				<p class="name" title="李四">李四</p>
-			</li>
-			<li userId="333">
-				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
-				<p class="name" title="王二麻子">王二麻子</p>
-			</li>
-			 <li　userId="111">
-				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
-				<p class="name" title="张三">张三</p>
-			</li>
-			<li userId="222">
-				<div class="user-pic"><img src="images/2.jpg" alt=""></div>
-				<p class="name" title="李四">李四</p>
-			</li>
 			<li userId="333">
 				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
 				<p class="name" title="王二麻子">王二麻子</p>
@@ -330,7 +290,6 @@ response.setDateHeader ("Expires", 0);
 				chat_box_close();//关闭聊天窗
 			}
 		}
-	
 	});
 	window.history.forward(1);
 </script>
