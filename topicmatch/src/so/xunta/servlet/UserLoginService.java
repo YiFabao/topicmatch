@@ -100,12 +100,43 @@ public class UserLoginService extends HttpServlet {
 		case "checkAccountBindOrJump":
 			checkAccountBindOrJump(request,response);
 			break;
-			
+		case "checkNameUnique":
+			checkNameUnique(request,response);
+			break;
 		default:
 			break;
 		}
 	}
 
+
+	/**
+	 * @author Yanyu Li
+	 * @date 2015年4月9日
+	 * @param request
+	 * @param response 
+	 * @return void
+	 * 注册本地账号时，检测用户名的唯一性
+	 */
+	private void checkNameUnique(HttpServletRequest request,
+			HttpServletResponse response) {
+		//User user =(User) request.getSession().getAttribute("user");
+		String newName = request.getParameter("parameters").trim();
+		User user = userManager.findUser(newName);
+		
+		try {
+			if(user==null)
+			{
+				response.getWriter().write("yes");
+			}
+			else
+			{
+				response.getWriter().write("no");
+			}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 
 	private void checkAccountBindOrJump(HttpServletRequest request, HttpServletResponse response) {
 		//检查用户名是否存在或是否跳过

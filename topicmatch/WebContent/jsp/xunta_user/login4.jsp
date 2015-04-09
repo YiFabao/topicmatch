@@ -102,7 +102,7 @@
 <script>
 checkPwd("form")
 
-/* var isUnique = false;
+var isUnique = false;
 
 //ajax验证用户名是否存在
 function checkNameUnique()
@@ -114,7 +114,10 @@ function checkNameUnique()
 		return;
 		//return false;
 	}
-	$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",username,function(res,status){
+	var parameters={
+			username:username
+	};
+	$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",parameters,function(res,status){
 		if(res=="no")
 		{
 			$('#UserNameR').testRemind("用户已存在").get(0).select();
@@ -133,7 +136,7 @@ $('#UserNameR').focus(function(){
 
 $('#UserNameR').blur(function(){
 	checkNameUnique();
-}); */
+}); 
 
 //切换验证码
 function changeValiCode(obj)
@@ -204,11 +207,11 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 		$('#Code').testRemind("验证码为空").get(0).select();  
 		flag=false;
 	}
-	/* if(!isUnique)
+	if(!isUnique)
 	{
 		$('#UserNameR').testRemind("用户已存在").get(0).select();
 		flag=false;
-	} */
+	}
 	return flag;
 	function isNull( str ){ 
 		if ( str == "" ) return true; 
