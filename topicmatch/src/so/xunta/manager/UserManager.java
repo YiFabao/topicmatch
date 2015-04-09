@@ -61,5 +61,7 @@ public interface UserManager {
 	public List<User> findUserListByUserIdList(List<Long> userIdList);
 	//根据用户ID查询出用户
 	public User findUserById(int userId);
+	//根据user表中获取的weibo_uid到weibouser_info中找微博用户名
+	public String findWeiboNameByWeiboUid(String weibo_uid);
 	
 }

@@ -292,4 +292,15 @@ public class UserManagerImpl implements UserManager {
 		return user;
 	}
 
+	@Override
+	public String findWeiboNameByWeiboUid(String weibo_uid) {
+		Session session = HibernateUtils.openSession();
+		String hql = "select nickname from WeiboUserInfo as w where w.weibo_uid =?";
+		org.hibernate.Query query = session.createQuery(hql);
+		query.setString(0, weibo_uid);
+		String weibo_name = (String) query.list().get(0);
+		session.close();
+		return weibo_name;
+	}
+
 }

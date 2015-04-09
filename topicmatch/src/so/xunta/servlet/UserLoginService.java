@@ -387,10 +387,25 @@ public class UserLoginService extends HttpServlet {
 			request.setAttribute("year", year);	
 			request.setAttribute("month", month);	
 			request.setAttribute("day", day);	
+			
 			if(tagList!=null)
 				request.setAttribute("tags", tagList);
 			else
 				request.setAttribute("tags", null);
+			
+		/*	//获取第三方账户名
+			String weibo_uid = user.getWeibo_uid().trim();
+			String qq_openid = user.getQq_openId().trim();
+			if(weibo_uid!=null&&!"".equals(weibo_uid))
+			{	
+				String weibo_name = "用户名";
+				weibo_name = userManager.findWeiboNameByWeiboUid(weibo_uid);
+				request.setAttribute("thirdParty", "微博_"+weibo_name);
+			}
+			else if(qq_openid!=null&&!"".equals(qq_openid))
+			{
+				
+			}*/
 		}
 		try {
 			request.getRequestDispatcher("/jsp/topic/include/account_settings.jsp").forward(request, response);
