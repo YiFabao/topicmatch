@@ -16,7 +16,7 @@
 			<form id="ComRegForm" >
 				<div class="item">
 					<label class="dt-c" for="third_UserNameR">第三方账号名&nbsp;:</label>
-					<div class="dd-c lh36">&emsp;QQ-语擎</div>
+					<div class="dd-c lh36">&emsp;${thirdParty}</div>
 				</div>
 				<c:choose>
 					<c:when test="${user.xunta_username==null||empty user.xunta_username}">
