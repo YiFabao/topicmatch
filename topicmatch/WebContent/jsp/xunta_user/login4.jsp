@@ -120,21 +120,24 @@ function checkNameUnique()
 		return;
 		//return false;
 	} */
-	var parameters={
-			username:username
-	};
-	$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",parameters,function(res,status){
-		if(res=="no")
-		{
-			//$('#UserNameR').testRemind("用户已存在").get(0).select();
-			Tip("用户名已存在");
-			isUnique = false;
-		}
-		else
-		{
-			isUnique = true;
-		}
-	});	
+	if(!isNull(username))
+	{
+		var parameters={
+				username:username
+		};
+		$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",parameters,function(res,status){
+			if(res=="no")
+			{
+				//$('#UserNameR').testRemind("用户已存在").get(0).select();
+				Tip("用户名已存在");
+				isUnique = false;
+			}
+			else
+			{
+				isUnique = true;
+			}
+		});	
+	}
 }
 
 $('#UserNameR').focus(function(){
