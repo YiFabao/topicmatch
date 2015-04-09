@@ -120,7 +120,7 @@ public class UserLoginService extends HttpServlet {
 	private void checkNameUnique(HttpServletRequest request,
 			HttpServletResponse response) {
 		//User user =(User) request.getSession().getAttribute("user");
-		String newName = request.getParameter("parameters").trim();
+		String newName = request.getParameter("username").trim();
 		User user = userManager.findUser(newName);
 		
 		try {
