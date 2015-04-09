@@ -13,25 +13,43 @@
 		<div class="form login-4 acc-set">	
 			<form id="ComRegForm" >
 				<div class="item">
-					<label class="dt-c" for="UserNameR">用户名&nbsp;:</label>
-					<div class="dd-c lh36">&emsp;${user.xunta_username}</div>
+					<label class="dt-c" for="third_UserNameR">第三方账号名&nbsp;:</label>
+					<div class="dd-c lh36">&emsp;QQ-语擎</div>
 				</div>
+				<c:choose>
+					<c:when test="${user.xunta_username==null||empty user.xunta_username}">
+					<div class="item">
+						<label class="dt-c" for="UserNameR">用&nbsp;&nbsp;户&nbsp;&nbsp;名&nbsp;&nbsp;</label>
+						<div class="dd-c">
+							<input name="UserNameR" type="text" class="text-c wtb pwd" data-min="6" required disabled onblur="restoreStatus(this);">
+							<a href="javascript:;" class="edit">编辑(<em>保存成功后，不能更改</em>)</a>
+						</div>
+					</div>
+					</c:when>
+					<c:otherwise>
+					<div class="item">
+						<label class="dt-c" for="UserNameR">用&nbsp;户&nbsp;名&nbsp;&nbsp;:</label>
+						<div class="dd-c lh36">&emsp;${user.xunta_username}</div>
+					</div>
+					</c:otherwise>
+				</c:choose>
+
 				<div class="item">
-					<label for="PassWordR" class="dt-c">密&emsp;&emsp;码</label>
+					<label for="PassWordR" class="dt-c">密&emsp;&emsp;码&nbsp;&nbsp;</label>
 					<div class="dd-c">
 						<input name="password" type="password" id="PassWordR" class="text-c wtb pwd" data-min="6" value="${user.password}" required disabled onblur="restoreStatus(this);">
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
 				<div class="item">
-					<label for="PassWordRC" class="dt-c">确认密码</label>
+					<label for="PassWordRC" class="dt-c">确认密码&nbsp;&nbsp;</label>
 					<div class="dd-c">
 						<input name="rePassword" type="password" id="PassWordRC" class="text-c wtb pwdcheck" data-min="6" value="${user.password}" required disabled onblur="restoreStatus(this);">
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
 				<div class="item">
-					<span class="dt-c">标签</span>
+					<span class="dt-c">标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;签&nbsp;&nbsp;</span>
 					<div class="dd-c">
 						<div class="interests">
 							<div class="cont mb10" id="user_input_tags">
@@ -63,7 +81,7 @@
 					</div>
 				</div>
 				<div class="item">
-					<label class="dt-c dtt">头像</label>
+					<label class="dt-c dtt">头&emsp;&emsp;像&nbsp;&nbsp;</label>
 					<div class="dd-c">
 						<span class="pic-area">
 							<div id="imgdiv"><img id="imgShow" style="width:70px;height:70px;" src="<%=request.getContextPath() %>/image?picId=${sessionScope.user.imageUrl}" alt=""/></div>
@@ -77,13 +95,13 @@
 					</div>
 				</div>
 				<div class="item">
-					<label for="NC" class="dt-c">昵称</label>
+					<label for="NC" class="dt-c">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称&nbsp;&nbsp;</label>
 					<div class="dd-c">
 						<input name="nickname" type="text" id="NC" class="text-c wtb" data-min="1" value="${user.nickname}">
 					</div>
 				</div>
 				<div class="item pt14">
-					<label class="dt-c">出生日期</label>
+					<label class="dt-c">出生日期&nbsp;&nbsp;</label>
 					<div class="dd-c pt5">
 						<div class="d-select">
 							<div class="ter">
@@ -115,14 +133,14 @@
 					</div>
 				</div>
 				<div class="item">
-					<label for="city" class="dt-c">常驻城市</label>
+					<label for="city" class="dt-c">常驻城市&nbsp;&nbsp;</label>
 					<div class="dd-c">
 						<input name="address" type="text" id="city" class="text-c wtb" data-min="1" value="${user.address}" disabled onblur="restoreStatus(this);">
 						<a href="javascript:;" class="edit">编辑</a>
 					</div>
 				</div>
 				<div class="item">
-					<label for="email" class="dt-c">电子邮箱</label>
+					<label for="email" class="dt-c">电子邮箱&nbsp;&nbsp;</label>
 					<div class="dd-c">
 						<input name="email" type="email" id="email" class="text-c wtb" data-min="1" value="${user.email}" disabled onblur="restoreStatus(this);">
 						<a href="javascript:;" class="edit">编辑</a>
