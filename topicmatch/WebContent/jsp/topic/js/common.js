@@ -161,12 +161,12 @@ $(".header .tab-list a").powerSwitch({
 function Tip(even){
 	alert(even)
 }
-$('.interests .tag .del').live('click',function(){
+/*$('.interests .tag .del').live('click',function(){
 	var i =  $(this).parents(".interests")
 	$(this).parent('.tag').remove();
 	if(i.find(".cont").html() == " ")
 		i.find(".placeholder").show()
-})
+});*/
 /*$('#AddTagBtn').live('click',function(){
 	var c = $(this).prev().find("input");
 	if(c.val().replace(/(^\s*)|(\s*$)/g,"")!=""){

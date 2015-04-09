@@ -4,6 +4,8 @@
 	String modifiedSuccess = (String)session.getAttribute("modifiedSuccess");
 	if(modifiedSuccess!=null&&!"".equals(modifiedSuccess.trim()))
 		session.setAttribute("modifiedSuccess", null);
+	
+	
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -186,6 +188,27 @@
 <script src="js/jquery.form.js"></script>
 
 <script>
+Array.prototype.in_array = function(e)
+{
+	for(i=0;i<this.length;i++)
+	{
+	if(this[i] == e)
+	return true;
+	}
+	return false;
+}
+Array.prototype.indexOf = function(val) {
+	for (var i = 0; i < this.length; i++) {
+	if (this[i] == val) return i;
+	}
+	return -1;
+};
+Array.prototype.remove = function(val) {
+	var index = this.indexOf(val);
+	if (index > -1) {
+		this.splice(index, 1);
+	}
+};
 	 checkPwd("#Reg form")
 	 $(function(){
 		 YearMonthDay();// 加载日期选择组件
@@ -306,6 +329,14 @@
 			c.val("");
 			
 	});
+	 
+	 //删除标签
+	 $('.interests .tag .del').live('click',function(){
+			var i =  $(this).parents(".interests")
+			$(this).parent('.tag').remove();
+			if(i.find(".cont").html() == " ")
+				i.find(".placeholder").show()
+		});
 	//回车添加标签
 	$("#tagInput").keypress(function(event){
 		 var keycode = (event.keyCode ? event.keyCode : event.which);
