@@ -92,6 +92,7 @@
 				</div>
 		</div>
 	</div>
+	<div id="Tip"><span class="txt"></span></div>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.placeholder-1.0.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-powerSwitch-min.js"></script>
@@ -113,19 +114,20 @@ function isNull( str ){
 function checkNameUnique()
 {
 	var username = $('#UserNameR').val().trim();
-	if(isNull(username)||username=="手机号/邮箱/用户名")
+	/* if(isNull(username)||username=="手机号/邮箱/用户名")
 	{
 		$('#UserNameR').testRemind("用户名不能为空").get(0).select();  
 		return;
 		//return false;
-	}
+	} */
 	var parameters={
 			username:username
 	};
 	$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",parameters,function(res,status){
 		if(res=="no")
 		{
-			$('#UserNameR').testRemind("用户已存在").get(0).select();
+			//$('#UserNameR').testRemind("用户已存在").get(0).select();
+			Tip("用户名已存在");
 			isUnique = false;
 		}
 		else
