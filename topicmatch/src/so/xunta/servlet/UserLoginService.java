@@ -32,9 +32,11 @@ import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserInfoManager;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.impl.TopicManagerImpl;
@@ -393,7 +395,7 @@ public class UserLoginService extends HttpServlet {
 			else
 				request.setAttribute("tags", null);
 			
-			request.setAttribute("thirdParty", "微博-昵称");
+			request.setAttribute("thirdParty", "第三方-昵称");
 			//获取第三方账户名
 			String weibo_uid = user.getWeibo_uid();
 			String qq_openid = user.getQq_openId();
@@ -401,21 +403,21 @@ public class UserLoginService extends HttpServlet {
 			if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
 			{	
 				String weibo_name = "昵称";
-				weibo_name = userManager.findWeiboNameByWeiboUid(weibo_uid.trim());
+				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
 				request.setAttribute("thirdParty", "微博-"+weibo_name);
 			}
 			else if(qq_openid!=null&&!"".equals(qq_openid.trim()))
 			{
 				String qq_name = "昵称";
 				System.out.println("============"+qq_name+"============");
-				qq_name = userManager.findQQNameByOpenid(qq_openid.trim());
+				qq_name = (new QQUserInfoManagerImpl()).findQQNameByOpenid(qq_openid.trim());
 				System.out.println("============"+qq_name+"============");
 				request.setAttribute("thirdParty", "QQ-"+qq_name);
 			}
 			else if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
 			{
 				String weixin_name = "昵称";
-				//weixin_name = userManager.findWeixinNameByWeixinUid(weixin_uid.trim());
+				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.setAttribute("thirdParty", "微信-"+weixin_name);
 			}
 		}

@@ -55,4 +55,16 @@ public class QQUserInfoManagerImpl implements QQUserInfoManager {
 		return content;
 	}
 
+
+	@Override
+	public String findQQNameByOpenid(String qq_openid) {
+		Session session = HibernateUtils.openSession();
+		String hql = "select nickname from QQUserInfo as q where q.qq_openid =?";
+		org.hibernate.Query query = session.createQuery(hql);
+		query.setString(0, qq_openid);
+		String qq_name = (String) query.list().get(0);
+		session.close();
+		return qq_name;
+	}
+
 }

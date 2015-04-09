@@ -83,4 +83,16 @@ public class WeiboUserInfoManagerImpl implements WeiboUserInfoManager {
 		WeiboDynamicInfoContent w = new WeiboDynamicInfoContent("1", "1");
 		wm.addWeiboContentAndWeiboUserId(w);
 	}
+
+	@Override
+	public String findWeiboNameByWeiboUid(String weibo_uid) {
+		Session session = HibernateUtils.openSession();
+		String hql = "select w.nickname from WeiboUserInfo as w where w.weibo_uid =?";
+		org.hibernate.Query query = session.createQuery(hql);
+		query.setString(0, weibo_uid);
+		//由于测试时只删了user表中的，没有删weibouser_info表中的，所以这里有很多相同的，只取一个即可
+		String weibo_name = (String) query.list().get(0);
+		session.close();
+		return weibo_name;
+	}
 }
