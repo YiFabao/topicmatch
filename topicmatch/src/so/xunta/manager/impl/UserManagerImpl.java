@@ -152,6 +152,7 @@ public class UserManagerImpl implements UserManager {
 	public static void main(String[] args) {
 	
 			UserManager um=new UserManagerImpl();
+			System.out.println(um.findUserByWeixinUid("2323"));
 			System.out.println(um.findUserById(1).getXunta_username());
 //			User user=um.checkRegisterUserExist("1019357922@qq.com","962297");
 //			System.out.println(user);
