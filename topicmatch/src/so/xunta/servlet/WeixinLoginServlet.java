@@ -111,13 +111,13 @@ public class WeixinLoginServlet extends HttpServlet {
 		System.out.println("user  :  "+user);
 		if (user == null) {
 			System.out.println("数据库中不存在该微博uid");
-			// 用户没有绑定账号
-			user = new User(null,"", "",openid,accessToken,"","","","",new Date(),DateTimeUtils.getCurrentTimeStr(),headImgUrl);
-			// 添加用户表
-			userManager.addUser(user);
+//			// 用户没有绑定账号
+//			user = new User(null,"", "",openid,accessToken,"","","","",new Date(),DateTimeUtils.getCurrentTimeStr(),headImgUrl);
+//			// 添加用户表
+//			userManager.addUser(user);
 			//保存微信用户的基本信息
-			WeixinUserInfo weixinUserInfo =new WeixinUserInfo(nickname, sex, "", "", "", "", openid);
-			weixinuserManager.addStaticWeiBoUserInfo(weixinUserInfo);
+//			WeixinUserInfo weixinUserInfo =new WeixinUserInfo(nickname, sex, "", "", "", "", openid);
+//			weixinuserManager.addStaticWeiBoUserInfo(weixinUserInfo);
 			// 将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
 			//准备第三方账户名显示
