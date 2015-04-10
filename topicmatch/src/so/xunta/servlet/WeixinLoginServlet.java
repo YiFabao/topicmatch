@@ -95,6 +95,15 @@ public class WeixinLoginServlet extends HttpServlet {
 
 			// 将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
+			//准备第三方账户名显示
+			request.getSession().setAttribute("thirdParty", "微信-昵称");
+			String weixin_uid = user.getWeixin_uid();
+			if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
+			{
+				String weixin_name = "昵称";
+				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+				request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
+			}
 			// TODO 判断是否有标签
 			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");
@@ -145,6 +154,15 @@ public class WeixinLoginServlet extends HttpServlet {
 
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
+			//准备第三方账户名显示
+			request.getSession().setAttribute("thirdParty", "微信-昵称");
+			String weixin_uid = user.getWeixin_uid();
+			if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
+			{
+				String weixin_name = "昵称";
+				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+				request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
+			}
 			// TODO 判断是否有标签
 			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");
