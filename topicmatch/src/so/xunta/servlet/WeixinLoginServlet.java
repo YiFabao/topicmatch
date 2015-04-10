@@ -128,7 +128,7 @@ public class WeixinLoginServlet extends HttpServlet {
 			if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
 			{
 				String weixin_name = "昵称";
-				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+				weixin_name = weixinuserManager.findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 			}
 			// TODO 判断是否有标签
@@ -187,7 +187,7 @@ public class WeixinLoginServlet extends HttpServlet {
 			if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
 			{
 				String weixin_name = "昵称";
-				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+				weixin_name = weixinuserManager.findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 			}
 			// TODO 判断是否有标签
