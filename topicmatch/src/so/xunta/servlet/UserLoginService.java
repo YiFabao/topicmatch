@@ -426,9 +426,10 @@ public class UserLoginService extends HttpServlet {
 			else
 				request.setAttribute("tags", null);
 			
-			request.setAttribute("thirdParty", "第三方-昵称");
+			
 			//获取第三方账户名，登录时直接放session中，这里不需要了
-		/*	String weibo_uid = user.getWeibo_uid();
+		/*	request.setAttribute("thirdParty", "第三方-昵称");
+		 	String weibo_uid = user.getWeibo_uid();
 			String qq_openid = user.getQq_openId();
 			String weixin_uid = user.getWeixin_uid();
 			if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
@@ -653,6 +654,7 @@ public class UserLoginService extends HttpServlet {
 			String path =LocalContext.getPicPath();
 			try {
 				List<FileItem> list = upload.parseRequest(request);// 解析
+				String UserNameR = "";
 				String nickname="";
 				String password="";
 				String newTags="";
@@ -680,6 +682,12 @@ public class UserLoginService extends HttpServlet {
 						String filedname = ff.getFieldName().trim();
 						System.out.println(filedname);
 						switch(filedname){
+						case "UserNameR":
+							UserNameR=ds;
+							if(UserNameR!=null&&"".equals(UserNameR.trim())){
+								user.setXunta_username(UserNameR);
+							}
+							break;
 						case "nickname":
 							nickname=ds;
 							if(nickname!=null&&!"".equals(nickname.trim())){
