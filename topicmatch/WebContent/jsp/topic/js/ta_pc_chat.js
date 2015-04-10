@@ -113,7 +113,6 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 	a_node.attr("class","iconfont close");
 	a_node.click(function(){
 		$(this).parent().remove();//移除
-		
 		//判断是否是最后一个元素
 		//判断topicId 在topicItemArray中下标
 		var _index = topicItemArray.indexOf(topicId);// 获取当前topicId的下标
@@ -857,6 +856,10 @@ window.receiveBroadcast = function(json)
 		}
 	}
 }
+
+function getLocalTime(nS) {     
+    return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");      
+ }     
 /**
  * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
  * @param topicId
@@ -910,7 +913,7 @@ function createMessage(contentType,obj_json){
 		
 	}else{
 		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message));
+		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message+"("+obj_json.nickname+"|"+obj_json.dateTime+")"));
 		//根据userid从好友列表中获取图像url
 		var userid = obj_json.senderId;
 		var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
