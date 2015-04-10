@@ -88,7 +88,7 @@ public class QQLogin extends HttpServlet {
 			System.out.println("openId:" + openId);
 			//获取QQ头像并保存本地
 			imageUrl = (String) json.get("image");
-			System.out.println(imageUrl);
+			System.out.println("imageUrl ====>  " + imageUrl);
 			URL url = new URL(imageUrl);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
