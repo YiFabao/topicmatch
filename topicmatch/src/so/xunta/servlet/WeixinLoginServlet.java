@@ -49,8 +49,7 @@ public class WeixinLoginServlet extends HttpServlet {
 		String accessToken = weiXinInfoJson.get("access_token").toString();
 		String openid = weiXinInfoJson.get("openid").toString();
 		// 通过token 换取 userInfo
-		String userInfo = httpclientReq("https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken
-				+ "&openid=" + openid + "");
+		String userInfo = httpclientReq("https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken+ "&openid=" + openid + "");
 		JSONObject userInfoJson = JSONObject.fromObject(userInfo);
 		String nickname = new String(userInfoJson.get("nickname").toString().getBytes("ISO-8859-1"), "UTF-8");
 		String sex = userInfoJson.get("sex").toString();

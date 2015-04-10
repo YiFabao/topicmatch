@@ -1,6 +1,9 @@
 package so.xunta.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -9,11 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
+
 import net.sf.json.JSONArray;
 import so.xunta.entity.LoginLog;
 import so.xunta.entity.User;
 import so.xunta.entity.WeiboDynamicInfoContent;
 import so.xunta.entity.WeiboUserInfo;
+import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserInfoManager;
 import so.xunta.manager.UserManager;
@@ -95,8 +101,18 @@ public class WeiboLogin extends HttpServlet {
 			verified_reason=(String)json.get("verified_reason");
 			tags=(String)json.get("tags");
 			token=(String)json.get("token");
-			//image=(String)json.get("image");
-			image="user-pic2.jpg";
+			//获取QQ头像并保存本地
+			image = (String) json.get("image");
+			System.out.println("imageUrl ====>  " + image);
+			URL url = new URL(image);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setConnectTimeout(5 * 1000);
+			String path =LocalContext.getPicPath();
+			String newImageName="Sinauser_"+uid+"_"+(new Date().getTime())+".jpg";
+			FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
+			image = newImageName;
+			//获取QQ头像并保存本地
 			uid=(String) json.get("userId");
 			
 			List<String> contentList = sinaUserInfo.getContent(token);
