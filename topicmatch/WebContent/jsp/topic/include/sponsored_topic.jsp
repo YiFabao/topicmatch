@@ -146,6 +146,19 @@
 	 	$('.most-man  .talk-list .tp:even').addClass("even-b")
 		console.log($("#sponsored")[0]);
 		$("#sponsored").css("height",($(document).height()-120)+"px");
+		
+		//刚发起话题后，回到该页，重新填充表单内容
+		$('#topic').val('${requestScope.topicName}');
+		$('#topic').keyup();
+		$('#detail').val('${requestScope.topicContent}');
+		$('#detail').keyup();
+		
+		if(!isNull(mytopicId))
+	 	{
+	 		/* showSuccess('话题发布成功');
+	    	$('#disppear_alert').fadeOut(1000); */
+	    	Tip("话题发布成功");
+	 	} 
 	 })
 	 
 	 //发起话题
@@ -274,7 +287,12 @@
 	    		document.getElementById('DetailwordNum').style.color ="#7a7a7a";
 		}
 	}
-	
-	
+
+	function isNull( str ){ 
+		if ( str == "" ) return true; 
+		var regu = "^[ ]+$"; 
+		var re = new RegExp(regu); 
+		return re.test(str); 
+	};
 </script>
 </html>
