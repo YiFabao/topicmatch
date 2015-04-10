@@ -16,14 +16,14 @@
 			<form id="ComRegForm" >
 				<div class="item">
 					<label class="dt-c" for="third_UserNameR">第三方账号名&nbsp;:</label>
-					<div class="dd-c lh36">&emsp;${requestScope.thirdParty}</div>
+					<div class="dd-c lh36">&emsp;${sessionScope.thirdParty}</div>
 				</div>
 				<c:choose>
 					<c:when test="${user.xunta_username==null||empty user.xunta_username}">
 					<div class="item">
 						<label class="dt-c" for="UserNameR">用&nbsp;&nbsp;户&nbsp;&nbsp;名&nbsp;&nbsp;</label>
 						<div class="dd-c">
-							<input name="UserNameR" type="text" class="text-c wtb pwd" data-min="6" required disabled onblur="restoreStatus(this);">
+							<input name="UserNameR" type="text" class="text-c wtb pwd" required disabled onblur="restoreStatus(this);">
 							<a href="javascript:;" class="edit">编辑(<em>保存成功后，不能更改</em>)</a>
 						</div>
 					</div>

@@ -135,6 +135,15 @@ public class QQLogin extends HttpServlet {
 			qquerinfomanager.addDynamicQQInfoContent(qqdynamicContent);
 			// 将服户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
+			//准备第三方账户名显示
+			request.getSession().setAttribute("thirdParty", "QQ-昵称");
+			String qq_openid = user.getQq_openId();
+			if(qq_openid!=null&&!"".equals(qq_openid.trim()))
+			{
+				String qq_name = "昵称";
+				qq_name = qquerinfomanager.findQQNameByOpenid(qq_openid.trim());
+				request.getSession().setAttribute("thirdParty", "QQ-"+qq_name);
+			}
 			// TODO 判断是否有标签
 			if (!tagsManager.checkUserTagIsEmpty(user.id)) {// 有标签
 				System.out.println("有标签");
@@ -181,6 +190,15 @@ public class QQLogin extends HttpServlet {
 			// 登录成功
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
+			//准备第三方账户名显示
+			request.getSession().setAttribute("thirdParty", "QQ-昵称");
+			String qq_openid = user.getQq_openId();
+			if(qq_openid!=null&&!"".equals(qq_openid.trim()))
+			{
+				String qq_name = "昵称";
+				qq_name = qquerinfomanager.findQQNameByOpenid(qq_openid.trim());
+				request.getSession().setAttribute("thirdParty", "QQ-"+qq_name);
+			}
 			// TODO 判断是否有标签
 			if (!tagsManager.checkUserTagIsEmpty(user.id)) {// 有标签
 				System.out.println("有标签");
