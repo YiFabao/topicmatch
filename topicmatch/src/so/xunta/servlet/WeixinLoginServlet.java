@@ -1,6 +1,9 @@
 package so.xunta.servlet;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -14,17 +17,24 @@ import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.io.FileUtils;
 
 import so.xunta.entity.LoginLog;
 import so.xunta.entity.User;
 import so.xunta.entity.WeiboDynamicInfoContent;
 import so.xunta.entity.WeiboUserInfo;
+import so.xunta.entity.WeixinUserInfo;
+import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserInfoManager;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.WeiboUserInfoManager;
+import so.xunta.manager.WeixinUserInfoManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
+import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
 import so.xunta.utils.DateTimeUtils;
 
 @WebServlet("/WeixinLoginServlet")
@@ -39,6 +49,8 @@ public class WeixinLoginServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		WeixinUserInfoManager weixinuserManager = new WeixinUserInfoManagerImpl();
+		
 		// 获取code
 		String weixin_code = request.getParameter("weixin_code");
 		// 通过code获取token
@@ -56,8 +68,19 @@ public class WeixinLoginServlet extends HttpServlet {
 		String province = userInfoJson.get("province").toString();
 		String city = userInfoJson.get("city").toString();
 		String country = userInfoJson.get("country").toString();
-		//String headImgUrl = userInfoJson.get("headimgurl").toString();
-		String headImgUrl = "user-pic2.jpg";
+		//获取wechat头像并保存本地
+		String headImgUrl = userInfoJson.get("headimgurl").toString();
+		System.out.println("imageUrl ====>  " + headImgUrl);
+		URL url = new URL(headImgUrl);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setConnectTimeout(5 * 1000);
+		String path =LocalContext.getPicPath();
+		String newImageName="Sinauser_"+openid+"_"+(new Date().getTime())+".jpg";
+		FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
+		headImgUrl = newImageName;
+		//获取wechat头像并保存本地
+		
 		if (sex.equals("1")) {
 			sex = "男";
 		} else {
@@ -88,10 +111,14 @@ public class WeixinLoginServlet extends HttpServlet {
 		if (user == null) {
 			System.out.println("数据库中不存在该微博uid");
 			// 用户没有绑定账号
-			user = new User(nickname,"", "",openid,accessToken,"", "", "", "", new Date(), DateTimeUtils.getCurrentTimeStr(), headImgUrl);
+			user = new User(null,"", "","","","","",openid,accessToken,new Date(),DateTimeUtils.getCurrentTimeStr(),headImgUrl);
 			// 添加用户表
 			userManager.addUser(user);
-
+			//保存微信用户的基本信息
+			
+			WeixinUserInfo weixinUserInfo =new WeixinUserInfo(nickname, sex, "", "", "", "", openid);
+			weixinuserManager.addStaticWeiBoUserInfo(weixinUserInfo);
+			
 			// 将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
 			//准备第三方账户名显示

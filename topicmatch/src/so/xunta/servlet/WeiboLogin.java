@@ -101,7 +101,7 @@ public class WeiboLogin extends HttpServlet {
 			verified_reason=(String)json.get("verified_reason");
 			tags=(String)json.get("tags");
 			token=(String)json.get("token");
-			//获取QQ头像并保存本地
+			//获取sina头像并保存本地
 			image = (String) json.get("image");
 			System.out.println("imageUrl ====>  " + image);
 			URL url = new URL(image);
@@ -112,7 +112,7 @@ public class WeiboLogin extends HttpServlet {
 			String newImageName="Sinauser_"+uid+"_"+(new Date().getTime())+".jpg";
 			FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
 			image = newImageName;
-			//获取QQ头像并保存本地
+			//获取sina头像并保存本地
 			uid=(String) json.get("userId");
 			
 			List<String> contentList = sinaUserInfo.getContent(token);
