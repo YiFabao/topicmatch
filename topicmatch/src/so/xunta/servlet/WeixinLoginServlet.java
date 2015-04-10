@@ -76,7 +76,7 @@ public class WeixinLoginServlet extends HttpServlet {
 		conn.setRequestMethod("GET");
 		conn.setConnectTimeout(5 * 1000);
 		String path =LocalContext.getPicPath();
-		String newImageName="Sinauser_"+openid+"_"+(new Date().getTime())+".jpg";
+		String newImageName="Weixinuser_"+openid+"_"+(new Date().getTime())+".jpg";
 		FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
 		headImgUrl = newImageName;
 		//获取wechat头像并保存本地

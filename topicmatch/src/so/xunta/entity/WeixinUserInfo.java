@@ -17,7 +17,7 @@ public class WeixinUserInfo {
 
 	public WeixinUserInfo(String nickname, String gender, String location,
 			String description, String verified_reason, String tags,
-			String weibo_uid) {
+			String weixin_uid) {
 		super();
 		this.nickname = nickname;
 		this.gender = gender;
@@ -25,7 +25,7 @@ public class WeixinUserInfo {
 		this.description = description;
 		this.verified_reason = verified_reason;
 		this.tags = tags;
-		this.weixin_uid = weibo_uid;
+		this.weixin_uid = weixin_uid;
 	}
 
 
