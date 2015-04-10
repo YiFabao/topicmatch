@@ -684,9 +684,11 @@ public class UserLoginService extends HttpServlet {
 						switch(filedname){
 						case "UserNameR":
 							UserNameR=ds;
-							if(UserNameR!=null&&"".equals(UserNameR.trim())){
+							if(UserNameR!=null&&!"".equals(UserNameR.trim())){
 								user.setXunta_username(UserNameR);
+								System.out.println("UserNameR:"+UserNameR);
 							}
+							System.out.println("UserNameR:"+UserNameR);
 							break;
 						case "nickname":
 							nickname=ds;
