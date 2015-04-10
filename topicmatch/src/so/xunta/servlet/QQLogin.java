@@ -77,13 +77,19 @@ public class QQLogin extends HttpServlet {
 		JSONObject json = tencentUserInfo.get(accessToken);
 		String openId = "";
 		String imageUrl = "";
+		String nickname = "";
+		String gender = "";
+		String location = "";
+		String description= "";
+		String verified_reason= "";
+		String tags= "";
 		try {
-			String nickname = (String) json.get("nickname");
-			String gender = (String) json.get("gender");
-			String location = (String) json.get("location");
-			String description = (String) json.get("description");
-			String verified_reason = (String) json.get("verified_reason");
-			String tags = (String) json.get("tags");
+			nickname = (String) json.get("nickname");
+			gender = (String) json.get("gender");
+			location = (String) json.get("location");
+			description = (String) json.get("description");
+			verified_reason = (String) json.get("verified_reason");
+			tags = (String) json.get("tags");
 			openId = (String) json.get("userId");
 			System.out.println("openId:" + openId);
 			//获取QQ头像并保存本地
@@ -122,8 +128,7 @@ public class QQLogin extends HttpServlet {
 		if (user == null)// 基本信息不存在
 		{
 			// 用户没有绑定账号
-			user = new User(null, "", "", "", "", openId, accessToken, "", "", new Date(),
-					DateTimeUtils.getCurrentTimeStr(), imageUrl);
+			user = new User("", gender, nickname, "", "", "", "", "", "", "", "", openId, accessToken, new Date(), DateTimeUtils.getCurrentTimeStr(), imageUrl);
 			// 获取ip
 			String ipaAddress = request.getRemoteAddr();
 			user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
