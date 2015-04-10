@@ -86,7 +86,7 @@ public class WeixinLoginServlet extends HttpServlet {
 		} else {
 			sex = "女";
 		}
-		 System.out.println("微信登录     :  ");
+		 System.out.println("微信登录==>     :  ");
 		 System.out.println("accessToken  :  " + accessToken);
 		 System.out.println("openid  : " + openid);
 		 System.out.println("nickname  :  " + nickname);
