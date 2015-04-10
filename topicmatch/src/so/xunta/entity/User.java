@@ -133,27 +133,34 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(String xunta_username, String password, String email, String weixin_openId,String weixin_accessToken, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
-			String latestLoginTime,String imageUrl) {
+	
+	
+	public User(String xunta_username, String sex, String nickname, String password, String address,
+			String birthday, String email, String qq_openId, String qq_accessToken, String weibo_uid,
+			String weibo_accessToken, String weixin_uid, String weixin_accessToken, Date createTime,
+			String latestLoginTime, String imageUrl) {
 		super();
 		this.xunta_username = xunta_username;
+		this.sex = sex;
+		this.nickname = nickname;
 		this.password = password;
+		this.address = address;
+		this.birthday = birthday;
 		this.email = email;
 		this.qq_openId = qq_openId;
 		this.qq_accessToken = qq_accessToken;
-		this.weixin_uid = weixin_openId;
-		this.weixin_accessToken = weixin_accessToken;
 		this.weibo_uid = weibo_uid;
 		this.weibo_accessToken = weibo_accessToken;
+		this.weixin_uid = weixin_uid;
+		this.weixin_accessToken = weixin_accessToken;
 		this.createTime = createTime;
 		this.latestLoginTime = latestLoginTime;
 		this.imageUrl = imageUrl;
 	}
-	
 	public User(String xunta_username,String nickname,String address,String birthday ,String password, String email, String weixin_openId, String weixin_accessToken, String qq_openId, String qq_accessToken, String weibo_uid, String weibo_accessToken, Date createTime,
 			String latestLoginTime,String imageUrl) {
 		super();
-		new User(xunta_username, password, email, weixin_openId, weixin_accessToken, qq_openId, qq_accessToken, weibo_uid, weibo_accessToken, createTime, latestLoginTime, imageUrl);
+		new User(xunta_username, xunta_username, nickname, password, address, birthday, email, qq_openId, qq_accessToken, weibo_uid, weibo_accessToken, weixin_openId, weixin_accessToken, createTime, latestLoginTime, imageUrl);
 		this.setNickname(nickname);
 		this.setAddress(address);
 		this.setBirthday(birthday);
