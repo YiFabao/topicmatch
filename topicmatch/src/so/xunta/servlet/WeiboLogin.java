@@ -139,7 +139,7 @@ public class WeiboLogin extends HttpServlet {
 		if(user==null){
 			System.out.println("数据库中不存在该微博uid");
 			//用户没有绑定账号
-			user = new User("", gender, nickname, "", "", "", "", "", "", "", "", uid, token, new Date(), DateTimeUtils.getCurrentTimeStr(), image);
+			user = new User("", gender, nickname, "", "", "", "", "", "", uid, token, "", "", new Date(), DateTimeUtils.getCurrentTimeStr(), image);
 			//添加用户表
 			userManager.addUser(user);
 			
