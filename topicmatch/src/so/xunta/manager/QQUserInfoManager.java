@@ -12,4 +12,8 @@ public interface QQUserInfoManager {
 	
 	//根据openId查询用户最近一条微博
 	public String findLatestQQContentByOpenId(String openId);
+	
+	//根据user表中获取的qq_openid到qquser_info表中找qq昵称
+	public String findQQNameByOpenid(String qq_openid);
+	
 }

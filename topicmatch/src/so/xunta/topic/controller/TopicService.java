@@ -743,19 +743,21 @@ public class TopicService extends HttpServlet {
 			}*/
 			for(TopicHistory th : matchedTopicFromDB)
 			{
+				//不去查询统计本用户的话题信息，因为不会推荐自己给自己
+				if(userId.equals(th.getAuthorId()))
+					continue;
 				String tid = th.getTopicId();
-				if(userIdsOfEachTopic.containsKey(tid))
-				{
+				if (userIdsOfEachTopic.containsKey(tid)) {
 					List<Long> userIds = userIdsOfEachTopic.get(tid);
-					userPJ_EachTopic.put(tid+"=xunta="+th.getAuthorId(), String.valueOf(th.getPublish_or_join()));
+					userPJ_EachTopic.put(tid + "=xunta=" + th.getAuthorId(),
+							String.valueOf(th.getPublish_or_join()));
 					userIds.add(Long.parseLong(th.getAuthorId()));
-				}
-				else
-				{
+				} else {
 					List<Long> userIds = new ArrayList<Long>();
-					userPJ_EachTopic.put(tid+"=xunta="+th.getAuthorId(), String.valueOf(th.getPublish_or_join()));
+					userPJ_EachTopic.put(tid + "=xunta=" + th.getAuthorId(),
+							String.valueOf(th.getPublish_or_join()));
 					userIds.add(Long.parseLong(th.getAuthorId()));
-				
+
 					userIdsOfEachTopic.put(tid, userIds);
 				}
 			}
@@ -872,6 +874,8 @@ public class TopicService extends HttpServlet {
 		else
 			request.setAttribute("matchedTopicList",null);
 		request.setAttribute("my_topicId",topicId);
+		request.setAttribute("topicName", topicName);
+		request.setAttribute("topicContent", topicContent);
 		/*//按userId分组
 		Map<String,List<Topic>> topicMap = new HashMap<String,List<Topic>>();
 		for(Topic t:matchedtopicList)

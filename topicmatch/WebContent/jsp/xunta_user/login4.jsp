@@ -92,6 +92,7 @@
 				</div>
 		</div>
 	</div>
+	<div id="Tip"><span class="txt"></span></div>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.placeholder-1.0.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-powerSwitch-min.js"></script>
@@ -101,6 +102,51 @@
 <script src="${pageContext.request.contextPath }/jsp/topic/js/common.js"></script>
 <script>
 checkPwd("form")
+
+var isUnique = false;
+function isNull( str ){ 
+	if ( str == "" ) return true; 
+	var regu = "^[ ]+$"; 
+	var re = new RegExp(regu); 
+	return re.test(str); 
+};
+//ajax验证用户名是否存在
+function checkNameUnique()
+{
+	var username = $('#UserNameR').val().trim();
+	/* if(isNull(username)||username=="手机号/邮箱/用户名")
+	{
+		$('#UserNameR').testRemind("用户名不能为空").get(0).select();  
+		return;
+		//return false;
+	} */
+	if(!isNull(username))
+	{
+		var parameters={
+				username:username
+		};
+		$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",parameters,function(res,status){
+			if(res=="no")
+			{
+				//$('#UserNameR').testRemind("用户已存在").get(0).select();
+				Tip("用户名已存在");
+				isUnique = false;
+			}
+			else
+			{
+				isUnique = true;
+			}
+		});	
+	}
+}
+
+$('#UserNameR').focus(function(){
+	isUnique = true;
+});
+
+$('#UserNameR').blur(function(){
+	checkNameUnique();
+}); 
 
 //切换验证码
 function changeValiCode(obj)
@@ -169,6 +215,11 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 	if(isNull(validateCodeR))
 	{
 		$('#Code').testRemind("验证码为空").get(0).select();  
+		flag=false;
+	}
+	if(!isUnique)
+	{
+		$('#UserNameR').testRemind("用户已存在").get(0).select();
 		flag=false;
 	}
 	return flag;

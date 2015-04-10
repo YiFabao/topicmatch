@@ -95,6 +95,8 @@
 			</div>
 		</div>
 	</div>
+	<!-- 提示 -->
+	<div id="Tip"><span class="txt"></span></div>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.placeholder-1.0.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-powerSwitch-min.js"></script>
@@ -157,21 +159,34 @@ $(function(){
 	};
 	var _tag_array=new Array();
 	function addTag(c){
-		if(_tag_array.in_array(c.val())){
-			alert("已经填过该标签");
+		if(_tag_array.in_array(c.val().trim())){
+			Tip("标签写填重复");
 			c.val("");
 			return;
 		}else{
-			_tag_array.push(c.val());
+			_tag_array.push(c.val().trim());
 		}
 		if(c.val()==null||""==c.val().trim()){
 			c.val("");
 			return;
 		}
-		$('.login-3 .cont').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del"></i></a>&nbsp;&nbsp;')
+		$('.login-3 .cont').append('<a href="#" class="tag" style="margin-left:5px;">'+ c.val().trim()+'<i class="iconfont del"></i></a>')
 		$("#tags_box").scrollTop($("#tags_box")[0].scrollHeight); //滚动条置底
 		c.val("");
 	}
+	//标签删除
+	$('.interests .tag .del').live('click',function(){
+		var i =  $(this).parents(".interests")
+		//console.log();
+		console.log($(this).parent('.tag').find("i").empty());
+		var tag_todel = $(this).parent('.tag').text().trim();
+		console.log(tag_todel);
+		_tag_array.remove(tag_todel);
+		
+		$(this).parent('.tag').remove();
+		if(i.find(".cont").html() == " ")
+			i.find(".placeholder").show()
+	});
 	
 	//用户填写完标签后，下一步
 	$("#reg_tag").click(function(){

@@ -32,9 +32,11 @@ import so.xunta.localcontext.LocalContext;
 import so.xunta.manager.TagsManager;
 import so.xunta.manager.UserInfoManager;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.impl.TopicManagerImpl;
@@ -98,12 +100,43 @@ public class UserLoginService extends HttpServlet {
 		case "checkAccountBindOrJump":
 			checkAccountBindOrJump(request,response);
 			break;
-			
+		case "checkNameUnique":
+			checkNameUnique(request,response);
+			break;
 		default:
 			break;
 		}
 	}
 
+
+	/**
+	 * @author Yanyu Li
+	 * @date 2015年4月9日
+	 * @param request
+	 * @param response 
+	 * @return void
+	 * 注册本地账号时，检测用户名的唯一性
+	 */
+	private void checkNameUnique(HttpServletRequest request,
+			HttpServletResponse response) {
+		//User user =(User) request.getSession().getAttribute("user");
+		String newName = request.getParameter("username").trim();
+		User user = userManager.findUser(newName);
+		
+		try {
+			if(user==null)
+			{
+				response.getWriter().write("yes");
+			}
+			else
+			{
+				response.getWriter().write("no");
+			}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 
 	private void checkAccountBindOrJump(HttpServletRequest request, HttpServletResponse response) {
 		//检查用户名是否存在或是否跳过
@@ -387,10 +420,36 @@ public class UserLoginService extends HttpServlet {
 			request.setAttribute("year", year);	
 			request.setAttribute("month", month);	
 			request.setAttribute("day", day);	
+			
 			if(tagList!=null)
 				request.setAttribute("tags", tagList);
 			else
 				request.setAttribute("tags", null);
+			
+			
+			//获取第三方账户名，登录时直接放session中，这里不需要了
+		/*	request.setAttribute("thirdParty", "第三方-昵称");
+		 	String weibo_uid = user.getWeibo_uid();
+			String qq_openid = user.getQq_openId();
+			String weixin_uid = user.getWeixin_uid();
+			if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
+			{	
+				String weibo_name = "昵称";
+				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
+				request.setAttribute("thirdParty", "微博-"+weibo_name);
+			}
+			else if(qq_openid!=null&&!"".equals(qq_openid.trim()))
+			{
+				String qq_name = "昵称";
+				qq_name = (new QQUserInfoManagerImpl()).findQQNameByOpenid(qq_openid.trim());
+				request.setAttribute("thirdParty", "QQ-"+qq_name);
+			}
+			else if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
+			{
+				String weixin_name = "昵称";
+				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+				request.setAttribute("thirdParty", "微信-"+weixin_name);
+			}*/
 		}
 		try {
 			request.getRequestDispatcher("/jsp/topic/include/account_settings.jsp").forward(request, response);
@@ -595,6 +654,7 @@ public class UserLoginService extends HttpServlet {
 			String path =LocalContext.getPicPath();
 			try {
 				List<FileItem> list = upload.parseRequest(request);// 解析
+				String UserNameR = "";
 				String nickname="";
 				String password="";
 				String newTags="";
@@ -622,6 +682,12 @@ public class UserLoginService extends HttpServlet {
 						String filedname = ff.getFieldName().trim();
 						System.out.println(filedname);
 						switch(filedname){
+						case "UserNameR":
+							UserNameR=ds;
+							if(UserNameR!=null&&!"".equals(UserNameR.trim())){
+								user.setXunta_username(UserNameR);
+							}
+							break;
 						case "nickname":
 							nickname=ds;
 							if(nickname!=null&&!"".equals(nickname.trim())){

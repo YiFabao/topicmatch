@@ -87,15 +87,11 @@ response.setDateHeader ("Expires", 0);
 		<i class="iconfont">&#xe606;</i>
 	</div>
 	<div class="right" topicId="999">
-		<h4>参与人</h4>
+		<h4 id="joinMemNum">参与人</h4>
 		<ul class="user-list">
-			<!-- <li　userId="111">
+			<!--  <li　userId="111">
 				<div class="user-pic"><img src="images/delete/user-pic2.jpg" alt=""></div>
 				<p class="name" title="张三">张三</p>
-			</li>
-			<li userId="222">
-				<div class="user-pic"><img src="images/2.jpg" alt=""></div>
-				<p class="name" title="李四">李四</p>
 			</li>
 			<li userId="333">
 				<div class="user-pic"><img src="images/3.jpg" alt=""></div>
@@ -143,7 +139,8 @@ response.setDateHeader ("Expires", 0);
 
 	var contextPath = "${pageContext.request.contextPath}";
 	var myselfId = "${sessionScope.user.id}";
-	var myname = "${sessionScope.user.xunta_username}";
+	//var myname = "${sessionScope.user.xunta_username}";
+	var myname = "${sessionScope.user.xunta_username==null?sessionScope.thirdParty:sessionScope.user.xunta_username}";
 	var userImageUrl = "${sessionScope.user.imageUrl}";
 	console.log("自己的图像："+userImageUrl);
 
@@ -294,7 +291,6 @@ response.setDateHeader ("Expires", 0);
 				chat_box_close();//关闭聊天窗
 			}
 		}
-	
 	});
 	window.history.forward(1);
 </script>

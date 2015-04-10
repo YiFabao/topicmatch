@@ -123,7 +123,7 @@ public class WeiboLogin extends HttpServlet {
 		if(user==null){
 			System.out.println("数据库中不存在该微博uid");
 			//用户没有绑定账号
-			user = new User(nickname,"", "","","","","",uid,token,new Date(),DateTimeUtils.getCurrentTimeStr(),image);
+			user = new User(null,"", "","","","","",uid,token,new Date(),DateTimeUtils.getCurrentTimeStr(),image);
 			//添加用户表
 			userManager.addUser(user);
 			
@@ -137,6 +137,15 @@ public class WeiboLogin extends HttpServlet {
 			
 			//将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
+			//准备第三方账户名显示
+			request.getSession().setAttribute("thirdParty", "微博-昵称");
+			String weibo_uid = user.getWeibo_uid();
+			if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
+			{
+				String weibo_name = "昵称";
+				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
+				request.getSession().setAttribute("thirdParty", "微博-"+weibo_name);
+			}
 			//TODO 判断是否有标签
 			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");
@@ -188,6 +197,15 @@ public class WeiboLogin extends HttpServlet {
 			
 			System.out.println("登录成功");
 			request.getSession().setAttribute("user", user);
+			//准备第三方账户名显示
+			request.getSession().setAttribute("thirdParty", "微博-昵称");
+			String weibo_uid = user.getWeibo_uid();
+			if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
+			{
+				String weibo_name = "昵称";
+				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
+				request.getSession().setAttribute("thirdParty", "微博-"+weibo_name);
+			}
 			//TODO 判断是否有标签
 			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
 				System.out.println("有标签");

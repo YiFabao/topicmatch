@@ -15,4 +15,7 @@ public interface WeiboUserInfoManager {
 	
 	//保存weiboContent 和  weiboUserId
 	public void addWeiboContentAndWeiboUserId(WeiboDynamicInfoContent weiboDynamicInfoContent);
+	
+	//根据user表中获取的weibo_uid到weibouser_info中找微博用户名
+	public String findWeiboNameByWeiboUid(String weibo_uid);
 }
