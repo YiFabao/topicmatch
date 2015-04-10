@@ -681,7 +681,8 @@ function changeTopicChatBox(topicId){
 		for(var i=0;i<msgArray.length;i++){
 			var msg = msgArray[i];
 			if(msg.sender==myselfId){
-				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+		
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message)+"<br/>"+"<small style='font-size:3px;'>"+msg.nickname+"&nbsp;&nbsp;"+msg.dateTime+"</small>");
 				var img_url = $("<img alt>").attr("src",contextPath+"/image?picId="+userImageUrl);
 				var div_node = $("<div></div>").attr("class","user-pic");
 				div_node.append(img_url);
@@ -691,7 +692,7 @@ function changeTopicChatBox(topicId){
 				$(".chat-box").append(myDiv);
 				$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 			}else{
-				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message)+"<br/>"+"<small style='font-size:3px;'>"+msg.nickname+"&nbsp;&nbsp;"+msg.dateTime+"</small>");
 				//根据userid从好友列表中获取图像url
 				var userid = msg.sender;
 				var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
@@ -857,9 +858,16 @@ window.receiveBroadcast = function(json)
 	}
 }
 
-function getLocalTime(nS) {     
-    return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");      
- }     
+function   formatDate(now)   {     
+    var   year=2015;     
+    var   month=now.getMonth()+1;     
+    var   date=now.getDate();     
+    var   hour=now.getHours();     
+    var   minute=now.getMinutes();     
+    var   second=now.getSeconds();     
+    return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+    }     
+
 /**
  * 当前用户在聊天编辑框内编辑内容点击发送将内容显示在聊天记录框
  * @param topicId
@@ -874,7 +882,7 @@ function createMessage(contentType,obj_json){
 			return;
 		}
 		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html(msg);
+		var p_node = $("<p></p>").attr("class","detail").html(msg+"<br/>"+"<small style='font-size:3px;'>"+myname+"&nbsp;&nbsp;"+formatDate(new Date())+"</small>");
 		var img_url = $("<img alt>").attr("src",contextPath+"/image?picId="+userImageUrl);
 		var div_node = $("<div></div>").attr("class","user-pic");
 		div_node.append(img_url);
@@ -913,7 +921,8 @@ function createMessage(contentType,obj_json){
 		
 	}else{
 		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message+"("+obj_json.nickname+"|"+obj_json.dateTime+")"));
+	
+		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message+	"<br/>"+"<small style='font-size:3px;'>"+obj_json.nickname+"&nbsp;&nbsp;"+obj_json.dateTime+"</small>"));
 		//根据userid从好友列表中获取图像url
 		var userid = obj_json.senderId;
 		var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");

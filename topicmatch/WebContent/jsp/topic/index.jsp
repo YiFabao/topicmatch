@@ -139,7 +139,8 @@ response.setDateHeader ("Expires", 0);
 
 	var contextPath = "${pageContext.request.contextPath}";
 	var myselfId = "${sessionScope.user.id}";
-	var myname = "${sessionScope.user.xunta_username}";
+	//var myname = "${sessionScope.user.xunta_username}";
+	var myname = "${sessionScope.user.xunta_username==null?sessionScope.thirdParty:sessionScope.user.xunta_username}";
 	var userImageUrl = "${sessionScope.user.imageUrl}";
 	console.log("自己的图像："+userImageUrl);
 
