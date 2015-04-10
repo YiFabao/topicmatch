@@ -76,7 +76,7 @@ public class WeixinLoginServlet extends HttpServlet {
 		conn.setRequestMethod("GET");
 		conn.setConnectTimeout(5 * 1000);
 		String path =LocalContext.getPicPath();
-		String newImageName="Sinauser_"+openid+"_"+(new Date().getTime())+".jpg";
+		String newImageName="Weixinuser_"+openid+"_"+(new Date().getTime())+".jpg";
 		FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
 		headImgUrl = newImageName;
 		//获取wechat头像并保存本地
@@ -111,14 +111,12 @@ public class WeixinLoginServlet extends HttpServlet {
 		if (user == null) {
 			System.out.println("数据库中不存在该微博uid");
 			// 用户没有绑定账号
-			user = new User(null,"", "","","","","",openid,accessToken,new Date(),DateTimeUtils.getCurrentTimeStr(),headImgUrl);
+			user = new User(null,"", "",openid,accessToken,"","","","",new Date(),DateTimeUtils.getCurrentTimeStr(),headImgUrl);
 			// 添加用户表
 			userManager.addUser(user);
 			//保存微信用户的基本信息
-			
 			WeixinUserInfo weixinUserInfo =new WeixinUserInfo(nickname, sex, "", "", "", "", openid);
 			weixinuserManager.addStaticWeiBoUserInfo(weixinUserInfo);
-			
 			// 将用户保存到sessoin范围
 			request.getSession().setAttribute("user", user);
 			//准备第三方账户名显示

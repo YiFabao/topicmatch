@@ -12,7 +12,7 @@
     <property name="description" not-null="false" />
     <property name="verified_reason" not-null="false" />
     <property name="tags" not-null="false"/>
-    <property name="weibo_uid" not-null="false"/>
+    <property name="weixin_uid" not-null="false"/>
   </class>
 </hibernate-mapping>
 

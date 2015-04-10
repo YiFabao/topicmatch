@@ -12,7 +12,7 @@ public class WeixinUserInfo {
 	public String description;
 	public String verified_reason;
 	public String tags;
-	public String weibo_uid;
+	public String weixin_uid;
 
 	public String getGender() {
 		return gender;
@@ -57,14 +57,14 @@ public class WeixinUserInfo {
 		this.nickname = nickname;
 	}
 	public String getWeibo_uid() {
-		return weibo_uid;
+		return weixin_uid;
 	}
 	public void setWeibo_uid(String weibo_uid) {
-		this.weibo_uid = weibo_uid;
+		this.weixin_uid = weibo_uid;
 	}
 	public WeixinUserInfo(String nickname, String gender, String location,
 			String description, String verified_reason, String tags,
-			String weibo_uid) {
+			String weixin_uid) {
 		super();
 		this.nickname = nickname;
 		this.gender = gender;
@@ -72,7 +72,7 @@ public class WeixinUserInfo {
 		this.description = description;
 		this.verified_reason = verified_reason;
 		this.tags = tags;
-		this.weibo_uid = weibo_uid;
+		this.weixin_uid = weixin_uid;
 	}
 
 	
