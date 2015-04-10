@@ -140,6 +140,10 @@ public class User {
 			String weibo_accessToken, String weixin_uid, String weixin_accessToken, Date createTime,
 			String latestLoginTime, String imageUrl) {
 		super();
+		System.out.println("==>  "+weixin_uid);
+		System.out.println("==>  "+weixin_accessToken);
+		System.out.println("==>  "+weibo_uid);
+		System.out.println("==>  "+weibo_accessToken);
 		this.xunta_username = xunta_username;
 		this.sex = sex;
 		this.nickname = nickname;
