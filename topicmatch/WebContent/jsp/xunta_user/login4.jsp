@@ -219,7 +219,7 @@ function checkForm(userNameR,passwordR,passWordRC,validateCodeR){
 	}
 	if(!isUnique)
 	{
-		$('#UserNameR').testRemind("用户已存在").get(0).select();
+		$('#UserNameR').testRemind("用户名已存在").get(0).select();
 		flag=false;
 	}
 	return flag;

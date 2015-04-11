@@ -209,6 +209,14 @@ Array.prototype.remove = function(val) {
 		this.splice(index, 1);
 	}
 };
+var isUnique = false;
+function isNull( str ){ 
+	if ( str == "" ) return true; 
+	var regu = "^[ ]+$"; 
+	var re = new RegExp(regu); 
+	return re.test(str); 
+};
+
 	 checkPwd("#Reg form")
 	 $(function(){
 		 YearMonthDay();// 加载日期选择组件
@@ -265,6 +273,44 @@ Array.prototype.remove = function(val) {
 		 }
 	 }
 	 
+	//ajax验证用户名是否存在
+	 function checkNameUnique()
+	 {
+	 	var username = $('#UserNameR').val().trim();
+	 	/* if(isNull(username)||username=="手机号/邮箱/用户名")
+	 	{
+	 		$('#UserNameR').testRemind("用户名不能为空").get(0).select();  
+	 		return;
+	 		//return false;
+	 	} */
+	 	if(!isNull(username))
+	 	{
+	 		var parameters={
+	 				username:username
+	 		};
+	 		$.post("${pageContext.request.contextPath}/servlet/userLoginService?cmd=checkNameUnique",parameters,function(res,status){
+	 			if(res=="no")
+	 			{
+	 				//$('#UserNameR').testRemind("用户已存在").get(0).select();
+	 				Tip("用户名已存在");
+	 				isUnique = false;
+	 			}
+	 			else
+	 			{
+	 				isUnique = true;
+	 			}
+	 		});	
+	 	}
+	 }
+	
+	 $('#UserNameR').focus(function(){
+			isUnique = true;
+	 });
+	 $('#UserNameR').blur(function(){
+			checkNameUnique();
+	 }); 
+	 
+	 //点击上传头像
 	 function upload()
 	 {
 		 document.getElementById("up_img").click();
@@ -287,6 +333,12 @@ Array.prototype.remove = function(val) {
 		 	//console.log("element   :  " + element.innerHTML.toString());
 		 	tags_array.push(element.innerHTML.toString());
 		 }); */
+		 if(!isUnique)
+		 {
+			 $('#UserNameR').testRemind("用户名已存在").get(0).select();
+			 Tip("用户名已存在");
+			 return false;
+		 }
 		 if(tags_array.length<=0)
 		 {
 			 //alert("请至少填入一个标签!");
