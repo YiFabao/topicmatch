@@ -23,7 +23,7 @@
 					<div class="item">
 						<label class="dt-c" for="UserNameR">用&nbsp;&nbsp;户&nbsp;&nbsp;名&nbsp;&nbsp;</label>
 						<div class="dd-c">
-							<input name="UserNameR" type="text" class="text-c wtb pwd" required disabled onblur="restoreStatus(this);">
+							<input name="UserNameR" id="UserNameR" type="text" class="text-c wtb pwd" required disabled onblur="restoreStatus(this);">
 							<a href="javascript:;" class="edit">编辑(<em>保存成功后，不能更改</em>)</a>
 						</div>
 					</div>
@@ -423,6 +423,7 @@ Array.prototype.remove = function(val) {
 	$("#PassWordRC").keypress(textBlur);
 	$("#city").keypress(textBlur);
 	$("#email").keypress(textBlur);
+	$("#UserNameR").keypress(textBlur);
 
 	//清空上传域
 	function clearUploadItems() {
