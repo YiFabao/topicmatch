@@ -1130,4 +1130,28 @@ public class TopicManagerImpl implements TopicManager {
 			session.close();
 		}
 	}
+
+	@Override
+	public void updateCreaterUsername(List<String> userCreatedTopicIds,
+			String userNameR) {
+		if(userCreatedTopicIds.size()==0)
+			return;
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "update Topic as t set t.userName=? where t.topicId in (:topicIdList)";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0, userNameR);
+			query.setParameterList("topicIdList", userCreatedTopicIds);
+			
+			query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		
+	}
 }
