@@ -171,7 +171,7 @@
 		var topic_name = $("#topic").val();
 		var topic_content = $("#detail").val();
 		var userId ="${sessionScope.user.id}";
-		var userName ="${sessionScope.user.xunta_username}";
+		var userName ="${(empty sessionScope.user.xunta_username)?sessionScope.thirdParty:sessionScope.user.xunta_username}";
 		var userLogoUrl ="${sessionScope.user.imageUrl}";
 		console.log("topic_name:"+topic_name);
 		console.log("topic_content:"+topic_content);
