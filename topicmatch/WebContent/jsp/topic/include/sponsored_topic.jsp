@@ -147,17 +147,21 @@
 		console.log($("#sponsored")[0]);
 		$("#sponsored").css("height",($(document).height()-120)+"px");
 		
-		//刚发起话题后，回到该页，重新填充表单内容
-		$('#topic').val('${requestScope.topicName}');
-		$('#topic').keyup();
-		$('#detail').val('${requestScope.topicContent}');
-		$('#detail').keyup();
 		
 		if(!isNull(mytopicId))
 	 	{
 	 		/* showSuccess('话题发布成功');
 	    	$('#disppear_alert').fadeOut(1000); */
 	    	Tip("话题发布成功");
+	    	//刚发起话题后，回到该页，重新填充表单内容
+			$('#topic').val('${requestScope.topicName}');
+			$('#topic').keyup();
+			$('#detail').val('${requestScope.topicContent}');
+			$('#detail').keyup();
+			
+			$('#topic').css("background-color", "#F0F0F0").attr("disabled",true);
+			$('#detail').css("background-color", "#F0F0F0").attr("disabled",true);
+			$("#btn_publish").css("color", "#d0d0d0").attr("disabled",true);
 	 	} 
 	 })
 	 
