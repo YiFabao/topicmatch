@@ -686,6 +686,11 @@ public class UserLoginService extends HttpServlet {
 							UserNameR=ds;
 							if(UserNameR!=null&&!"".equals(UserNameR.trim())){
 								user.setXunta_username(UserNameR);
+								//如果用户没有本地账户时发布过话题，则更新这些话题的userName
+								TopicManager tm = new TopicManagerImpl();
+								//这里必须用id查
+								List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
+								tm.updateCreaterUsername(userCreatedTopicIds, UserNameR);
 							}
 							break;
 						case "nickname":
