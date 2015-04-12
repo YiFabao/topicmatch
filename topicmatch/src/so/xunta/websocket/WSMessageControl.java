@@ -135,15 +135,15 @@ public class WSMessageControl {
 							String qqId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getQq_openId();
 							String weiboId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getWeibo_uid();
 							if(!(weixinId == null || weixinId.equals(""))){
-								toUserName = weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
+								toUserName = "微信-"+weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
 								System.out.println("微信第三方账户  ： "+ toUserName);
 							}
 							if(!(qqId == null || qqId.equals(""))){
-								toUserName = qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
+								toUserName = "QQ-"+qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
 								System.out.println("QQ第三方账户  ： "+ toUserName);
 							}
 							if(!(weiboId == null || weiboId.equals(""))){
-								toUserName = weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
+								toUserName = "微博-"+weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
 								System.out.println("微博第三方账户  ： "+ toUserName);
 							}
 						}
@@ -159,15 +159,15 @@ public class WSMessageControl {
 						String qqId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getQq_openId();
 						String weiboId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getWeibo_uid();
 						if(!(weixinId == null || weixinId.equals(""))){
-							from_user_name = weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
+							from_user_name = "微信-"+weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
 							System.out.println("微信第三方账户  ： "+ toUserName);
 						}
 						if(!(qqId == null || qqId.equals(""))){
-							from_user_name = qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
+							from_user_name = "QQ-"+qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
 							System.out.println("QQ第三方账户  ： "+ toUserName);
 						}
 						if(!(weiboId == null || weiboId.equals(""))){
-							from_user_name = weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
+							from_user_name = "微博-"+weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
 							System.out.println("微博第三方账户  ： "+ toUserName);
 						}
 					}
