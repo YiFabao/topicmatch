@@ -128,7 +128,7 @@ public class QQLogin extends HttpServlet {
 		if (user == null)// 基本信息不存在
 		{
 			// 用户没有绑定账号
-			user = new User("", gender, nickname, "", "", "", "", openId, accessToken, "", "", "", "", new Date(), DateTimeUtils.getCurrentTimeStr(), imageUrl);
+			user = new User("", gender, "", "", "", "", "", openId, accessToken, "", "", "", "", new Date(), DateTimeUtils.getCurrentTimeStr(), imageUrl);
 			// 获取ip
 			String ipaAddress = request.getRemoteAddr();
 			user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));

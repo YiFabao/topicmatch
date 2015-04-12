@@ -9,7 +9,10 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
+import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
 import so.xunta.topic.entity.SystemMessageNotification;
 import so.xunta.topic.entity.TopicInviteNotification;
 import so.xunta.topic.model.impl.NotificationManagerImpl;
@@ -23,6 +26,9 @@ import so.xunta.websocket.utils.WebSocketUtils;
 public class WSMessageControl {
 	public static ArrayList<JSONObject> messageMonitorList = new ArrayList<JSONObject>();
 	private static NotificationManagerImpl notificationManagerImpl = new NotificationManagerImpl();
+	private static WeiboUserInfoManagerImpl weiboUserInfoManagerImpl = new WeiboUserInfoManagerImpl();
+	private static QQUserInfoManagerImpl qqUserInfoManagerImpl = new QQUserInfoManagerImpl();
+	private static WeixinUserInfoManagerImpl weixinUserInfoManagerImpl = new WeixinUserInfoManagerImpl();
 	public static void messagePuth(int user_id , CharBuffer message){
 		System.out.println("CLIENT send : " + message.toString());
 		Date currentDate = new Date();
@@ -118,14 +124,56 @@ public class WSMessageControl {
 				String toUserId = messageJsonObject.get("toUserId").toString();
 				String fromUserId = messageJsonObject.get("fromUserId").toString();
 				String topic_Id = messageJsonObject.get("topicId").toString();
-				String toUserName = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getXunta_username();
+				//判断有没有昵称，如果没昵称判断有没有本地账户，如果没有采用第三方昵称
+				String toUserName = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getNickname();
+				System.out.println("本地昵称  :  "+ toUserName);
+					if(toUserName == null || toUserName.equals("")){
+						toUserName = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getXunta_username();
+						System.out.println("本地账户  ：  "+ toUserName);
+						if(toUserName == null || toUserName.equals("")){
+							String weixinId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getWeixin_uid();
+							String qqId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getQq_openId();
+							String weiboId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getWeibo_uid();
+							if(!(weixinId == null || weixinId.equals(""))){
+								toUserName = weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
+								System.out.println("微信第三方账户  ： "+ toUserName);
+							}
+							if(!(qqId == null || qqId.equals(""))){
+								toUserName = qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
+								System.out.println("QQ第三方账户  ： "+ toUserName);
+							}
+							if(!(weiboId == null || weiboId.equals(""))){
+								toUserName = weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
+								System.out.println("微博第三方账户  ： "+ toUserName);
+							}
+						}
+					}
 				String time_str = DateTimeUtils.getCurrentTimeStr();
-				String from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getXunta_username();
+				String from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getNickname();
+				System.out.println("本地昵称  :  "+ from_user_name);
+				if(from_user_name == null || from_user_name.equals("")){
+					from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getXunta_username();
+					System.out.println("本地账户  ：  "+ from_user_name);
+					if(from_user_name == null || from_user_name.equals("")){
+						String weixinId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getWeixin_uid();
+						String qqId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getQq_openId();
+						String weiboId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getWeibo_uid();
+						if(!(weixinId == null || weixinId.equals(""))){
+							from_user_name = weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
+							System.out.println("微信第三方账户  ： "+ toUserName);
+						}
+						if(!(qqId == null || qqId.equals(""))){
+							from_user_name = qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
+							System.out.println("QQ第三方账户  ： "+ toUserName);
+						}
+						if(!(weiboId == null || weiboId.equals(""))){
+							from_user_name = weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
+							System.out.println("微博第三方账户  ： "+ toUserName);
+						}
+					}
+				}
 				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
 					int userId6 = Integer.parseInt(toUserId);
-					if(from_user_name == null && from_user_name.equals("") && topic_name == null && topic_name.equals("")){
-						return;
-					}
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
 						System.out.println("将邀请消息推送给用户ID  ：  "+userId6);
 						JSONObject jsonObject = new JSONObject();
