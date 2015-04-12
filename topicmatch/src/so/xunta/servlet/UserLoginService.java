@@ -695,8 +695,12 @@ public class UserLoginService extends HttpServlet {
 							break;
 						case "nickname":
 							nickname=ds;
-							if(nickname!=null&&!"".equals(nickname.trim())){
-								user.setNickname(nickname);
+//							if(nickname!=null&&!"".equals(nickname.trim())){
+//								user.setNickname(nickname);
+//							}
+							//用户可以去掉自己的昵称
+							if(nickname!=null){
+								user.setNickname(nickname.trim());
 							}
 							System.out.println("nickname:"+nickname);
 							break;
