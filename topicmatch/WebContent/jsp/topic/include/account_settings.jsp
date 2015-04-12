@@ -333,7 +333,8 @@ function isNull( str ){
 		 	//console.log("element   :  " + element.innerHTML.toString());
 		 	tags_array.push(element.innerHTML.toString());
 		 }); */
-		 if(!isUnique)
+		 var username = $('#UserNameR').val().trim();
+		 if(!isNull(username)&&!isUnique)
 		 {
 			 $('#UserNameR').testRemind("用户名已存在").get(0).select();
 			 Tip("用户名已存在");
