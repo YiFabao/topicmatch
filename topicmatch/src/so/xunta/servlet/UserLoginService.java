@@ -790,6 +790,7 @@ public class UserLoginService extends HttpServlet {
 				}
 				userManager.updateUser(user);
 				request.getSession().setAttribute("modifiedSuccess","true");
+				request.getSession().setAttribute("user", user);
 				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			} catch(FileUploadException e1){
 				System.out.println("SizeLimitExceededException捕捉");
