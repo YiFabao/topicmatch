@@ -236,6 +236,7 @@ function isNull( str ){
 			}); 
 	 });
 	 
+	 
 	 //下拉列表自动选中
 	 function autoSelected()
 	 {
