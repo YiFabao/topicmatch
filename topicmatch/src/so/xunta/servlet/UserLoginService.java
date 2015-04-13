@@ -428,7 +428,7 @@ public class UserLoginService extends HttpServlet {
 			
 			
 			//获取第三方账户名，登录时直接放session中，这里不需要了
-		/*	request.setAttribute("thirdParty", "第三方-昵称");
+			request.setAttribute("thirdParty", "第三方-昵称");
 		 	String weibo_uid = user.getWeibo_uid();
 			String qq_openid = user.getQq_openId();
 			String weixin_uid = user.getWeixin_uid();
@@ -449,7 +449,7 @@ public class UserLoginService extends HttpServlet {
 				String weixin_name = "昵称";
 				//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.setAttribute("thirdParty", "微信-"+weixin_name);
-			}*/
+			}
 		}
 		try {
 			request.getRequestDispatcher("/jsp/topic/include/account_settings.jsp").forward(request, response);
