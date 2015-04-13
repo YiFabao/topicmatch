@@ -704,10 +704,10 @@ public class UserLoginService extends HttpServlet {
 							//用户可以去掉自己的昵称
 							if(nickname!=null){
 								user.setNickname(nickname.trim());
+								TopicManager tm = new TopicManagerImpl();
 								//如果这里用户将昵称设为了空
 								if("".equals(nickname.trim()))
 								{
-									TopicManager tm = new TopicManagerImpl();
 									String xunta_username = user.getXunta_username();
 									//如果用户名不为空，则更新Topic表的username为用户名
 									if(xunta_username!=null&&!"".equals(xunta_username.trim()))
@@ -722,6 +722,11 @@ public class UserLoginService extends HttpServlet {
 										List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
 										tm.updateCreaterUsername(userCreatedTopicIds, thirdParty);
 									}
+								}
+								else//否则更新Topic里的username为昵称
+								{
+									List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
+									tm.updateCreaterUsername(userCreatedTopicIds, nickname);
 								}
 							}
 							
