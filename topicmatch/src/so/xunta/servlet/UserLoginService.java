@@ -686,11 +686,14 @@ public class UserLoginService extends HttpServlet {
 							UserNameR=ds;
 							if(UserNameR!=null&&!"".equals(UserNameR.trim())){
 								user.setXunta_username(UserNameR);
-								//如果用户没有本地账户时发布过话题，则更新这些话题的userName
-								TopicManager tm = new TopicManagerImpl();
-								//这里必须用id查
-								List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
-								tm.updateCreaterUsername(userCreatedTopicIds, UserNameR);
+								//如果用户没有本地账户时发布过话题，且昵称为空时则更新这些话题的userName
+								if(user.getNickname()==null||"".equals(user.getNickname().trim()))
+								{
+									TopicManager tm = new TopicManagerImpl();
+									//这里必须用id查
+									List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
+									tm.updateCreaterUsername(userCreatedTopicIds, UserNameR);
+								}
 							}
 							break;
 						case "nickname":
@@ -701,7 +704,27 @@ public class UserLoginService extends HttpServlet {
 							//用户可以去掉自己的昵称
 							if(nickname!=null){
 								user.setNickname(nickname.trim());
+								//如果这里用户将昵称设为了空
+								if("".equals(nickname.trim()))
+								{
+									TopicManager tm = new TopicManagerImpl();
+									String xunta_username = user.getXunta_username();
+									//如果用户名不为空，则更新Topic表的username为用户名
+									if(xunta_username!=null&&!"".equals(xunta_username.trim()))
+									{
+										//这里必须用id查
+										List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
+										tm.updateCreaterUsername(userCreatedTopicIds, xunta_username);
+									}
+									else//否则设为第三方账号名
+									{
+										String thirdParty = (String)request.getSession().getAttribute("thirdParty");
+										List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
+										tm.updateCreaterUsername(userCreatedTopicIds, thirdParty);
+									}
+								}
 							}
+							
 							System.out.println("nickname:"+nickname);
 							break;
 						case "sex":
