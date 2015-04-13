@@ -126,52 +126,8 @@ public class WSMessageControl {
 				String topic_Id = messageJsonObject.get("topicId").toString();
 				//判断有没有昵称，如果没昵称判断有没有本地账户，如果没有采用第三方昵称
 				String toUserName = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getNickname();
-				System.out.println("本地昵称  :  "+ toUserName);
-					if(toUserName == null || toUserName.equals("")){
-						toUserName = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getXunta_username();
-						System.out.println("本地账户  ：  "+ toUserName);
-						if(toUserName == null || toUserName.equals("")){
-							String weixinId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getWeixin_uid();
-							String qqId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getQq_openId();
-							String weiboId = new UserManagerImpl().findUserById(Integer.parseInt(toUserId)).getWeibo_uid();
-							if(!(weixinId == null || weixinId.equals(""))){
-								toUserName = "微信-"+weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
-								System.out.println("微信第三方账户  ： "+ toUserName);
-							}
-							if(!(qqId == null || qqId.equals(""))){
-								toUserName = "QQ-"+qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
-								System.out.println("QQ第三方账户  ： "+ toUserName);
-							}
-							if(!(weiboId == null || weiboId.equals(""))){
-								toUserName = "微博-"+weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
-								System.out.println("微博第三方账户  ： "+ toUserName);
-							}
-						}
-					}
 				String time_str = DateTimeUtils.getCurrentTimeStr();
 				String from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getNickname();
-				System.out.println("本地昵称  :  "+ from_user_name);
-				if(from_user_name == null || from_user_name.equals("")){
-					from_user_name = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getXunta_username();
-					System.out.println("本地账户  ：  "+ from_user_name);
-					if(from_user_name == null || from_user_name.equals("")){
-						String weixinId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getWeixin_uid();
-						String qqId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getQq_openId();
-						String weiboId = new UserManagerImpl().findUserById(Integer.parseInt(fromUserId)).getWeibo_uid();
-						if(!(weixinId == null || weixinId.equals(""))){
-							from_user_name = "微信-"+weixinUserInfoManagerImpl.findWeixinNameByWeixinUid(weixinId);
-							System.out.println("微信第三方账户  ： "+ toUserName);
-						}
-						if(!(qqId == null || qqId.equals(""))){
-							from_user_name = "QQ-"+qqUserInfoManagerImpl.findQQNameByOpenid(qqId);
-							System.out.println("QQ第三方账户  ： "+ toUserName);
-						}
-						if(!(weiboId == null || weiboId.equals(""))){
-							from_user_name = "微博-"+weiboUserInfoManagerImpl.findWeiboNameByWeiboUid(weiboId);
-							System.out.println("微博第三方账户  ： "+ toUserName);
-						}
-					}
-				}
 				String topic_name = new TopicManagerImpl().findTopicIdByTopic(topic_Id).getTopicName();
 					int userId6 = Integer.parseInt(toUserId);
 					if(!(WSSessionConnectControl.getWindowConnect(userId6) == null)){
