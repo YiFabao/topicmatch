@@ -76,8 +76,8 @@
 							<div class="item">
 								<label class="dt">性&emsp;&emsp;别</label>
 								<div class="dd pt5">
-									<label for="Man" class="radio ml20 mr50 checked-r"><input type="radio" id="Man" name="sex" class="dn" value="m" checked="checked"><i></i>男</label>
-									<label for="Woman" class="radio"><input type="radio" id="Woman" name="sex" class="dn" value="w"><i></i>女</label>
+									<label for="Man" class="radio ml20 mr50 checked-r"><input type="radio" id="Man" name="sex" class="dn" value="男" checked="checked"><i></i>男</label>
+									<label for="Woman" class="radio"><input type="radio" id="Woman" name="sex" class="dn" value="女"><i></i>女</label>
 								</div>
 								
 							</div>
@@ -287,12 +287,12 @@ $(function(){
 	 autoSelected();
 	 $("#imgName").val("");
 	//将模拟的单选按钮与实际的选择按钮调成一致
-	if("${requestScope.sex}"=="m"){
+	if("${requestScope.sex}"=="男"){
 		$("#Man").attr("checked","checked");
 		$("#Woman").attr("checked",false);
 		console.log($("label[for='Man']")[0]);
 		$("label[for='Man']").addClass("checked-r").siblings().removeClass("checked-r");
-	}else if("${requestScope.sex}"=="w"){
+	}else if("${requestScope.sex}"=="女"){
 		$("#Man").attr("checked",false);
 		$("#Woman").attr("checked","checked");
 		$("label[for='Woman']").addClass("checked-r").siblings().removeClass("checked-r");
