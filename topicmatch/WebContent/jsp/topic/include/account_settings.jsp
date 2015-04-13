@@ -102,7 +102,7 @@
 				<div class="item">
 					<label for="NC" class="dt-c">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称&nbsp;&nbsp;</label>
 					<div class="dd-c">
-						<input name="nickname" type="text" id="NC" class="text-c wtb" value="${user.nickname}">
+						<input name="nickname" type="text" id="NC" class="text-c wtb" data-min="1" value="${user.nickname}">
 					</div>
 				</div>
 				<div class="item pt14">

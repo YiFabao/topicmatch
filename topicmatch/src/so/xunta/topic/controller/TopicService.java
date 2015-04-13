@@ -776,7 +776,8 @@ public class TopicService extends HttpServlet {
 			    	{
 				    	MatchTopicPeople mtp = new MatchTopicPeople();
 				    	mtp.setUserId(u.getId());
-				    	mtp.setName(u.getXunta_username());
+				    	//由于需求变了，这里换成昵称显示
+				    	mtp.setName(u.getNickname());
 				    	mtp.setImgUrl(u.getImageUrl());
 				    	List<Tag> userTagList = tagsManager.findAllTagsByUserId(u.getId());
 				    	//数据库查询到的是Tag类型的，MatchTopicPeople里只使用它的name，提取一下
