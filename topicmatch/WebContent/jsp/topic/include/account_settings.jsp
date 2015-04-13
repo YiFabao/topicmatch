@@ -32,6 +32,9 @@
 					<div class="item">
 						<label class="dt-c" for="UserNameR">用&nbsp;户&nbsp;名&nbsp;&nbsp;:</label>
 						<div class="dd-c lh36">&emsp;${user.xunta_username}</div>
+						<%-- <div class="dd-c">
+							<input name="UserNameR" id="UserNameR" value="${user.xunta_username}" type="text" class="text-c wtb pwd" disabled">
+						</div> --%>
 					</div>
 					</c:otherwise>
 				</c:choose>
@@ -99,7 +102,7 @@
 				<div class="item">
 					<label for="NC" class="dt-c">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称&nbsp;&nbsp;</label>
 					<div class="dd-c">
-						<input name="nickname" type="text" id="NC" class="text-c wtb" data-min="1" value="${user.nickname}">
+						<input name="nickname" type="text" id="NC" class="text-c wtb" value="${user.nickname}">
 					</div>
 				</div>
 				<div class="item pt14">
@@ -236,6 +239,7 @@ function isNull( str ){
 			}); 
 	 });
 	 
+	 
 	 //下拉列表自动选中
 	 function autoSelected()
 	 {
@@ -333,16 +337,22 @@ function isNull( str ){
 		 	//console.log("element   :  " + element.innerHTML.toString());
 		 	tags_array.push(element.innerHTML.toString());
 		 }); */
-		 if(!isUnique)
+		 if($('#UserNameR').val()!=undefined)
 		 {
-			 $('#UserNameR').testRemind("用户名已存在").get(0).select();
-			 Tip("用户名已存在");
-			 return false;
+			 var username = $('#UserNameR').val().trim();
+			 if(!isNull(username)&&!isUnique)
+			 {
+				 $('#UserNameR').testRemind("用户名已存在").get(0).select();
+				 Tip("用户名已存在");
+				 return false;
+			 }
 		 }
+		 
 		 if(tags_array.length<=0)
 		 {
 			 //alert("请至少填入一个标签!");
 			 Tip("请至少填入一个标签!");
+			 
 			 return false;
 		 }
 		 var pwd=$("#PassWordR").val();
