@@ -14,6 +14,7 @@ import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
+import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
 
 public class Login extends HttpServlet {
 
@@ -87,7 +88,7 @@ public class Login extends HttpServlet {
 				else if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
 				{
 					String weixin_name = "昵称";
-					//weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+					weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
 					request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 				}
 				
