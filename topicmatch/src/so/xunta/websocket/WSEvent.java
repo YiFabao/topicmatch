@@ -11,10 +11,12 @@ import net.sf.json.JSONObject;
 import org.apache.catalina.websocket.MessageInbound;
 import org.apache.catalina.websocket.WsOutbound;
 
+import so.xunta.manager.impl.OfflineMessageManagerImpl;
 import so.xunta.topic.entity.SystemMessageNotification;
 import so.xunta.topic.entity.TopicInviteNotification;
 import so.xunta.topic.model.impl.NotificationManagerImpl;
 import so.xunta.utils.Time;
+import so.xunta.websocket.entity.OfflineMessage;
 
 public class WSEvent extends MessageInbound{
 	private int userId = 0;
@@ -72,6 +74,17 @@ public class WSEvent extends MessageInbound{
 				}
 			}
 			notificationManagerImpl.deleteSystemMessageNotification(userId+"");
+		}
+		//检查是否离线消息
+		List<OfflineMessage> offlineMessageList = new OfflineMessageManagerImpl().getOfflineunread((long) userId);
+		System.out.println("offlineMessageList   Size  =    "+offlineMessageList.size());
+		if(offlineMessageList.size() > 0){
+			for (OfflineMessage offlineMessage : offlineMessageList) {
+				String topicId = offlineMessage.getTopicId();
+				Long accepterId = offlineMessage.getAccepterId();
+				Long unreadNum = offlineMessage.getCount();
+				System.out.println(topicId+"  "+accepterId+"  "+unreadNum);
+			}
 		}
 	}
 	@Override
