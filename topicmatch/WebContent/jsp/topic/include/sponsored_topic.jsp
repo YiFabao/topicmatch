@@ -2,7 +2,7 @@
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-	String showName = (String)session.getAttribute("thirdParty");
+	/* String showName = (String)session.getAttribute("thirdParty");
 	User user = (User)session.getAttribute("user");
 	String nickname = user.getNickname();
 	String username = user.getXunta_username();
@@ -13,7 +13,7 @@
 	else if(username!=null&&!"".equals(username.trim()))
 	{
 		showName = username;
-	}
+	} */
 	
 %>
 <!DOCTYPE html>
@@ -188,7 +188,7 @@
 		var topic_content = $("#detail").val();
 		var userId ="${sessionScope.user.id}";
 		//var userName ="${(empty sessionScope.user.xunta_username)?sessionScope.thirdParty:sessionScope.user.xunta_username}";
-		var userName = "<%=showName%>";
+		var userName = "${sessionScope.user.nickname}";
 		var userLogoUrl ="${sessionScope.user.imageUrl}";
 		console.log("topic_name:"+topic_name);
 		console.log("topic_content:"+topic_content);

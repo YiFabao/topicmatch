@@ -167,7 +167,7 @@ public class TopicService extends HttpServlet {
 		}
 		JSONObject json = new JSONObject();
 		json.put("userId",user.id);
-		json.put("userName", user.xunta_username);
+		json.put("userName", user.nickname);
 		json.put("imageUrl",user.imageUrl);
 		response.setContentType("text/json");
 		response.setCharacterEncoding("utf-8");
@@ -188,6 +188,7 @@ public class TopicService extends HttpServlet {
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
 		User p_user = userManager.findUserById(Integer.parseInt(topic.userId));
+		System.out.println("p_user:"+p_user.nickname);
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
@@ -211,7 +212,7 @@ public class TopicService extends HttpServlet {
 
 		JSONObject user_p = new JSONObject();
 		user_p.put("userId",p_user.id);
-		user_p.put("userName",p_user.xunta_username);
+		user_p.put("userName",p_user.nickname);
 		user_p.put("imageUrl",p_user.imageUrl);
 	
 		
@@ -220,7 +221,7 @@ public class TopicService extends HttpServlet {
 			for(User u:userList){
 				JSONObject json = new JSONObject();
 				json.put("userId",u.id);
-				json.put("userName", u.nickname==null||"".equals(u.nickname.trim())?u.xunta_username:u.nickname);
+				json.put("userName",u.nickname);
 				json.put("imageUrl",u.imageUrl);
 				memberList.add(json.toString());
 			}
@@ -229,7 +230,7 @@ public class TopicService extends HttpServlet {
 		all.put("topic",topic_json);
 		all.put("memberList",memberList);
 		all.put("user_p",user_p);
-		System.out.println(all.toString());
+		System.out.println("====================================================>"+all.toString());
 		try {
 			response.setContentType("text/json");
 			response.setCharacterEncoding("utf-8");
@@ -776,7 +777,8 @@ public class TopicService extends HttpServlet {
 			    	{
 				    	MatchTopicPeople mtp = new MatchTopicPeople();
 				    	mtp.setUserId(u.getId());
-				    	mtp.setName(u.getXunta_username());
+				    	//由于需求变了，这里换成昵称显示
+				    	mtp.setName(u.getNickname());
 				    	mtp.setImgUrl(u.getImageUrl());
 				    	List<Tag> userTagList = tagsManager.findAllTagsByUserId(u.getId());
 				    	//数据库查询到的是Tag类型的，MatchTopicPeople里只使用它的name，提取一下

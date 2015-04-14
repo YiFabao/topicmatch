@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
+import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
+import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
 
 public class Login extends HttpServlet {
 
@@ -65,6 +68,30 @@ public class Login extends HttpServlet {
 				System.out.println(user.getXunta_username()+"登录成功");
 				//将user保存到session中
 				request.getSession().setAttribute("user",user);
+				
+				request.getSession().setAttribute("thirdParty", "第三方-昵称");
+			 	String weibo_uid = user.getWeibo_uid();
+				String qq_openid = user.getQq_openId();
+				String weixin_uid = user.getWeixin_uid();
+				if(weibo_uid!=null&&!"".equals(weibo_uid.trim()))
+				{	
+					String weibo_name = "昵称";
+					weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
+					request.getSession().setAttribute("thirdParty", "微博-"+weibo_name);
+				}
+				else if(qq_openid!=null&&!"".equals(qq_openid.trim()))
+				{
+					String qq_name = "昵称";
+					qq_name = (new QQUserInfoManagerImpl()).findQQNameByOpenid(qq_openid.trim());
+					request.getSession().setAttribute("thirdParty", "QQ-"+qq_name);
+				}
+				else if(weixin_uid!=null&&!"".equals(weixin_uid.trim()))
+				{
+					String weixin_name = "昵称";
+					weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
+					request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
+				}
+				
 				//跳转到://servlet/userLoginService
 /*				var parameters = {
 					cmd:"checkHasTag",

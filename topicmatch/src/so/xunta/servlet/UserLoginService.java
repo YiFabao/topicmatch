@@ -428,7 +428,7 @@ public class UserLoginService extends HttpServlet {
 			
 			
 			//获取第三方账户名，登录时直接放session中，这里不需要了
-		/*	request.setAttribute("thirdParty", "第三方-昵称");
+			/*request.setAttribute("thirdParty", "第三方-昵称");
 		 	String weibo_uid = user.getWeibo_uid();
 			String qq_openid = user.getQq_openId();
 			String weixin_uid = user.getWeixin_uid();
@@ -687,21 +687,25 @@ public class UserLoginService extends HttpServlet {
 							if(UserNameR!=null&&!"".equals(UserNameR.trim())){
 								user.setXunta_username(UserNameR);
 								//如果用户没有本地账户时发布过话题，且昵称为空时则更新这些话题的userName
-								if(user.getNickname()==null||"".equals(user.getNickname().trim()))
+								/*if(user.getNickname()==null||"".equals(user.getNickname().trim()))
 								{
 									TopicManager tm = new TopicManagerImpl();
 									//这里必须用id查
 									List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
 									tm.updateCreaterUsername(userCreatedTopicIds, UserNameR);
-								}
+								}*/
 							}
 							break;
 						case "nickname":
 							nickname=ds;
-//							if(nickname!=null&&!"".equals(nickname.trim())){
-//								user.setNickname(nickname);
-//							}
-							//用户可以去掉自己的昵称
+							if(nickname!=null&&!"".equals(nickname.trim())){
+								user.setNickname(nickname);
+								//更新Topic里该用户发起的所有话题的的username为昵称
+								TopicManager tm = new TopicManagerImpl();
+								List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
+								tm.updateCreaterUsername(userCreatedTopicIds, nickname);
+							}
+							/*//用户可以去掉自己的昵称
 							if(nickname!=null){
 								user.setNickname(nickname.trim());
 								TopicManager tm = new TopicManagerImpl();
@@ -728,7 +732,7 @@ public class UserLoginService extends HttpServlet {
 									List<String> userCreatedTopicIds = tm.findTopicIdListByCreaterId(user.getId()+"");
 									tm.updateCreaterUsername(userCreatedTopicIds, nickname);
 								}
-							}
+							}*/
 							
 							System.out.println("nickname:"+nickname);
 							break;
