@@ -406,7 +406,7 @@ public class TopicModelImpl implements TopicModel{
 		for (RecommendedTopicPublisher recommendedTopicPublisher : RecommTopicPublisherList) {
 			JSONObject json = new JSONObject();
 			Long userId = recommendedTopicPublisher.getUser().getId();
-			String userName = recommendedTopicPublisher.getUser().getXunta_username();
+			String nickname = recommendedTopicPublisher.getUser().nickname;
 			String imgUrl = recommendedTopicPublisher.getUser().getImageUrl();
 			String address = recommendedTopicPublisher.getUser().getAddress();
 			String sex = recommendedTopicPublisher.getUser().getSex();
@@ -414,7 +414,7 @@ public class TopicModelImpl implements TopicModel{
 			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
 			try {
 				json.put("userId", userId);
-				json.put("xunta_username", userName);
+				json.put("nickname", nickname);
 				json.put("userImgUrl", imgUrl);
 				json.put("address", address==null?"保密":address);
 				json.put("sex", sex==null?"保密":sex);

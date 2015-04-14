@@ -64,7 +64,7 @@
 	 * @param y
 	 * @return li
 	 */
-	function createItemRight(top,left,topicId,address,xunta_username,sex,topicname,picUrl){
+	function createItemRight(top,left,topicId,address,nickname,sex,topicname,picUrl){
 		var li=$("<li onclick=create_one_topic_item(this,null)></li>");
 		li.css({
 			top:top+"px",
@@ -107,7 +107,7 @@
 		var info = $("<div></div>");
 		info.attr("class","info");
 		info.append(span_sex);
-		info.append(xunta_username);
+		info.append(nickname);
 		info.append(p_area);
 		
 
@@ -227,7 +227,7 @@
 	 * 在dom节点上添加一个匹配的话题节点.topic-item
 	 * @author fabao.yi
 	 */
-	function addOneLiNode(topicId,address,xunta_username,sex,topicname,picUrl){
+	function addOneLiNode(topicId,address,nickname,sex,topicname,picUrl){
 		if(topic_li_node_array.length>20){
 			return;
 		}
@@ -237,7 +237,7 @@
 		}
 		//console.log("top:"+coor.top+"  left:"+coor.left);
 		//createItemRight(top,left,topicId,address,xunta_username,sex,topicname,picUrl)
-		var li_node=createItemRight(coor.top,coor.left,topicId,address,xunta_username,sex,topicname,picUrl);
+		var li_node=createItemRight(coor.top,coor.left,topicId,address,nickname,sex,topicname,picUrl);
 		li_node.mouseenter(function(){
 			$(this).find("div.cont").show(200);
 		});
@@ -411,7 +411,7 @@
 				console.log(res[i]);
 				var d=res[i];
 				//将数据显示出来
-				addOneLiNode(d.topicId,d.address,d.xunta_username,d.sex,d.topicName,d.userImgUrl);
+				addOneLiNode(d.topicId,d.address,d.nickname,d.sex,d.topicName,d.userImgUrl);
 			}
 			if(topic_li_node_array.length==1)
 			{
