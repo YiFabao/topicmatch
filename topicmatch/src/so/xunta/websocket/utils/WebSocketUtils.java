@@ -42,7 +42,7 @@ public class WebSocketUtils {
 			int count = query.list().size();
 			if(count == 0){
 				System.out.println("1");
-				session.save(new OfflineMessage("200", (long) 100, (long) 1));
+				session.save(new OfflineMessage(topicId, accepterId, (long) 1));
 				session.getTransaction().commit();
 			}else{
 				System.out.println("2");
