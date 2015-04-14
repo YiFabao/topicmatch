@@ -71,7 +71,7 @@ public class TopicModelImpl implements TopicModel{
 		List<User> memberList = userManager.findUserListByUserIdList(memberId_long_list);
 		for(User memUser:memberList)
 		{
-			System.out.println(memUser.xunta_username);
+			System.out.println(memUser.nickname);
 		}
 		
 		//将　发起人　Topic 及　用户列表 保存到request范围
@@ -82,7 +82,7 @@ public class TopicModelImpl implements TopicModel{
 		JSONObject user_p = new JSONObject();
 		try {
 			user_p.put("userId",userId);
-			user_p.put("userName",publisher.xunta_username);
+			user_p.put("userName",publisher.nickname);
 			user_p.put("imageUrl",publisher.imageUrl);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
@@ -102,7 +102,7 @@ public class TopicModelImpl implements TopicModel{
 			try {
 				JSONObject json = new JSONObject();
 				json.put("userId",u.id);
-				json.put("userName", u.xunta_username);
+				json.put("userName", u.nickname);
 				json.put("imageUrl",u.imageUrl);
 				memberList_json.add(json.toString());
 			} catch (JSONException e) {
