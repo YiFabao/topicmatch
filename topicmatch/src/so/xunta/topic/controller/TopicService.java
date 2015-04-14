@@ -971,7 +971,6 @@ public class TopicService extends HttpServlet {
 				String yyyyMMdd="";
 				String HHmm="";
 				try {
-					
 					System.out.println(time_j);
 					Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time_j);
 					yyyyMMdd = Time.getDate_ta_pc(date)+"  ";
