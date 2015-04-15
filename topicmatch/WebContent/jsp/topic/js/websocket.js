@@ -155,7 +155,8 @@ function websocketEvent(userId) {
 			topicInformMsgFeedback(time, json.message);
 		}else if(status == "7"){
 			//推送离线消息到前台
-			console.log(json.offlineMessage);
+			console.log("有离线消息");
+			console.log('离线消息  : '+json.offlineMessage);
 		}
 	}
 }
