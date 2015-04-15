@@ -156,8 +156,13 @@ function websocketEvent(userId) {
 		}else if(status == "7"){
 			//推送离线消息到前台
 			console.log("有离线消息");
-			console.log('离线消息  : '+json.offlineMessage.length);
-			console.log('离线消息  : '+json.offlineMessage.length());
+			var offlineMessageJsonArray = json.offlineMessage;
+			for (var o = 0; o < offlineMessageJsonArray.length; o++) {
+				var offlineMessageTopicId = offlineMessageJsonArray[o].topicId;
+				var offlineMessageAccepterId = offlineMessageJsonArray[o].accepterId;
+				var offlineMessageUnreadNum = offlineMessageJsonArray[o].unreadNum;
+				console.log('topicId : '+offlineMessageTopicId+" - accepterId : "+offlineMessageAccepterId+" - unreadNum : "+offlineMessageUnreadNum);
+			}
 			
 		}
 	}
