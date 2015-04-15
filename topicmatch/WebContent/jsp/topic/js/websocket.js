@@ -153,6 +153,9 @@ function websocketEvent(userId) {
 			var seconds = date.getSeconds();
 			var time = hours + ':' + minutes + ':' + seconds;
 			topicInformMsgFeedback(time, json.message);
+		}else if(status == "7"){
+			//推送离线消息到前台
+			console.log(json.offlineMessage);
 		}
 	}
 }
