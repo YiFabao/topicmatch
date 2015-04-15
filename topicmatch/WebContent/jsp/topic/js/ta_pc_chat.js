@@ -120,7 +120,7 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 		console.log("topicItemArray.length-1:"+(topicItemArray.length-1));
 		var _nextTopicId;
 		if(_index == topicItemArray.length-1){
-			console.log("最后一个元素");
+			console.log("最底部一个元素");
 			//下一个获取焦点topicId
 			//判断是否是第一个元素
 			if(topicItemArray.length==1){
@@ -131,6 +131,9 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 				div_center.find("p.txt").empty();
 				div_center.find("div.chat-box").empty();
 				var div_right = $("div.right").empty();
+				$("div.center").attr("topicId","");
+				$("div.toggle").attr("topicId","");
+				$("div.right").attr("topicId","");
 			}else{
 				_nextTopicId=topicItemArray[_index-1];
 				console.log(_nextTopicId);
@@ -147,7 +150,7 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 
 		//设置焦点
 		$("ul.rec-topic-list li[topicid="+_nextTopicId+"]").addClass("cur").siblings().removeClass("cur");
-		
+
 		topicItemArray.remove(topicId);
 
 		if(chat_box_center[topicId]!=null){
@@ -850,7 +853,7 @@ window.receiveBroadcast = function(json)
 		userEnterTopic(member);
 		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 	}
-	else if(topicItemArray.in_array(json.topicId)){
+	else if(member&&topicItemArray.in_array(json.topicId)){
 		console.log("非当前窗口");	
 		if(member.userId==myselfId){
 			return;
