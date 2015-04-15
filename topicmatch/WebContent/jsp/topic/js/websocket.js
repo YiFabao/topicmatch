@@ -156,9 +156,9 @@ function websocketEvent(userId) {
 		}else if(status == "7"){
 			//推送离线消息到前台
 			console.log("有离线消息");
-			console.log('离线消息  : '+json.offlineMessage.size());
-			console.log('离线消息  : '+json.offlineMessage.length());
 			console.log('离线消息  : '+json.offlineMessage.length);
+			console.log('离线消息  : '+json.offlineMessage.length());
+			
 		}
 	}
 }
