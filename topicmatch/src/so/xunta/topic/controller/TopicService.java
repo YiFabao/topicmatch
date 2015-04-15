@@ -953,14 +953,13 @@ public class TopicService extends HttpServlet {
 			while (iter.hasNext()) {
 				Map.Entry entry = (Map.Entry) iter.next();
 				String topicId = (String) entry.getKey();
-				String acceppterIds="[\"1\"]";
+				String acceppterIds=new TopicManagerImpl().findMemberIdsByTopicId(topicId).size()+"";
 				String content="";
 				String lastTime="";
 				if(entry.getValue() != null){
 					//如果该用户只发布了话题，但是没有说话， 会导致获取不到最后回复内容及最后回复时间及话题参与人数，用默认值代替
 					HistoryMessage val = (HistoryMessage) entry.getValue();
 					content = URLDecoder.decode(val.getContent());
-					acceppterIds = val.getAccepterId();
 					lastTime = val.getDateAndTime();
 				}
 				Topic topic = topicManager.findTopicIdByTopic(topicId);
@@ -978,8 +977,6 @@ public class TopicService extends HttpServlet {
 					yyyyMMdd = Time.getDate_ta_pc(date)+"  ";
 					HHmm = Time.getTime_ta_pc(date);
 					month = Time.getMonth(date);
-					JSONArray jsonArray = JSONArray.fromObject(acceppterIds);
-					String accepters = jsonArray.size()+"";
 //					System.out.println(userName);
 //					System.out.println(userImgUrl);
 //					System.out.println(topicName);
@@ -997,7 +994,7 @@ public class TopicService extends HttpServlet {
 					jsonObject.put("content", content);
 					jsonObject.put("lastTime", lastTime);
 					jsonObject.put("month", month);
-					jsonObject.put("accepters", accepters);
+					jsonObject.put("accepters", acceppterIds);
 					jsonObject.put("yyyyMMdd", yyyyMMdd);
 					jsonObject.put("HHmm", HHmm);
 //					System.out.println(jsonObject.toString());
