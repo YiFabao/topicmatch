@@ -6,6 +6,7 @@ import java.nio.CharBuffer;
 import java.util.Date;
 import java.util.List;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.catalina.websocket.MessageInbound;
@@ -79,11 +80,25 @@ public class WSEvent extends MessageInbound{
 		List<OfflineMessage> offlineMessageList = new OfflineMessageManagerImpl().getOfflineunread((long) userId);
 		System.out.println("offlineMessageList   Size  =    "+offlineMessageList.size());
 		if(offlineMessageList.size() > 0){
+			JSONObject offlineMessageJsonObject = new JSONObject();
+			JSONArray offlineMessageJsonArray = new JSONArray();
 			for (OfflineMessage offlineMessage : offlineMessageList) {
+				JSONObject JsonObject = new JSONObject();
 				String topicId = offlineMessage.getTopicId();
 				Long accepterId = offlineMessage.getAccepterId();
 				Long unreadNum = offlineMessage.getCount();
 				System.out.println(topicId+"  "+accepterId+"  "+unreadNum);
+				JsonObject.put("topicId", topicId);
+				JsonObject.put("accepterId", accepterId);
+				JsonObject.put("unreadNum", unreadNum);
+				offlineMessageJsonArray.add(JsonObject);
+			}
+			offlineMessageJsonObject.put("status", "7");
+			offlineMessageJsonObject.put("offlineMessage",offlineMessageJsonArray);
+			try {
+				outbound.writeTextMessage(CharBuffer.wrap(offlineMessageJsonObject.toString()));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
