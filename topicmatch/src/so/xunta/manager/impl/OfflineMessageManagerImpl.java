@@ -35,7 +35,7 @@ public class OfflineMessageManagerImpl implements OfflineMessageManager {
 		Session session = HibernateUtils.openSession();
 		try {
 			session.beginTransaction();
-			int query = session.createQuery("from OfflineMessage where accepterId=?").setLong(0, accepterId).executeUpdate();
+			int query = session.createQuery("delete OfflineMessage where accepterId=?").setLong(0, accepterId).executeUpdate();
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
