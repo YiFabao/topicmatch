@@ -803,27 +803,34 @@ window.receiveBroadcast = function(json)
 	console.log("当前窗口的topicId:"+cur_topicId);
 	var member;
 	if (cur_topicId == json.topicId||topicItemArray.in_array(json.topicId)) {// 是当前窗口
-		var parameters = {
-				cmd:"findUserByUserId",
-				userId: json.userId
-			};
-		$.ajax({  
-		     type : "post",  
-		     url : contextPath+"/servlet/topic_service",
-		     data : parameters,  
-		     async : false,  //同步
-		     datatype:"json",
-		     success : function(res){
-		    	 if(res==null||""==res){
-		    		 console.log("findUserByUserId返回数据为空");
-		    	 }
-		    	 console.log("请求成功:"+res);
-		    	member=res;
-		     } ,
-		     error:function(){
-		    	console.log("请求出错");
-		     }
-		});		
+		//要判断用户是否已经存在于聊天列表中
+		if($("div.right ul.user-list").find("li[userid="+json.userId+"]")[0]){
+			console.log("用户存在参与人列表中");
+		}else{
+			console.log("用户不存在参与人列表中");
+			var parameters = {
+					cmd:"findUserByUserId",
+					userId: json.userId
+				};
+			$.ajax({  
+			     type : "post",  
+			     url : contextPath+"/servlet/topic_service",
+			     data : parameters,  
+			     async : false,  //同步
+			     datatype:"json",
+			     success : function(res){
+			    	 if(res==null||""==res){
+			    		 console.log("findUserByUserId返回数据为空");
+			    	 }
+			    	 console.log("请求成功:"+res);
+			    	member=res;
+			     } ,
+			     error:function(){
+			    	console.log("请求出错");
+			     }
+			});		
+		}
+		
 	}
 	topicId_joinMemNum[json.topicId] +=1;//设置topicId对应的参与人总数
 	if(cur_topicId==json.topicId){
