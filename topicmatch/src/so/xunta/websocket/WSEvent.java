@@ -97,6 +97,7 @@ public class WSEvent extends MessageInbound{
 			offlineMessageJsonObject.put("offlineMessage",offlineMessageJsonArray);
 			try {
 				outbound.writeTextMessage(CharBuffer.wrap(offlineMessageJsonObject.toString()));
+				new OfflineMessageManagerImpl().deleteOfflineunread((long) userId);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
