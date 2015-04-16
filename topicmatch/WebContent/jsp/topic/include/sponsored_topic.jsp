@@ -184,8 +184,8 @@
 	 //发起话题
 	 $("#btn_publish").click(function(){
 		
-		var topic_name = $("#topic").val();
-		var topic_content = $("#detail").val();
+		var topic_name = $("#topic").val().trim();
+		var topic_content = $("#detail").val().trim();
 		var userId ="${sessionScope.user.id}";
 		//var userName ="${(empty sessionScope.user.xunta_username)?sessionScope.thirdParty:sessionScope.user.xunta_username}";
 		var userName = "${sessionScope.user.nickname}";
