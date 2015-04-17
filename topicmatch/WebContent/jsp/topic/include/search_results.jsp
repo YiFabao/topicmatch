@@ -87,7 +87,10 @@
 												</c:otherwise>
 											</c:choose>
 											<c:choose>
-												<c:when test="${currentUser.address==''} || ${currentUser.address=='IP地址库文件错误'}">
+												<c:when test="${currentUser.address==''}">
+													<p class="area" style="margin-left: 10px;">位置:未知</p>
+												</c:when>
+												<c:when test="${currentUser.address=='IP地址库文件错误'}">
 													<p class="area" style="margin-left: 10px;">位置:未知</p>
 												</c:when>
 												<c:otherwise>
