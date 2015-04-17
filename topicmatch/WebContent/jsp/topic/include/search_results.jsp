@@ -79,8 +79,11 @@
 												<c:when test="${currentUser.sex}=='男'">
 													<span class="sex man">♂</span>
 												</c:when>
-												<c:otherwise>
+												<c:when test="${currentUser.sex}=='女'">
 													<span class="sex woman">♀</span>
+												</c:when>
+												<c:otherwise>
+													<span class="sex woman">未知</span>
 												</c:otherwise>
 											</c:choose>
 											<c:choose>
