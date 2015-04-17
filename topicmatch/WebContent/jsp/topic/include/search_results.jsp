@@ -74,7 +74,7 @@
 											src="<%=request.getContextPath() %>/image?picId=${searched_userTopic.logo_url}"
 											alt="" class="user-pic"> <a href="#" class="nc">${searched_userTopic.userName}</a>
 											<c:set var="userId" value="${searched_topicsHashMap.key}" />
-											<c:set var="currentUser"value="${userIdMappingUserObj[userId]}" />
+											<c:set var="currentUser" value="${userIdMappingUserObj[userId]}" />
 											<c:choose>
 												<c:when test="${currentUser.sex}=='男'">
 													<span class="sex man">♂</span>
