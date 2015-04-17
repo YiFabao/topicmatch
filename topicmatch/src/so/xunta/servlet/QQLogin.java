@@ -61,7 +61,7 @@ public class QQLogin extends HttpServlet {
 
 		response.setContentType("text/html");
 		String accessToken = request.getParameter("access_token");// 获取参数accessToken
-
+		User user;
 		System.out.println("获取参数accessToken:" + accessToken);
 		// 非空判断
 		if (accessToken == null && "".equals(accessToken)) {
@@ -101,7 +101,10 @@ public class QQLogin extends HttpServlet {
 			conn.setConnectTimeout(5 * 1000);
 			String path =LocalContext.getPicPath();
 			String newImageName="QQuser_"+openId+"_"+(new Date().getTime())+".jpg";
-			FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
+			user = userManager.findUserbyQQOpenId(openId);
+			if (user == null) {
+				FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
+			}
 			imageUrl = newImageName;
 			//获取QQ头像并保存本地
 			qquserInfo = new QQUserInfo(openId, nickname, gender, location, description, verified_reason, tags);
@@ -121,7 +124,7 @@ public class QQLogin extends HttpServlet {
 		}
 
 		// 查询数据库中是否存在openid
-		User user = userManager.findUserbyQQOpenId(openId);
+		user = userManager.findUserbyQQOpenId(openId);
 		System.out.println(qquserInfo.getNickname() + "登录");
 
 		System.out.println("查询用户是否为空:" + user);

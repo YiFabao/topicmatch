@@ -68,6 +68,7 @@ public class WeiboLogin extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		WeiboUserInfoManager weibouserManager = new WeiboUserInfoManagerImpl();
+		User user ;
 		//1.获取code
 		//2.调用彬彬的获取用户微博信数据
 		//3.查询wei_uid是否存在
@@ -101,6 +102,8 @@ public class WeiboLogin extends HttpServlet {
 			verified_reason=(String)json.get("verified_reason");
 			tags=(String)json.get("tags");
 			token=(String)json.get("token");
+			uid=(String) json.get("userId");
+			user = userManager.findUserByWeiboUid(uid);
 			//获取sina头像并保存本地
 			image = (String) json.get("image");
 			System.out.println("imageUrl ====>  " + image);
@@ -110,11 +113,11 @@ public class WeiboLogin extends HttpServlet {
 			conn.setConnectTimeout(5 * 1000);
 			String path =LocalContext.getPicPath();
 			String newImageName="Sinauser_"+uid+"_"+(new Date().getTime())+".jpg";
-			FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
+			if(user==null){
+				FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
+			}
 			image = newImageName;
 			//获取sina头像并保存本地
-			uid=(String) json.get("userId");
-			
 			List<String> contentList = sinaUserInfo.getContent(token);
 			for (String string : contentList) {
 				weibouserManager.addWeiboContentAndWeiboUserId(new WeiboDynamicInfoContent(uid, string));
@@ -135,7 +138,7 @@ public class WeiboLogin extends HttpServlet {
 			return;
 		}
 		//查询数据库中是否存在uid
-		User user = userManager.findUserByWeiboUid(uid);
+		user = userManager.findUserByWeiboUid(uid);
 		if(user==null){
 			System.out.println("数据库中不存在该微博uid");
 			//用户没有绑定账号
