@@ -660,20 +660,34 @@ public class TopicService extends HttpServlet {
 			
 			//按<用户名,TopicList>将topic列表按用户归类，方便前端显示
 			Map<String,List<so.xunta.topic.entity.Topic>> usergroupedTopicList = new HashMap<String,List<so.xunta.topic.entity.Topic>>();
+			//根据topic里的uesrId获取user对象,前台可从该对象里面获取性别及城市  - fang
+			Map<String,User> userIdMappingUserObj = new HashMap<String,User>();
+			if(searchedtopicList!=null){
+				for(so.xunta.topic.entity.Topic topic: searchedtopicList){
+					String topic_userId = topic.getUserId();
+					User user = userManager.findUserById(Integer.parseInt(topic_userId));
+					userIdMappingUserObj.put(topic_userId, user);
+				}
+			}
+			
+			for (String key : userIdMappingUserObj.keySet()) {
+				  System.out.println("userId  =  "+key+"___   性别 ： "+userIdMappingUserObj.get(key).getSex()+"__  城市 ： "+userIdMappingUserObj.get(key).getAddress());
+			}
+			
 			request.setAttribute("topicsHashMap",null);
 			if(searchedtopicList!=null)
 			{
 				for(so.xunta.topic.entity.Topic t: searchedtopicList){
-					String userName = t.getUserName();
-					if(usergroupedTopicList.containsKey(userName))
+					String userId = t.getUserId();
+					if(usergroupedTopicList.containsKey(userId))
 					{
-						usergroupedTopicList.get(userName).add(t);
+						usergroupedTopicList.get(userId).add(t);
 					}
 					else
 					{
 						List<so.xunta.topic.entity.Topic> userTopicsList = new ArrayList<so.xunta.topic.entity.Topic>();
 						userTopicsList.add(t);
-						usergroupedTopicList.put(userName, userTopicsList);
+						usergroupedTopicList.put(userId, userTopicsList);
 					}
 				}
 				request.setAttribute("topicsHashMap",usergroupedTopicList);
