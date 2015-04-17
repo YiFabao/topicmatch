@@ -50,7 +50,6 @@ public class WeixinLoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		WeixinUserInfoManager weixinuserManager = new WeixinUserInfoManagerImpl();
-		User user;
 		// 获取code
 		String weixin_code = request.getParameter("weixin_code");
 		// 通过code获取token
@@ -77,10 +76,7 @@ public class WeixinLoginServlet extends HttpServlet {
 		conn.setConnectTimeout(5 * 1000);
 		String path =LocalContext.getPicPath();
 		String newImageName="Weixinuser_"+openid+"_"+(new Date().getTime())+".jpg";
-		user = userManager.findUserByWeixinUid(openid);
-		if (user == null) {
-			FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
-		}
+		FileUtils.copyInputStreamToFile(conn.getInputStream(), new File(path + "/" + newImageName));
 		headImgUrl = newImageName;
 		//获取wechat头像并保存本地
 		
@@ -111,7 +107,7 @@ public class WeixinLoginServlet extends HttpServlet {
 		}
 
 		// 查询数据库中是否存在uid
-		user = userManager.findUserByWeixinUid(openid);
+		User user = userManager.findUserByWeixinUid(openid);
 		if (user == null) {
 			System.out.println("数据库中不存在该微博uid");
 			// 用户没有绑定账号
