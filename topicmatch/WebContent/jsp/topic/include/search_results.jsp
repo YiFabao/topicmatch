@@ -76,22 +76,22 @@
 											<c:set var="userId" value="${searched_topicsHashMap.key}" />
 											<c:set var="currentUser" value="${userIdMappingUserObj[userId]}" />
 											<c:choose>
-												<c:when test="${currentUser.sex}=='男'">
+												<c:when test="${currentUser.sex=='男'}">
 													<span class="sex man">♂</span>
 												</c:when>
-												<c:when test="${currentUser.sex}=='女'">
+												<c:when test="${currentUser.sex=='女'}">
 													<span class="sex woman">♀</span>
 												</c:when>
 												<c:otherwise>
-													<span class="sex woman">未知</span>
+													<span class="sex">未知</span>
 												</c:otherwise>
 											</c:choose>
 											<c:choose>
-												<c:when test="${currentUser.address}=='' || ${currentUser.address}=='IP地址库文件错误'">
-													<p class="area" style="margin-left: 10px;">未知</p>
+												<c:when test="${currentUser.address==''} || ${currentUser.address=='IP地址库文件错误'}">
+													<p class="area" style="margin-left: 10px;">位置:未知</p>
 												</c:when>
 												<c:otherwise>
-													<p class="area" style="margin-left: 10px;">${currentUser.address}</p>
+													<p class="area" style="margin-left: 10px;">'位置:'+${currentUser.address}</p>
 												</c:otherwise>
 											</c:choose>
 											
