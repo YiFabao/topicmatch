@@ -205,7 +205,7 @@ public class UserLoginService extends HttpServlet {
 		userInfoManager.addLoginLog(new LoginLog(String.valueOf(user.id),0));
 		//跳转到window.location="${pageContext.request.contextPath}/jsp/xunta_user/login5.jsp";
 		try {
-			response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login5.jsp");
+			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");//
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -11,6 +11,8 @@ var topicId_historyMsgArray={};//话题　topicId:获取的历史消息
 var topicId_joinMemNum={};//话题的参与人总数
 var notifiction_count=0;
 
+var topicId_offlineMsgNum={};
+
 //全局变量
 var topicItemArray = new Array();//用来保存已经加载过的话题列表对应的topicId
 
@@ -30,6 +32,9 @@ function getTotalUnreadMsg(){
 	var sum=0;
 	for(var index in topicId_unreadMsgArray){
 		sum+=topicId_unreadMsgArray[index].length;
+	} 
+	for(var index in topicId_offlineMsgNum){
+		sum+=topicId_offlineMsgNum[index];
 	} 
 	console.log("总未读消息："+sum);
 	return sum;
@@ -718,6 +723,7 @@ function changeTopicChatBox(topicId){
 		
 	//加载全局变量中存储的未读消息到聊天框
 	//此时要判断一下，topicId是否存在于unreadMsgnotShow_topicIdArray中
+	topicId_offlineMsgNum[topicId]=0;
 	if(unreadMsgnotShow_topicIdArray.in_array(topicId)){//存在,则不显示
 		unreadMsgnotShow_topicIdArray.remove(topicId);
 		//删除未读消息
@@ -745,7 +751,6 @@ function changeTopicChatBox(topicId){
 			$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
 		}
 	}
-	
 }
 
 function chat_box_close(){
@@ -949,7 +954,173 @@ function createMessage(contentType,obj_json){
 	}
 	
 };
+//离线消息处理
+window.offlineMsgHandle = function(offlineMessageJsonArray){
 
+	for (var o = 0; o < offlineMessageJsonArray.length; o++) {
+		var offlineMessageTopicId = offlineMessageJsonArray[o].topicId;
+		var offlineMessageAccepterId = offlineMessageJsonArray[o].accepterId;
+		var offlineMessageUnreadNum = offlineMessageJsonArray[o].unreadNum;
+		console.log('topicId : '+offlineMessageTopicId+" - accepterId : "+offlineMessageAccepterId+" - unreadNum : "+offlineMessageUnreadNum);
+		addTopicList(offlineMessageTopicId,offlineMessageUnreadNum);
+	}
+/*
+	if (topicId_unreadMsgArray[topicId]) {
+		topicId_unreadMsgArray[topicId].push(json);
+	} else {
+		var arr = new Array();
+		arr.push(json);
+		topicId_unreadMsgArray[topicId] = arr;
+	}*/
+	$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
+
+
+}
+function addTopicList(topicId,msgNum){
+	if (topicId == null || topicId == "") {
+		console.log("Error:topicId为空值");
+		return;
+	}
+
+	//初始化显示的历史消息记录数为0
+	topicId_count_map[topicId]=0;
+	//初始化未读消息数,需判断话题项是否存在,如果存在就添加，否则就不添加，因为第一次加载话题项时有历史消息，历史消息包含最近发的消息
+	topicId_offlineMsgNum[topicId]=msgNum;
+	$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
+
+	// 判断话题列表项是否存在
+	if (topicItemArray.in_array(topicId)) {// 存在话题列表项,更新显示未读消息数
+		console.log("列表项存在");
+		// TODO:
+		var topicUnreadNum = msgNum;
+		// 判断是否存在<span class="num">2</span>
+		// 不在就创建，存在就更新里面的text内容
+		var num_node = $(".rec-topic-list li[topicId="+topicId+"]").find("span.num");
+		console.log("num_length:"+num_node.length);
+		if(num_node.length){
+			//存在,更新未读消息数,从全局未读消息数中获取
+			num_node.html(msgNum);
+		}
+		else{
+			//不存在,创建节点元素
+			console.log("不存在num节点元素,创建节点元素");
+			var span_node = $("<span></span>").addClass("num").html(msgNum);
+			console.log(span_node[0]);
+			//添加
+			var topic_list_node = $(".rec-topic-list li[topicId="+topicId+"]");
+			topic_list_node.prepend(span_node);
+		}
+	} else {
+		console.log("列表项不存在");
+		//对方发消息过来，自已这边又不存在聊天窗口的情况下
+		unreadMsgnotShow_topicIdArray.push(topicId);
+		// 创建话题列表项及创建话题对话框
+		// 发送请求获取对应topicId：Topic,List<User>
+		$.post(contextPath + "/servlet/topic_service", {
+			cmd : "getTopicAndTopicMembersByTopicId",
+			topicId : topicId
+		}, function(res, status) {
+			console.log(res);
+			console.log(res.topic);
+			console.log(res.memberList);
+
+			var topic = res.topic;
+			var memberList = res.memberList;// 话题成员
+			var user_p = res.user_p;
+
+			var center = createChatBox_center(topic, user_p);
+			var fold = createChatBox_fold(topicId);
+			var right = createChatBox_right(topicId, memberList);
+
+			chat_box_center[topicId] = center;// 保存到全局变量
+			chat_box_fold[topicId] = fold;
+			chat_box_right[topic.topicId] = right;
+
+			// 创建话题列表项
+			var topicMemberItem = $(".topic-box .left .rec-topic-list");
+			var li_node = $("<li></li>");
+			li_node.attr("topicId", topicId);
+			var span_node = $("<span></span>");
+			span_node.attr("class", "num");
+			var topicUnreadNum = msgNum;
+			span_node.text(topicUnreadNum);
+			li_node.append(span_node);
+
+			var p_node = $("<p></p>");
+			p_node.attr("class", "name");
+			p_node.attr("title", topic.topicTitle);
+			p_node.text(topic.topicTitle);
+
+			var a_node = $("<a>&#xe601;</a>");
+			a_node.attr("href", "#");
+			a_node.attr("class", "iconfont close");
+			a_node.click(function() {
+				$(this).parent().remove();//移除
+				//判断是否是最后一个元素
+				//判断topicId 在topicItemArray中下标
+				var _index = topicItemArray.indexOf(topicId);// 获取当前topicId的下标
+				console.log("_index:"+_index);
+				console.log("topicItemArray.length-1:"+(topicItemArray.length-1));
+				var _nextTopicId;
+				if(_index == topicItemArray.length-1){
+					console.log("最底部一个元素");
+					//下一个获取焦点topicId
+					//判断是否是第一个元素
+					if(topicItemArray.length==1){
+						//清空所有内容
+						var div_center=$("div.center[topicId="+topicId+"]");
+						console.log(div_center[0]);
+						div_center.find("div.title").html("");
+						div_center.find("p.txt").empty();
+						div_center.find("div.chat-box").empty();
+						var div_right = $("div.right").empty();
+						$("div.center").attr("topicId","");
+						$("div.toggle").attr("topicId","");
+						$("div.right").attr("topicId","");
+					}else{
+						_nextTopicId=topicItemArray[_index-1];
+						console.log(_nextTopicId);
+					}
+
+				}else{
+					console.log("不是最后一个元素");
+					_nextTopicId=topicItemArray[_index+1];
+				}
+				
+				if(_nextTopicId){
+					changeTopicChatBox(_nextTopicId);
+				}
+
+				//设置焦点
+				$("ul.rec-topic-list li[topicid="+_nextTopicId+"]").addClass("cur").siblings().removeClass("cur");
+
+				topicItemArray.remove(topicId);
+
+				if(chat_box_center[topicId]!=null){
+					console.log("删除");
+					delete chat_box_center[topicId];
+				}
+				if(chat_box_fold[topicId]!=null){
+					delete chat_box_fold[topicId];
+				}
+				if(chat_box_right[topicId]!=null){
+					delete chat_box_right[topicId];
+				}
+
+			});
+
+			li_node.append(p_node).append(a_node);
+			// li_node添加事件:点击事件
+			li_node.click(function(e) {
+				$(this).attr("class", "cur").siblings().removeClass("cur");
+				// 从全局变量中取出对应的html
+				changeTopicChatBox(topicId);
+			});
+			topicMemberItem.append(li_node);
+			topicItemArray.push(topicId);
+		});
+	}
+}
 //创建消息处理函数
 window.webimHandle = function(json) {
 	/**
@@ -1071,22 +1242,58 @@ window.webimHandle = function(json) {
 				a_node.attr("href", "#");
 				a_node.attr("class", "iconfont close");
 				a_node.click(function() {
-					//检查是否是最后一个，如果是最后一个就不许移除
-					if(topicItemArray.length==1){
-						return;
+					$(this).parent().remove();//移除
+					//判断是否是最后一个元素
+					//判断topicId 在topicItemArray中下标
+					var _index = topicItemArray.indexOf(topicId);// 获取当前topicId的下标
+					console.log("_index:"+_index);
+					console.log("topicItemArray.length-1:"+(topicItemArray.length-1));
+					var _nextTopicId;
+					if(_index == topicItemArray.length-1){
+						console.log("最底部一个元素");
+						//下一个获取焦点topicId
+						//判断是否是第一个元素
+						if(topicItemArray.length==1){
+							//清空所有内容
+							var div_center=$("div.center[topicId="+topicId+"]");
+							console.log(div_center[0]);
+							div_center.find("div.title").html("");
+							div_center.find("p.txt").empty();
+							div_center.find("div.chat-box").empty();
+							var div_right = $("div.right").empty();
+							$("div.center").attr("topicId","");
+							$("div.toggle").attr("topicId","");
+							$("div.right").attr("topicId","");
+						}else{
+							_nextTopicId=topicItemArray[_index-1];
+							console.log(_nextTopicId);
+						}
+
+					}else{
+						console.log("不是最后一个元素");
+						_nextTopicId=topicItemArray[_index+1];
 					}
-					$(this).parent().remove();// 移除
+					
+					if(_nextTopicId){
+						changeTopicChatBox(_nextTopicId);
+					}
+
+					//设置焦点
+					$("ul.rec-topic-list li[topicid="+_nextTopicId+"]").addClass("cur").siblings().removeClass("cur");
+
 					topicItemArray.remove(topicId);
-					if (chat_box_center.topicId != null) {
-						chat_box_center[topicId] = undefined;
+
+					if(chat_box_center[topicId]!=null){
+						console.log("删除");
+						delete chat_box_center[topicId];
 					}
-					if (chat_box_fold.topicId != null) {
-						chat_box_fold[topicId] = undefined;
+					if(chat_box_fold[topicId]!=null){
+						delete chat_box_fold[topicId];
 					}
-					if (chat_box_right.topicId != null) {
-						chat_box_right[topicId] = undefined;
+					if(chat_box_right[topicId]!=null){
+						delete chat_box_right[topicId];
 					}
-					//
+
 				});
 
 				li_node.append(p_node).append(a_node);

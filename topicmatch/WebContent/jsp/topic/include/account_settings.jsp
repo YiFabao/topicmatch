@@ -346,6 +346,13 @@ function isNull( str ){
 				 Tip("用户名已存在");
 				 return false;
 			 }
+			 var pwd=$("#PassWordR").val().trim();
+			 if(!isNull(username)&&isNull(pwd))
+			 {
+				 $('#PassWordR').testRemind("您填写了用户名，请同时填写登录密码").get(0).select();
+				 Tip("您填写了用户名，请同时填写登录密码");
+				 return false;
+			 }
 		 }
 		 
 		 if(tags_array.length<=0)

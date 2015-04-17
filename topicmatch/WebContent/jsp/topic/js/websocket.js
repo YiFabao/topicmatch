@@ -157,12 +157,16 @@ function websocketEvent(userId) {
 			//推送离线消息到前台
 			console.log("有离线消息");
 			var offlineMessageJsonArray = json.offlineMessage;
-			for (var o = 0; o < offlineMessageJsonArray.length; o++) {
+			if(window.offlineMsgHandle)
+			{
+				offlineMsgHandle(offlineMessageJsonArray);
+			}
+/*			for (var o = 0; o < offlineMessageJsonArray.length; o++) {
 				var offlineMessageTopicId = offlineMessageJsonArray[o].topicId;
 				var offlineMessageAccepterId = offlineMessageJsonArray[o].accepterId;
 				var offlineMessageUnreadNum = offlineMessageJsonArray[o].unreadNum;
 				console.log('topicId : '+offlineMessageTopicId+" - accepterId : "+offlineMessageAccepterId+" - unreadNum : "+offlineMessageUnreadNum);
-			}
+			}*/
 			
 		}
 	}
