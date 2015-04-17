@@ -47,9 +47,9 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tools_xu.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xinlangBlog_sdk.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/qq_Sdk4J.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tencent.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sina.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/rt.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tencent.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
