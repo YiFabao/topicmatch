@@ -57,6 +57,7 @@
 
 
 <script>
+
 	/**
 	 * 生成一个匹配的话题发起人
 	 * @author fabao.yi
@@ -490,9 +491,11 @@
 	        $('.main').prepend('<div id="disppear_alert"><span>'+text+'</span></div>');
 	        }
 	    }
+
+ 
  $(function(){
-	 	var wheight = $(window).height()
-	 	$(".topic-list").height(wheight-120-90)
+	 	var s =window.screen.height; 
+	 	$(".topic-list").height(s-289)
 	 	$('.send-box').live('click',function(){
 	 		$('.send-box textarea').focus();
 	 	})

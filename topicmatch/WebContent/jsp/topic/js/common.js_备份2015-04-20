@@ -1,10 +1,4 @@
 $(function(){
-	//防止页面底部留白
-	var wh = $(window).height();
-	var ch = $(".content").height();
-	var s = window.screen.height; 
-	$(".content").height(s-120)
-	console.log("s:=====>"+s);
 	//导航效果
 	var var_a;
 	if($('.nav li').find(".current").length<0) var_a = false
@@ -44,7 +38,7 @@ $(function(){
 	})
 	//单选按钮模拟
 	$(".form .radio").click(function(){
-		$(this).addClass("checked-r").siblings().removeClass("checked-r")
+		$(this).addClass("checked-r").siblings().removeClass("checked-r");
 		var radio = $(this).find("input[type='radio']");
 		radio.attr("checked","true").siblings().removeAttr("checked");
 		return false;
@@ -133,34 +127,30 @@ $(this).find('label').html(o);
 	var title =$(this).attr("title");
 	if(title=="展开"){
 		$(this).attr("title","收缩");
-		$(this).find("i").html("&#xe605;");
+		$(this).find("i").html("&#xe606;");
 		$('.topic-box').animate({"right":0},'slow')
 	}
 	else{
 		$(this).attr("title","展开");
-		$(this).find("i").html("&#xe606;");
+		$(this).find("i").html("&#xe605;");
 		$('.topic-box').animate({"right":-82},'slow')
 	}
 })*/
 $('.topic-box .title .close').click(function(){
 	$('.topic-box').animate({"bottom":-620},'300')
 })
-/*
-$('.mintopic-box .unfold').click(function(){
+/*$('.mintopic-box .unfold').click(function(){
 	$('.topic-box').animate({"bottom":0},'300')
-})
-*/
+})*/
 //关闭确认框
 $('.confirm-box .close').click(function(){
 	$(this).parents(".confirm-box").hide()
 })
 //表单验证提示样式
-if($('body').find("form").length>0){
 	var css
 	$.testRemind.css = {
     fontSize: "16px"	
 	};
-}
 //消息弹出
 $(".header .tab-list a").powerSwitch({
     classAdd: "tab-on",
@@ -171,15 +161,13 @@ $(".header .tab-list a").powerSwitch({
 function Tip(even){
 	alert(even)
 }
-
-/*
-$('.interests .tag .del').live('click',function(){
+/*$('.interests .tag .del').live('click',function(){
 	var i =  $(this).parents(".interests")
 	$(this).parent('.tag').remove();
 	if(i.find(".cont").html() == " ")
 		i.find(".placeholder").show()
-})
-$('#AddTagBtn').live('click',function(){
+});*/
+/*$('#AddTagBtn').live('click',function(){
 	var c = $(this).prev().find("input");
 	if(c.val().replace(/(^\s*)|(\s*$)/g,"")!=""){
 		$('.login-3 .cont>div').append('<a href="#" class="tag">'+ c.val()+'<i class="iconfont del">&#xe604;</i></a>')
@@ -211,6 +199,7 @@ function checkPwd(even){
 		}
 	});
 }
+
 //提示函数
 function Tip(even){
 	var tip = $('#Tip')

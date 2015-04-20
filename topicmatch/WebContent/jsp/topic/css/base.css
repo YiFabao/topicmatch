@@ -139,7 +139,7 @@ top:-40px;background-color:#38383c;box-shadow:0 -3px 3px rgba(0, 0, 0, 0.51);z-i
 .header .news-area .pop .link{left:0;width:44px}
 .header .t{position:relative;border-radius:5px;background-color:#38383c;overflow:hidden;box-shadow:0 0 3px rgba(0, 0, 0, 0.51);padding-bottom:9px}
 .header .user-area .t{border-top-right-radius:inherit}
-.header .news-area .t{border-top-left-radius:inherit;width:180px}
+.header .news-area .t{border-top-right-radius:inherit;width:180px;margin-left: -136px;}
 .header .menu-list i{margin-right:3px}
 .header .t .name{font-size:14px;color:#ff9600;text-align:center;line-height:30px;padding-top:5px}
 .header .menu-list a:hover{color:#ff9600;background-color:#2d2d30}
