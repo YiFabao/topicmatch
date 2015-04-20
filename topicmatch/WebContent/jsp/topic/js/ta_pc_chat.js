@@ -689,18 +689,26 @@ function changeTopicChatBox(topicId){
 		for(var i=0;i<msgArray.length;i++){
 			var msg = msgArray[i];
 			if(msg.sender==myselfId){
-		
-				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message)+"<br/>"+"<small style='font-size:3px;'>"+msg.nickname+"&nbsp;&nbsp;"+msg.dateTime+"</small>");
+				var p_node_nc = $("<p></p>").addClass("nc").html(msg.nickname);
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
+				
 				var img_url = $("<img alt>").attr("src",contextPath+"/image?picId="+userImageUrl);
 				var div_node = $("<div></div>").attr("class","user-pic");
 				div_node.append(img_url);
+				
+				var time_node = $("<time style='margin-top:5px;'></time>").addClass("send-time").html(msg.dateTime);
 				//等于0表示自己的发言
 				var myDiv = $("<div></div>").attr("class","user my");
-				myDiv.append(p_node).append(div_node);
+				
+				myDiv.append(p_node_nc)
+					.append(p_node)
+					.append(div_node)
+					.append(time_node);
 				$(".chat-box").append(myDiv);
 				$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 			}else{
-				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message)+"<br/>"+"<small style='font-size:3px;'>"+msg.nickname+"&nbsp;&nbsp;"+msg.dateTime+"</small>");
+				var p_node_nc = $("<p></p>").addClass("nc").html(msg.nickname);
+				var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(msg.message));
 				//根据userid从好友列表中获取图像url
 				var userid = msg.sender;
 				var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
@@ -709,9 +717,16 @@ function changeTopicChatBox(topicId){
 				var img_url = $("<img alt>").attr("src",imageUrl);
 				var div_node = $("<div></div>").attr("class","user-pic");
 				div_node.append(img_url);
+				
+				var time_node = $("<time style='margin-top:5px;'></time>").addClass("send-time").html(msg.dateTime);
 
 				var otherDiv = $("<div></div>").attr("class","user other");
-				otherDiv.append(p_node).append(div_node);
+				
+				otherDiv.append(p_node_nc)
+				.append(p_node)
+				.append(div_node)
+				.append(time_node);
+				
 				$(".chat-box").append(otherDiv);
 				$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 			}
@@ -897,13 +912,22 @@ function createMessage(contentType,obj_json){
 			return;
 		}
 		var chatBox = $(".chat-box");
-		var p_node = $("<p></p>").attr("class","detail").html(msg+"<br/>"+"<small style='font-size:3px;'>"+myname+"&nbsp;&nbsp;"+formatDate(new Date())+"</small>");
+		
+		var p_node_nc = $("<p></p>").addClass("nc").html(myname);
+		var p_node = $("<p></p>").attr("class","detail").html(msg);
 		var img_url = $("<img alt>").attr("src",contextPath+"/image?picId="+userImageUrl);
 		var div_node = $("<div></div>").attr("class","user-pic");
 		div_node.append(img_url);
+		
+		var time_node = $("<time style='margin-top:5px;'></time>").addClass("send-time").html(formatDate(new Date()));
 		//等于0表示自己的发言
 		var myDiv = $("<div></div>").attr("class","user my");
-		myDiv.append(p_node).append(div_node);
+		
+		myDiv.append(p_node_nc)
+		.append(p_node)
+		.append(div_node)
+		.append(time_node);
+	
 		chatBox.append(myDiv);
 		console.log("滚动条高度"+$(".chat-box")[0].scrollHeight);
 		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
@@ -936,8 +960,8 @@ function createMessage(contentType,obj_json){
 		
 	}else{
 		var chatBox = $(".chat-box");
-	
-		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message+	"<br/>"+"<small style='font-size:3px;'>"+obj_json.nickname+"&nbsp;&nbsp;"+obj_json.dateTime+"</small>"));
+		var p_node_nc = $("<p></p>").addClass("nc").html(obj_json.nickname);
+		var p_node = $("<p></p>").attr("class","detail").html(decodeURIComponent(obj_json.message));
 		//根据userid从好友列表中获取图像url
 		var userid = obj_json.senderId;
 		var imageUrl = $(".user-list").find("li[userid="+userid+"]").find(".user-pic img").attr("src");
@@ -947,8 +971,14 @@ function createMessage(contentType,obj_json){
 		var div_node = $("<div></div>").attr("class","user-pic");
 		div_node.append(img_url);
 
+		var time_node = $("<time style='margin-top:5px;'></time>").addClass("send-time").html(obj_json.dateTime);
 		var otherDiv = $("<div></div>").attr("class","user other");
-		otherDiv.append(p_node).append(div_node);
+		
+		otherDiv.append(p_node_nc)
+		.append(p_node)
+		.append(div_node)
+		.append(time_node);
+		
 		chatBox.append(otherDiv);
 		$(".chat-box").scrollTop($(".chat-box")[0].scrollHeight); //滚动条置底
 	}
