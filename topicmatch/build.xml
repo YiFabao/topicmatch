@@ -85,7 +85,6 @@
 				<include name="**/*.txt" />  
 			</fileset>   
 		</copy> 
-		<echo message="复制QQWry.dat到项目根目录"></echo> 
 		<echo message="编译完成"></echo>
 	</target>
 	

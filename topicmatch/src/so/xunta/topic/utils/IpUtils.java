@@ -29,7 +29,7 @@ public class IpUtils {
 				.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
 		Matcher matcher = pattern.matcher(ipAddress);
 		if(matcher.matches()){
-			System.out.println(LocalContext.getIPFileInstallFolder());
+			System.out.println("ip地址库文件位置："+LocalContext.getIPFileInstallFolder());
 			IPSeeker ips = new IPSeeker("QQWry.Dat", LocalContext.getIPFileInstallFolder());
 			return ips.getCountry(ipAddress);
 		}
