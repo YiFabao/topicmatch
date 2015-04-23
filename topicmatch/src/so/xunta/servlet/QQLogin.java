@@ -130,6 +130,7 @@ public class QQLogin extends HttpServlet {
 			user = new User("", gender, nickname, "", "", "", "", openId, accessToken, "", "", "", "", new Date(), DateTimeUtils.getCurrentTimeStr(), imageUrl);
 			// 获取ip
 			String ipaAddress = request.getRemoteAddr();
+			System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 			user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 			// 添加用户表
 			userManager.addUser(user);

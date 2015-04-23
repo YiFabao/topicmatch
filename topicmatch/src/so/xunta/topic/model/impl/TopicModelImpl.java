@@ -19,6 +19,7 @@ import com.qq.connect.utils.json.JSONObject;
 import net.sf.json.JSONArray;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
+import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.entity.MatchedPeopleDetail;
 import so.xunta.topic.entity.RecommendedPeople;
@@ -419,7 +420,10 @@ public class TopicModelImpl implements TopicModel{
 				json.put("address", address==null?"保密":address);
 				json.put("sex", sex==null?"保密":sex);
 				json.put("topicId", topicId);
-				json.put("topicName", topicName);
+				json.put("topicName", topicName);//话题要高亮显示,其中包含匹配时包含用户标签的词
+				//查询用户标签
+				//List<Tag> tagsList = new TagsManagerImpl().findAllTagsByUserId(userId);
+				
 				//print
 				arrayJson.add(json.toString());
 			} catch (JSONException e) {
