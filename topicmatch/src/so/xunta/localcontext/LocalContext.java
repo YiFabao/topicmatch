@@ -33,6 +33,7 @@ public class LocalContext {
 	public static String getIPFileInstallFolder(){
 		return System.getProperty("user.dir");
 	}
+
 	public static String getPicPath(){
 		//判断操作系统
 		String osname = System.getProperty("os.name");
