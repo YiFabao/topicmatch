@@ -200,8 +200,9 @@ public class QQLogin extends HttpServlet {
 			//由于ip地址读取错误,需要修改，但又不方便直接后台修改,因此临时通过程序修改
 			if(user.address!=null&&"IP地址库文件错误".equals(user.address)){
 				user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
-				userManager.updateUser(user);
 			}
+			user.setLatestLoginTime(DateTimeUtils.getCurrentTimeStr());
+			userManager.updateUser(user);
 			request.getSession().setAttribute("user", user);
 			//准备第三方账户名显示
 			request.getSession().setAttribute("thirdParty", "QQ-昵称");
