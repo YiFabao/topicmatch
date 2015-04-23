@@ -13,10 +13,13 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
 
 import net.sf.json.JSONArray;
+import so.xunta.entity.Tag;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
 import so.xunta.manager.impl.TagsManagerImpl;
@@ -29,6 +32,7 @@ import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
 import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.TopicModel;
+import so.xunta.topic.utils.HighlightUtils;
 import so.xunta.utils.DateTimeUtils;
 
 public class TopicModelImpl implements TopicModel{
@@ -402,7 +406,7 @@ public class TopicModelImpl implements TopicModel{
 
 	@Override
 	//JSONObject ==>{userId:xxx,xunta_username:xxxx,userImgUrl:xxx, address:xxxx, sex:xxx, topicId:xxx,topoicName:xxxxx}
-	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList) {
+	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList,long uid) {
 		JSONArray arrayJson = new JSONArray();
 		for (RecommendedTopicPublisher recommendedTopicPublisher : RecommTopicPublisherList) {
 			JSONObject json = new JSONObject();
@@ -420,10 +424,18 @@ public class TopicModelImpl implements TopicModel{
 				json.put("address", address==null?"保密":address);
 				json.put("sex", sex==null?"保密":sex);
 				json.put("topicId", topicId);
-				json.put("topicName", topicName);//话题要高亮显示,其中包含匹配时包含用户标签的词
+				//json.put("topicName", topicName);//话题要高亮显示,其中包含匹配时包含用户标签的词
 				//查询用户标签
-				//List<Tag> tagsList = new TagsManagerImpl().findAllTagsByUserId(userId);
-				
+				List<Tag> tagsList = new TagsManagerImpl().findAllTagsByUserId(uid);
+				try {
+					json.put("topicName",HighlightUtils.getHighlightContentByInput(tagsList,topicName));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidTokenOffsetsException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				//print
 				arrayJson.add(json.toString());
 			} catch (JSONException e) {

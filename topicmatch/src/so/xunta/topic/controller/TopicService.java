@@ -255,7 +255,12 @@ public class TopicService extends HttpServlet {
 		 for(String s:topicIdList){
 			 System.out.println(s);
 		 }
-		 
+		User user =(User)request.getSession().getAttribute("user");
+		if(user==null){
+			System.out.println("用户为空");
+			return;
+		}
+		long uid = user.id;
 		 List<RecommendedTopicPublisher> rtpl = topicModel.getRecommendedTopicPUblisher(topicIdList);
 		 
 		 if(rtpl==null){
@@ -273,7 +278,7 @@ public class TopicService extends HttpServlet {
 			 System.out.println("userId:"+r.userId+"  topicId:"+r.topicId);
 		 }
 		 
-		 JSONArray jsonarray = topicModel.getJSONArrayFromRecommendedTopicPublisherList(rtpl);
+		 JSONArray jsonarray = topicModel.getJSONArrayFromRecommendedTopicPublisherList(rtpl,uid);
 
 		try {
 			response.setContentType("json/text");

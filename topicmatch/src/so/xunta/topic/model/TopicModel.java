@@ -32,7 +32,7 @@ public interface TopicModel {
 	/**
 	 * List<RecommendedTopicPublisher> ==> JSONArray<JSONObject> ;JSONObject ==>{userId:xxx,xunta_username:xxxx,userImgUrl:xxx,address:xxxx,sex:xxx,topicId:xxx,topoicName:xxxxx}
 	 */
-	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList);
+	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList,long uid);
 	
 	
 }
