@@ -70,7 +70,7 @@ public class Login extends HttpServlet {
 				System.out.println(user.getXunta_username()+"登录成功");
 				String ipaAddress = request.getRemoteAddr();
 				System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
-				if(user.address!=null&&"IP地址库文件错误".equals(user.address)){
+				if(user.address!=null&&("IP地址库文件错误".equals(user.address)||"".equals(user.address.trim()))){
 					user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 				}
 				user.setLatestLoginTime(DateTimeUtils.getCurrentTimeStr());

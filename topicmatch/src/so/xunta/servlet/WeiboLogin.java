@@ -214,7 +214,7 @@ public class WeiboLogin extends HttpServlet {
 		}else{
 			System.out.println("数据库中存在该微博uid");
 			//由于ip地址读取错误,需要修改，但又不方便直接后台修改,因此临时通过程序修改
-			if(user.address!=null&&"IP地址库文件错误".equals(user.address)){
+			if(user.address!=null&&("IP地址库文件错误".equals(user.address)||"".equals(user.address.trim()))){
 				user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 			}
 			//更新accessToken
