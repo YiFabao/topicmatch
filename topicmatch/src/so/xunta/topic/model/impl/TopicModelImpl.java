@@ -408,6 +408,8 @@ public class TopicModelImpl implements TopicModel{
 	//JSONObject ==>{userId:xxx,xunta_username:xxxx,userImgUrl:xxx, address:xxxx, sex:xxx, topicId:xxx,topoicName:xxxxx}
 	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList,long uid) {
 		JSONArray arrayJson = new JSONArray();
+		//查询用户标签
+		List<Tag> tagsList = new TagsManagerImpl().findAllTagsByUserId(uid);
 		for (RecommendedTopicPublisher recommendedTopicPublisher : RecommTopicPublisherList) {
 			JSONObject json = new JSONObject();
 			Long userId = recommendedTopicPublisher.getUser().getId();
@@ -417,6 +419,16 @@ public class TopicModelImpl implements TopicModel{
 			String sex = recommendedTopicPublisher.getUser().getSex();
 			String topicId = recommendedTopicPublisher.getTopic().getTopicId();//原getId,为主键自增id,已改为获取md5生成的id
 			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
+			
+		
+			try {
+				topicName= HighlightUtils.getHighlightContentByInput(tagsList, topicName);
+			} catch (IOException | InvalidTokenOffsetsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			System.out.println("高亮的topicName:"+topicName);
 			try {
 				json.put("userId", userId);
 				json.put("nickname", nickname);
@@ -425,12 +437,13 @@ public class TopicModelImpl implements TopicModel{
 				json.put("sex", sex==null?"保密":sex);
 				json.put("topicId", topicId);
 				//json.put("topicName", topicName);//话题要高亮显示,其中包含匹配时包含用户标签的词
-				//查询用户标签
-				//List<Tag> tagsList = new TagsManagerImpl().findAllTagsByUserId(uid);
+				
 			
-					json.put("topicName",topicName);
+				json.put("topicName",topicName);
 		
-				//print
+
+				System.out.println(json.get("topicName"));
+				System.out.println("json:"+json.toString());
 				arrayJson.add(json.toString());
 			} catch (JSONException e) {
 				e.printStackTrace();

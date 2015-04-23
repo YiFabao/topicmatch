@@ -42,7 +42,7 @@
 						<p class="area">杭州市</p>
 					</div>
 					<div class="cont">
-						我是candy,来到寻Ta网,想找到一个能聊得来的小伙伴
+						我是candy,来到寻Ta网,想<font color='red'>找到一个能聊得来的小伙伴</font>
 					</div>
 					<i class="tri"></i>
 				</li> -->
@@ -116,7 +116,7 @@
 		cont_div.attr("class","cont")
 				.css("display","none")
 				.css("z-index",999)
-				.text(topicname);
+				.html(topicname);
 
 		var i_node=$("<i></i>");
 		i_node.attr("class","tri");
@@ -412,6 +412,8 @@
 				console.log(res[i]);
 				var d=res[i];
 				//将数据显示出来
+				console.log(d);
+				console.log(d.topicName);
 				addOneLiNode(d.topicId,d.address,d.nickname,d.sex,d.topicName,d.userImgUrl);
 			}
 			if(topic_li_node_array.length==1)

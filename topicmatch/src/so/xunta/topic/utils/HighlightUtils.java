@@ -29,16 +29,13 @@ import so.xunta.topic.entity.Topic;
 import so.xunta.utils.HibernateUtils;
 
 public class HighlightUtils {
+	//准备分词器
+	static Analyzer analyzer = new IKAnalyzer();// IK分词器
+    //准备query
+	TagsManager tagmanager = new TagsManagerImpl();
+	
 	public static String getHighlightContentByInput(List<Tag> tagslist,String content) throws IOException, InvalidTokenOffsetsException{
 		
-		//准备分词器
-		Analyzer analyzer = new IKAnalyzer();// IK分词器
-
-        
-        
-        //准备query
-    	TagsManager tagmanager = new TagsManagerImpl();
-	
 
 		List<Topic> topicList = new ArrayList<>();
 
@@ -55,8 +52,7 @@ public class HighlightUtils {
 			}
 		}
 		// 准备高亮器  
-        Formatter formatter = new SimpleHTMLFormatter("<font color='red'>",  
-                "</font>");  
+        Formatter formatter = new SimpleHTMLFormatter("<font color='red'>","</font>");  
         Scorer scorer = new QueryScorer(query);  
         Highlighter highlighter = new Highlighter(formatter, scorer);  
   
@@ -66,7 +62,7 @@ public class HighlightUtils {
         String highlighterStr = highlighter.getBestFragment(analyzer,  
                 "topicName", content);
         System.out.println(highlighterStr);
-		return null;
+		return highlighterStr;
 	}
 	
 	/**

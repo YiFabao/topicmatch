@@ -123,7 +123,6 @@ public class QQLogin extends HttpServlet {
 		User user = userManager.findUserbyQQOpenId(openId);
 		System.out.println(qquserInfo.getNickname() + "登录");
 		
-
 		System.out.println("查询用户是否为空:" + user);
 		String ipaAddress = request.getRemoteAddr();
 		System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
