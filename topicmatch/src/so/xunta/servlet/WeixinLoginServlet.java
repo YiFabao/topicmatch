@@ -35,6 +35,7 @@ import so.xunta.manager.impl.UserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
 import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
+import so.xunta.topic.utils.IpUtils;
 import so.xunta.utils.DateTimeUtils;
 
 @WebServlet("/WeixinLoginServlet")
@@ -108,8 +109,10 @@ public class WeixinLoginServlet extends HttpServlet {
 
 		// 查询数据库中是否存在uid
 		User user = userManager.findUserByWeixinUid(openid);
+		String ipaAddress = request.getRemoteAddr();
+		System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 		if (user == null) {
-			System.out.println("数据库中不存在该微博uid");
+			
 			// 用户没有绑定账号
 			user = new User("", sex, nickname, "", "", "", "", "", "", "", "", openid, accessToken, new Date(), DateTimeUtils.getCurrentTimeStr(), headImgUrl);
 			// 添加用户表
@@ -173,12 +176,15 @@ public class WeixinLoginServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
 			}
 		} else {
-			System.out.println("数据库中存在该微博uid");
+			//由于ip地址读取错误,需要修改，但又不方便直接后台修改,因此临时通过程序修改
+			if(user.address!=null&&"IP地址库文件错误".equals(user.address)){
+				user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
+			}
 			// 更新accessToken
 			user.setWeibo_accessToken(accessToken);
 			userManager.updateUser(user);
 
-			System.out.println("登录成功");
+			System.out.println(user.nickname+"登录成功");
 			request.getSession().setAttribute("user", user);
 			//准备第三方账户名显示
 			request.getSession().setAttribute("thirdParty", "微信-昵称");

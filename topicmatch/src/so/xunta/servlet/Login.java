@@ -15,6 +15,7 @@ import so.xunta.manager.impl.QQUserInfoManagerImpl;
 import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
 import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
+import so.xunta.topic.utils.IpUtils;
 
 public class Login extends HttpServlet {
 
@@ -66,6 +67,12 @@ public class Login extends HttpServlet {
 			else
 			{
 				System.out.println(user.getXunta_username()+"登录成功");
+				String ipaAddress = request.getRemoteAddr();
+				System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
+				if(user.address!=null&&"IP地址库文件错误".equals(user.address)){
+					user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
+					userManager.updateUser(user);
+				}
 				//将user保存到session中
 				request.getSession().setAttribute("user",user);
 				

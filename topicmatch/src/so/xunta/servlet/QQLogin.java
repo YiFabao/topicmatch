@@ -122,6 +122,7 @@ public class QQLogin extends HttpServlet {
 		// 查询数据库中是否存在openid
 		User user = userManager.findUserbyQQOpenId(openId);
 		System.out.println(qquserInfo.getNickname() + "登录");
+		
 
 		System.out.println("查询用户是否为空:" + user);
 		String ipaAddress = request.getRemoteAddr();
@@ -195,7 +196,12 @@ public class QQLogin extends HttpServlet {
 		} else// 用户基本信息存在
 		{
 			// 登录成功
-			System.out.println("登录成功");
+			System.out.println(user.nickname+"登录成功");
+			//由于ip地址读取错误,需要修改，但又不方便直接后台修改,因此临时通过程序修改
+			if(user.address!=null&&"IP地址库文件错误".equals(user.address)){
+				user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
+				userManager.updateUser(user);
+			}
 			request.getSession().setAttribute("user", user);
 			//准备第三方账户名显示
 			request.getSession().setAttribute("thirdParty", "QQ-昵称");
