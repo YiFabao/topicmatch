@@ -124,6 +124,8 @@ public class QQLogin extends HttpServlet {
 		System.out.println(qquserInfo.getNickname() + "登录");
 
 		System.out.println("查询用户是否为空:" + user);
+		String ipaAddress = request.getRemoteAddr();
+		System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 		if (user == null)// 基本信息不存在
 		{
 			// 用户没有绑定账号
