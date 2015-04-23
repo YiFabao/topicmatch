@@ -228,10 +228,13 @@ function create_one_topic_item(obj,topicUnreadNum){
 	chat_box_unfold();
 	_this = $(obj);
 	var topicId = _this.attr("topicId");
-	var topicContent = _this.find(".cont").html();
+	var topicContent =delHtmlTag( _this.find(".cont").html());
 	create_topic_item(topicId,topicContent,topicUnreadNum);
 	
 };
+function delHtmlTag(str){
+	  return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
+	 }
 
 /**
  * 话题记忆页面　发起onclick调用的函数
