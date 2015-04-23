@@ -182,6 +182,7 @@ public class WeixinLoginServlet extends HttpServlet {
 			}
 			// 更新accessToken
 			user.setWeibo_accessToken(accessToken);
+			user.setLatestLoginTime(DateTimeUtils.getCurrentTimeStr());
 			userManager.updateUser(user);
 
 			System.out.println(user.nickname+"登录成功");

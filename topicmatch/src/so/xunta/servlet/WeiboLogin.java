@@ -219,6 +219,7 @@ public class WeiboLogin extends HttpServlet {
 			}
 			//更新accessToken
 			user.setWeibo_accessToken(token);
+			user.setLatestLoginTime(DateTimeUtils.getCurrentTimeStr());
 			userManager.updateUser(user);
 			
 			System.out.println(user.nickname+"登录成功");
