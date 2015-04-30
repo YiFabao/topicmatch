@@ -229,7 +229,7 @@ filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#777777', endC
 .talk-list .pate .last-4 .date{background-image:url(../images/dot_last_4.png)}
 .talk-list .pate .last-5 .date{background-image:url(../images/dot_last_5.png)}
 /*登录*/
-.login{background:url(../images/login_bg.jpg) no-repeat center;height:613px;margin-top:65px;box-shadow:0 0 65px rgba(0, 0, 0, 0.36);margin-bottom:65px;position:relative}
+.login{background:url(../images/login_bg.jpg) no-repeat center;height:613px;margin-top:65px;box-shadow:0 0 65px rgba(0, 0, 0, 0.36);margin-bottom:65px;position:relative;  min-width: 1254px;}
 .dialog-box{background-color:rgba(250, 250, 250, 0.94);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0fafafa', endColorstr='#f0fafafa',GradientType=0 );position:absolute;left:0;right:0;margin:auto;top:112px;border-radius:10px;padding:30px 0 37px}
 .dialog-box .close{background-color:rgba(60, 60, 60, 0.5);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#803c3c3c', endColorstr='#803c3c3c',GradientType=0 );color:#fdfdfd;font-size:40px;position:absolute;top:0;right:0;width:64px;height:50px;border-bottom-left-radius:10px;text-align:center;line-height:50px}
 .dialog-box h3{font-size:18px;font-weight:normal;text-shadow:0 0}
