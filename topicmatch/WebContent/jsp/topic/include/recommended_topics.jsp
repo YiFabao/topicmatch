@@ -496,8 +496,9 @@
 
  
  $(function(){
+	 	/*
 	 	var s =window.screen.height; 
-	 	$(".topic-list").height(s-289)
+	 	$(".topic-list").height(s-320)*/
 	 	$('.send-box').live('click',function(){
 	 		$('.send-box textarea').focus();
 	 	})
