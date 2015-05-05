@@ -97,13 +97,13 @@ $(function(){
 	});
 	//微博登录
 	$(".weibo_login").click(function(){
-		var redirect_uri = "${baseUrl}/servlet/weiboLogin";
+		var redirect_uri = "http://xunta.so/servlet/weiboLogin";
 		var  url = "https://api.weibo.com/oauth2/authorize?client_id=3793162942&response_type=code&redirect_uri="+redirect_uri;
 		window.location=url;
 	});
 	//微信登录
 	$(".weixin_login").click(function(){
-		var redirect_uri = "${baseUrl}/servlet/weixinLogin";
+		var redirect_uri = "http://xunta.so/servlet/weixinLogin";
 		var  url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx0ad98a24caca02ca&redirect_uri="+redirect_uri+"&response_type=code&scope=snsapi_login&state=d967dc101ad34ff81062309e2be96b46#wechat_redirect";
 		window.location=url;
 	});
