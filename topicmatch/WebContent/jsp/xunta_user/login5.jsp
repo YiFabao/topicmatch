@@ -12,6 +12,9 @@
 	<meta charset="UTF-8">
 	<meta name="renderer" content="webkit">
 	<title>登录-寻TA网</title>
+		<%pageContext.setAttribute("baseUrl",request.getContextPath());%>
+	<link rel="shortcut icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
+	<link rel="icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
 	<link rel="stylesheet" href="<%=basePath %>jsp/topic/css/base.css">
 	<!--[if lte IE 8]>
 		<style>

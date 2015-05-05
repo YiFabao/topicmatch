@@ -14,7 +14,9 @@ response.setDateHeader ("Expires", 0);
 <meta http-equiv="pragma" content="no-cache">  
 <meta http-equiv="cache-control" content="no-cache">  
 <meta http-equiv="expires" content="0">     
-
+<%pageContext.setAttribute("baseUrl",request.getContextPath());%>
+<link rel="shortcut icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
+<link rel="icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
 <%-- =======start 余. 定义的css文件搬到此 --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/jsp/topic/css/base.css">
 	<!--[if lte IE 8]>

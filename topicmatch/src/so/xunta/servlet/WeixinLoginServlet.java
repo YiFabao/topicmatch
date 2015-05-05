@@ -52,7 +52,7 @@ public class WeixinLoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		WeixinUserInfoManager weixinuserManager = new WeixinUserInfoManagerImpl();
 		// 获取code
-		String weixin_code = request.getParameter("weixin_code");
+		String weixin_code = request.getParameter("code");
 		// 通过code获取token
 		String codeToToken = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx0ad98a24caca02ca&secret=d967dc101ad34ff81062309e2be96b46&code="
 				+ weixin_code + "&grant_type=authorization_code";

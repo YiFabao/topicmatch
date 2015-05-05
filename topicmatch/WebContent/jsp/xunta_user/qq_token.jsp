@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,7 +10,7 @@
 		{
 			var token=s.substring(s.indexOf("=")+1,s.indexOf("&"));
 			var expires_in=s.substring(s.lastIndexOf("=")+1);
-			console.log("token:  "+token+"  expires: "+expires);
+			//console.log("token:  "+token+"  expires: "+expires);
 			window.location.href="${pageContext.request.contextPath}/servlet/qq_login?access_token="+token+"&expires_in="+expires_in+"_"+new Date(); 
 		}
 	</script>

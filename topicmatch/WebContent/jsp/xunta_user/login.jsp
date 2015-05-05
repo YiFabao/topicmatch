@@ -16,7 +16,7 @@
 	}else if(weixin_code!=null&&!"".equals(weixin_code)){
 		response.sendRedirect(request.getContextPath()+"/servlet/weixinLogin?weixin_code="+weixin_code);
 	}
-
+	
 %>
 <!DOCTYPE html>
 <html lang="zh">
@@ -24,6 +24,11 @@
 	<meta charset="UTF-8">
 	<meta name="renderer" content="webkit">
 	<title>登录-寻TA网</title>
+	
+	<%pageContext.setAttribute("baseUrl",request.getContextPath());%>
+	<link rel="shortcut icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
+	<link rel="icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
+	
 	<link rel="stylesheet" href="<%=basePath %>jsp/topic/css/base.css">
 	<!--[if lte IE 8]>
 		<style>
@@ -86,17 +91,20 @@
 $(function(){
 	//qq登录
 	$(".qq_login").click(function(){
-		window.location="<%=basePath %>servlet/authorization";
+		var redirect_url = "http://xunta.so/jsp/xunta_user/qq_token.jsp";
+		var url = "https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101100198&redirect_uri="+ redirect_url + "&scope=do_like,get_user_info,get_info,add_t";
+		window.location=url;
 	});
 	//微博登录
 	$(".weibo_login").click(function(){
-		var redirect_uri = "http://xunta.so/jsp/xunta_user/jsp_token.jsp";
+		var redirect_uri = "${baseUrl}/servlet/weiboLogin";
 		var  url = "https://api.weibo.com/oauth2/authorize?client_id=3793162942&response_type=code&redirect_uri="+redirect_uri;
 		window.location=url;
 	});
 	//微信登录
 	$(".weixin_login").click(function(){
-		var  url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx0ad98a24caca02ca&redirect_uri=http://xunta.so/jsp/xunta_user/weixin_code.jsp&response_type=code&scope=snsapi_login&state=d967dc101ad34ff81062309e2be96b46#wechat_redirect";
+		var redirect_uri = "${baseUrl}/servlet/weixinLogin";
+		var  url = "https://open.weixin.qq.com/connect/qrconnect?appid=wx0ad98a24caca02ca&redirect_uri="+redirect_uri+"&response_type=code&scope=snsapi_login&state=d967dc101ad34ff81062309e2be96b46#wechat_redirect";
 		window.location=url;
 	});
 });
