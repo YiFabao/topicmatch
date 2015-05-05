@@ -34,7 +34,7 @@ public class LocalContext {
 		return "/mnt/data/QQWry.dat";
 	}
 	public static String getIPFileInstallFolder(){
-		return "/root";//System.getProperty("user.dir");
+		return "/mnt/data";//System.getProperty("user.dir");
 	}
 
 	public static String getPicPath(){
