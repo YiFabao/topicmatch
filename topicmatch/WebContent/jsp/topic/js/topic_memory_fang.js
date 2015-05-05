@@ -168,7 +168,7 @@ function getTopicMemory(user_id, topic_type, topic_num) {
 		"userId" : user_id
 	};
 	$.post("http://" + document.domain
-			+ ":8080/topicmatch/servlet/topic_service", parameters, function(
+			+ "/topicmatch/servlet/topic_service", parameters, function(
 			res, status) {
 		console.log("请求话题记忆时      status   :    " + status);
 		console.log("执行获取话题记忆post请求 ");
@@ -229,7 +229,7 @@ function loadTopicMemory(user_id, topic_type, topic_num) {
 		"userId" : user_id
 	};
 	$.post("http://" + document.domain
-			+ ":8080/topicmatch/servlet/topic_service", parameters, function(
+			+ "/topicmatch/servlet/topic_service", parameters, function(
 			res, status) {
 		console.log("请求话题记忆时      status   :    " + status);
 		console.log("执行获取话题记忆post请求 ");

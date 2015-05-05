@@ -321,7 +321,7 @@ function getHistoryMessagesByTopicId(topicId,count){
 		biginIndex: count,
 		maxNum: 20
 	};
-	$.post("http://"+document.domain+":8080/topicmatch/TopicHistoryMessage/test", parameters, function(res, status) {
+	$.post("http://"+document.domain+"/topicmatch/TopicHistoryMessage/test", parameters, function(res, status) {
 		console.log("status:" + status);
 		console.log("执行获取历史消息post请求");
 		if (window.historyMessageHandle) {
@@ -1361,7 +1361,7 @@ function deleteTopicInvite(topicId,toUserId){
 			"toUserId":toUserId
 	};
 	
-	$.post("http://"+document.domain+":8080/topicmatch/Notification", parameters, function(res, status) {
+	$.post("http://"+document.domain+"/topicmatch/Notification", parameters, function(res, status) {
 		console.log("status:" + status);
 		console.log("执行 - 删除邀请话题消息通知 - 请求");
 	});
