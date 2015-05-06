@@ -895,9 +895,9 @@ public class TopicManagerImpl implements TopicManager {
 		// 根据userId查询出 该用户的标签
 		TagsManager tagmanager = new TagsManagerImpl();
 		List<Tag> tagslist = tagmanager.findAllTagsByUserId(Long.parseLong(userId2));
-		for (Tag tag : tagslist) {
+	/*	for (Tag tag : tagslist) {
 			System.out.println(tag.getTagname());
-		}
+		}*/
 		List<Topic> topicList = new ArrayList<>();
 		try {
 			BooleanQuery query = new BooleanQuery();

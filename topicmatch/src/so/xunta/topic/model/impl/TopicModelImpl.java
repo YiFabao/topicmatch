@@ -1,24 +1,22 @@
 package so.xunta.topic.model.impl;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 
-import com.qq.connect.utils.json.JSONException;
-import com.qq.connect.utils.json.JSONObject;
-
-import net.sf.json.JSONArray;
 import so.xunta.entity.Tag;
 import so.xunta.entity.User;
 import so.xunta.manager.UserManager;
@@ -34,6 +32,9 @@ import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.TopicModel;
 import so.xunta.topic.utils.HighlightUtils;
 import so.xunta.utils.DateTimeUtils;
+
+import com.qq.connect.utils.json.JSONException;
+import com.qq.connect.utils.json.JSONObject;
 
 public class TopicModelImpl implements TopicModel{
 	
@@ -315,13 +316,23 @@ public class TopicModelImpl implements TopicModel{
 			System.out.println("没有推荐的话题");
 			return null;
 		}
+		
 		//如果一个用户对应多个相关话题，保留最新的 userId==>最新的相关话题
-		Map<String,Topic> userId_topic_map = new HashMap<String,Topic>();
+		//<userId,topicId> 用于关联Topic和User
+		Map<String,String> userId_topicId_map = new HashMap<String,String>();
+		//<userId,User>
 		Map<Long,User> userId_user_map = new HashMap<Long, User>();
+		//<topicId,Topic>
+		Map<String,Topic> topicId_topic_map = new HashMap<String,Topic>();
+		//List<userId> //最终是显示的人要将userid排序，userid是根据topicId排的序,topic是根据相关性排的序
 		List<Long> userIdList = new ArrayList<Long>();
+		
 		for(Topic t:topicList)
 		{
-			if(!userId_topic_map.containsKey(t.userId)){
+			userIdList.add(Long.parseLong(t.userId));
+			userId_topicId_map.put(t.userId,t.topicId);
+			topicId_topic_map.put(t.topicId,t);
+			/*if(!userId_topic_map.containsKey(t.userId)){
 				userId_topic_map.put(t.userId,t);
 				userIdList.add(Long.parseLong(t.userId));
 			}else{
@@ -337,8 +348,7 @@ public class TopicModelImpl implements TopicModel{
 				if(c_time<t_time){
 					userId_topic_map.put(t.userId,t);
 				}
-			}
-			
+			}*/
 		}
 		
 		List<User> userList = userManager.findUserListByUserIdList(userIdList);
@@ -352,13 +362,13 @@ public class TopicModelImpl implements TopicModel{
 		}
 		
 		List<RecommendedTopicPublisher> rtpList = new ArrayList<RecommendedTopicPublisher>();
-		Collection<Topic> collection_t=userId_topic_map.values();
-		Iterator<Topic> it = collection_t.iterator();
+		Iterator<Entry<String,String>> it= userId_topicId_map.entrySet().iterator();
+		
 		while(it.hasNext()){
-			Topic t=it.next();
+			Entry<String,String> entry = it.next();
 			RecommendedTopicPublisher rtp =new RecommendedTopicPublisher();
-			rtp.setTopic(t);
-			rtp.setUser(userId_user_map.get(Long.parseLong(t.userId)));
+			rtp.setUser(userId_user_map.get(Long.parseLong(entry.getKey())));
+			rtp.setTopic(topicId_topic_map.get(entry.getValue()));
 			rtpList.add(rtp);
 		}
 		return rtpList;
@@ -420,7 +430,6 @@ public class TopicModelImpl implements TopicModel{
 			String topicId = recommendedTopicPublisher.getTopic().getTopicId();//原getId,为主键自增id,已改为获取md5生成的id
 			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
 			
-		
 			try {
 				topicName= HighlightUtils.getHighlightContentByInput(tagsList, topicName);
 			} catch (IOException | InvalidTokenOffsetsException e1) {
@@ -437,11 +446,9 @@ public class TopicModelImpl implements TopicModel{
 				json.put("sex", sex==null?"保密":sex);
 				json.put("topicId", topicId);
 				//json.put("topicName", topicName);//话题要高亮显示,其中包含匹配时包含用户标签的词
-				
 			
 				json.put("topicName",topicName);
 		
-
 				System.out.println(json.get("topicName"));
 				System.out.println("json:"+json.toString());
 				arrayJson.add(json.toString());

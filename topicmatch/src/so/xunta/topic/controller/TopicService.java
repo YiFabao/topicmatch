@@ -294,6 +294,13 @@ public class TopicService extends HttpServlet {
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+		/**
+		*徐永 18:23:55 
+		*对了,想起一个事: 在推荐页面上, 如果相关的话题推荐完了, 就把其实的也推荐上去,
+		*/
+		//思路：查询出所有的
+		//
+		
 		System.out.println("推荐 列表："+recommendedTopicPUblisherList);
 
 		if(recommendedTopicPUblisherList==null){
