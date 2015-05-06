@@ -31,6 +31,8 @@ public interface TopicManager {
 	
 	//话题推荐
 	public List<Topic> recommendTopics(String userId);
+	
+
 
 
 

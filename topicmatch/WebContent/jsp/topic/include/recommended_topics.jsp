@@ -316,6 +316,8 @@
 			cmd:"recommendedPeople",
 			userId:userId
 		},function(res,status){
+			
+			//[obj.put(rtp.topicId,rtp.userId),...]
 			if(res=="没有匹配的话题"){
 				console.log("无推荐话题，请完善标签！");
 				$(".topic-list").html("<h3 align='center'>悲摧了,没有与你相关的推荐,尝试多加一些与你个人爱好相关的标签吧！</h3>");
@@ -332,15 +334,15 @@
 				console.log("总页数："+pageSum);
 				for(var i=0;i<res.length;i++)
 				{
-					var obj=res[i];
+					var obj=res[i];//一条{topicId:"",userId"}
 					//console.log(obj);
 					for(var key in obj){
-						recommendedPeopleData[key]=obj[key];
+						recommendedPeopleData[key]=obj[key];//recommendedPeopleData里面存储的是<topicId,userId>
 					}
 				}
 				console.log(recommendedPeopleData);
 				for(var index in recommendedPeopleData){
-					data_index_array.push(index);//数据下标
+					data_index_array.push(index);//数据下标 这个下标是topicId
 					
 				}
 				$(".page-topic .cur").text(currentPage+"/"+pageSum);

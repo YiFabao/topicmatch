@@ -247,9 +247,9 @@ public class TopicService extends HttpServlet {
 		 JSONObject json=JSONObject.fromObject(data);
 		 Iterator it = json.keys();
 		 while(it.hasNext()){
-			String userId =  (String) it.next();
-			topicIdList.add(json.getString(userId));
-			System.out.println(userId+":"+json.getString(userId));
+			String topicId =  (String) it.next();
+			topicIdList.add(topicId);
+			System.out.println(topicId+":"+json.getString(topicId));
 		 }
 		 System.out.println("获取的topicIdList=========>:");
 		 for(String s:topicIdList){
@@ -294,12 +294,17 @@ public class TopicService extends HttpServlet {
 	private void method_recommendedPeople(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
+		
+		int hitsize = recommendedTopicPUblisherList.size();
+		
 		/**
 		*徐永 18:23:55 
-		*对了,想起一个事: 在推荐页面上, 如果相关的话题推荐完了, 就把其实的也推荐上去,
+		*对了,想起一个事: 在推荐页面上, 如果相关的话题推荐完了, 就把其实的也推荐上去,每页十个话题, 最多推荐十页, 100个话题就行.其余的(没有命中的),就按最后回复时间排序..
+		*没有回复时间，按最近发表排
 		*/
-		//思路：查询出所有的
+		//思路：先搜出有
 		//
+		
 		
 		System.out.println("推荐 列表："+recommendedTopicPUblisherList);
 
@@ -319,8 +324,8 @@ public class TopicService extends HttpServlet {
 				continue;
 			}
 			JSONObject obj=new JSONObject();
-			System.out.println("userId:"+rtp.getUserId()+"  ====>topicId:"+rtp.getUserId());
-			obj.put(rtp.userId,rtp.topicId);
+			System.out.println("userId:"+rtp.getUserId()+"  ====>topicId:"+rtp.getTopicId());
+			obj.put(rtp.topicId,rtp.userId);
 			jsonArray.add(obj.toString());
 		}
 		response.setContentType("text/json");

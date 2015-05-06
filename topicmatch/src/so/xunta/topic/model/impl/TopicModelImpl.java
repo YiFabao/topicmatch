@@ -185,77 +185,23 @@ public class TopicModelImpl implements TopicModel{
 		return temp_list;
 	}
 	public static void main(String[] args) {
-	TopicManager topicManager =new TopicManagerImpl();
-	List<String> topicIdList = new ArrayList<String>();
-	topicIdList.add("A9ABC6801C19522A0329450E29B92F0A");
-/*	List<Topic> topiclist=topicManager.getTopicListByTopicIdList(topicIdList);
-		for(Topic topic:topiclist)
+		TopicModel t = new TopicModelImpl();
+/*			
+		List<RecommendedTopicPublisher> l = t.getRecommendedTopicPUblisher("2");
+		for(RecommendedTopicPublisher r:l)
 		{
-			System.out.println(topic.userId+"==>"+topic.topicName+" ===>"+topic.topicContent);
-		}
-		TopicModel topicModel = new TopicModelImpl();*/
-
-		TopicModel t=new TopicModelImpl();
-		//打印获取的userId
-		List<RecommendedTopicPublisher> rl =t.getRecommendedTopicPUblisher(topicIdList);
-		System.out.println("打印获取的userId:");
-		for(RecommendedTopicPublisher r:rl)
-		{
-			System.out.println(r.userId+":"+r.topicId);
-		}
-		
-		//测试获取用户id
-/*		List<Long> userIdList = new ArrayList<Long>();
-		String userId = "3";
-		userIdList.add((Long)userId);
-		
-		UserManager userManager = new UserManagerImpl();
-		List<User> userl = userManager.findUserListByUserIdList(userIdList);
-		
-		if(userl!=null)
-		{
-			System.out.println(userl.size());
-			for(User u:userl)
-			{
-				System.out.println(u.id);
-			}
+			System.out.println(r.userId+":"+r.topic.topicName);
 		}*/
+		List<String> topicIdList = new ArrayList<String>();
 		
-		
-		/*List<RecommendedTopicPublisher> rl = t.getRecommendedTopicPUblisher("1");
-		
-		if(rl==null){
-			System.out.println("没有推荐");
-		}else{
-			JSONArray array = t.getJSONArrayFromRecommendedTopicPublisherList(rl);
-			System.out.println(array.toString());
-			if(array!=null){
-				
-				System.out.println(array.get(0));
-			}
-			else{
-				System.out.println("array为空");
-			}
-		for(RecommendedTopicPublisher r:rl)
+		topicIdList.add("8803B6DD681B682664EAF5544B8A5DF8");
+		topicIdList.add("02CB369B6322BB7330EDACC78F855F9B");
+		topicIdList.add("2DD4860016608FCA97CC8B7FD30B6963");
+		List<RecommendedTopicPublisher> l = t.getRecommendedTopicPUblisher(topicIdList);
+		for(RecommendedTopicPublisher r:l)
 		{
-				System.out.println("用户　id:"+r.userId+"  topicId:"+r.topicId);
-				System.out.println("用户名："+r.user.xunta_username+"  话题名称：==>"+r.topic.topicName+ "  话题内容==>"+r.topic.topicContent);
-			}
-		}*/
-	
-		
-//		Topic t1 = new Topic();
-//		t1.setId(1);
-//		List<Topic> topicList = new ArrayList<Topic>();
-//		topicList.add(t1);
-//		TopicModelImpl t1 = new TopicModelImpl();
-//		List<RecommendedTopicPublisher> list = t.getRecommendedTopicPUblisherByTopicList(topicList);
-//		for (RecommendedTopicPublisher recommendedTopicPublisher : list) {
-//			System.out.println("userId : "+recommendedTopicPublisher.getUser().getId());
-//			System.out.println("nickname :"+recommendedTopicPublisher.getUser().getNickname());
-//		}
-		
-		
+			System.out.println(r.topicId+"===="+r.userId);
+		}
 	}
 	
 
@@ -316,63 +262,11 @@ public class TopicModelImpl implements TopicModel{
 			System.out.println("没有推荐的话题");
 			return null;
 		}
+		return this.getRecommendedTopicPUblisherByTopicList(topicList);
 		
-		//如果一个用户对应多个相关话题，保留最新的 userId==>最新的相关话题
-		//<userId,topicId> 用于关联Topic和User
-		Map<String,String> userId_topicId_map = new HashMap<String,String>();
-		//<userId,User>
-		Map<Long,User> userId_user_map = new HashMap<Long, User>();
-		//<topicId,Topic>
-		Map<String,Topic> topicId_topic_map = new HashMap<String,Topic>();
-		//List<userId> //最终是显示的人要将userid排序，userid是根据topicId排的序,topic是根据相关性排的序
-		List<Long> userIdList = new ArrayList<Long>();
-		
-		for(Topic t:topicList)
-		{
-			userIdList.add(Long.parseLong(t.userId));
-			userId_topicId_map.put(t.userId,t.topicId);
-			topicId_topic_map.put(t.topicId,t);
-			/*if(!userId_topic_map.containsKey(t.userId)){
-				userId_topic_map.put(t.userId,t);
-				userIdList.add(Long.parseLong(t.userId));
-			}else{
-				Topic topic_c = userId_topic_map.get(t.userId);
-				Long c_time = null;
-				Long t_time = null;
-				try {
-					c_time = DateTimeUtils.getCurrentDateTimeObj(topic_c.createTime).getTime();
-					t_time = DateTimeUtils.getCurrentDateTimeObj(t.createTime).getTime();
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				if(c_time<t_time){
-					userId_topic_map.put(t.userId,t);
-				}
-			}*/
-		}
-		
-		List<User> userList = userManager.findUserListByUserIdList(userIdList);
-		if(userList==null){
-			return null;
-		}
-		
-		for(User u:userList)
-		{
-			userId_user_map.put(u.id,u);
-		}
-		
-		List<RecommendedTopicPublisher> rtpList = new ArrayList<RecommendedTopicPublisher>();
-		Iterator<Entry<String,String>> it= userId_topicId_map.entrySet().iterator();
-		
-		while(it.hasNext()){
-			Entry<String,String> entry = it.next();
-			RecommendedTopicPublisher rtp =new RecommendedTopicPublisher();
-			rtp.setUser(userId_user_map.get(Long.parseLong(entry.getKey())));
-			rtp.setTopic(topicId_topic_map.get(entry.getValue()));
-			rtpList.add(rtp);
-		}
-		return rtpList;
 	}
+	
+
 
 	@Override
 	public List<RecommendedTopicPublisher> getRecommendedTopicPUblisher(List<String> topicIdList) {
@@ -380,6 +274,8 @@ public class TopicModelImpl implements TopicModel{
 			return null;
 		}
 		List<Topic> topicList = topicManager.getTopicListByTopicIdList(topicIdList);
+		
+		System.out.println(topicList.size());
 
 		List<RecommendedTopicPublisher> rtbl = getRecommendedTopicPUblisherByTopicList(topicList);
 
@@ -390,7 +286,7 @@ public class TopicModelImpl implements TopicModel{
 	@Override
 	public List<RecommendedTopicPublisher> getRecommendedTopicPUblisherByTopicList(List<Topic> topicList) {
 		
-		TreeMap<Long,Topic> treeMap = new TreeMap<Long,Topic>();
+		/*TreeMap<Long,Topic> treeMap = new TreeMap<Long,Topic>();
 		List<Long> userIdList = new ArrayList<Long>();
 		List<RecommendedTopicPublisher> list = new ArrayList<RecommendedTopicPublisher>();
 		Long userId;
@@ -410,8 +306,50 @@ public class TopicModelImpl implements TopicModel{
 					list.add(r);
 				}
 			}
+		}*/
+		//如果一个用户对应多个相关话题，保留最新的 userId==>最新的相关话题 by fabaoyi
+		//<userId,topicId> 用于关联Topic和User
+		Map<String,String> topicId_userId_map = new HashMap<String,String>();
+		//<userId,User>
+		Map<Long,User> userId_user_map = new HashMap<Long, User>();
+		//<topicId,Topic>
+		Map<String,Topic> topicId_topic_map = new HashMap<String,Topic>();
+		//List<userId> //最终是显示的人要将userid排序，userid是根据topicId排的序,topic是根据相关性排的序
+		List<Long> userIdList = new ArrayList<Long>();
+		
+		for(Topic t:topicList)
+		{
+			userIdList.add(Long.parseLong(t.userId));
+			topicId_userId_map.put(t.topicId,t.userId);
+			topicId_topic_map.put(t.topicId,t);
 		}
-		return list;
+		
+		System.out.println(topicId_userId_map.size());
+		List<User> userList = userManager.findUserListByUserIdList(userIdList);
+		
+		for(User u: userList){
+			System.out.println("u:"+u.id);
+		}
+		if(userList==null){
+			return null;
+		}
+		
+		for(User u:userList)
+		{
+			userId_user_map.put(u.id,u);
+		}
+		
+		List<RecommendedTopicPublisher> rtpList = new ArrayList<RecommendedTopicPublisher>();
+		Iterator<Entry<String,String>> it= topicId_userId_map.entrySet().iterator();
+		
+		while(it.hasNext()){
+			Entry<String,String> entry = it.next();
+			RecommendedTopicPublisher rtp =new RecommendedTopicPublisher();
+			rtp.setUser(userId_user_map.get(Long.parseLong(entry.getValue())));
+			rtp.setTopic(topicId_topic_map.get(entry.getKey()));
+			rtpList.add(rtp);
+		}
+		return rtpList;
 	}
 
 	@Override
