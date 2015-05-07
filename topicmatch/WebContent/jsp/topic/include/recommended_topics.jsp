@@ -308,7 +308,7 @@
 	//
 	var currentPage=1;//当前第几页
 	var pageSum=1;//总页数
-	var pageNum=5;//每页多少
+	var pageNum=10;//每页多少
 	var recommendedPeopleData ={};
 	var data_index_array = new Array();
 	//发送请求获取后台推荐数据
