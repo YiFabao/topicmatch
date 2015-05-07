@@ -45,10 +45,12 @@ import so.xunta.manager.TagsManager;
 import so.xunta.manager.impl.TagsManagerImpl;
 import so.xunta.topic.entity.MessageAlert;
 import so.xunta.topic.entity.RecommendedPeople;
+import so.xunta.topic.entity.RecommendedTopicPublisher;
 import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicGroup;
 import so.xunta.topic.entity.TopicHistory;
 import so.xunta.topic.model.TopicManager;
+import so.xunta.topic.model.TopicModel;
 import so.xunta.utils.HibernateUtils;
 import so.xunta.websocket.entity.HistoryMessage;
 import weibo4j.org.json.JSONArray;
@@ -1159,9 +1161,17 @@ public class TopicManagerImpl implements TopicManager {
 	}
 	public static void main(String[] args) {
 		TopicManager topicmanager = new TopicManagerImpl();
+		TopicModel topicModel = new TopicModelImpl();
 		List<Topic> topicList = topicmanager.getLatestUpdateTopics(100);
 		for(Topic t:topicList){
 			System.out.println(t.topicContent+"  "+t.topicName+"  "+t.lastUpdateTime);
+		}
+		
+		List<RecommendedTopicPublisher> other_rtbl = topicModel.getRecommendedTopicPUblisherByTopicList(topicList);
+		System.out.println("=========================");
+		for(RecommendedTopicPublisher r:other_rtbl)
+		{
+			System.out.println(r.topic.topicName+"   "+r.topic.lastUpdateTime);
 		}
 		
 	}

@@ -77,7 +77,7 @@ public class TopicModelImpl implements TopicModel{
 		List<User> memberList = userManager.findUserListByUserIdList(memberId_long_list);
 		for(User memUser:memberList)
 		{
-			System.out.println(memUser.nickname);
+			//System.out.println(memUser.nickname);
 		}
 		
 		//将　发起人　Topic 及　用户列表 保存到request范围
@@ -115,7 +115,7 @@ public class TopicModelImpl implements TopicModel{
 				e.printStackTrace();
 			}
 		}
-		System.out.println(memberList_json.toString());
+		//System.out.println(memberList_json.toString());
 		
 		JSONObject all = new JSONObject();
 		try {
@@ -125,7 +125,7 @@ public class TopicModelImpl implements TopicModel{
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(all.toString());
+		//System.out.println(all.toString());
 		try {
 			response.setContentType("text/json");
 			response.setCharacterEncoding("utf-8");
@@ -153,7 +153,7 @@ public class TopicModelImpl implements TopicModel{
 			//System.out.println(t.topicId+"  "+t.publish_or_join);
 			//遍历每个话题下的成员
 			String key = t.authorId;
-			System.out.println("话题成员id:"+key);
+			//System.out.println("话题成员id:"+key);
 			if(matchedMap.containsKey(key)){//存在直接添加
 				MatchedPeopleDetail  matchedPeopleDetail = matchedMap.get(key);
 				//判断该用户是发起还是参与
@@ -200,7 +200,7 @@ public class TopicModelImpl implements TopicModel{
 		List<RecommendedTopicPublisher> l = t.getRecommendedTopicPUblisher(topicIdList);
 		for(RecommendedTopicPublisher r:l)
 		{
-			System.out.println(r.topicId+"===="+r.userId);
+			//System.out.println(r.topicId+"===="+r.userId);
 		}
 	}
 	
@@ -275,7 +275,7 @@ public class TopicModelImpl implements TopicModel{
 		}
 		List<Topic> topicList = topicManager.getTopicListByTopicIdList(topicIdList);
 		
-		System.out.println(topicList.size());
+		//System.out.println(topicList.size());
 
 		List<RecommendedTopicPublisher> rtbl = getRecommendedTopicPUblisherByTopicList(topicList);
 
@@ -308,28 +308,26 @@ public class TopicModelImpl implements TopicModel{
 			}
 		}*/
 		//如果一个用户对应多个相关话题，保留最新的 userId==>最新的相关话题 by fabaoyi
-		//<userId,topicId> 用于关联Topic和User
-		Map<String,String> topicId_userId_map = new HashMap<String,String>();
+		//<userId,topicId> 用于关联Topic和User,这个是有序的
+		class SortedKeyValue{String key;String value;public SortedKeyValue(String key, String value) {this.key = key;this.value = value;}};
+		List<SortedKeyValue> topicId_userId_list = new ArrayList<SortedKeyValue>();
 		//<userId,User>
 		Map<Long,User> userId_user_map = new HashMap<Long, User>();
 		//<topicId,Topic>
 		Map<String,Topic> topicId_topic_map = new HashMap<String,Topic>();
-		//List<userId> //最终是显示的人要将userid排序，userid是根据topicId排的序,topic是根据相关性排的序
-		List<Long> userIdList = new ArrayList<Long>();
 		
+		
+		//List<userId> 
+		List<Long> userIdList = new ArrayList<Long>();
 		for(Topic t:topicList)
 		{
 			userIdList.add(Long.parseLong(t.userId));
-			topicId_userId_map.put(t.topicId,t.userId);
+			topicId_userId_list.add(new SortedKeyValue(t.topicId,t.userId));
 			topicId_topic_map.put(t.topicId,t);
 		}
 		
-		System.out.println(topicId_userId_map.size());
 		List<User> userList = userManager.findUserListByUserIdList(userIdList);
 		
-		for(User u: userList){
-			System.out.println("u:"+u.id);
-		}
 		if(userList==null){
 			return null;
 		}
@@ -340,13 +338,11 @@ public class TopicModelImpl implements TopicModel{
 		}
 		
 		List<RecommendedTopicPublisher> rtpList = new ArrayList<RecommendedTopicPublisher>();
-		Iterator<Entry<String,String>> it= topicId_userId_map.entrySet().iterator();
 		
-		while(it.hasNext()){
-			Entry<String,String> entry = it.next();
+		for(SortedKeyValue s:topicId_userId_list){
 			RecommendedTopicPublisher rtp =new RecommendedTopicPublisher();
-			rtp.setUser(userId_user_map.get(Long.parseLong(entry.getValue())));
-			rtp.setTopic(topicId_topic_map.get(entry.getKey()));
+			rtp.setUser(userId_user_map.get(Long.parseLong(s.value)));
+			rtp.setTopic(topicId_topic_map.get(s.key));
 			rtpList.add(rtp);
 		}
 		return rtpList;
@@ -379,7 +375,7 @@ public class TopicModelImpl implements TopicModel{
 			}
 			
 			
-			System.out.println("高亮的topicName:"+topicName);
+			//System.out.println("高亮的topicName:"+topicName);
 			try {
 				json.put("userId", userId);
 				json.put("nickname", nickname);
@@ -391,15 +387,15 @@ public class TopicModelImpl implements TopicModel{
 			
 				json.put("topicName",topicName);
 		
-				System.out.println(json.get("topicName"));
-				System.out.println("json:"+json.toString());
+				//System.out.println(json.get("topicName"));
+				//System.out.println("json:"+json.toString());
 				arrayJson.add(json.toString());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			
 		}
-		System.out.print(arrayJson.toString());
+		//System.out.print(arrayJson.toString());
 		return arrayJson;
 	}
 }
