@@ -295,6 +295,9 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		List<RecommendedTopicPublisher> recommendedTopicPUblisherList = topicModel.getRecommendedTopicPUblisher(userId);
 		
+		if(recommendedTopicPUblisherList==null){
+			recommendedTopicPUblisherList=new ArrayList<RecommendedTopicPublisher>();
+		}
 		int hitsize = recommendedTopicPUblisherList.size();
 		
 		/**
@@ -304,16 +307,9 @@ public class TopicService extends HttpServlet {
 		//思路：从数据库搜出所有话题按最后回复时间排序,然后取出前100-命中的话题数
 		//
 		List<Topic> otherTopics = topicManager.getLatestUpdateTopics(100-hitsize);//前100条最活跃的话题
-		System.out.println("========================");
-		for(Topic t:otherTopics){
-			System.out.println(t.topicName+"  "+t.lastUpdateTime);
-		}
+
 		List<RecommendedTopicPublisher> other_rtbl = topicModel.getRecommendedTopicPUblisherByTopicList(otherTopics);
-		System.out.println("=========================");
-		for(RecommendedTopicPublisher r:other_rtbl)
-		{
-			System.out.println(r.topic.topicName+"   "+r.topic.lastUpdateTime);
-		}
+
 		recommendedTopicPUblisherList.addAll(other_rtbl);
 		
 		//System.out.println("推荐 列表："+recommendedTopicPUblisherList);
