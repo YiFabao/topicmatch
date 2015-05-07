@@ -369,11 +369,15 @@ public class TopicModelImpl implements TopicModel{
 			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
 			
 			try {
-				topicName= HighlightUtils.getHighlightContentByInput(tagsList, topicName);
+				String topicName_t= HighlightUtils.getHighlightContentByInput(tagsList, topicName);
+				if(topicName_t!=null){
+					topicName = topicName_t;
+				}
 			} catch (IOException | InvalidTokenOffsetsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
 			
 			System.out.println("高亮的topicName:"+topicName);
 			try {

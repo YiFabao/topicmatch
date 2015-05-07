@@ -403,33 +403,7 @@ public class TopicManagerImpl implements TopicManager {
 		}
 	}
 
-	public static void main(String[] args) {
-		TopicManager topicmanager = new TopicManagerImpl();
-		/*
-		 * topicmanager.createTopicIndex("1","黄山哪好玩","001","Candy","2014-1-1");
-		 * topicmanager.createTopicIndex("2","黄山登山谁去","001","Candy","2014-1-2");
-		 * topicmanager
-		 * .createTopicIndex("3","过年大家都在做什么？","001","Candy","2014-1-2");
-		 * List<Topic> list=topicmanager.matchMyTopicByUserId("001"); for(Topic
-		 * t:list) { System.out.println("话题ID:"+t.topicId);
-		 * System.out.println("话题内容:"+t.topicContent);
-		 * System.out.println("话题创建时间:"+t.topicCreatetime);
-		 * System.out.println("话题作者昵称:"+t.authorName);
-		 * System.out.println("话题作者id:"+t.authorId);
-		 * System.out.println("==========================="); }
-		 */
-		// topicmanager.addTopicJoinNumByOne("69078E1A128D0E3A9327037A3DB4BD9E");
-//		List<Topic> topicList = topicmanager.recommendTopics("49");
-//		for (Topic topic : topicList) {
-//			System.out.println(topic.getUserId() + ":" + "标题:" + topic.getTopicName() + "      内容:"
-//					+ topic.getTopicContent());
-//		}
-		/*
-		 * TagsManager tagmanaManager = new TagsManagerImpl();
-		 * tagmanaManager.addOneTag(new Tag(49,"测试"));
-		 */
-//		System.out.println(topicmanager.findTopicIdByTopicHistory("1DF33880055B9160F2F1ED19A641024D", "1"));
-	}
+	
 
 	@Override
 	public List<Topic> matchMyTopicByUserId(String authorId) {
@@ -1151,6 +1125,43 @@ public class TopicManagerImpl implements TopicManager {
 			throw e;
 		} finally {
 			session.close();
+		}
+		
+	}
+
+	@Override
+	public void updateLastUpdateTime(String topicId,String datetime) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "update Topic as t set t.lastUpdateTime=? where t.topicId =?";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0,datetime);
+			query.setString(1,topicId);
+			query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<Topic> getLatestUpdateTopics(int num) {
+		Session session = HibernateUtils.openSession();
+		String hql = "from Topic as t order by t.lastUpdateTime desc";
+		org.hibernate.Query query = session.createQuery(hql);
+		query.setFirstResult(0);
+		query.setMaxResults(num);
+		return query.list();
+	}
+	public static void main(String[] args) {
+		TopicManager topicmanager = new TopicManagerImpl();
+		List<Topic> topicList = topicmanager.getLatestUpdateTopics(100);
+		for(Topic t:topicList){
+			System.out.println(t.topicContent+"  "+t.topicName+"  "+t.lastUpdateTime);
 		}
 		
 	}

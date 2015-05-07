@@ -302,9 +302,12 @@ public class TopicService extends HttpServlet {
 		*对了,想起一个事: 在推荐页面上, 如果相关的话题推荐完了, 就把其实的也推荐上去,每页十个话题, 最多推荐十页, 100个话题就行.其余的(没有命中的),就按最后回复时间排序..
 		*没有回复时间，按最近发表排
 		*/
-		//思路：先搜出有
+		//思路：从数据库搜出所有话题按最后回复时间排序,然后取出前100-命中的话题数
 		//
+		List<Topic> otherTopics = topicManager.getLatestUpdateTopics(100-hitsize);//前100条最活跃的话题
+		List<RecommendedTopicPublisher> other_rtbl = topicModel.getRecommendedTopicPUblisherByTopicList(otherTopics);
 		
+		recommendedTopicPUblisherList.addAll(other_rtbl);
 		
 		System.out.println("推荐 列表："+recommendedTopicPUblisherList);
 

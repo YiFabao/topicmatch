@@ -2,14 +2,18 @@ package so.xunta.websocket.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
+
+import so.xunta.topic.model.TopicManager;
+import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.utils.HibernateUtils;
 import so.xunta.websocket.entity.HistoryMessage;
 import so.xunta.websocket.entity.OfflineMessage;
 
 public class WebSocketUtils {
-	
+	static TopicManager topicManager = new TopicManagerImpl();
 	/*
 	 * 添加历史消息
 	 * */
@@ -19,6 +23,7 @@ public class WebSocketUtils {
 		try {
 			session.beginTransaction();
 			session.save(historyMessage);
+			topicManager.updateLastUpdateTime(historyMessage.topicId,historyMessage.dateAndTime);
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
@@ -26,6 +31,8 @@ public class WebSocketUtils {
 		} finally {
 			session.close();
 		}
+		
+		
 		System.out.println("服务器LOG ：  添加历史消息成功");
 	}
 	
