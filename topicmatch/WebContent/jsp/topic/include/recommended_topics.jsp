@@ -267,10 +267,11 @@
 		}
 
 	}
-
+	var t1;
+	var t2;
 	function test3(){
-		setTimeout(show_and_hide,9);
-		setTimeout(test3,3000*(topic_li_node_array.length)-1000*(topic_li_node_array.length-1));
+		t1=setTimeout(show_and_hide,9);
+		t2=setTimeout(test3,3000*(topic_li_node_array.length)-1000*(topic_li_node_array.length-1));
 	}
 
 	function show_and_hide(){
@@ -349,7 +350,6 @@
 				var param = getThPageData(1);//初始化第一页
 				do_postForRecommendedData(param);
 			}
-
 		});
 	}
 	//console.log("<%=user.id%>");
@@ -423,6 +423,8 @@
 				var current = topic_li_node_array[0].find("div.cont");
 				console.log(current);
 			}else{
+				clearTimeout(t1);
+				clearTimeout(t2);
 				test3();
 			}
 		});
