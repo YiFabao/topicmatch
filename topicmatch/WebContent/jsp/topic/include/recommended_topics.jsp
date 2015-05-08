@@ -159,7 +159,7 @@
 	var y0 = HEIGHT/2;
 	var r0 = 0;
 	
-	var J_MAX =360;
+	var J_MAX =90;
 	
 	var delta_angle = 360/J_MAX;
 	var delta_r = D+delta_e;
@@ -237,6 +237,7 @@
 		 * right = y0 +(delta_r*i)*sin(delta_angle*j)
 		 */
 		 for(var i=0;i<I_MAX;i++){
+			 console.log(i);
 			 for(var j = 0;j<J_MAX;j++){
 				 left = x0+(r0+delta_r*i)*(Math.cos(delta_angle*j));
 				 top = y0 +(r0+delta_r*i)*(Math.sin(delta_angle*j))
@@ -246,7 +247,6 @@
 				 }
 			 }
 		 }
-		 console.log("这个没有找到 ");
 		 return null;
 		 
 		 
@@ -303,7 +303,7 @@
 		var li2=createItemRight(coor2.top,coor2.left,"");
 		$("ul.topic-list").append(li1);
 		$("ul.topic-list").append(li2);
-		console.log(calcDisance(coor1.top,coor1.left,coor2.top,coor2.left)-R);
+		//console.log(calcDisance(coor1.top,coor1.left,coor2.top,coor2.left)-R);
 		if(calcDisance(coor1.top,coor1.left,coor2.top,coor2.left)-R<2){
 			console.log("重合");
 		}
@@ -367,17 +367,17 @@
 			if(res=="没有匹配的话题"){
 				console.log("无推荐话题，请完善标签！");
 				$(".topic-list").html("<h3 align='center'>悲摧了,没有与你相关的推荐,尝试多加一些与你个人爱好相关的标签吧！</h3>");
-				console.log(res);
+				//console.log(res);
 			}else{
-				console.log("数组的大小:"+res.length);
+				//console.log("数组的大小:"+res.length);
 				pageSum=res.length;
 				if(res.length==0){
 					console.log("无推荐，需无善标签信息");
 					return;
 				}
-				console.log(res.length);
+				//console.log(res.length);
 				pageSum =pageSum%pageNum==0?pageSum/pageNum:Math.floor(pageSum/pageNum)+1;//初始化总页数
-				console.log("总页数："+pageSum);
+				//console.log("总页数："+pageSum);
 				for(var i=0;i<res.length;i++)
 				{
 					var obj=res[i];//一条{topicId:"",userId"}
@@ -386,7 +386,7 @@
 						recommendedPeopleData[key]=obj[key];//recommendedPeopleData里面存储的是<topicId,userId>
 					}
 				}
-				console.log(recommendedPeopleData);
+				//console.log(recommendedPeopleData);
 				for(var index in recommendedPeopleData){
 					data_index_array.push(index);//数据下标 这个下标是topicId
 					
@@ -403,7 +403,7 @@
 	//获取某一个页数据对应的{userId:topicId,...}
 	//page 从1开始的页数
 	function getThPageData(page){
-		console.log("当前页:"+currentPage+"  总页数:"+pageSum+"  每页多个条:"+pageNum );
+		//console.log("当前页:"+currentPage+"  总页数:"+pageSum+"  每页多个条:"+pageNum );
 		
 		if(page<1){
 			return null;
@@ -419,22 +419,22 @@
 		if(page==pageSum){
 			var from_index = pn*(page-1);//0起始的下标
 			var to_index = data_index_array.length-1;
-			console.log("from_index:"+from_index);
-			console.log("to_index:"+to_index);
+			//console.log("from_index:"+from_index);
+			//console.log("to_index:"+to_index);
 			//打印第 page 页的数据
 			for(var i=from_index;i<=to_index;i++){
-				console.log(data_index_array[i]+"==>"+recommendedPeopleData[data_index_array[i]]);
+				//console.log(data_index_array[i]+"==>"+recommendedPeopleData[data_index_array[i]]);
 				ret[data_index_array[i]]=recommendedPeopleData[data_index_array[i]];
 			}
 		}else{
 		
 			var from_index = pn*(page-1);//0起始的下标
 			var to_index = pn*page-1;
-			console.log("from_index:"+from_index);
-			console.log("to_index:"+to_index);
+			//console.log("from_index:"+from_index);
+			//console.log("to_index:"+to_index);
 			//打印第 page 页的数据
 			for(var i=from_index;i<=to_index;i++){
-				console.log(data_index_array[i]+"==>"+recommendedPeopleData[data_index_array[i]]);
+				//console.log(data_index_array[i]+"==>"+recommendedPeopleData[data_index_array[i]]);
 				ret[data_index_array[i]]=recommendedPeopleData[data_index_array[i]];
 			}
 		}
@@ -445,12 +445,12 @@
 	//获取某一页的数据
 	function do_postForRecommendedData(param)
 	{
-		console.log(JSON.stringify(param));
+		//console.log(JSON.stringify(param));
 		$.post("${pageContext.request.contextPath}/servlet/topic_service",{
 			cmd:"getRecommendPageData",
 			data:JSON.stringify(param)
 		},function(res,status){
-			console.log("获取到的服务数据："+res);
+			//console.log("获取到的服务数据："+res);
 			//移除原有的数据
 			$("ul.topic-list").empty();
 			topic_li_node_array.length=0;
@@ -459,17 +459,17 @@
 				console.log(res[i]);
 				var d=res[i];
 				//将数据显示出来
-				console.log(d);
-				console.log(d.topicName);
-				console.log(d.lastResMsg);
-				console.log(decodeURIComponent(d.lastResMsg));
+				//console.log(d);
+				//console.log(d.topicName);
+				//console.log(d.lastResMsg);
+				//console.log(decodeURIComponent(d.lastResMsg));
 				var resMsg = d.lastResMsg==undefined?"":decodeURIComponent(d.lastResMsg);
 				addOneLiNode(d.topicId,d.address,d.nickname,d.sex,d.topicName,d.userImgUrl,resMsg);
 			}
 			if(topic_li_node_array.length==1)
 			{
 				var current = topic_li_node_array[0].find("div.cont");
-				console.log(current);
+				//console.log(current);
 			}else{
 				clearTimeout(t1);
 				clearTimeout(t2);
