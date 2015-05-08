@@ -152,11 +152,11 @@
 	var WIDTH = 1254.0;
 	var HEIGHT = 740.0;
 	var D = 80;
-	var delta_e = 2;
+	var delta_e = 10;//疏密,值越大越疏
 	
 	
-	var x0 = WIDTH/2;
-	var y0 = HEIGHT/2;
+	var x0 = WIDTH/2;//基准点
+	var y0 = HEIGHT/2-60;
 	var r0 = 0;
 	
 	var J_MAX =90;
