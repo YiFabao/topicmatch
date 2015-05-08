@@ -42,7 +42,7 @@ public class LocalContext {
 		String osname = System.getProperty("os.name");
 		if(osname==null)
 		{
-			System.out.println("os name is null");
+			//System.out.println("os name is null");
 			return null;
 		}
 		if(osname.toUpperCase().indexOf("WINDOWS")!=-1)

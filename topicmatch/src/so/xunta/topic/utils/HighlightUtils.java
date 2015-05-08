@@ -61,7 +61,7 @@ public class HighlightUtils {
         
         String highlighterStr = highlighter.getBestFragment(analyzer,  
                 "topicName", content);
-        System.out.println(highlighterStr);
+       // System.out.println(highlighterStr);
 		return highlighterStr;
 	}
 	
@@ -82,7 +82,7 @@ public class HighlightUtils {
 
 		List<String> q = new ArrayList<String>();
 		while (tokenStream.incrementToken()) {
-			System.out.print(term + "\t");
+			//System.out.print(term + "\t");
 			q.add(term.toString());
 		}
 		return q;
