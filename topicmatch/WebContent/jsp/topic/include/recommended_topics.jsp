@@ -159,7 +159,7 @@
 	var y0 = HEIGHT/2;
 	var r0 = 0;
 	
-	var J_MAX =720;
+	var J_MAX =360;
 	
 	var delta_angle = 360/J_MAX;
 	var delta_r = D+delta_e;
