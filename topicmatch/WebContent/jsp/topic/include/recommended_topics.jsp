@@ -152,7 +152,7 @@
 	var WIDTH = 1254.0;
 	var HEIGHT = 740.0;
 	var D = 80;
-	var delta_e = 10;
+	var delta_e = 2;
 	
 	
 	var x0 = WIDTH/2;
@@ -162,7 +162,7 @@
 	var J_MAX =90;
 	
 	var delta_angle = 360/J_MAX;
-	var delta_r = D+delta_e;
+	var delta_r = D/2+delta_e;
 	var I_MAX = Math.round(x0/delta_r);
 	
 	var topic_li_node_array=new Array();//存放已显示的li_node
