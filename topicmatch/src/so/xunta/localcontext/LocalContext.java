@@ -13,15 +13,15 @@ public class LocalContext {
 		String osname = System.getProperty("os.name");
 		if(osname==null)
 		{
-			System.out.println("os name is null");
+			//System.out.println("os name is null");
 			return null;
 		}
 		if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
 		{
-			System.out.println("windows系统");
+			//System.out.println("windows系统");
 			return "d://topicIndex";
 		}else{
-			System.out.println("linux系统");
+			//System.out.println("linux系统");
 			return "/mnt/data/topicIndex";
 		}
 	}
@@ -47,14 +47,14 @@ public class LocalContext {
 		}
 		if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
 		{
-			System.out.println("windows系统");
+			//System.out.println("windows系统");
 			File f=new File("d://images");
 			if(!f.exists()){
 				f.mkdir();
 			}
 			return "d://images";
 		}else{
-			System.out.println("linux系统");
+			//System.out.println("linux系统");
 			File f=new File("/mnt/data/images");
 			if(!f.exists()){
 				f.mkdirs();
@@ -68,19 +68,19 @@ public class LocalContext {
 		String osname = System.getProperty("os.name");
 		if(osname==null)
 		{
-			System.out.println("os name is null");
+			//System.out.println("os name is null");
 			return null;
 		}
 		if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
 		{
-			System.out.println("windows系统");
+			//System.out.println("windows系统");
 			File f=new File("d://temp");
 			if(!f.exists()){
 				f.mkdir();
 			}
 			return "d://temp";
 		}else{
-			System.out.println("linux系统");
+			//System.out.println("linux系统");
 			File f=new File("/mnt/data/temp");
 			if(!f.exists()){
 				f.mkdirs();

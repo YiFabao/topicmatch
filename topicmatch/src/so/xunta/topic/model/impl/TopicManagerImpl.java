@@ -332,7 +332,7 @@ public class TopicManagerImpl implements TopicManager {
 
 		List<String> q = new ArrayList<String>();
 		while (tokenStream.incrementToken()) {
-			System.out.print(term + "\t");
+			//System.out.print(term + "\t");
 			q.add(term.toString());
 		}
 		return q;

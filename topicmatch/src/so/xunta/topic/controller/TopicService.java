@@ -162,7 +162,7 @@ public class TopicService extends HttpServlet {
 		
 		User user = userManager.findUserById(Integer.parseInt(userId));
 		if(user==null){
-			System.out.println("查询用户为空");
+			//System.out.println("查询用户为空");
 			return;
 		}
 		JSONObject json = new JSONObject();
@@ -188,7 +188,7 @@ public class TopicService extends HttpServlet {
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
 		User p_user = userManager.findUserById(Integer.parseInt(topic.userId));
-		System.out.println("p_user:"+p_user.nickname);
+		//System.out.println("p_user:"+p_user.nickname);
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
@@ -249,7 +249,7 @@ public class TopicService extends HttpServlet {
 		 while(it.hasNext()){
 			String topicId =  (String) it.next();
 			topicIdList.add(topicId);
-			System.out.println(topicId+":"+json.getString(topicId));
+			//System.out.println(topicId+":"+json.getString(topicId));
 		 }
 
 		User user =(User)request.getSession().getAttribute("user");
@@ -315,7 +315,7 @@ public class TopicService extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("将推荐列表封装json数据:");
+		//System.out.println("将推荐列表封装json数据:");
 		JSONArray jsonArray = new JSONArray();
 		for(RecommendedTopicPublisher rtp:recommendedTopicPUblisherList){
 			if(rtp==null||rtp.userId==null||rtp.topicId==null||"".equals(rtp.userId)||"".equals(rtp.topicId)){
@@ -344,11 +344,11 @@ public class TopicService extends HttpServlet {
 
 	private void initTopicRequestMsg(HttpServletRequest request, HttpServletResponse response) {
 		String userId = request.getParameter("userId");
-		System.out.println("userId:"+userId);
+		//System.out.println("userId:"+userId);
 		List<TopicRequestMsgPlusTopicDetail>  topicRequestMsgPlusTopicDetailList=msgManager.findTopicRequestMsgByUserId(userId);
 		request.setAttribute("topicRequestMsgPlusTopicDetailList", topicRequestMsgPlusTopicDetailList);
-		System.out.println(topicRequestMsgPlusTopicDetailList.size());
-		System.out.println("初始化话题邀请信息");
+		//System.out.println(topicRequestMsgPlusTopicDetailList.size());
+		//System.out.println("初始化话题邀请信息");
 		try {
 			request.getRequestDispatcher("/jsp/topic/include/topicRequest.jsp").forward(request, response);
 		} catch (ServletException e) {
@@ -362,7 +362,7 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		List<SysMessage> sysMsgList = msgManager.findSysMsgByUserId(userId);
 		request.setAttribute("sysMsgList", sysMsgList);
-		System.out.println("初始化系统信息");
+		//System.out.println("初始化系统信息");
 		try {
 			request.getRequestDispatcher("/jsp/topic/include/system_msg.jsp").forward(request, response);
 		} catch (ServletException e) {
@@ -380,7 +380,7 @@ public class TopicService extends HttpServlet {
 		String sysmsg = request.getParameter("sysmsg");
 		SysMessage sysMsg = new SysMessage(fromUserId, fromUserName, toUserId, toUserName, sysmsg,DateTimeUtils.getCurrentTimeStr(),0);
 		msgManager.addMsg(sysMsg);
-		System.out.println("保存系统信息到数据库成功");
+		//System.out.println("保存系统信息到数据库成功");
 		try {
 			response.getWriter().write("ok");
 		} catch (IOException e) {
@@ -392,7 +392,7 @@ public class TopicService extends HttpServlet {
 	private void refuseInvite(HttpServletRequest request, HttpServletResponse response) {
 		String toUserId = request.getParameter("toUserId");
 		String topicId = request.getParameter("topicId");
-		System.out.println("拒绝邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
+		//System.out.println("拒绝邀请"+"toUserId:"+toUserId+"  topicId:"+topicId);
 		msgManager.updateTopicRequestMsgHandledState(toUserId, topicId,"0");
 		try {
 			response.getWriter().write("ok");
@@ -476,16 +476,16 @@ public class TopicService extends HttpServlet {
 	private void getTopicListByTopicIdArray(HttpServletRequest request, HttpServletResponse response) {
 		String topicIdArray = request.getParameter("topicIdArray");
 		if(topicIdArray==null||"".equals(topicIdArray.trim())){return;}
-		System.out.println(topicIdArray);
+		//System.out.println(topicIdArray);
 		List<String> topicIdList = new ArrayList<String>();
 		String[] topicIds =topicIdArray.split(",");
 		for(String topicId:topicIds)
 		{
-			System.out.println(topicId);
+			//System.out.println(topicId);
 			topicIdList.add(topicId);
 		}
 		List<Topic> topicList = topicManager.getTopicListByTopicIdList(topicIdList);
-		System.out.println("数："+topicList.size());
+		//System.out.println("数："+topicList.size());
 		JSONArray topicArray = new JSONArray();
 		for(Topic t:topicList)
 		{
@@ -497,7 +497,7 @@ public class TopicService extends HttpServlet {
 			topicJSONObj.put("topicContent",t.topicContent);
 			topicJSONObj.put("logo_url",t.logo_url);
 			topicArray.add(topicJSONObj);
-			System.out.println(t.topicContent);
+			//System.out.println(t.topicContent);
 		}
 		response.setContentType("text/json");
 		response.setCharacterEncoding("utf-8");
@@ -585,13 +585,13 @@ public class TopicService extends HttpServlet {
 		String to_userName = request.getParameter("to_userName");
 		String topicId = request.getParameter("topicId");
 		
-		System.out.println("服务端收到了客户端的话题邀请请求");
+/*		System.out.println("服务端收到了客户端的话题邀请请求");
 		System.out.println("用户发出邀请参与话题请求：");
 		System.out.println("fromUserId:"+fromUserId);
 		System.out.println("fromUserName:"+fromUserName);
 		System.out.println("to_userId:"+to_userId);
 		System.out.println("to_userName:"+to_userName);
-		System.out.println("topicId:"+topicId);
+		System.out.println("topicId:"+topicId);*/
 		
 		TopicRequestMsg topicRequestMsg = new TopicRequestMsg(fromUserId, to_userId, fromUserName, to_userName, topicId, DateTimeUtils.getCurrentTimeStr(),"-1","0");
 		
@@ -719,11 +719,11 @@ public class TopicService extends HttpServlet {
 		String userLogoUrl = request.getParameter("userLogoUrl");//用户logo
 		String topicName = request.getParameter("topicName");//话题标题
 		String topicContent = request.getParameter("topicContent");//话题内容
-		System.out.println("用户id:"+userId);
+/*		System.out.println("用户id:"+userId);
 		System.out.println("用户名:"+userName);
 		System.out.println("用户LogoUrl:"+userLogoUrl);
 		System.out.println("话题名称:"+topicName);
-		System.out.println("话题内容:"+topicContent);
+		System.out.println("话题内容:"+topicContent);*/
 		
 		//话题发起时间 
 		String topicCreateTime = DateTimeUtils.getCurrentTimeStr();
@@ -952,12 +952,12 @@ public class TopicService extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String topicType = request.getParameter("topicType");
 		String topicNum = request.getParameter("topicNum");
-		System.out.println("TopicService  ==> getTopicMemory from Fang  ==>   userId : "+userId+", topicType : "+topicType+", topicNum : "+topicNum);
+		//System.out.println("TopicService  ==> getTopicMemory from Fang  ==>   userId : "+userId+", topicType : "+topicType+", topicNum : "+topicNum);
 		List<TopicHistory> topicIdList = topicManager.findAuthorIdAndPublish_or_joinByTopicId(userId, topicType,Integer.parseInt(topicNum));
 		
 		if(topicIdList.size() == 0){
 			//该用户在topicHistory里面没有符合topicType的记录
-			System.out.println("TopicService  ==> getTopicMemory from Fang  ==>  当前用户ID ： "+userId+",  没有符合 titleType : "+topicType+", 的记录");
+			//System.out.println("TopicService  ==> getTopicMemory from Fang  ==>  当前用户ID ： "+userId+",  没有符合 titleType : "+topicType+", 的记录");
 			weibo4j.org.json.JSONObject jsonObject = new weibo4j.org.json.JSONObject();
 			try {
 				jsonObject.put("notTopic", "yes");
@@ -997,7 +997,7 @@ public class TopicService extends HttpServlet {
 				String yyyyMMdd="";
 				String HHmm="";
 				try {
-					System.out.println(time_j);
+				//	System.out.println(time_j);
 					Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time_j);
 					yyyyMMdd = Time.getDate_ta_pc(date)+"  ";
 					HHmm = Time.getTime_ta_pc(date);
@@ -1033,7 +1033,7 @@ public class TopicService extends HttpServlet {
 				response.setCharacterEncoding("utf-8");
 				objectJson.put("notTopic", "no");
 				objectJson.put("msg", arrayJson.toString());
-				System.out.println(objectJson.toString());
+				//System.out.println(objectJson.toString());
 				response.getWriter().write(objectJson.toString());
 			} catch (IOException e) {
 				e.printStackTrace();
