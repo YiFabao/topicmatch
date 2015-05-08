@@ -115,9 +115,9 @@
 		<%--最后回复内容--%>
 		var p_resMsg = $("<p></p>").css("color","lightgray");
 		if(resMsg==""){
-			p_resMsg.html("(该话题下没有任何回复)");
+			p_resMsg.html("\"该话题下没有任何回复\"");
 		}else{
-			p_resMsg.html("最新回复:"+resMsg);
+			p_resMsg.html("\""+resMsg+"\"");
 		}
 		
 		
