@@ -146,8 +146,25 @@
 
 	var w_min=200,w_max=800;
 	var h_min=50,h_max=500;
-	var R = 86.0;//图像的圆半径
+	var R = 86.0;//图像的圆直径
 	var C = 40.0;
+	
+	var WIDTH = 1254.0;
+	var HEIGHT = 740.0;
+	var D = 80;
+	var delta_e = 10;
+	
+	
+	var x0 = WIDTH/2;
+	var y0 = HEIGHT/2;
+	var r0 = 0;
+	
+	var J_MAX =720;
+	
+	var delta_angle = 360/J_MAX;
+	var delta_r = D+delta_e;
+	var I_MAX = Math.round(x0/delta_r);
+	
 	var topic_li_node_array=new Array();//存放已显示的li_node
 
 	/**
@@ -214,7 +231,26 @@
 	function createSuitableCoordinates(){
 		var left;
 		var top;
-		var count=0;
+		
+		/**
+		 * left = x0+(delta_r*i)*cos(delta_angle*j);
+		 * right = y0 +(delta_r*i)*sin(delta_angle*j)
+		 */
+		 for(var i=0;i<I_MAX;i++){
+			 for(var j = 0;j<J_MAX;j++){
+				 left = x0+(r0+delta_r*i)*(Math.cos(delta_angle*j));
+				 top = y0 +(r0+delta_r*i)*(Math.sin(delta_angle*j))
+				 if(checkIsSuitable(top,left,topic_li_node_array))
+				 {
+					 return {top:top,left:left};
+				 }
+			 }
+		 }
+		 console.log("这个没有找到 ");
+		 return null;
+		 
+		 
+		/* var count=0;
 		while(count<=1000){
 			left = getRandom(w_min,w_max);
 			top = getRandom(h_min,h_max);
@@ -230,7 +266,7 @@
 		}
 		else{
 			return null;
-		}
+		} */
 	}
 
 	/**
