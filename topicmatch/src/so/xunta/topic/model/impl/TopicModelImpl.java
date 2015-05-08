@@ -352,6 +352,12 @@ public class TopicModelImpl implements TopicModel{
 	//JSONObject ==>{userId:xxx,xunta_username:xxxx,userImgUrl:xxx, address:xxxx, sex:xxx, topicId:xxx,topoicName:xxxxx}
 	public JSONArray getJSONArrayFromRecommendedTopicPublisherList(List<RecommendedTopicPublisher> RecommTopicPublisherList,long uid) {
 		JSONArray arrayJson = new JSONArray();
+		/**
+		 * 徐永
+		 *发宝: 在红色矩形框的地方, 把最新回复的内容加上去, 用""括上. 比如: 这到底是干嘛的?, 
+		 *我回复了"这是一个兴趣匹配社交工具". 那就在   这到底是干嘛的?  下面把 "这是一个兴趣匹配社交工具" 附在下面.
+		 */
+		//在话题表添加一个lastResMsg字段
 		//查询用户标签
 		List<Tag> tagsList = new TagsManagerImpl().findAllTagsByUserId(uid);
 		for (RecommendedTopicPublisher recommendedTopicPublisher : RecommTopicPublisherList) {
@@ -363,6 +369,7 @@ public class TopicModelImpl implements TopicModel{
 			String sex = recommendedTopicPublisher.getUser().getSex();
 			String topicId = recommendedTopicPublisher.getTopic().getTopicId();//原getId,为主键自增id,已改为获取md5生成的id
 			String topicName = recommendedTopicPublisher.getTopic().getTopicName();
+			String lastResMsg = recommendedTopicPublisher.getTopic().getLastResMsg();
 			
 			try {
 				String topicName_t= HighlightUtils.getHighlightContentByInput(tagsList, topicName);
@@ -386,6 +393,8 @@ public class TopicModelImpl implements TopicModel{
 				//json.put("topicName", topicName);//话题要高亮显示,其中包含匹配时包含用户标签的词
 			
 				json.put("topicName",topicName);
+				json.put("lastResMsg",lastResMsg);
+				
 		
 				//System.out.println(json.get("topicName"));
 				//System.out.println("json:"+json.toString());

@@ -23,7 +23,8 @@ public class WebSocketUtils {
 		try {
 			session.beginTransaction();
 			session.save(historyMessage);
-			topicManager.updateLastUpdateTime(historyMessage.topicId,historyMessage.dateAndTime);
+			//topicManager.updateLastUpdateTime(historyMessage.topicId,historyMessage.dateAndTime);
+			topicManager.updateLastResMsgAndTime(historyMessage.topicId, historyMessage.content, historyMessage.dateAndTime);
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();

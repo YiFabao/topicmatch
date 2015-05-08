@@ -15,6 +15,7 @@
     <property name="logo_url" not-null="false" />
     <property name="createTime" not-null="false" />
     <property name="lastUpdateTime" not-null="false" />
+    <property name="lastResMsg" not-null="false" type="text"/>
   </class>
 </hibernate-mapping>
 

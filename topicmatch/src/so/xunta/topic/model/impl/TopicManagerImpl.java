@@ -3,6 +3,7 @@ package so.xunta.topic.model.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1162,17 +1163,35 @@ public class TopicManagerImpl implements TopicManager {
 	public static void main(String[] args) {
 		TopicManager topicmanager = new TopicManagerImpl();
 		TopicModel topicModel = new TopicModelImpl();
-		List<Topic> topicList = topicmanager.getLatestUpdateTopics(100);
+		List<Topic> topicList = topicmanager.getLatestUpdateTopics(1);
 		for(Topic t:topicList){
-			System.out.println(t.topicContent+"  "+t.topicName+"  "+t.lastUpdateTime);
+			System.out.println(URLDecoder.decode(t.lastResMsg));
 		}
 		
-		List<RecommendedTopicPublisher> other_rtbl = topicModel.getRecommendedTopicPUblisherByTopicList(topicList);
-		System.out.println("=========================");
-		for(RecommendedTopicPublisher r:other_rtbl)
-		{
-			System.out.println(r.topic.topicName+"   "+r.topic.lastUpdateTime);
+	}
+
+	@Override
+	public void updateLastResMsgAndTime(String topicId, String resMsg, String datetime) {
+		Session session = HibernateUtils.openSession();
+		try {
+			session.beginTransaction();
+			String hql = "from Topic as t where t.topicId =?";
+			org.hibernate.Query query = session.createQuery(hql);
+			query.setString(0,topicId);
+			Topic topic = (Topic) query.uniqueResult();
+			if(topic==null){
+				System.err.println("更新话题最后回复时,查询话题为空");
+			}else{
+				topic.setLastUpdateTime(datetime);
+				topic.setLastResMsg(resMsg);
+				session.update(topic);
+			}
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
 		}
-		
 	}
 }

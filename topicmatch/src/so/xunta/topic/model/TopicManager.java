@@ -34,6 +34,8 @@ public interface TopicManager {
 	
 	//更新话题的最后回复时间
 	public void updateLastUpdateTime(String topicId,String datetime);
+	//同时 更新话题的最后回复内容和最后回复时间
+	public void updateLastResMsgAndTime(String topicId,String resMsg,String datetime);
 	
 	//查询最近更新的话题num条
 	public List<Topic> getLatestUpdateTopics(int num);

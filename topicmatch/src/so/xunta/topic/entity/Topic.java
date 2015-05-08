@@ -29,6 +29,8 @@ public class Topic implements Comparable<Topic>{
 	public String createTime;
 	/**话题最后活跃时间*/
 	public String lastUpdateTime;
+	/**最后回复消息内容*/
+	public String lastResMsg;
 
 	public Topic() {
 		super();
@@ -126,4 +128,12 @@ public class Topic implements Comparable<Topic>{
 		}
 		return -1;
 	}
+	public String getLastResMsg() {
+		return lastResMsg;
+	}
+	public void setLastResMsg(String lastResMsg) {
+		this.lastResMsg = lastResMsg;
+	}
+	
+	
 }

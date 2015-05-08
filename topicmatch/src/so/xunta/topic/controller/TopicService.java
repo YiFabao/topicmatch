@@ -230,7 +230,7 @@ public class TopicService extends HttpServlet {
 		all.put("topic",topic_json);
 		all.put("memberList",memberList);
 		all.put("user_p",user_p);
-		System.out.println("====================================================>"+all.toString());
+
 		try {
 			response.setContentType("text/json");
 			response.setCharacterEncoding("utf-8");
@@ -251,10 +251,7 @@ public class TopicService extends HttpServlet {
 			topicIdList.add(topicId);
 			System.out.println(topicId+":"+json.getString(topicId));
 		 }
-		 System.out.println("获取的topicIdList=========>:");
-		 for(String s:topicIdList){
-			 System.out.println(s);
-		 }
+
 		User user =(User)request.getSession().getAttribute("user");
 		if(user==null){
 			System.out.println("用户为空");
@@ -272,12 +269,7 @@ public class TopicService extends HttpServlet {
 			}
 			 return;
 		 }
-		 System.out.println("获取到的rtpl：");
-		 for(RecommendedTopicPublisher r:rtpl)
-		 {
-			 System.out.println("userId:"+r.userId+"  topicId:"+r.topicId);
-		 }
-		 
+	
 		 JSONArray jsonarray = topicModel.getJSONArrayFromRecommendedTopicPublisherList(rtpl,uid);
 
 		try {

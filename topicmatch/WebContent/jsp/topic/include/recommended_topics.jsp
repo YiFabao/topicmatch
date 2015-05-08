@@ -65,7 +65,7 @@
 	 * @param y
 	 * @return li
 	 */
-	function createItemRight(top,left,topicId,address,nickname,sex,topicname,picUrl){
+	function createItemRight(top,left,topicId,address,nickname,sex,topicname,picUrl,resMsg){
 		var li=$("<li onclick=create_one_topic_item(this,null)></li>");
 		li.css({
 			top:top+"px",
@@ -112,11 +112,20 @@
 		info.append(p_area);
 		
 
+		<%--最后回复内容--%>
+		var p_resMsg = $("<p></p>").css("color","lightgray");
+		if(resMsg==""){
+			p_resMsg.html("(该话题下没有任何回复)");
+		}else{
+			p_resMsg.html("最新回复:"+resMsg);
+		}
+		
+		
 		var cont_div=$("<div></div>");
 		cont_div.attr("class","cont")
 				.css("display","none")
 				.css("z-index",999)
-				.html(topicname);
+				.append(topicname).append(p_resMsg);
 
 		var i_node=$("<i></i>");
 		i_node.attr("class","tri");
@@ -228,7 +237,7 @@
 	 * 在dom节点上添加一个匹配的话题节点.topic-item
 	 * @author fabao.yi
 	 */
-	function addOneLiNode(topicId,address,nickname,sex,topicname,picUrl){
+	function addOneLiNode(topicId,address,nickname,sex,topicname,picUrl,resMsg){
 		if(topic_li_node_array.length>20){
 			return;
 		}
@@ -238,7 +247,7 @@
 		}
 		//console.log("top:"+coor.top+"  left:"+coor.left);
 		//createItemRight(top,left,topicId,address,xunta_username,sex,topicname,picUrl)
-		var li_node=createItemRight(coor.top,coor.left,topicId,address,nickname,sex,topicname,picUrl);
+		var li_node=createItemRight(coor.top,coor.left,topicId,address,nickname,sex,topicname,picUrl,resMsg);
 		li_node.mouseenter(function(){
 			$(this).find("div.cont").show(200);
 		});
@@ -308,7 +317,7 @@
 	//
 	var currentPage=1;//当前第几页
 	var pageSum=1;//总页数
-	var pageNum=10;//每页多少
+	var pageNum=20;//每页多少
 	var recommendedPeopleData ={};
 	var data_index_array = new Array();
 	//发送请求获取后台推荐数据
@@ -416,7 +425,10 @@
 				//将数据显示出来
 				console.log(d);
 				console.log(d.topicName);
-				addOneLiNode(d.topicId,d.address,d.nickname,d.sex,d.topicName,d.userImgUrl);
+				console.log(d.lastResMsg);
+				console.log(decodeURIComponent(d.lastResMsg));
+				var resMsg = d.lastResMsg==undefined?"":decodeURIComponent(d.lastResMsg);
+				addOneLiNode(d.topicId,d.address,d.nickname,d.sex,d.topicName,d.userImgUrl,resMsg);
 			}
 			if(topic_li_node_array.length==1)
 			{
