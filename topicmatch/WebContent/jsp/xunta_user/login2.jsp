@@ -139,7 +139,9 @@ $("#UserName,#PassWord").focus(function(){
 $(function(){
 	//qq登录
 	$(".qq_login").click(function(){
-		window.location="<%=basePath %>servlet/authorization";
+		var redirect_url = "http://xunta.so/jsp/xunta_user/qq_token.jsp";
+		var url = "https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101100198&redirect_uri="+ redirect_url + "&scope=do_like,get_user_info,get_info,add_t";
+		window.location=url;
 	});
 	//微博登录
 	$(".weibo_login").click(function(){
