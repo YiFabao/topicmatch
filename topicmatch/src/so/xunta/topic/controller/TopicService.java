@@ -61,7 +61,7 @@ public class TopicService extends HttpServlet {
 	private TopicManager topicManager = new TopicManagerImpl();
 	private MsgManager msgManager = new MsgManagerImpl();
 	private TopicModel topicModel = new TopicModelImpl();
-
+	so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
 	//用户发起话题后查询相关用户
 	private UserManager userManager = new UserManagerImpl();
 	private TagsManager tagsManager = new TagsManagerImpl();
@@ -78,21 +78,27 @@ public class TopicService extends HttpServlet {
 		switch(cmd){
 		case "fqht":
 			//发起话题
+			logutil.traceLog(request,"发起话题");
 			fqht(request,response);
 			break;
 		case "htss":
+			//在方法内部已记录日志
 			htss(request,response);
 			break;
 		case "joinTopic":
+			//在方法内部记录日志
 			joinTopic(request,response);
 			break;
 		case "invite":
+			logutil.traceLog(request,"话题邀请");
 			invite(request,response);
 			break;
 		case "receiveInvite":
+			logutil.traceLog(request, "接受邀请");
 			receiveIntive(request,response);
 			break;
 		case "refuseInvite":
+			logutil.traceLog(request, "拒绝邀请");
 			refuseInvite(request,response);
 			break;
 		case "clearNavBarMsgNum":
@@ -100,6 +106,7 @@ public class TopicService extends HttpServlet {
 			break;
 		case "msgalert" :
 			//显示我的消息
+			logutil.traceLog(request, "查看系统消息");
 			showMyMessage(request,response);
 			break;
 		case "initTopicRequestMsg":
@@ -130,15 +137,18 @@ public class TopicService extends HttpServlet {
 			method_recommendedPeople(request,response);
 			break;
 		case "getRecommendPageData":
+			logutil.traceLog(request, "话题 推荐");
 			method_getRecommendPageData(request,response);
 			break;
 		case "getTopicAndTopicMembersByTopicId"://传topicId,获取Topic,List<User>用于创建对话框
 			getTopicAndTopicMembersByTopicId(request,response);
 			break;
 		case "exit":
+			logutil.traceLog(request, "退出登录");
 			exit(request,response);
 			break;
 		case "topicMemory"://fang
+			logutil.traceLog(request, "话题记忆");
 			getTopicMemory(request,response);
 			break;
 		case "findUserByUserId":
@@ -663,6 +673,7 @@ public class TopicService extends HttpServlet {
 			searchWord =URLDecoder.decode(searchWord);
 			System.out.println("话题搜索");
 			System.out.println(searchWord);
+			logutil.traceLog(request, "话题搜索："+searchWord);
 			//搜索话题
 			//不直接从索引返回搜索的话题列表，只返回id列表
 			//List<so.xunta.topic.entity.Topic> searchedtopicList=topicManager.matchMyTopic(searchWord);

@@ -110,7 +110,8 @@ public class Login extends HttpServlet {
 					weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
 					request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 				}
-				
+				so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
+				logutil.traceLog(request, "本地登录成功,跳转首页");
 				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			}
 		}

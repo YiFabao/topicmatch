@@ -1,21 +1,8 @@
+<%@page import="so.xunta.utils.LogUtils"%>
 <%@page import="so.xunta.entity.User"%>
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-	/* String showName = (String)session.getAttribute("thirdParty");
-	User user = (User)session.getAttribute("user");
-	String nickname = user.getNickname();
-	String username = user.getXunta_username();
-	if(nickname!=null&&!"".equals(nickname.trim()))
-	{
-		showName = nickname;
-	}
-	else if(username!=null&&!"".equals(username.trim()))
-	{
-		showName = username;
-	} */
-	
-%>
+<%LogUtils logutil = new LogUtils();logutil.traceLog(request,"发起话题页面");%>
 <!DOCTYPE html>
 <html lang="zh">
 	<head>

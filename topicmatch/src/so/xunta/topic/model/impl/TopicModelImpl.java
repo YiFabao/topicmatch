@@ -32,6 +32,7 @@ import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.TopicModel;
 import so.xunta.topic.utils.HighlightUtils;
 import so.xunta.utils.DateTimeUtils;
+import so.xunta.utils.LogUtils;
 
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
@@ -40,11 +41,13 @@ public class TopicModelImpl implements TopicModel{
 	
 	TopicManager topicManager = new TopicManagerImpl();
 	UserManager userManager = new UserManagerImpl();
+	LogUtils logutil = new LogUtils();
 	
 	@Override
 	public void joinTopic(HttpServletRequest request, HttpServletResponse response,String userId, String topicId) {
 		//根据topicId 查询出Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
+		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
 		//根据用户Id查询出发起人
 		User publisher = userManager.findUserById(Integer.parseInt(topic.userId));
 		//查询出参与人

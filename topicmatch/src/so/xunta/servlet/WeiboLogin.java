@@ -190,6 +190,8 @@ public class WeiboLogin extends HttpServlet {
 				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微博-"+weibo_name);
 			}
+			so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
+			logutil.traceLog(request, "微博登录成功,跳转首页");
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
 	}

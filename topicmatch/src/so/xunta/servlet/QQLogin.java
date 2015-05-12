@@ -29,6 +29,7 @@ import so.xunta.topic.utils.IpUtils;
 import so.xunta.user.info.tencentUserInfo;
 import so.xunta.utils.DateTimeUtils;
 
+import com.mchange.v2.log.LogUtils;
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
 
@@ -168,6 +169,9 @@ public class QQLogin extends HttpServlet {
 				request.getSession().setAttribute("thirdParty", "QQ-"+qq_name);
 			}
 		}
+		so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
+		logutil.traceLog(request, "qq登录成功,跳转首页");
+		
 		response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 	}
 

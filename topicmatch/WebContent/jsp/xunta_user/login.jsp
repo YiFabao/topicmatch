@@ -1,3 +1,4 @@
+<%@page import="so.xunta.utils.LogUtils"%>
 <%@page import="so.xunta.utils.DateTimeUtils"%>
 <%@page import="so.xunta.entity.UserTrackLog"%>
 <%@page import="so.xunta.manager.LogManager"%>
@@ -10,11 +11,8 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
-	String ipaAddress = request.getRemoteAddr();
-	String country = IpUtils.getInstance().getCountryByIdAddress(ipaAddress);
-	LogManager logManager = new LogManagerImpl();
-	UserTrackLog trackLog = new UserTrackLog(ipaAddress,country,"登录页面",DateTimeUtils.getCurrentTimeStr());
-	logManager.tracklog(trackLog);
+	LogUtils logutils = new LogUtils();
+	logutils.traceLog(request,"登录页面");
 %>
 <!DOCTYPE html>
 <html lang="zh">
