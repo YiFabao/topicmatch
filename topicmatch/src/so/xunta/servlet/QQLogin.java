@@ -1,22 +1,18 @@
 package so.xunta.servlet;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 
-import so.xunta.entity.LoginLog;
 import so.xunta.entity.QQDynamicInfoContent;
 import so.xunta.entity.QQUserInfo;
 import so.xunta.entity.User;
@@ -32,7 +28,6 @@ import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.topic.utils.IpUtils;
 import so.xunta.user.info.tencentUserInfo;
 import so.xunta.utils.DateTimeUtils;
-import so.xunta.utils.Io;
 
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
@@ -151,48 +146,8 @@ public class QQLogin extends HttpServlet {
 				qq_name = qquerinfomanager.findQQNameByOpenid(qq_openid.trim());
 				request.getSession().setAttribute("thirdParty", "QQ-"+qq_name);
 			}
-			// TODO 判断是否有标签
-			if (!tagsManager.checkUserTagIsEmpty(user.id)) {// 有标签
-				System.out.println("有标签");
-				boolean bindAccount = false;
-				LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
-				if (ll == null) {
-					System.out.println("没有跳过");
-					bindAccount = true;
-				} else {
-					if (ll.getBind_account_step() == 0) {
-						System.out.println("跳过");
-						bindAccount = false;
-					} else {
-						System.out.println("没有跳过");
-						bindAccount = true;
-					}
-				}
-
-				if (bindAccount
-						&& (user.xunta_username == null || "".equals(user.xunta_username.trim())
-								|| user.password == null || "".equals(user.password))) {
-					try {
-						System.out.println("用户名没有绑定并且没有绑定账号");
-						response.sendRedirect(request.getContextPath() + "/jsp/xunta_user/login4.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					try {
-						System.out.println("用户跳或绑定了账号");
-						response.sendRedirect(request.getContextPath() + "/jsp/topic/index.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			} else {// 没有标签
-				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath() + "/jsp/xunta_user/login3.jsp");
-			}
-		} else// 用户基本信息存在
+		}
+		else// 用户基本信息存在
 		{
 			// 登录成功
 			System.out.println(user.nickname+"登录成功");
@@ -212,49 +167,8 @@ public class QQLogin extends HttpServlet {
 				qq_name = qquerinfomanager.findQQNameByOpenid(qq_openid.trim());
 				request.getSession().setAttribute("thirdParty", "QQ-"+qq_name);
 			}
-			// TODO 判断是否有标签
-			if (!tagsManager.checkUserTagIsEmpty(user.id)) {// 有标签
-				System.out.println("有标签");
-				// 判断是否绑定本地账号
-				boolean bindAccount = false;
-				LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
-				if (ll == null) {
-					System.out.println("没有跳过");
-					bindAccount = true;
-				} else {
-					if (ll.getBind_account_step() == 0) {
-						System.out.println("跳过");
-						bindAccount = false;
-					} else {
-						System.out.println("没有跳过");
-						bindAccount = true;
-					}
-				}
-
-				if (bindAccount
-						&& (user.xunta_username == null || "".equals(user.xunta_username.trim())
-								|| user.password == null || "".equals(user.password))) {
-					try {
-						System.out.println("用户名没有绑定并且没有绑定账号");
-						response.sendRedirect(request.getContextPath() + "/jsp/xunta_user/login4.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					try {
-						System.out.println("用户跳或绑定了账号");
-						response.sendRedirect(request.getContextPath() + "/jsp/topic/index.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			} else {// 没有标签
-				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath() + "/jsp/xunta_user/login3.jsp");
-			}
 		}
+		response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

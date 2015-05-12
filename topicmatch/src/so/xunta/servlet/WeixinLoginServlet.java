@@ -133,48 +133,7 @@ public class WeixinLoginServlet extends HttpServlet {
 				weixin_name = weixinuserManager.findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 			}
-			// TODO 判断是否有标签
-			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
-				System.out.println("有标签");
-				//判断是否绑定本地账号
-				boolean bindAccount = false;
-				LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
-				if(ll==null)
-				{
-					System.out.println("没有跳过");
-					bindAccount = true;
-				}else{
-					if(ll.getBind_account_step()==0)
-					{
-						System.out.println("跳过");
-						bindAccount = false;
-					}else{
-						System.out.println("没有跳过");
-						bindAccount = true;
-					}
-				}
-			
-				if(bindAccount&&(user.xunta_username==null||"".equals(user.xunta_username.trim())||user.password==null||"".equals(user.password))){
-					try {
-						System.out.println("用户名没有绑定并且没有绑定账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}else{
-					try {
-						System.out.println("用户跳或绑定了账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}else{//没有标签
-				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
-			}
+	
 		} else {
 			//由于ip地址读取错误,需要修改，但又不方便直接后台修改,因此临时通过程序修改
 			if(user.address!=null&&("IP地址库文件错误".equals(user.address)||"".equals(user.address.trim()))){
@@ -196,49 +155,8 @@ public class WeixinLoginServlet extends HttpServlet {
 				weixin_name = weixinuserManager.findWeixinNameByWeixinUid(weixin_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 			}
-			// TODO 判断是否有标签
-			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
-				System.out.println("有标签");
-				//判断是否绑定本地账号
-				boolean bindAccount = false;
-				LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
-				if(ll==null)
-				{
-					System.out.println("没有跳过");
-					bindAccount = true;
-				}else{
-					if(ll.getBind_account_step()==0)
-					{
-						System.out.println("跳过");
-						bindAccount = false;
-					}else{
-						System.out.println("没有跳过");
-						bindAccount = true;
-					}
-				}
-			
-				if(bindAccount&&(user.xunta_username==null||"".equals(user.xunta_username.trim())||user.password==null||"".equals(user.password))){
-					try {
-						System.out.println("用户名没有绑定并且没有绑定账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}else{
-					try {
-						System.out.println("用户跳或绑定了账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}else{//没有标签
-				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
-			}
 		}
+		response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 
 	}
 

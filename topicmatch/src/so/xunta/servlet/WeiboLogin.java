@@ -168,49 +168,6 @@ public class WeiboLogin extends HttpServlet {
 				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微博-"+weibo_name);
 			}
-			//TODO 判断是否有标签
-			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
-				System.out.println("有标签");
-				//判断是否绑定本地账号
-				boolean bindAccount = false;
-				LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
-				if(ll==null)
-				{
-					System.out.println("没有跳过");
-					bindAccount = true;
-				}else{
-					if(ll.getBind_account_step()==0)
-					{
-						System.out.println("跳过");
-						bindAccount = false;
-					}else{
-						System.out.println("没有跳过");
-						bindAccount = true;
-					}
-				}
-			
-				if(bindAccount&&(user.xunta_username==null||"".equals(user.xunta_username.trim())||user.password==null||"".equals(user.password))){
-					try {
-						System.out.println("用户名没有绑定并且没有绑定账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}else{
-					try {
-						System.out.println("用户跳或绑定了账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}else{//没有标签
-				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
-			}
-			
 		}else{
 			System.out.println("数据库中存在该微博uid");
 			//由于ip地址读取错误,需要修改，但又不方便直接后台修改,因此临时通过程序修改
@@ -233,104 +190,8 @@ public class WeiboLogin extends HttpServlet {
 				weibo_name = (new WeiboUserInfoManagerImpl()).findWeiboNameByWeiboUid(weibo_uid.trim());
 				request.getSession().setAttribute("thirdParty", "微博-"+weibo_name);
 			}
-			//TODO 判断是否有标签
-			if(!tagsManager.checkUserTagIsEmpty(user.id)){//有标签
-				System.out.println("有标签");
-				//判断是否绑定本地账号
-				boolean bindAccount = false;
-				LoginLog ll = userInfoManager.findLoginLogByUserId(String.valueOf(user.id));
-				if(ll==null)
-				{
-					System.out.println("没有跳过");
-					bindAccount = true;
-				}else{
-					if(ll.getBind_account_step()==0)
-					{
-						System.out.println("跳过");
-						bindAccount = false;
-					}else{
-						System.out.println("没有跳过");
-						bindAccount = true;
-					}
-				}
-			
-				if(bindAccount&&(user.xunta_username==null||"".equals(user.xunta_username.trim())||user.password==null||"".equals(user.password))){
-					try {
-						System.out.println("用户名没有绑定并且没有绑定账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login4.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}else{
-					try {
-						System.out.println("用户跳或绑定了账号");
-						response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}else{//没有标签
-				System.out.println("没有标签");
-				response.sendRedirect(request.getContextPath()+"/jsp/xunta_user/login3.jsp");
-			}
-		}
-
-		/*response.setContentType("text/html");
-		Oauth oauth = new Oauth();
-		AccessToken accessToken=null;
-		String code=request.getParameter("code");
-		Users um = new Users();
-		weibo4j.model.User u=null;
-		String weibo_acceesToken="";
-		String weibo_uid="";
-		User user=null;
-		System.out.println("获取code:"+code);
-		try {
-			accessToken =oauth.getAccessTokenByCode(code);
-			//通过accessToken获取用户信息
-			um.client.setToken(accessToken.getAccessToken());
-			 weibo_acceesToken=accessToken.getAccessToken();
-			 weibo_uid=accessToken.getUid();
-			user=userManager.findUserByWeiboUid(weibo_uid);
-		} catch (WeiboException e) {
-			System.out.println("获取accessToken对象失败："+e.getMessage());
-		}
-
-		try {
-			u=um.showUserById(weibo_uid);
-			System.out.println("微博名称："+u.getScreenName());
-	
-		} catch (WeiboException e) {
-			System.out.println(e.getMessage());
-		}
-
-		if(user==null)
-		{
-			//用户没有绑定账号
-			user=new User();
-			user.setWeibo_accessToken(weibo_acceesToken);
-			user.setWeibo_uid(weibo_uid);
-			user.setCreateTime(new Date());
-			userManager.addUser(user);
-
-			System.out.println(u.getScreenName()+"登录");
-			user.setXunta_username(u.getScreenName());
-			request.getSession().setAttribute("user", user);
 			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 		}
-		else
-		{
-			if(user.getXunta_username()==null||"".equals(user.getXunta_username()))
-			{
-				user.setXunta_username("新浪微博_"+u.getScreenName());
-			}
-			//登录成功
-			System.out.println("登录成功");
-			request.getSession().setAttribute("user", user);
-			response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
-		}*/
 	}
 
 	/**

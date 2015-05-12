@@ -1,3 +1,8 @@
+<%@page import="so.xunta.utils.DateTimeUtils"%>
+<%@page import="so.xunta.entity.UserTrackLog"%>
+<%@page import="so.xunta.manager.LogManager"%>
+<%@page import="so.xunta.manager.impl.LogManagerImpl"%>
+<%@page import="so.xunta.topic.utils.IpUtils"%>
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
@@ -5,18 +10,11 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
-	String access_token = request.getParameter("access_token");
-	String code = request.getParameter("code");
-	String weixin_code = request.getParameter("weixin_code");
-	if(access_token!=null&&!"".equals(access_token))
-	{
-		response.sendRedirect(request.getContextPath()+"/servlet/qq_login?access_token="+access_token);
-	}else if(code!=null&&!"".equals(code)){
-		response.sendRedirect(request.getContextPath()+"/servlet/weiboLogin?code="+code);
-	}else if(weixin_code!=null&&!"".equals(weixin_code)){
-		response.sendRedirect(request.getContextPath()+"/servlet/weixinLogin?weixin_code="+weixin_code);
-	}
-	
+	String ipaAddress = request.getRemoteAddr();
+	String country = IpUtils.getInstance().getCountryByIdAddress(ipaAddress);
+	LogManager logManager = new LogManagerImpl();
+	UserTrackLog trackLog = new UserTrackLog(ipaAddress,country,"登录页面",DateTimeUtils.getCurrentTimeStr());
+	logManager.tracklog(trackLog);
 %>
 <!DOCTYPE html>
 <html lang="zh">

@@ -53,9 +53,9 @@ public class Login extends HttpServlet {
 			ret.put("userId",user_to_check.id);
 			response.setContentType("text/json");
 			response.getWriter().write(ret.toString());*/
-			String url ="/servlet/userLoginService?cmd=checkHasTag&userId="+user_to_check.id;
-			request.getRequestDispatcher(url).forward(request, response);
-			//response.sendRedirect(request.getContextPath()+"jsp/topic/index.jsp");
+			//String url ="/servlet/userLoginService?cmd=checkHasTag&userId="+user_to_check.id;
+			//request.getRequestDispatcher(url).forward(request, response);
+			response.sendRedirect(request.getContextPath()+"jsp/topic/index.jsp");
 		}
 		else{
 			User user=userManager.checkRegisterUserExist(username, password);
@@ -75,7 +75,7 @@ public class Login extends HttpServlet {
 
 				if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
 				{
-					System.out.println("windows系统");
+					//System.out.println("windows系统");
 				}else{
 					System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 					if(user.address!=null&&("IP地址库文件错误".equals(user.address)||"".equals(user.address.trim()))){
@@ -111,37 +111,7 @@ public class Login extends HttpServlet {
 					request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 				}
 				
-				//跳转到://servlet/userLoginService
-/*				var parameters = {
-					cmd:"checkHasTag",
-					userId:res.userId
-				};*/
-				String url ="/servlet/userLoginService?cmd=checkHasTag&userId="+user.id;
-				request.getRequestDispatcher(url).forward(request, response);
-	
-			/*	Cookie[] xunta_cookies=request.getCookies();
-				boolean hasAigine_login_state=true;
-				for(Cookie cookie:xunta_cookies)
-				{
-					System.out.println(cookie.getName()+":"+cookie.getValue());
-					if(cookie.getName().equals("aigine_login_state")){
-						hasAigine_login_state=false;
-					}
-				}
-				System.out.println("cookie长度:"+xunta_cookies.length);
-				
-				if(hasAigine_login_state){
-					System.out.println("添加cookie");
-					Cookie cookie = new Cookie("aigine_login_state",java.net.URLEncoder.encode("hasLogged","utf-8"));
-					cookie.setMaxAge(3600*24*300);
-					cookie.setPath("/");
-					response.addCookie(cookie);
-				}
-				JSONObject ret=new JSONObject();
-				ret.put("state","success");
-				ret.put("userId",user.id);
-				response.setContentType("text/json");
-				response.getWriter().write(ret.toString());*/
+				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			}
 		}
 		

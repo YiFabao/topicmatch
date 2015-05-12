@@ -185,9 +185,6 @@ public class UserLoginService extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-	
-		
-		
 	}
 
 	private void jumpBindAccountStep(HttpServletRequest request, HttpServletResponse response) {
