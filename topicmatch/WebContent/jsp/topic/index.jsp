@@ -16,6 +16,7 @@ logutil.traceLog(request, "首页");
 <meta http-equiv="pragma" content="no-cache">  
 <meta http-equiv="cache-control" content="no-cache">  
 <meta http-equiv="expires" content="0">     
+<title>xunta.so</title>
 <%pageContext.setAttribute("baseUrl",request.getContextPath());%>
 <link rel="shortcut icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">
 <link rel="icon" href="${baseUrl }/assets/xunta.ico" type="image/x-icon">

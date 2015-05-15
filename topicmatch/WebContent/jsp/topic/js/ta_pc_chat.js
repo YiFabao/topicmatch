@@ -41,11 +41,11 @@ var newMessageRemind = {
 			}
 			;
 			if (newMessageRemind._step == 1) {
-				document.title = "【　　　】" + temps+"xunta.so";
+				document.title = "【　　　】" + temps;
 			}
 			;
 			if (newMessageRemind._step == 2) {
-				document.title = "【新消息】" + temps+"xunta.so";
+				document.title = "【新消息】" + temps;
 			}
 			;
 		}, 800);
