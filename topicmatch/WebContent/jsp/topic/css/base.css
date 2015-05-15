@@ -288,14 +288,14 @@ white-space:nowrap}
 .topic-item .info .man,.topic-item .info .woman{color:#00A7FF;vertical-align:3px;margin-right:3px;vertical-align:1px}
 .topic-item .info .woman{color:#f0968c}
 .topic-item .area{color:#999}
-.topic-item .cont:after{content:" ";width:15px;height:20px;position:absolute;
+.topic-item .cont:after{content:" ";width:15px;height:20px;position:absolute; bottom: -21px;
 }
 .topic-list{position:relative;  min-height: 740px;}
 .topic-list .right .cont{left:50px;border-bottom-left-radius:inherit}
-.topic-list .right .cont:after{background-image:url(../images/topic-item_tri.png);top:39px;
+.topic-list .right .cont:after{background-image:url(../images/topic-item_tri.png);
 left:-3px}
 .topic-list .left .cont{right:50px;border-bottom-right-radius:inherit}
-.topic-list .left .cont:after{background-image:url(../images/topic-item_tri_left.png);  bottom: -21px;
+.topic-list .left .cont:after{background-image:url(../images/topic-item_tri_left.png); 
 right:-4px}
 .page-topic{font-size:26px;text-align: center;}
 .page-topic .iconfont{font-size:60px;vertical-align:middle}
