@@ -6,7 +6,7 @@
 	if(modifiedSuccess!=null&&!"".equals(modifiedSuccess.trim()))
 		session.setAttribute("modifiedSuccess", null);
 %>
-<%LogUtils logutil = new LogUtils();logutil.traceLog(request,"账户设置页面")%>
+<%LogUtils logutil = new LogUtils();logutil.traceLog(request,"账户设置页面");%>
 <!DOCTYPE html>
 <html lang="zh">
 <section class="content" >

@@ -284,6 +284,7 @@ logutil.traceLog(request, "首页");
 	
 	//点击别的地方关闭聊天框
 	$(document).click(function(event){
+		newMessageRemind.clear();
 		var pointX = event.pageX;
 		var pointY = event.pageY;
 		var left = $(".topic-box").position().left;

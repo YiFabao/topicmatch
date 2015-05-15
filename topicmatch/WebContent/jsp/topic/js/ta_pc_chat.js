@@ -25,6 +25,37 @@ var topicId_memberArray={};//保存新参与进来的成员,在切换话题时�
 var unread_num_current_chatbox=0;//聊天窗口处理关闭状态，当前激活窗口的未读消息数
 
 var unreadMsgnotShow_topicIdArray=new Array();//记录不显示未读消息的topicId
+
+//新消息提示
+var newMessageRemind = {
+	_step : 0,
+	_title : document.title,
+	_timer : null,
+	show : function() {
+		var temps = newMessageRemind._title.replace("【　　　】", "").replace("【新消息】", "");
+		newMessageRemind._timer = setTimeout(function() {
+			newMessageRemind.show();
+			newMessageRemind._step++;
+			if (newMessageRemind._step == 3) {
+				newMessageRemind._step = 1
+			}
+			;
+			if (newMessageRemind._step == 1) {
+				document.title = "【　　　】" + temps+"xunta.so";
+			}
+			;
+			if (newMessageRemind._step == 2) {
+				document.title = "【新消息】" + temps+"xunta.so";
+			}
+			;
+		}, 800);
+		return [ newMessageRemind._timer, newMessageRemind._title ];
+	},
+	clear : function() {
+		clearTimeout(newMessageRemind._timer);
+		document.title = newMessageRemind._title;
+	}
+};
 /**
  * 获取所有未消息数，从全局变量topicId_unreadMsgArray中求和
  */
@@ -1184,6 +1215,8 @@ window.webimHandle = function(json) {
 		if (json.senderId == myselfId) {
 			// TODO:是自己发的消息,将消息改为发送成功
 		} else {
+			newMessageRemind.clear();
+			newMessageRemind.show();
 			//判断当前窗口是否处理关闭状态
 			var h=$('.topic-box').css("bottom");
 			if(parseInt(h)!=0){//处理关闭状态
@@ -1193,6 +1226,8 @@ window.webimHandle = function(json) {
 			createMessage(1, json);
 		}
 	} else {// 不是当前窗口
+		newMessageRemind.clear();
+		newMessageRemind.show();
 		// 将未读消息保存到全局变量,注意同步总未读消息数
 		console.log("不是当前窗口");
 		//初始化显示的历史消息记录数为0
@@ -1376,11 +1411,6 @@ $('.mintopic-box .unfold').click(function(){
 	$(".mintopic-box span.num").html(getTotalUnreadMsg());//同步总未读消息提示
 	
 });
-
-
-
-
-
 
 
 
