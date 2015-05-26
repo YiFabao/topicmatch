@@ -63,6 +63,8 @@ public class ImportDataUtils {
 			
 		} catch (HibernateException e) {
 			System.out.println("更新最后回复信息异常"+e.getMessage());
+		}finally{
+			session.close();
 		}
 	}
 
