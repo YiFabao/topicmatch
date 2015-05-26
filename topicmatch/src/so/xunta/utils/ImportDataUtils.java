@@ -45,7 +45,8 @@ public class ImportDataUtils {
 	public static void updateLastMsgInTopic(List<String> idList) {
 		// 查出所有的话题id List<topicId>
 		// 从historymessage中找出为topicId的 HistoryMessage 按是时间排序
-		Session session = HibernateUtils_remote.openSession();
+		
+		Session session =HibernateUtils.openSession();
 		TopicManager topicManager = new TopicManagerImpl();
 		try {
 			String hql = "from Topic as t where t.topicId in (:idList)";
@@ -70,7 +71,6 @@ public class ImportDataUtils {
 	public static void addHistoryMessage(int _from, int num) {
 		UserManager usermanager = new UserManagerImpl();
 		TopicManager topicmanager = new TopicManagerImpl();
-
 		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
 			int start = i;
@@ -270,5 +270,6 @@ public class ImportDataUtils {
 		}
 		session.close();
 	}
+	
 
 }
