@@ -45,9 +45,7 @@ public class ImportDataUtils {
 	public static void updateLastMsgInTopic(List<String> idList) {
 		// 查出所有的话题id List<topicId>
 		// 从historymessage中找出为topicId的 HistoryMessage 按是时间排序
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-		SessionFactory sessionFactory = cfg.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtils_remote.openSession();
 		TopicManager topicManager = new TopicManagerImpl();
 		try {
 			String hql = "from Topic as t where t.topicId in (:idList)";
@@ -73,9 +71,7 @@ public class ImportDataUtils {
 		UserManager usermanager = new UserManagerImpl();
 		TopicManager topicmanager = new TopicManagerImpl();
 
-		Configuration cfg = new Configuration().configure("remote.cfg.xml");
-		SessionFactory sessionFactory = cfg.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
 			int start = i;
 			int end = i + 200;
@@ -151,15 +147,14 @@ public class ImportDataUtils {
 			updateLastMsgInTopic(idList);
 
 		}
+		session.close();
 	}
 
 	public static void addTopicxx_2(int _from, int num) {
 		UserManager usermanager = new UserManagerImpl();
 		TopicManager topicmanager = new TopicManagerImpl();
 
-		Configuration cfg = new Configuration().configure("remote.cfg.xml");
-		SessionFactory sessionFactory = cfg.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
 			int start = i;
 			int end = i + 200;
@@ -243,13 +238,12 @@ public class ImportDataUtils {
 			topicmanager.createTopicListIndex(toSaveTopicList);
 
 		}
+		session.close();
 	}
 
 	public static void addUser_1(int _from, int num) {
 		UserManager usermanager = new UserManagerImpl();
-		Configuration cfg = new Configuration().configure("remote.cfg.xml");
-		SessionFactory sessionFactory = cfg.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
 			int start = i;
 			int end = i +200;
@@ -274,6 +268,7 @@ public class ImportDataUtils {
 				}
 			}
 		}
+		session.close();
 	}
 
 }
