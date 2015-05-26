@@ -38,6 +38,57 @@ public class WebSocketUtils {
 	}
 	
 	/*
+	 * 添加历史消息 yifabao
+	 * */
+	public static void addHistoryMessageList(List<HistoryMessage> historyMessageList) {
+		System.out.println("服务器LOG ：  准备添加历史消息");
+		Session session = HibernateUtils.openSession();
+		session.beginTransaction();
+		try {
+			for(int i = 0;i<historyMessageList.size();i++){
+				session.save(historyMessageList.get(i));
+				if(i%10==0){
+					session.flush();
+					session.clear();
+				}
+			//topicManager.updateLastUpdateTime(historyMessage.topicId,historyMessage.dateAndTime);
+			//topicManager.updateLastResMsgAndTime(historyMessage.topicId, historyMessage.content, historyMessage.dateAndTime);
+			}
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		
+		
+		System.out.println("服务器LOG ：  添加历史消息成功");
+	}
+	/**
+	 * 找出后回复历史消息
+	 * @param accepterId
+	 * @param topicId
+	 */
+	public static HistoryMessage findLastHistoryMsgInTopic(String topicId){
+		Session session = HibernateUtils.openSession();
+		session.beginTransaction();
+		try {
+			String hql = "from HistoryMessage as h where h.topicId =? order by h.longTime desc";
+			HistoryMessage historyMessage = (HistoryMessage) session.createQuery(hql)
+					.setParameter(0,topicId).setFirstResult(0).setMaxResults(1).uniqueResult();
+			session.getTransaction().commit();
+			return historyMessage;
+		} catch (RuntimeException e) {
+			session.getTransaction().rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
+	
+	/*
 	 * 设置未读消息数
 	 * */
 	public static void setUnreadMessageNum(long accepterId , String topicId){

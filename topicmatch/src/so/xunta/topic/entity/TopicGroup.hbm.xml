@@ -6,8 +6,8 @@
     <id name="id">
       <generator class="native"/>
     </id>
-    <property name="topicId" not-null="false"/>
-    <property name="topicMemberId" not-null="false" />
+    <property name="topicId" not-null="false" unique-key="unique_key_id"/>
+    <property name="topicMemberId" not-null="false" unique-key="unique_key_id"/>
     <property name="topicMemberName" not-null="false" />
     <property name="joinDatetime" not-null="false"/>
   </class>

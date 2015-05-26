@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class User {
 	public long id;//用户全局标识；主键
+	public long authorId;//导入旅游数据的id
 	public String xunta_username;
 	public String sex;//m：男　 w:女
 	public String nickname;
@@ -170,4 +171,12 @@ public class User {
 		this.setBirthday(birthday);
 		
 	}
+	public long getAuthorId() {
+		return authorId;
+	}
+	public void setAuthorId(long authorId) {
+		this.authorId = authorId;
+	}
+	
+	
 }

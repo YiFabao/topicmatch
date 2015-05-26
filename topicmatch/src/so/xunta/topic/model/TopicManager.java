@@ -17,6 +17,7 @@ import weibo4j.org.json.JSONArray;
 public interface TopicManager {
 	//创建话题索引 
 	public void createTopicIndex(Topic topic);
+	public void createTopicListIndex(List<Topic> topicList);
 	//获取匹配的话题,从索引里查询
 	public List<Topic> matchMyTopic(String mytopic);
 	//与前面一个相同，从索引里查询，不过只返回toplic的id列表，因为直接从索引返回Topic对象缺少参加人数，所以还是需要从数据库查
@@ -28,6 +29,9 @@ public interface TopicManager {
 	public List<Topic> matchMyTopicByUserId(String userId);
 	public List<Topic> matchUserRelativeTopic(String userId,String topicContent);
 	public List<Topic> matchUserRelativeTopic(String userId,String topicName,String topicContent);
+	
+	//从数据库中查询话题
+	public List<Topic> findTopicsByTopicNameList(List<String> topicNameList);
 	
 	//话题推荐
 	public List<Topic> recommendTopics(String userId);
@@ -43,8 +47,10 @@ public interface TopicManager {
 
 	//将话题保存到数据库中
 	public void saveTopic(Topic topic);
+	public void saveTopicList(List<Topic> topicList);
 	//保存话题成员
 	public void saveTopicGroup(TopicGroup topicMember);
+	public void saveTopicGroupList(List<TopicGroup> topicGroupList);
 	
 	//添加消息
 	public void addMessageAlert(MessageAlert messageAlert);
@@ -61,6 +67,7 @@ public interface TopicManager {
 	
 	//添加话题历史，当用户发起话题或参与话题时记录
 	public void addTopicHistory(TopicHistory topicHistory);
+	public void addTopicHistoryList(List<TopicHistory> topicHistory);
 	//从话题历史表中通过话题id获取所有的TopicHistory
 	public List<TopicHistory> findTopicHistoryByTopicId(List<String> topicIdList);
 	

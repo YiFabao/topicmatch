@@ -29,12 +29,40 @@ public class LocalContext {
 	//public static String indexFilePath="/mnt/data/topicIndex";
 //	public static String indexFilePath="F://topicIndex";
 	public static String getIPFilePath(){
-		
+		//判断操作系统
+				String osname = System.getProperty("os.name");
+				if(osname==null)
+				{
+					//System.out.println("os name is null");
+					return null;
+				}
+				if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
+				{
+					//System.out.println("windows系统");
+					return "D:\\data\\qqwry\\QQWry.dat";
+				}else{
+					//System.out.println("linux系统");
+					return "/mnt/data/QQWry.dat";
+				}
 		//String root=System.getProperty("user.dir") ; 
-		return "/mnt/data/QQWry.dat";
+		
 	}
 	public static String getIPFileInstallFolder(){
-		return "/mnt/data";//System.getProperty("user.dir");
+		String osname = System.getProperty("os.name");
+		if(osname==null)
+		{
+			//System.out.println("os name is null");
+			return null;
+		}
+		if(osname.toUpperCase().indexOf("WINDOWS")!=-1)
+		{
+			//System.out.println("windows系统");
+			return "D:\\data\\qqwry";
+		}else{
+			//System.out.println("linux系统");
+			return "/mnt/data";//System.getProperty("user.dir");
+		}
+		
 	}
 
 	public static String getPicPath(){

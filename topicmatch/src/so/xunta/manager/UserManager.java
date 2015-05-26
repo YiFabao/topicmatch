@@ -19,6 +19,8 @@ public interface UserManager {
 	 */
 	public abstract void addUser(User user);
 	
+	public void addUserList(List<User> userList);
+	
 	/**
 	 * 更新用户
 	 * @param user
@@ -61,5 +63,8 @@ public interface UserManager {
 	public List<User> findUserListByUserIdList(List<Long> userIdList);
 	//根据用户ID查询出用户
 	public User findUserById(int userId);
+	
+	//根据List<xunta_username> 查出list<User>
+	public List<User> findUserListByUsernames(List<String> xunta_usernamelist);
 	
 }

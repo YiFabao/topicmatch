@@ -1386,6 +1386,7 @@ function getContactsArray(){
 	{
 		contacts.push($(userIds[i]).attr("userid"));
 	}
+
 	return contacts;
 };
 

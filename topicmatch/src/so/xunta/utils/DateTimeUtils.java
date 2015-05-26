@@ -13,6 +13,12 @@ public class DateTimeUtils {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format(date);
 	}
+	public static String getTimeStrFromDate(Date date)
+	{
+		
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf.format(date);
+	}
 	
 	/**
 	 * 字符串日期时间转Date对象,注意字符串格式必须为yyyy-MM-dd HH:mm:ss

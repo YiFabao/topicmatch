@@ -39,4 +39,6 @@
 		<mapping class="so.xunta.entity.UserTrackLog"/>
 		
 	</session-factory>
+	
+	
 </hibernate-configuration>

@@ -37,15 +37,14 @@ import so.xunta.topic.entity.TopicHistory;
 import so.xunta.topic.entity.TopicRequestMsg;
 import so.xunta.topic.entity.TopicRequestMsgPlusTopicDetail;
 import so.xunta.topic.model.MsgManager;
-import so.xunta.topic.model.NotificationManager;
 import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.TopicModel;
 import so.xunta.topic.model.impl.AddTopicIndexThread;
 import so.xunta.topic.model.impl.MsgManagerImpl;
-import so.xunta.topic.model.impl.NotificationManagerImpl;
 import so.xunta.topic.model.impl.SaveTopicThread;
 import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.topic.model.impl.TopicModelImpl;
+import so.xunta.topic.utils.ImportDataUtils;
 import so.xunta.topic.utils.SecurityUtil;
 import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.Time;
@@ -154,6 +153,9 @@ public class TopicService extends HttpServlet {
 		case "findUserByUserId":
 			findUserByUserId(request,response);
 			break;
+		case "importData":
+			ImportDataUtils.getInstance().importData(request,response);
+			break;
 		}
 	}
 
@@ -202,11 +204,19 @@ public class TopicService extends HttpServlet {
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
+		if(!userIdList.contains("8")){
+			userIdList.add("8");
+		}
+		if(!userIdList.contains("13")){
+			userIdList.add("13");
+		}
+		
 		List<Long> userIdList_l = new ArrayList<Long>();
 		for(String s:userIdList)
 		{
 			userIdList_l.add(Long.parseLong(s));
 		}
+	
 		List<User> userList = userManager.findUserListByUserIdList(userIdList_l);
 		
 		//封装成json
@@ -308,7 +318,7 @@ public class TopicService extends HttpServlet {
 		*/
 		//思路：从数据库搜出所有话题按最后回复时间排序,然后取出前100-命中的话题数
 		//
-		List<Topic> otherTopics = topicManager.getLatestUpdateTopics(100-hitsize);//前100条最活跃的话题
+		List<Topic> otherTopics = topicManager.getLatestUpdateTopics(300-hitsize);//前100条最活跃的话题
 
 		List<RecommendedTopicPublisher> other_rtbl = topicModel.getRecommendedTopicPUblisherByTopicList(otherTopics);
 

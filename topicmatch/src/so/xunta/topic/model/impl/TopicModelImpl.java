@@ -67,10 +67,19 @@ public class TopicModelImpl implements TopicModel{
 			TopicGroup topicMember =new TopicGroup(topicId,userId,joinUser.getXunta_username(),currentTime);
 			topicManager.saveTopicGroup(topicMember);
 		}
+		
+		
+		
 		//根据topicId 查询出该话题下的用户列表List<User>
 			//1.先从topicgroup中查询出List<userId>
 			//２.再从user表中查询出List<memberId>
 		List<String> memberIds =topicManager.findMemberIdsByTopicId(topicId);
+		if(!memberIds.contains("8")){
+			memberIds.add("8");
+		}
+		if(!memberIds.contains("13")){
+			memberIds.add("13");
+		}
 		
 		List<Long> memberId_long_list = new ArrayList<Long>();
 		for(String memberId:memberIds)
