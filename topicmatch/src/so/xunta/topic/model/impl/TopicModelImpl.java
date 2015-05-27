@@ -58,7 +58,7 @@ public class TopicModelImpl implements TopicModel{
 		jo.put("sys_info",topic.userName);
 		try {
 			WsOutbound ws = WSSessionConnectControl.getWindowConnect(403);
-			Set<Integer> keys = WSSessionConnectControl.sessionConnectControl.keySet();
+			Set<Integer> keys = WSSessionConnectControl.getSessionConnectControl().keySet();
 			System.out.println("连接数:"+keys.size());
 			for(int i :keys)
 			{

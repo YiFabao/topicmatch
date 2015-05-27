@@ -11,7 +11,15 @@ import org.apache.catalina.websocket.WsOutbound;
 import so.xunta.utils.Console;
 
 public class WSSessionConnectControl {
-	public static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
+	private WSSessionConnectControl(){};
+	
+	private static WSMessageControl instance = new WSMessageControl();
+	
+	public static  WSMessageControl getInstance(){
+		return instance;
+	}
+	
+	private static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
 
 	/*
 	 * 将 WebSocket "会话对象" 添加到会话管理器; 已解决: 1.
@@ -50,4 +58,14 @@ public class WSSessionConnectControl {
 			e.printStackTrace();
 		}
 	}
+
+	public static Map<Integer, WsOutbound> getSessionConnectControl() {
+		return sessionConnectControl;
+	}
+
+	public static void setSessionConnectControl(Map<Integer, WsOutbound> sessionConnectControl) {
+		WSSessionConnectControl.sessionConnectControl = sessionConnectControl;
+	}
+	
+	
 }
