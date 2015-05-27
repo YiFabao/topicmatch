@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +58,11 @@ public class TopicModelImpl implements TopicModel{
 		jo.put("sys_info",topic.userName);
 		try {
 			WsOutbound ws = WSSessionConnectControl.getWindowConnect(403);
+			Set<Integer> keys = WSSessionConnectControl.sessionConnectControl.keySet();
+			for(Integer i :keys)
+			{
+				System.out.println(i);
+			}
 			if(ws!=null){
 				ws.writeTextMessage(CharBuffer.wrap(jo.toString()));
 			}else{
