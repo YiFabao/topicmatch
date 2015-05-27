@@ -57,9 +57,10 @@ public class TopicModelImpl implements TopicModel{
 		net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
 		jo.put("sys_info",topic.userName);
 		try {
-			WsOutbound ws = WSSessionConnectControl.getWindowConnect(Integer.valueOf(403));
+			WsOutbound ws = WSSessionConnectControl.getWindowConnect(403);
 			Set<Integer> keys = WSSessionConnectControl.sessionConnectControl.keySet();
-			for(Integer i :keys)
+			System.out.println("连接数:"+keys.size());
+			for(int i :keys)
 			{
 				System.out.println(i);
 			}
