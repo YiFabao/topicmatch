@@ -27,12 +27,16 @@ public class ImportDataUtils {
 
 					//定义导入数据的范围
 					//int init = 22735353;
-					int init = 22739696;
+					int init = 23739696;
 					int max = 1000000;
 					for(int i =init;i<init+max;i+=201){
-						so.xunta.utils.ImportDataUtils.addUser_1(i,200);
-						so.xunta.utils.ImportDataUtils.addTopicxx_2(i,200);
-						so.xunta.utils.ImportDataUtils.addHistoryMessage(i,200);
+						try {
+							so.xunta.utils.ImportDataUtils.addUser_1(i,200);
+							so.xunta.utils.ImportDataUtils.addTopicxx_2(i,200);
+							so.xunta.utils.ImportDataUtils.addHistoryMessage(i,200);
+						} catch (Exception e) {
+							System.out.println("第"+i+"条 记录异常");
+						}
 					}
 					
 				}
