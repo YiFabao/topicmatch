@@ -860,7 +860,7 @@ public class TopicManagerImpl implements TopicManager {
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
-			throw e;
+			System.out.println(e.getMessage());
 		} finally {
 			session.close();
 		}

@@ -148,7 +148,9 @@ public class ImportDataUtils {
 				idList.add(h.getTopicId());
 			}
 			updateLastMsgInTopic(idList);
-
+			for(String topicId:idList){
+				topicmanager.addTopicJoinNumByOne(topicId);
+			}
 		}
 		session.close();
 	}
