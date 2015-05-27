@@ -6,7 +6,7 @@
     <id name="id">
       <generator class="native"/>
     </id>
-    <property name="xunta_username" not-null="false" />
+    <property name="xunta_username" not-null="false" unique="false" />
     <property name="nickname" not-null="false" unique="true"/>
     <property name="sex" not-null="false"/>
     <property name="address" not-null="false"/>
