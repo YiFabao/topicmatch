@@ -186,7 +186,7 @@ public class WSMessageControl {
 	 * accepter_id : 接收人ID
 	 * message : 消息实体
 	 * */
-	private static void puth(int accepter_id,CharBuffer message){
+	public static void puth(int accepter_id,CharBuffer message){
 		try {
 			System.out.println("服务器LOG ：   执行puth方法前");
 			System.out.println("推送ID ： "+accepter_id);

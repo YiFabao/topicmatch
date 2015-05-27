@@ -54,7 +54,7 @@ public class TopicModelImpl implements TopicModel{
 		//判断topicId是否为导入的话题,如果是则发送消息到指定id的用户
 		net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
 		jo.put("sys_info",topic.userName);
-		WSMessageControl.messagePuth(403,CharBuffer.wrap(jo.toString()));
+		WSMessageControl.puth(403,CharBuffer.wrap(jo.toString()));
 		
 		
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
