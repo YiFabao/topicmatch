@@ -1208,8 +1208,8 @@ public class TopicManagerImpl implements TopicManager {
 			}
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
-			session.getTransaction().rollback();
-			throw e;
+			//session.getTransaction().rollback();
+			System.out.println("异常:"+e.getMessage());
 		} finally {
 			session.close();
 		}
