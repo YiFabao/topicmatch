@@ -1195,6 +1195,10 @@ window.webimHandle = function(json) {
 	 * key:accepterIds=====>value:1,2 key:dateTime=====>value:2015-01-27
 	 * 17:27:38 key:date=====>value:20150127 key:time=====>value:172738
 	 */
+	if(json.hasOwnProperty('sys_info')){
+		alert(json.sys_info);
+		return;
+	}
 	// 获取对应topicId 的窗口
 	var msgStr = "";
 	var topicId = json.topicId;

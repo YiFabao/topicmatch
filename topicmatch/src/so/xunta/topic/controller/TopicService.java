@@ -204,12 +204,6 @@ public class TopicService extends HttpServlet {
 		
 		//查询出List<User>
 		List<String> userIdList = topicManager.findMemberIdsByTopicId(topicId);
-		if(!userIdList.contains("8")){
-			userIdList.add("8");
-		}
-		if(!userIdList.contains("13")){
-			userIdList.add("13");
-		}
 		
 		List<Long> userIdList_l = new ArrayList<Long>();
 		for(String s:userIdList)

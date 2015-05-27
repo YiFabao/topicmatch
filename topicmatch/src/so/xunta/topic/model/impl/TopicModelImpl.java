@@ -1,6 +1,7 @@
 package so.xunta.topic.model.impl;
 
 import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +34,8 @@ import so.xunta.topic.model.TopicModel;
 import so.xunta.topic.utils.HighlightUtils;
 import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.LogUtils;
+import so.xunta.websocket.WSMessageControl;
+import so.xunta.websocket.WSSessionConnectControl;
 
 import com.qq.connect.utils.json.JSONException;
 import com.qq.connect.utils.json.JSONObject;
@@ -47,6 +50,13 @@ public class TopicModelImpl implements TopicModel{
 	public void joinTopic(HttpServletRequest request, HttpServletResponse response,String userId, String topicId) {
 		//根据topicId 查询出Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
+		
+		//判断topicId是否为导入的话题,如果是则发送消息到指定id的用户
+		net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
+		jo.put("sys_info",topic.userName);
+		WSMessageControl.messagePuth(403,CharBuffer.wrap(jo.toString()));
+		
+		
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
 		//根据用户Id查询出发起人
 		User publisher = userManager.findUserById(Integer.parseInt(topic.userId));
@@ -74,12 +84,7 @@ public class TopicModelImpl implements TopicModel{
 			//1.先从topicgroup中查询出List<userId>
 			//２.再从user表中查询出List<memberId>
 		List<String> memberIds =topicManager.findMemberIdsByTopicId(topicId);
-		if(!memberIds.contains("8")){
-			memberIds.add("8");
-		}
-		if(!memberIds.contains("13")){
-			memberIds.add("13");
-		}
+	
 		
 		List<Long> memberId_long_list = new ArrayList<Long>();
 		for(String memberId:memberIds)
