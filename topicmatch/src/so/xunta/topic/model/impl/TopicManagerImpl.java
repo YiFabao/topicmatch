@@ -473,7 +473,7 @@ public class TopicManagerImpl implements TopicManager {
 			session.getTransaction().commit();
 		} catch (RuntimeException e) {
 			session.getTransaction().rollback();
-			throw e;
+			System.out.println("异常："+e.getMessage());
 		} finally {
 			session.close();
 		}
@@ -1281,8 +1281,7 @@ public class TopicManagerImpl implements TopicManager {
 			iwriter.commit();
 			iwriter.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("异常:"+e.getMessage());
 		}
 
 	}
