@@ -32,6 +32,10 @@ public class WSSessionConnectControl {
 
 	public static WsOutbound getWindowConnect(int user_id) {
 		System.out.println("服务器LOG   WSSessionConnectControl  ：  43行 执行前 ");
+		for(int i:sessionConnectControl.keySet())
+		{
+			System.out.println("连接id:"+i);
+		}
 		return sessionConnectControl.get(user_id);
 	}
 	
