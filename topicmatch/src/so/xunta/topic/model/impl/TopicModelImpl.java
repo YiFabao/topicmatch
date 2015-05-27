@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.apache.catalina.websocket.WsOutbound;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 
 import so.xunta.entity.Tag;
@@ -54,7 +55,17 @@ public class TopicModelImpl implements TopicModel{
 		//判断topicId是否为导入的话题,如果是则发送消息到指定id的用户
 		net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
 		jo.put("sys_info",topic.userName);
-		WSMessageControl.puth(403,CharBuffer.wrap(jo.toString()));
+		try {
+			WsOutbound ws = WSSessionConnectControl.getWindowConnect(403);
+			if(ws!=null){
+				ws.writeTextMessage(CharBuffer.wrap(jo.toString()));
+			}else{
+				System.out.println("ws　is null");
+			}
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
