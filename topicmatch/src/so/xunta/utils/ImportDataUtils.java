@@ -40,12 +40,16 @@ public class ImportDataUtils {
 			so.xunta.utils.ImportDataUtils.addHistoryMessage(i,1000);
 		}
 	}
+	static UserManager usermanager = new UserManagerImpl();
+	static TopicManager topicmanager = new TopicManagerImpl();
 
 	// 更新最后回复,查询每个话题的最后回复，有就更新
 	public static void updateLastMsgInTopic(List<String> idList) {
 		// 查出所有的话题id List<topicId>
 		// 从historymessage中找出为topicId的 HistoryMessage 按是时间排序
-		
+		if(idList==null||idList.size()==0){
+			return;
+		}
 		Session session =HibernateUtils.openSession();
 		TopicManager topicManager = new TopicManagerImpl();
 		try {
@@ -69,15 +73,15 @@ public class ImportDataUtils {
 
 	// 创建话题组用户，并创建话题组内成员聊天消息
 	public static void addHistoryMessage(int _from, int num) {
-		UserManager usermanager = new UserManagerImpl();
-		TopicManager topicmanager = new TopicManagerImpl();
 		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
 			int start = i;
 			int end = i + 200;
 			String hql = "from TravelForum as t where t.id between ? and ?";
 			List<TravelForum> travelForumlist = session.createQuery(hql).setInteger(0, start).setInteger(1, end).list();
-
+			if(travelForumlist==null||travelForumlist.size()==0){
+				return;
+			}
 			List<String> authorList = new ArrayList<String>();
 			// 根据List<title>查出所有的话题，因为title很多是相同的，所以先取出唯一的title
 			Set<String> title_set = new HashSet<String>();
@@ -87,7 +91,6 @@ public class ImportDataUtils {
 				if (t.getLevel() != 0) {
 					title_set.add(t.getTitle());
 					authorList.add(t.getAuthor());
-					// authorname_title.put(t.getAuthor(), t.getTitle());
 				}
 			}
 			title_list.addAll(title_set);
@@ -151,8 +154,6 @@ public class ImportDataUtils {
 	}
 
 	public static void addTopicxx_2(int _from, int num) {
-		UserManager usermanager = new UserManagerImpl();
-		TopicManager topicmanager = new TopicManagerImpl();
 
 		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
@@ -242,7 +243,6 @@ public class ImportDataUtils {
 	}
 
 	public static void addUser_1(int _from, int num) {
-		UserManager usermanager = new UserManagerImpl();
 		Session session = HibernateUtils_remote.openSession();
 		for (int i = _from; i < _from + num; i += 201) {
 			int start = i;

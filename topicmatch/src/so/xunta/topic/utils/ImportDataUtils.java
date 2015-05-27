@@ -27,8 +27,8 @@ public class ImportDataUtils {
 
 					//定义导入数据的范围
 					//int init = 22735353;
-					int init = 23739696;
-					int max = 1000000;
+					int init = 22749696;
+					int max = 700000;
 					for(int i =init;i<init+max;i+=201){
 						try {
 							so.xunta.utils.ImportDataUtils.addUser_1(i,200);
