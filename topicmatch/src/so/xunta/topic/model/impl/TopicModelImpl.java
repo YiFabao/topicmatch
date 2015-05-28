@@ -53,22 +53,37 @@ public class TopicModelImpl implements TopicModel{
 		//根据topicId 查询出Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
-		//判断topicId是否为导入的话题,如果是则发送消息到指定id的用户
-		net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
-		jo.put("status","sys_info");
-		jo.put("msg",topic.userName);
 		
-		WSSessionConnectControl w = new WSSessionConnectControl();
-		System.out.println("impl 中　WSSessionConnectControl对象："+w.sessionConnectControl);
-		
-		try {
-			if(WSSessionConnectControl.getWindowConnect(403)!=null){
-				WSSessionConnectControl.getWindowConnect(403).writeTextMessage(CharBuffer.wrap(jo.toString()));
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					System.out.println("等待三秒");
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//判断topicId是否为导入的话题,如果是则发送消息到指定id的用户
+				net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
+				jo.put("status","sys_info");
+				jo.put("msg",topic.userName);
+				
+				WSSessionConnectControl w = new WSSessionConnectControl();
+				System.out.println("impl 中　WSSessionConnectControl对象："+w.sessionConnectControl);
+				
+				try {
+					if(WSSessionConnectControl.getWindowConnect(403)!=null){
+						WSSessionConnectControl.getWindowConnect(403).writeTextMessage(CharBuffer.wrap(jo.toString()));
+					}
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
 			}
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		}).start();
+		
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
 		//根据用户Id查询出发起人
 		User publisher = userManager.findUserById(Integer.parseInt(topic.userId));
