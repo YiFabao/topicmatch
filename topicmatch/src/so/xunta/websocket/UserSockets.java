@@ -7,7 +7,7 @@ import org.apache.catalina.websocket.WsOutbound;
 
 public class UserSockets {
 	private UserSockets(){
-			new Thread(new Runnable() {
+			/*new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
@@ -21,7 +21,7 @@ public class UserSockets {
 						}
 					}	
 				}
-			}).start();
+			}).start();*/
 		}
 	
 	Map<Integer,WsOutbound> user_socket_map = new HashMap<Integer,WsOutbound>();
