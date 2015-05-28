@@ -54,36 +54,16 @@ public class TopicModelImpl implements TopicModel{
 		//根据topicId 查询出Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
+		JSONObject jsonObject6 = new JSONObject();
+		try {
+			jsonObject6.put("status", "sys_info");
+			jsonObject6.put("msg",topic.userName);
+			WSMessageControl.puth(403, CharBuffer.wrap(jsonObject6.toString()));
+		} catch (JSONException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				//判断topicId是否为导入的话题,如果是则发送消息到指定id的用户
-				net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
-				jo.put("status","sys_info");
-				jo.put("msg",topic.userName);
-				
-				int count=0;
-				while(true){
-					System.out.println("连接数　："+UserSockets.getInstance().getSocketSize());
-					if(UserSockets.getInstance().getSocketSize()!=0){
-						System.out.println("连接"+UserSockets.getInstance().getUserSocketByUserId(403));
-						break;
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					count++;
-					if(count>20){
-						break;
-					}
-				}
-			}
-		}).start();
 		
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
 		//根据用户Id查询出发起人
