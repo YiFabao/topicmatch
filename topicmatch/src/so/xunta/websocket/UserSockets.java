@@ -6,7 +6,23 @@ import java.util.Map;
 import org.apache.catalina.websocket.WsOutbound;
 
 public class UserSockets {
-	private UserSockets(){};
+	private UserSockets(){
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					while(true){
+						System.out.println("socket连接数："+UserSockets.getInstance().getSocketSize());
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}	
+				}
+			}).start();
+		}
 	
 	Map<Integer,WsOutbound> user_socket_map = new HashMap<Integer,WsOutbound>();
 	
@@ -31,6 +47,10 @@ public class UserSockets {
 	public WsOutbound getUserSocketByUserId(int userId)
 	{
 		return user_socket_map.get(userId);
+	}
+	
+	public int getSocketSize(){
+		return user_socket_map.size();
 	}
 	
 	
