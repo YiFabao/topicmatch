@@ -1386,7 +1386,7 @@ window.webimHandle = function(json) {
 window.sysMsgHandle=function(msg){
 	if(window.confirm("题主"+msg+"下的话题有人进入，是否登录?"))
 	{
-		window.location = contextPath+"/servlet/login?xunta_username="+encodeURIComponent(msg)+"&password=admin";
+		window.location = encodeURI(contextPath+"/servlet/login?xunta_username="+msg+"&password=admin");
 	}
 }
 
