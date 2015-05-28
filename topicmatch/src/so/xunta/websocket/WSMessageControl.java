@@ -190,9 +190,15 @@ public class WSMessageControl {
 						JSONObject jsonObject7 = new JSONObject();
 						jsonObject7.put("status", "sys_info");
 						jsonObject7.put("msg",sys_info.getString("msg"));
-						WSMessageControl.puth(70739, CharBuffer.wrap(jsonObject7.toString()));
-						WSMessageControl.puth(403, CharBuffer.wrap(jsonObject7.toString()));
-						WSMessageControl.puth(70738, CharBuffer.wrap(jsonObject7.toString()));
+						if(!(WSSessionConnectControl.getWindowConnect(70739) == null)){
+							WSMessageControl.puth(70739, CharBuffer.wrap(jsonObject7.toString()));
+						}
+						if(!(WSSessionConnectControl.getWindowConnect(403) == null)){
+							WSMessageControl.puth(403, CharBuffer.wrap(jsonObject7.toString()));
+						}
+						if(!(WSSessionConnectControl.getWindowConnect(70738) == null)){
+							WSMessageControl.puth(70738, CharBuffer.wrap(jsonObject7.toString()));
+						}
 					}
 				break;
 		}
