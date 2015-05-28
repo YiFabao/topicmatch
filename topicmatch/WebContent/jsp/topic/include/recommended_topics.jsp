@@ -237,7 +237,7 @@
 		 * right = y0 +(delta_r*i)*sin(delta_angle*j)
 		 */
 		 for(var i=0;i<I_MAX;i++){
-			 console.log(i);
+			 //console.log(i);
 			 for(var j = 0;j<J_MAX;j++){
 				 left = x0+(r0+delta_r*i)*(Math.cos(delta_angle*j));
 				 top = y0 +(r0+delta_r*i)*(Math.sin(delta_angle*j))
@@ -456,7 +456,7 @@
 			topic_li_node_array.length=0;
 			for(var i=0;i<res.length;i++)
 			{
-				console.log(res[i]);
+				//console.log(res[i]);
 				var d=res[i];
 				//将数据显示出来
 				//console.log(d);

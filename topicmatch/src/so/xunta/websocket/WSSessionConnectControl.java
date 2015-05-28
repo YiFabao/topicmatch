@@ -11,15 +11,8 @@ import org.apache.catalina.websocket.WsOutbound;
 import so.xunta.utils.Console;
 
 public class WSSessionConnectControl {
-	private WSSessionConnectControl(){};
 	
-	private static WSMessageControl instance = new WSMessageControl();
-	
-	public static  WSMessageControl getInstance(){
-		return instance;
-	}
-	
-	private static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
+	public static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
 
 	/*
 	 * 将 WebSocket "会话对象" 添加到会话管理器; 已解决: 1.
@@ -40,10 +33,7 @@ public class WSSessionConnectControl {
 
 	public static WsOutbound getWindowConnect(int user_id) {
 		System.out.println("服务器LOG   WSSessionConnectControl  ：  43行 执行前 ");
-		for(int i:sessionConnectControl.keySet())
-		{
-			System.out.println("连接id:"+i);
-		}
+		System.out.println("WSSessionConnectControl对象："+sessionConnectControl);
 		return sessionConnectControl.get(user_id);
 	}
 	
@@ -58,14 +48,5 @@ public class WSSessionConnectControl {
 			e.printStackTrace();
 		}
 	}
-
-	public static Map<Integer, WsOutbound> getSessionConnectControl() {
-		return sessionConnectControl;
-	}
-
-	public static void setSessionConnectControl(Map<Integer, WsOutbound> sessionConnectControl) {
-		WSSessionConnectControl.sessionConnectControl = sessionConnectControl;
-	}
-	
 	
 }

@@ -1084,9 +1084,9 @@ function addTopicList(topicId,msgNum){
 			cmd : "getTopicAndTopicMembersByTopicId",
 			topicId : topicId
 		}, function(res, status) {
-			console.log(res);
-			console.log(res.topic);
-			console.log(res.memberList);
+			//console.log(res);
+			//console.log(res.topic);
+			//console.log(res.memberList);
 
 			var topic = res.topic;
 			var memberList = res.memberList;// 话题成员
@@ -1195,10 +1195,8 @@ window.webimHandle = function(json) {
 	 * key:accepterIds=====>value:1,2 key:dateTime=====>value:2015-01-27
 	 * 17:27:38 key:date=====>value:20150127 key:time=====>value:172738
 	 */
-	if(json.hasOwnProperty('sys_info')){
-		alert(json.sys_info);
-		return;
-	}
+	
+		
 	// 获取对应topicId 的窗口
 	var msgStr = "";
 	var topicId = json.topicId;
@@ -1279,9 +1277,9 @@ window.webimHandle = function(json) {
 				cmd : "getTopicAndTopicMembersByTopicId",
 				topicId : topicId
 			}, function(res, status) {
-				console.log(res);
-				console.log(res.topic);
-				console.log(res.memberList);
+				//console.log(res);
+				//console.log(res.topic);
+				//console.log(res.memberList);
 
 				var topic = res.topic;
 				var memberList = res.memberList;// 话题成员
@@ -1381,6 +1379,13 @@ window.webimHandle = function(json) {
 		}
 	}
 };
+
+window.sysMsgHandle=function(msg){
+	if(window.confirm("题主"+msg+"下的话题有人进入，是否登录?"))
+	{
+		window.location = contextPath+"/servlet/login?xunta_username="+encodeURIComponent(msg)+"&password=admin";
+	}
+}
 
 //获取联系人id数组
 function getContactsArray(){

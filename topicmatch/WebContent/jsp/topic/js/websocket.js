@@ -168,6 +168,14 @@ function websocketEvent(userId) {
 				console.log('topicId : '+offlineMessageTopicId+" - accepterId : "+offlineMessageAccepterId+" - unreadNum : "+offlineMessageUnreadNum);
 			}*/
 			
+		}else if(status=="sys_info"){
+			console.log(status);
+			if(window.sysMsgHandle)
+			{
+				window.sysMsgHandle(json.msg);
+			}else{
+				console.log("空");
+			}
 		}
 	}
 }

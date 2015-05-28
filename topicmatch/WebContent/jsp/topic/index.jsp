@@ -125,6 +125,7 @@ logutil.traceLog(request, "首页");
 	</div>
 </div> -->
 
+
 <%--start ======= 余. js文件搬到此引用,动态加载页面后，会调用 --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery.easing.min.js"></script>
@@ -231,7 +232,7 @@ logutil.traceLog(request, "首页");
 	});
 	
 	function keypress(obj,event){
-		console.log(obj);
+		//console.log(obj);
 		var keyCode = (event.keyCode ? event.keyCode : event.which);
 		if(keyCode=='13'){
 	    	createMessage(0,null);
