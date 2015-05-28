@@ -32,17 +32,22 @@ public class UserSockets {
 	//获取socket
 	public WsOutbound getUserSocketByUserId(int userId)
 	{
-		WsOutbound ws = user_socket_map.get(userId);
+		WsOutbound ws = this.getUserSocketByUserId(userId);
+		int count=0;
 		while(true){
 			if(ws!=null){
 				System.out.println("ws不为空");
 				break;
 			}else{
-				System.out.println("ws为空");
-				ws = user_socket_map.get(userId);
+				System.out.println("ws为空"+getSocketSize()+ " ==>"+user_socket_map);
+				ws = this.getUserSocketByUserId(userId);
 			}
 			try {
 				Thread.sleep(200);
+				count++;
+				if(count>100){
+					break;
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
