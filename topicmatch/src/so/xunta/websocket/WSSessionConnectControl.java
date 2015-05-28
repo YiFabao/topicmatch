@@ -19,6 +19,8 @@ public class WSSessionConnectControl {
 		return instance;
 	}
 	
+	static boolean exist = true;
+	
 	private static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
 
 	/*
@@ -27,9 +29,28 @@ public class WSSessionConnectControl {
 	 */
 	public static void addUserSessionConnect(int user_id, WsOutbound outbound) {
 		Console.print(user_id + ":  开启一个窗口连接客户端,将用户添加到会话连接管理器中 ");
-		System.out.println("websocket连接数:"+sessionConnectControl.size());
 		sessionConnectControl.put(user_id, outbound);
-	}
+			if(exist){
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						while(true){
+							System.out.println("连接数："+sessionConnectControl.size());
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}).start();
+				exist =false;
+			}
+			
+		}
 
 	/*
 	 * 将 WebSocket "会话对象" 从会话管理器中删除;
