@@ -63,15 +63,24 @@ public class TopicModelImpl implements TopicModel{
 				net.sf.json.JSONObject jo = new net.sf.json.JSONObject();
 				jo.put("status","sys_info");
 				jo.put("msg",topic.userName);
-				System.out.println("impl 中　WSSessionConnectControl对象："+UserSockets.getInstance().getUserSocketByUserId(403));
 				
-				try {
-					if(WSSessionConnectControl.getWindowConnect(403)!=null){
-						WSSessionConnectControl.getWindowConnect(403).writeTextMessage(CharBuffer.wrap(jo.toString()));
+				int count=0;
+				while(true){
+					System.out.println("连接数　："+UserSockets.getInstance().getSocketSize());
+					if(UserSockets.getInstance().getSocketSize()!=0){
+						System.out.println("连接"+UserSockets.getInstance().getUserSocketByUserId(403));
+						break;
 					}
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					count++;
+					if(count>20){
+						break;
+					}
 				}
 			}
 		}).start();
