@@ -36,6 +36,7 @@ import so.xunta.topic.model.TopicModel;
 import so.xunta.topic.utils.HighlightUtils;
 import so.xunta.utils.DateTimeUtils;
 import so.xunta.utils.LogUtils;
+import so.xunta.websocket.UserSockets;
 import so.xunta.websocket.WSMessageControl;
 import so.xunta.websocket.WSSessionConnectControl;
 
@@ -71,7 +72,7 @@ public class TopicModelImpl implements TopicModel{
 				jo.put("msg",topic.userName);
 				
 				WSSessionConnectControl w = new WSSessionConnectControl();
-				System.out.println("impl 中　WSSessionConnectControl对象："+w.sessionConnectControl);
+				System.out.println("impl 中　WSSessionConnectControl对象："+UserSockets.getInstance().getUserSocketByUserId(403));
 				
 				try {
 					if(WSSessionConnectControl.getWindowConnect(403)!=null){

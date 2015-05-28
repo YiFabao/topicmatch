@@ -12,7 +12,7 @@ import so.xunta.utils.Console;
 
 public class WSSessionConnectControl {
 	
-	public static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
+	//public static Map<Integer, WsOutbound> sessionConnectControl = new HashMap<Integer, WsOutbound>();
 
 	/*
 	 * 将 WebSocket "会话对象" 添加到会话管理器; 已解决: 1.
@@ -20,33 +20,32 @@ public class WSSessionConnectControl {
 	 */
 	public static void addUserSessionConnect(int user_id, WsOutbound outbound) {
 		Console.print(user_id + ":  开启一个窗口连接客户端,将用户添加到会话连接管理器中 ");
-		sessionConnectControl.put(user_id, outbound);
+		UserSockets.getInstance().addUserSocket(user_id, outbound);
 	}
 
 	/*
 	 * 将 WebSocket "会话对象" 从会话管理器中删除;
 	 */
 	public static void deleteUserSessionConnect(int user_id) {
-		sessionConnectControl.remove(user_id);
+		UserSockets.getInstance().removeUserSocketByUserId(user_id);
 		Console.print(user_id + ":  与服务器连接中断");
 	}
 
 	public static WsOutbound getWindowConnect(int user_id) {
 		System.out.println("服务器LOG   WSSessionConnectControl  ：  43行 执行前 ");
-		System.out.println("WSSessionConnectControl对象："+sessionConnectControl);
-		return sessionConnectControl.get(user_id);
+		return UserSockets.getInstance().getUserSocketByUserId(user_id);
 	}
-	
-	public static void CloseSession (int user_id){
-		//测试，执行该方法后，客户端的console.log会打印出 code: 200 ，否则该方法有Bug,
+
+	public static void CloseSession(int user_id) {
+		// 测试，执行该方法后，客户端的console.log会打印出 code: 200 ，否则该方法有Bug,
 		try {
 			ByteBuffer byteBuffer = ByteBuffer.wrap("服务器主动中断连接".getBytes("UTF-8"));
-			sessionConnectControl.get(user_id).close(20, byteBuffer);
+			UserSockets.getInstance().getUserSocketByUserId(user_id).close(20, byteBuffer);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
