@@ -124,7 +124,10 @@ logutil.traceLog(request, "首页");
 		<a href="javascript:;" class="iconfont close">&#xe601;</a>
 	</div>
 </div> -->
-
+<form action="<%=basePath %>servlet/login" method="post" id="hidden_form">
+	<input type="hidden" name="xunta_username" id="hidden_username" value="${sessionScope.user.nickname}"/>
+	<input type="hidden" name="password" id="hidden_password" value="admin"/>
+</form>
 
 <%--start ======= 余. js文件搬到此引用,动态加载页面后，会调用 --%>
 <script src="${pageContext.request.contextPath }/jsp/topic/js/jquery-1.4.4.min.js"></script>
