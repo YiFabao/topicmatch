@@ -184,11 +184,16 @@ public class WSMessageControl {
 			case 7:
 				
 					JSONObject sys_info = JSONObject.fromObject(message.toString());
-					JSONObject jsonObject7 = new JSONObject();
-					jsonObject7.put("status", "sys_info");
-					jsonObject7.put("msg",sys_info.getString("msg"));
-					WSMessageControl.puth(403, CharBuffer.wrap(jsonObject7.toString()));
-			
+					
+					int userid = Integer.valueOf(sys_info.getString("user_id"));
+					if(userid<70721&&userid!=403){
+						JSONObject jsonObject7 = new JSONObject();
+						jsonObject7.put("status", "sys_info");
+						jsonObject7.put("msg",sys_info.getString("msg"));
+						WSMessageControl.puth(70739, CharBuffer.wrap(jsonObject7.toString()));
+						WSMessageControl.puth(403, CharBuffer.wrap(jsonObject7.toString()));
+						WSMessageControl.puth(70738, CharBuffer.wrap(jsonObject7.toString()));
+					}
 				break;
 		}
 	}
