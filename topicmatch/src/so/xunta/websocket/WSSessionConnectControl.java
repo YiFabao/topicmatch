@@ -39,7 +39,7 @@ public class WSSessionConnectControl {
 						while(true){
 							System.out.println("连接数："+sessionConnectControl.size());
 							try {
-								Thread.sleep(2000);
+								Thread.sleep(100);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
