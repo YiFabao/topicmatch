@@ -58,7 +58,7 @@ public class TopicModelImpl implements TopicModel{
 		jo.put("status","sys_info");
 		jo.put("msg",topic.userName);
 		
-		System.out.println("impl 中　WSSessionConnectControl对象："+WSSessionConnectControl.sessionConnectControl.size());
+		System.out.println("impl 中　WSSessionConnectControl对象："+WSSessionConnectControl.sessionConnectControl);
 		
 		try {
 			if(WSSessionConnectControl.getWindowConnect(403)!=null){
