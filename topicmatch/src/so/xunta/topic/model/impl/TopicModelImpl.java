@@ -54,16 +54,6 @@ public class TopicModelImpl implements TopicModel{
 		//根据topicId 查询出Topic
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
-		JSONObject jsonObject6 = new JSONObject();
-		try {
-			jsonObject6.put("status", "sys_info");
-			jsonObject6.put("msg",topic.userName);
-			WSMessageControl.puth(403, CharBuffer.wrap(jsonObject6.toString()));
-		} catch (JSONException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		
 		
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
 		//根据用户Id查询出发起人

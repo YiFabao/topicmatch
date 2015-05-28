@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.qq.connect.utils.json.JSONException;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import so.xunta.manager.impl.QQUserInfoManagerImpl;
@@ -178,6 +180,15 @@ public class WSMessageControl {
 				}else{
 					notificationManagerImpl.addSystemNotificationMsg(new SystemMessageNotification("6", user_id6+"", message6));
 				}
+				break;
+			case 7:
+				
+					JSONObject sys_info = JSONObject.fromObject(message.toString());
+					JSONObject jsonObject7 = new JSONObject();
+					jsonObject7.put("status", "sys_info");
+					jsonObject7.put("msg",sys_info.getString("msg"));
+					WSMessageControl.puth(403, CharBuffer.wrap(jsonObject7.toString()));
+			
 				break;
 		}
 	}

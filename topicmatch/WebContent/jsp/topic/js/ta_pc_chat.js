@@ -119,6 +119,9 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 	topicId_count_map[topicId]=0;
 	console.log("topicContent:"+topicContent);
 	console.log("topicId:"+topicId);
+
+	var msg = {"status":8,msg:myname};
+	ws.send(msg);
 	
 	
 	var topicMemberItem = $(".topic-box .left .rec-topic-list");
