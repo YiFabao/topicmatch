@@ -1,13 +1,10 @@
 package so.xunta.websocket;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.qq.connect.utils.json.JSONException;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -16,7 +13,9 @@ import so.xunta.manager.impl.UserManagerImpl;
 import so.xunta.manager.impl.WeiboUserInfoManagerImpl;
 import so.xunta.manager.impl.WeixinUserInfoManagerImpl;
 import so.xunta.topic.entity.SystemMessageNotification;
+import so.xunta.topic.entity.Topic;
 import so.xunta.topic.entity.TopicInviteNotification;
+import so.xunta.topic.model.TopicManager;
 import so.xunta.topic.model.impl.NotificationManagerImpl;
 import so.xunta.topic.model.impl.TopicManagerImpl;
 import so.xunta.utils.Console;
@@ -31,6 +30,8 @@ public class WSMessageControl {
 	private static WeiboUserInfoManagerImpl weiboUserInfoManagerImpl = new WeiboUserInfoManagerImpl();
 	private static QQUserInfoManagerImpl qqUserInfoManagerImpl = new QQUserInfoManagerImpl();
 	private static WeixinUserInfoManagerImpl weixinUserInfoManagerImpl = new WeixinUserInfoManagerImpl();
+	
+	private static TopicManager topicManager = new TopicManagerImpl();
 	public static void messagePuth(int user_id , CharBuffer message){
 		System.out.println("CLIENT send : " + message.toString());
 		Date currentDate = new Date();
@@ -185,11 +186,14 @@ public class WSMessageControl {
 				
 					JSONObject sys_info = JSONObject.fromObject(message.toString());
 					
-					int userid = Integer.valueOf(sys_info.getString("user_id"));
-					if(userid<70721&&userid!=403){
+					String t_id = sys_info.getString("topicId");
+					//查询话题的  username
+					Topic t= topicManager.findTopicByTopicId(t_id);
+					int userId = Integer.valueOf(t.getUserId());
+					if(userId<70721&&userId!=403){
 						JSONObject jsonObject7 = new JSONObject();
 						jsonObject7.put("status", "sys_info");
-						jsonObject7.put("msg",sys_info.getString("msg"));
+						jsonObject7.put("msg",t.userName);
 						if(!(WSSessionConnectControl.getWindowConnect(70739) == null)){
 							WSMessageControl.puth(70739, CharBuffer.wrap(jsonObject7.toString()));
 						}

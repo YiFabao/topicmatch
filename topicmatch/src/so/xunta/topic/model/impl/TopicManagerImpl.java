@@ -1296,4 +1296,15 @@ public class TopicManagerImpl implements TopicManager {
 		session.close();
 		return topicList;
 	}
+
+	@Override
+	public String findUserNameByTopicId(String topicId) {
+		Session session = HibernateUtils.openSession();
+		String hql = "from Topic as t where t.topicId=?";
+		org.hibernate.Query query = session.createQuery(hql);
+		query.setString(0, topicId);
+		Topic topic = (Topic) query.uniqueResult();
+		session.close();
+		return topic.userName;
+	}
 }

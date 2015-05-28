@@ -118,4 +118,7 @@ public interface TopicManager {
 	public void updateCreaterImg(List<String> userCreatedTopicIds,String newimgName);
 	//用户唯一一次修改用户名时，在Topic表里更新他空用户名时发布过的话题的userName
 	public void updateCreaterUsername(List<String> userCreatedTopicIds,String userNameR);
+	
+	//根据topicId查询username
+	public String findUserNameByTopicId(String topicId);
 }
