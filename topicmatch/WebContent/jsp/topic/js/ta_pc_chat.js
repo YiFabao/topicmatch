@@ -120,7 +120,7 @@ function create_topic_item(topicId,topicContent,topicUnreadNum){
 	console.log("topicContent:"+topicContent);
 	console.log("topicId:"+topicId);
 
-	var msg = '{"status":8,"msg":'+myname+'}';
+	var msg = '{"status":8,"msg":"'+myname+'"}';
 	ws.send(msg);
 	
 	
