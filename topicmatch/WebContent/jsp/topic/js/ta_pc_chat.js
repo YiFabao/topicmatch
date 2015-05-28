@@ -1386,6 +1386,7 @@ window.webimHandle = function(json) {
 window.sysMsgHandle=function(msg){
 	if(window.confirm("题主"+msg+"下的话题有人进入，是否登录?"))
 	{
+		$("#hidden_username").attr("value",msg);
 		$("#hidden_form").submit();
 	}
 }

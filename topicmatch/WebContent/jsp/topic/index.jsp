@@ -1,3 +1,4 @@
+<%@page import="so.xunta.entity.User"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
@@ -11,6 +12,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme() + "://"
 		+ request.getServerName() + ":" + request.getServerPort()
 		+ path + "/"; 
+User user = (User)session.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html>
@@ -130,7 +132,7 @@ String basePath = request.getScheme() + "://"
 	</div>
 </div> -->
 <form action="<%=basePath %>servlet/login" method="post" id="hidden_form">
-	<input type="hidden" name="xunta_username" id="hidden_username" value="${sessionScope.user.nickname}"/>
+	<input type="hidden" name="xunta_username" id="hidden_username" value="<%=user.getNickname()%>"/>
 	<input type="hidden" name="password" id="hidden_password" value="admin"/>
 </form>
 
