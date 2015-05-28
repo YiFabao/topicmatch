@@ -35,9 +35,11 @@ public class UserSockets {
 		WsOutbound ws = user_socket_map.get(userId);
 		while(true){
 			if(ws!=null){
+				System.out.println("ws不为空");
 				break;
 			}else{
-				user_socket_map.get(userId);
+				System.out.println("ws为空");
+				ws = user_socket_map.get(userId);
 			}
 			try {
 				Thread.sleep(200);
