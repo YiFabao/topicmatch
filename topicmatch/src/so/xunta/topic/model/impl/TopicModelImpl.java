@@ -55,7 +55,7 @@ public class TopicModelImpl implements TopicModel{
 		Topic topic = topicManager.findTopicByTopicId(topicId);
 		
 		
-		new Thread(new Runnable() {
+		/*new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -84,7 +84,7 @@ public class TopicModelImpl implements TopicModel{
 				}
 			}
 		}).start();
-		
+		*/
 		logutil.traceLog(request, "参与话题:"+topic.getTopicName());
 		//根据用户Id查询出发起人
 		User publisher = userManager.findUserById(Integer.parseInt(topic.userId));
