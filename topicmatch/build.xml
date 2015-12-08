@@ -105,7 +105,7 @@
 	<!-- copy war包 tomcat的deploy目录 -->  
     <target name="deploy" depends="war" description="部署项目">  
         <echo message="begin deploy..." />  
-        <copy file="${dist.dir}/${webapp.name}.war" todir="${catalina.home}/webapps" />  
+        <copy file="${dist.dir}/${webapp.name}.war" todir="${catalina.home}/webapps_2/war/" />  
         <echo message="end deploy..." />  
     </target> 
 	

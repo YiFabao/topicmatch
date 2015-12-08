@@ -17,7 +17,7 @@
 		response.sendRedirect(request.getContextPath()+"/servlet/weixinLogin?weixin_code="+weixin_code);
 	}
 	so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
-	logutil.traceLog(request, "本地账户登录页面");
+	//logutil.traceLog(request, "本地账户登录页面");
 %>
 
 

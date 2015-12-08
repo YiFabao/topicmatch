@@ -33,8 +33,8 @@ function websocketEvent(userId) {
 	// ws = new
 	// WebSocket('ws://121.40.61.219:8080/im_websocket/WebSocketServlet?userId='
 	// + userId);
-	ws = new WebSocket(
-			"ws://"+document.domain+"/topicmatch/WebSocketServlet?userId=" + userId);
+	//ws = new WebSocket("ws://"+document.domain+":8080/topicmatch/WebSocketServlet?userId=" + userId);
+	ws = new WebSocket("ws://"+document.domain+"/WebSocketServlet?userId=" + userId);
 	checkWebSocketState();
 	// 连接服务器成功触发该事件
 	ws.onopen = function(event) {

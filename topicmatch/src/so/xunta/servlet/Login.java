@@ -77,10 +77,10 @@ public class Login extends HttpServlet {
 				{
 					//System.out.println("windows系统");
 				}else{
-					System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
+					/*System.out.println("ip地址:"+ipaAddress+"  城市:"+IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
 					if(user.address!=null&&("IP地址库文件错误".equals(user.address)||"".equals(user.address.trim()))){
 						user.setAddress(IpUtils.getInstance().getCountryByIdAddress(ipaAddress));
-					}
+					}*/
 				}
 				
 				user.setLatestLoginTime(DateTimeUtils.getCurrentTimeStr());
@@ -110,8 +110,8 @@ public class Login extends HttpServlet {
 					weixin_name = (new WeixinUserInfoManagerImpl()).findWeixinNameByWeixinUid(weixin_uid.trim());
 					request.getSession().setAttribute("thirdParty", "微信-"+weixin_name);
 				}
-				so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
-				logutil.traceLog(request, "本地登录成功,跳转首页");
+				//so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
+				//logutil.traceLog(request, "本地登录成功,跳转首页");
 				response.sendRedirect(request.getContextPath()+"/jsp/topic/index.jsp");
 			}
 		}

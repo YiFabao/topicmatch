@@ -11,8 +11,8 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/"; 
-	LogUtils logutils = new LogUtils();
-	logutils.traceLog(request,"登录页面");
+	//LogUtils logutils = new LogUtils();
+	//logutils.traceLog(request,"登录页面");
 %>
 <!DOCTYPE html>
 <html lang="zh">

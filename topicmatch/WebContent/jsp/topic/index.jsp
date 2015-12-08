@@ -5,8 +5,8 @@
 response.setHeader("Cache-Control","no-cache");
 response.setHeader("Pragma","no-cache");
 response.setDateHeader ("Expires", 0);
-so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
-logutil.traceLog(request, "首页");
+//so.xunta.utils.LogUtils logutil = new so.xunta.utils.LogUtils();
+//logutil.traceLog(request, "首页");
 
 String path = request.getContextPath();
 String basePath = request.getScheme() + "://"
